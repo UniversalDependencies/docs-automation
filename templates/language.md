@@ -9,20 +9,29 @@
   <div>   <!-- start of {{language_name}} accordion body -->
 
 
-    <div class="jquery-ui-accordion">     <!-- start of {{language_name}} treebank list -->
+    <div class="jquery-ui-subaccordion-closed">     <!-- start of {{language_name}} treebank list -->
        {% for tbank in treebanks %}
      	  <div> <!-- start of {{language_name}} / {{tbank.treebank_code|default("(DEF)",true)}} entry -->
+	    <span class="flagspan"></span>
 	    <span class="doublewidespan">{{tbank.treebank_code|default("(DEF)",true)}}</span>
+	    <span class="doublewidespan">stats-go-here</span>
 	  </div>
 	  <div>
+	  
+	    What should go in this space?	     
+
 	    <ul>
-              <li>Repository <a href="https://github.com/UniversalDependencies/{{tbank.repo_name}}/tree/master">[master]</a> <a href="https://github.com/UniversalDependencies/{{tbank.repo_name}}/tree/dev">[dev]</a></li>
-              <li><a href="https://github.com/UniversalDependencies/{{tbank.repo_name}}/blob/master/{{tbank.readme_file}}">README</a>
+              <li>Repository <a href="https://github.com/UniversalDependencies/{{tbank.repo_name}}/tree/master">master</a> <a href="https://github.com/UniversalDependencies/{{tbank.repo_name}}/tree/dev">dev</a></li>
+              <li><a href="https://github.com/UniversalDependencies/{{tbank.repo_name}}/blob/master/{{tbank.readme_file}}">README</a></li>
 	    </ul>
+
+	    What should go in this space?
 	  </div> <!-- end of {{language_name}} / {{tbank.treebank_code|default("(DEF)",true)}} entry -->
        {% endfor %}
     
     </div> <!-- end of {{language_name}} treebank list -->
+
+  Language documentation. What should go in this space?
 
 
   </div>   <!-- end of {{language_name}} accordion body -->

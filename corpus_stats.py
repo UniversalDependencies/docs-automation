@@ -155,6 +155,7 @@ class TreebankInfo:
         final["treebank_code"]=self.treebank_code
         final["language_code"]=self.language_code
         final["repo_name"]=self.repo_name
+        final["readme_file"]=self.readme_file
         final["meta"]=self.meta
         if args and args.exclude_counts_from_json:
             final["counts"]={}
@@ -202,7 +203,7 @@ if __name__=="__main__":
 
         
     for f_name in args.input:
-        match=re.match(r"^([a-z_]+)-ud-(train|dev|test)\.conllu$",os.path.basename(f_name))
+        match=re.match(r"^([a-z_]+)-ud-(train|dev|test)(-[a-z]+)?\.conllu$",os.path.basename(f_name))
         if match:
             lang_uscore_code=match.group(1)
             parts=lang_uscore_code.split("_")
