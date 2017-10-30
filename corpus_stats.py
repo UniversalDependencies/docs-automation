@@ -1,6 +1,12 @@
+import six
+assert six.PY3, "Run me with Python3"
+
 import argparse
 import sys
 import re
+import json
+import os
+
 
 CONLLU_COLCOUNT=10
 ID,FORM,LEMMA,UPOS,XPOS,FEATS,HEAD,DEPREL,DEPS,MISC=range(10)
@@ -47,7 +53,7 @@ class TreebankInfo:
         self.f_val_counter={} #key:f=val  value: count
         self.deprel_counter={} #key:deprel value: count
         self.readme_data_raw={} #raw key-value pairs from readme
-        self.language=None
+        self.language_name=None
         self.treebank_code=None
         self.language_code=None
 
@@ -75,6 +81,11 @@ class TreebankInfo:
             for head_and_deprel in cols[DEPS].split(u"|"):
                 head,deprel=head_and_deprel.split(u":",1)
                 self.deprel_counter[deprel]=self.deprel_counter.get(deprel,0)+1
+
+    def get_meta(self):
+        """Returns dictionary with all the metadata we have gathered"""
+        master_meta={}
+        
 
     def count(self,f_name):
         """f_name is conllu, counts stuff in f_name"""
@@ -107,18 +118,33 @@ class TreebankInfo:
         #metadata_dict gets remembered in self.readme_data_raw
         
 
+    def as_json(self,args=None):
+        final={}
+        final["counts"]={"token":self.token_count, "word":self.word_count, "tree":self.tree_count, "word_w_lemma":self.words_with_lemma_count, "word_w_deps":self.words_with_deps_count, "fvals": self.f_val_counter, "deprels": self.deprel_counter}
+        final["language_name"]=self.language_name
+        final["treebank_code"]=self.treebank_code
+        final["language_code"]=self.language_code
+        if args and args.exclude_counts_from_json:
+            final["counts"]={}
+        return json.dumps(final,indent=4,sort_keys=True)
+
 
 if __name__=="__main__":
     opt_parser = argparse.ArgumentParser(description='Script for background stats generation. Assumes a validated input.')
     opt_parser.add_argument('input', nargs='+', help='Input conllu files')
-    opt_parser.add_argument('--readme', help='UD Readme file to go with this data')
+    opt_parser.add_argument('--readme-dir', help='Directory to look for a readme file to go with this data')
     opt_parser.add_argument('--repo-name',help="Something like UD_Finnish-TDT, used to guess language name and treebank suffix code")
+    opt_parser.add_argument("--json",default=False,action="store_true",help="Dump stats as JSON")
+    opt_parser.add_argument("--exclude-counts-from-json",default=False,action="store_true",help="Exclude counts from JSON. Only needed for debugging really.")
     args=opt_parser.parse_args()
     
     stats=TreebankInfo()
 
-    if args.readme:
-        stats.read_readme(args.readme)
+    if args.readme_dir:
+        for dn in ("README.txt","README.md"):
+            if os.path.exists(os.path.join(args.readme_dir,dn)):
+                stats.read_readme(os.path.join(args.readme_dir,dn))
+                break
 
     if args.repo_name:
         lang_dash_code=re.sub("^UD_","",args.repo_name)
@@ -133,7 +159,7 @@ if __name__=="__main__":
             raise ValueError("Multiple-dash in repository name: "+args.repo_name)
         
     for f_name in args.input:
-        match=re.match(r"^([a-z_]+)-ud-(train|dev|test)\.conllu$",f_name)
+        match=re.match(r"^([a-z_]+)-ud-(train|dev|test)\.conllu$",os.path.basename(f_name))
         if match:
             lang_uscore_code=match.group(1)
             parts=lang_uscore_code.split("_")
@@ -141,7 +167,10 @@ if __name__=="__main__":
                 assert stats.language_code==parts[0]
             else:
                 stats.language_code=parts[0]
-                
-        stats.count(f_name)
+        if os.path.exists(f_name):
+            stats.count(f_name)
+
+    if args.json:
+        print(stats.as_json(args))
 
 
