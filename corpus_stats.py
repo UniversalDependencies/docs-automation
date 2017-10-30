@@ -6,6 +6,8 @@ import sys
 import re
 import json
 import os
+import yaml
+
 
 
 CONLLU_COLCOUNT=10
@@ -82,9 +84,6 @@ class TreebankInfo:
                 head,deprel=head_and_deprel.split(u":",1)
                 self.deprel_counter[deprel]=self.deprel_counter.get(deprel,0)+1
 
-    def get_meta(self):
-        """Returns dictionary with all the metadata we have gathered"""
-        master_meta={}
         
 
     def count(self,f_name):
@@ -114,8 +113,39 @@ class TreebankInfo:
                 if not match:
                     continue
                 else:
-                    metadata_dict[match.group(1)]=match.group(2)
+                    metadata_dict[match.group(1).lower().strip()]=match.group(2).strip()
         #metadata_dict gets remembered in self.readme_data_raw
+
+        meta={"license":("unknown","unknown"), "avail":"unknown", "genre":[], "contributors":[], "contact":[]} #Processed meta
+        #license
+        if "license" in metadata_dict:
+            lic=metadata_dict["license"]
+            if lic.startswith("CC"):
+                parts=lic.split()
+                meta["license"]=(parts[1],lic) #parts[1] is the BY-SA etc part
+            elif "GNU" in lic or "GPL" in lic:
+                meta["license"]=("GNU",lic)
+            else:
+                meta["license"]=("unknown",lic)
+        meta["source"]=metadata_dict.get("data source","unknown")
+        if "data available since" in metadata_dict:
+            avail=metadata_dict["data available since"]
+            match=re.match("^UD v([0-9]+)\.([0-9]+)$", avail)
+            if match:
+                meta["avail"]=(match.group(1),match.group(2))
+            else:
+                meta["avail"]="unknown"
+        meta["genre"]=list(g for g in metadata_dict.get("genre","").split() if g)
+        for c in metadata_dict.get("contributors","").split(";"):
+            if c.strip():
+                meta["contributors"].append(c.strip())
+        for c in metadata_dict.get("contact","").replace(","," ").replace(";"," ").split():
+            if c.strip() and c.strip!="email@domain.com":
+                meta["contact"].append(c)
+        self.meta=meta
+            
+        
+            
         
 
     def as_json(self,args=None):
@@ -124,6 +154,7 @@ class TreebankInfo:
         final["language_name"]=self.language_name
         final["treebank_code"]=self.treebank_code
         final["language_code"]=self.language_code
+        final["meta"]=self.meta
         if args and args.exclude_counts_from_json:
             final["counts"]={}
         return json.dumps(final,indent=4,sort_keys=True)
@@ -134,11 +165,14 @@ if __name__=="__main__":
     opt_parser.add_argument('input', nargs='+', help='Input conllu files')
     opt_parser.add_argument('--readme-dir', help='Directory to look for a readme file to go with this data')
     opt_parser.add_argument('--repo-name',help="Something like UD_Finnish-TDT, used to guess language name and treebank suffix code")
+    opt_parser.add_argument('--codes-flags',help="Language code and flag file")
     opt_parser.add_argument("--json",default=False,action="store_true",help="Dump stats as JSON")
     opt_parser.add_argument("--exclude-counts-from-json",default=False,action="store_true",help="Exclude counts from JSON. Only needed for debugging really.")
     args=opt_parser.parse_args()
     
     stats=TreebankInfo()
+
+            
 
     if args.readme_dir:
         for dn in ("README.txt","README.md"):
@@ -157,6 +191,12 @@ if __name__=="__main__":
             stats.treebank_code=parts[1]
         else:
             raise ValueError("Multiple-dash in repository name: "+args.repo_name)
+
+        if args.codes_flags:
+            with open(args.codes_flags) as f:
+                codes_flags=yaml.load(f)
+            stats.language_code=codes_flags[stats.language_name]["lcode"]
+
         
     for f_name in args.input:
         match=re.match(r"^([a-z_]+)-ud-(train|dev|test)\.conllu$",os.path.basename(f_name))
@@ -164,7 +204,7 @@ if __name__=="__main__":
             lang_uscore_code=match.group(1)
             parts=lang_uscore_code.split("_")
             if stats.language_code:
-                assert stats.language_code==parts[0]
+                assert stats.language_code==parts[0], (stats.language_code,parts[0])
             else:
                 stats.language_code=parts[0]
         if os.path.exists(f_name):
