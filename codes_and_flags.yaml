@@ -1,0 +1,226 @@
+Afrikaans:
+  flag: ZA
+  lcode: af
+Amharic:
+  flag: ET
+  lcode: am
+Ancient Greek:
+  flag: GR
+  lcode: grc
+Arabic:
+  flag: SA-AL
+  lcode: ar
+Armenian:
+  flag: AM
+  lcode: hy
+Bambara:
+  flag: ML
+  lcode: bm
+Bangla:
+  flag: BD
+  lcode: bn
+Basque:
+  flag: ES-PV
+  lcode: eu
+Belarusian:
+  flag: BY
+  lcode: be
+Bengali:
+  flag: BD
+  lcode: bn
+Bulgarian:
+  flag: BG
+  lcode: bg
+Buryat:
+  flag: RU-BU
+  lcode: bxr
+Cantonese:
+  flag: HK
+  lcode: yue
+Catalan:
+  flag: ES-CT
+  lcode: ca
+Chinese:
+  flag: CN
+  lcode: zh
+Coptic:
+  flag: COP
+  lcode: cop
+Croatian:
+  flag: HR
+  lcode: hr
+Czech:
+  flag: CZ
+  lcode: cs
+Danish:
+  flag: DK
+  lcode: da
+Dargwa:
+  flag: RU-DA
+  lcode: dar
+Dutch:
+  flag: NL
+  lcode: nl
+English:
+  flag: US
+  lcode: en
+Erzya:
+  flag: RU-ERZYA
+  lcode: myv
+Estonian:
+  flag: EE
+  lcode: et
+Faroese:
+  flag: FO
+  lcode: fo
+Finnish:
+  flag: FI
+  lcode: fi
+French:
+  flag: FR
+  lcode: fr
+Galician:
+  flag: ES-GA
+  lcode: gl
+German:
+  flag: DE
+  lcode: de
+Gothic:
+  flag: BYZ
+  lcode: got
+Greek:
+  flag: GR
+  lcode: el
+Hebrew:
+  flag: IL
+  lcode: he
+Hindi:
+  flag: IN
+  lcode: hi
+Hungarian:
+  flag: HU
+  lcode: hu
+Indonesian:
+  flag: ID
+  lcode: id
+Irish:
+  flag: IE
+  lcode: ga
+Italian:
+  flag: IT
+  lcode: it
+Japanese:
+  flag: JP
+  lcode: ja
+Kazakh:
+  flag: KZ
+  lcode: kk
+Korean:
+  flag: KR
+  lcode: ko
+Kurmanji:
+  flag: TR
+  lcode: kmr
+Latin:
+  flag: VA
+  lcode: la
+Latvian:
+  flag: LV
+  lcode: lv
+Lithuanian:
+  flag: LT
+  lcode: lt
+Maltese:
+  flag: MT
+  lcode: mt
+Marathi:
+  flag: IN
+  lcode: mr
+Naija:
+  flag: NG
+  lcode: pcm
+North Sami:
+  flag: SAMI
+  lcode: sme
+Norwegian:
+  flag: 'NO'
+  lcode: 'no'
+Old Church Slavonic:
+  flag: MORAVA
+  lcode: cu
+Old French:
+  flag: FR-ROYAL
+  lcode: fro
+Persian:
+  flag: IR
+  lcode: fa
+Polish:
+  flag: PL
+  lcode: pl
+Portuguese:
+  flag: PT
+  lcode: pt
+Romanian:
+  flag: RO
+  lcode: ro
+Romansh:
+  flag: CH
+  lcode: rm
+Russian:
+  flag: RU
+  lcode: ru
+Sanskrit:
+  flag: IN
+  lcode: sa
+Serbian:
+  flag: RS
+  lcode: sr
+Slovak:
+  flag: SK
+  lcode: sk
+Slovenian:
+  flag: SI
+  lcode: sl
+Somali:
+  flag: SO
+  lcode: so
+Sorani:
+  flag: IQ-KRD
+  lcode: ckb
+Spanish:
+  flag: ES
+  lcode: es
+Swedish:
+  flag: SE
+  lcode: sv
+Swedish Sign Language:
+  flag: SE
+  lcode: swl
+Tamil:
+  flag: IN
+  lcode: ta
+Telugu:
+  flag: IN
+  lcode: te
+Thai:
+  flag: TH
+  lcode: th
+Turkish:
+  flag: TR
+  lcode: tr
+Ukrainian:
+  flag: UA
+  lcode: uk
+Upper Sorbian:
+  flag: HSB
+  lcode: hsb
+Urdu:
+  flag: IN
+  lcode: ur
+Uyghur:
+  flag: CN
+  lcode: ug
+Vietnamese:
+  flag: VN
+  lcode: vi
+
