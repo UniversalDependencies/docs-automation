@@ -154,6 +154,7 @@ class TreebankInfo:
         final["language_name"]=self.language_name
         final["treebank_code"]=self.treebank_code
         final["language_code"]=self.language_code
+        final["repo_name"]=self.repo_name
         final["meta"]=self.meta
         if args and args.exclude_counts_from_json:
             final["counts"]={}
@@ -161,7 +162,7 @@ class TreebankInfo:
 
 
 if __name__=="__main__":
-    opt_parser = argparse.ArgumentParser(description='Script for background stats generation. Assumes a validated input.')
+    opt_parser = argparse.ArgumentParser(description='Script for background stats generation. Assumes a validated input. This is used to generate a json which holds all vital data for the index page generation and the like. Rerun whenever anything changes in data repo.')
     opt_parser.add_argument('input', nargs='+', help='Input conllu files')
     opt_parser.add_argument('--readme-dir', help='Directory to look for a readme file to go with this data')
     opt_parser.add_argument('--repo-name',help="Something like UD_Finnish-TDT, used to guess language name and treebank suffix code")
@@ -178,9 +179,11 @@ if __name__=="__main__":
         for dn in ("README.txt","README.md"):
             if os.path.exists(os.path.join(args.readme_dir,dn)):
                 stats.read_readme(os.path.join(args.readme_dir,dn))
+                stats.readme_file=dn
                 break
 
     if args.repo_name:
+        stats.repo_name=args.repo_name
         lang_dash_code=re.sub("^UD_","",args.repo_name)
         parts=lang_dash_code.split("-")
         if len(parts)==1: #no code
