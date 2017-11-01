@@ -8,13 +8,18 @@
 
   <div>   <!-- start of {{language_name}} accordion body -->
 
+  <p/><p/><p/><p/><p/>
 
     <div class="jquery-ui-subaccordion-closed">     <!-- start of {{language_name}} treebank list -->
        {% for tbank in treebanks %}
      	  <div> <!-- start of {{language_name}} / {{tbank.treebank_code|default("(DEF)",true)}} entry -->
 	    <span class="flagspan"></span>
 	    <span class="doublewidespan">{{tbank.treebank_code|default("(DEF)",true)}}</span>
-	    <span class="doublewidespan">stats-go-here</span>
+	    <span class="widespan"><span class="hint--top hint--info" data-hint="{{tbank.counts.token|tsepk}} tokens {{tbank.counts.word|tsepk}} words {{tbank.counts.tree|tsepk}} sentences">{{tbank.counts.word|tsepk(use_k=true)}}</span></span>
+	    <span class="widespan">{{tbank.counts|tag_filter|safe}}</span>
+	    <span class="widespan">{{tbank.meta|annotation_filter|safe}}</span>
+	    <span class="doublewidespan">{{tbank.meta.genre|genre_filter|safe}}</span>
+	    <span class="widespan">{{tbank.meta.license|license_filter|safe}}</span>
 	  </div>
 	  <div>
 	  
