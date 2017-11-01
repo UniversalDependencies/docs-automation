@@ -88,7 +88,6 @@ if __name__=="__main__":
     opt_parser.add_argument('--codes-flags', help="Language code and flag file")
     opt_parser.add_argument('--genre-symbols', help="Json with genre symbols")
     opt_parser.add_argument('--skip', default=None, action="store", help="'empty' or 'withdata' or nothing to keep all")
-    opt_parser.add_argument('--skip-empty', action="store_true", help="Skip languages with no data")
     opt_parser.add_argument('input', nargs='+', help='Input corpus stat json files')
     args=opt_parser.parse_args()
 
