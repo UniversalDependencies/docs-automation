@@ -29,6 +29,7 @@
 	    What should go in this space?	     
 
 	    <ul>
+	      <li>Contributors: {{tbank.meta.contributors|contributor_filter}} </li>
               <li>Repository <a href="https://github.com/UniversalDependencies/{{tbank.repo_name}}/tree/master">master</a> <a href="https://github.com/UniversalDependencies/{{tbank.repo_name}}/tree/dev">dev</a></li>
               <li><a href="https://github.com/UniversalDependencies/{{tbank.repo_name}}/blob/master/{{tbank.readme_file}}">README</a></li>
 	    </ul>

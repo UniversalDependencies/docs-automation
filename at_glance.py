@@ -40,7 +40,7 @@ def tag_filter(counts):
         result+=tag_span%("Features","F")
     else:
         result+=empty_span
-    if counts["word"] and counts["word_w_deps"]/counts["word"]>0.005:
+    if counts["word"] and counts["word_w_deps"]>10:
         result+=tag_span%("Secondary dependencies","D")
     else:
         result+=empty_span
@@ -48,7 +48,7 @@ def tag_filter(counts):
     
 def annotation_filter(metadata):
     """Used from the template to produce the conversion logo"""
-    source=metadata["source"]
+    source=metadata["source"]["all"]
     if source=="automatic":
         return '<span class="hint--top hint--info" data-hint="Automatic conversion"><i class="fa fa-cogs"></i></span>'
     elif source=="semi-automatic":
@@ -83,6 +83,17 @@ def license_filter(lic):
     else:
         return '<span class="hint--top hint--info" data-hint="%s">?</span>'%(lic_name)
 
+def contributor_filter(contributors):
+    cont_list=[]
+    for c in contributors:
+        parts=c.split(", ",1)
+        if len(parts)==2:
+            cont_list.append(parts[1]+" "+parts[0])
+        else:
+            cont_list.append(parts[0])
+    return ", ".join(cont_list)
+        
+
 if __name__=="__main__":
     opt_parser = argparse.ArgumentParser(description='Generates the index page table')
     opt_parser.add_argument('--codes-flags', help="Language code and flag file")
@@ -105,6 +116,7 @@ if __name__=="__main__":
     t_env.filters["annotation_filter"]=annotation_filter
     t_env.filters["genre_filter"]=functools.partial(genre_filter,genre_symbols=genre_symbols)
     t_env.filters["license_filter"]=license_filter
+    t_env.filters["contributor_filter"]=contributor_filter
 
     tbanks={} #language -> [tbank,tbank,...]
 

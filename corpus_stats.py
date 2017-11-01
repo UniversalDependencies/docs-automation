@@ -52,6 +52,7 @@ class TreebankInfo:
         self.tree_count=0
         self.words_with_lemma_count=0
         self.words_with_deps_count=0
+        self.words_not_underscore=0
         self.f_val_counter={} #key:f=val  value: count
         self.deprel_counter={} #key:deprel value: count
         self.readme_data_raw={} #raw key-value pairs from readme
@@ -67,6 +68,8 @@ class TreebankInfo:
             b,e=cols[ID].split("-")
             b,e=int(b),int(e)
             self.token_count-=e-b #every word is counted as a token, so subtract all but one to offset for that
+        if cols[FORM]!="_":
+            self.words_not_underscore+=1
         if cols[LEMMA]!="_" or (cols[LEMMA]=="_" and cols[FORM]=="_"):
             self.words_with_lemma_count+=1
         if cols[UPOS]!="_":
@@ -102,7 +105,7 @@ class TreebankInfo:
 # Contact: figint@utu.fi, jmnybl@utu.fi
 
     def read_readme(self,f_name):
-        metadata_keys=["Documentation status", "Data source", "Data available since", "License", "Genre", "Contributors", "Contact"]
+        metadata_keys=["Documentation status", "Data source", "Data available since", "License", "Genre", "Contributors", "Contact", "Lemmas", "UPOS", "XPOS", "Features", "Relations", "Contributing"]
         metadata_re=re.compile(r"^(%s)\s*:\s*(.*)$"%("|".join(metadata_keys)),re.I)
 
         metadata_dict=self.readme_data_raw
@@ -127,7 +130,6 @@ class TreebankInfo:
                 meta["license"]=("GNU",lic)
             else:
                 meta["license"]=("unknown",lic)
-        meta["source"]=metadata_dict.get("data source","unknown")
         if "data available since" in metadata_dict:
             avail=metadata_dict["data available since"]
             match=re.match("^UD v([0-9]+)\.([0-9]+)$", avail)
@@ -142,6 +144,15 @@ class TreebankInfo:
         for c in metadata_dict.get("contact","").replace(","," ").replace(";"," ").split():
             if c.strip() and c.strip!="email@domain.com":
                 meta["contact"].append(c)
+
+        meta["source"]={}
+        meta["source"]["all"]=metadata_dict.get("data source","unknown")
+        meta["source"]["lemmas"]=metadata_dict.get("Lemmas","unknown")
+        meta["source"]["upos"]=metadata_dict.get("UPOS","unknown")
+        meta["source"]["xpos"]=metadata_dict.get("XPOS","unknown")
+        meta["source"]["features"]=metadata_dict.get("Features","unknown")
+        meta["source"]["relations"]=metadata_dict.get("Relations","unknown")
+        meta["where_contribute"]=metadata_dict.get("Contributing","unknown")
         self.meta=meta
             
         
@@ -150,7 +161,7 @@ class TreebankInfo:
 
     def as_json(self,args=None):
         final={}
-        final["counts"]={"token":self.token_count, "word":self.word_count, "tree":self.tree_count, "word_w_lemma":self.words_with_lemma_count, "word_w_deps":self.words_with_deps_count, "fvals": self.f_val_counter, "deprels": self.deprel_counter}
+        final["counts"]={"token":self.token_count, "word":self.word_count, "tree":self.tree_count, "word_w_lemma":self.words_with_lemma_count, "word_w_deps":self.words_with_deps_count, "fvals": self.f_val_counter, "deprels": self.deprel_counter, "word_not_underscore":self.words_not_underscore}
         final["language_name"]=self.language_name
         final["treebank_code"]=self.treebank_code
         final["language_code"]=self.language_code
