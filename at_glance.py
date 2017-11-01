@@ -125,6 +125,7 @@ if __name__=="__main__":
             continue
         if args.skip=="withdata" and sum_counts["word"]>0:
             continue
+        lang_tbanks.sort(key=lambda tb: tb["counts"]["word"],reverse=True) #Sort treebanks by size
         r=lang_template.render(flag=codes_flags[lang]["flag"],language_name=lang,counts=sum_counts,treebanks=lang_tbanks,genres=union_genres)
         print(r)
     
