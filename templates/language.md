@@ -3,6 +3,7 @@
     <span class="flagspan"><img class="flag" src="flags/svg/{{flag}}.svg" /></span>
     <span class="doublewidespan">{{language_name}}</span>
     <span class="widespan"><span class="hint--top hint--info" data-hint="{{counts.token|tsepk}} tokens {{counts.word|tsepk}} words {{counts.tree|tsepk}} sentences">{{counts.word|tsepk(use_k=true)}}</span></span>
+    <span class="doublewidespan">{{genres|genre_filter|safe}}</span>
 
   </div>   <!-- end of {{language_name}} accordion row -->
 

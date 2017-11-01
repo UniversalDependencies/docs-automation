@@ -117,11 +117,15 @@ if __name__=="__main__":
     lang_template=t_env.get_template("language.md")
     for lang,lang_tbanks in sorted(tbanks.items()):
         sum_counts=sum_dicts(list(tbank["counts"] for tbank in lang_tbanks))
+        union_genres=set()
+        for tb in lang_tbanks:
+            union_genres|=set(tb["meta"]["genre"])
+        union_genres=list(union_genres)
         if args.skip=="empty" and sum_counts["word"]==0:
             continue
         if args.skip=="withdata" and sum_counts["word"]>0:
             continue
-        r=lang_template.render(flag=codes_flags[lang]["flag"],language_name=lang,counts=sum_counts,treebanks=lang_tbanks)
+        r=lang_template.render(flag=codes_flags[lang]["flag"],language_name=lang,counts=sum_counts,treebanks=lang_tbanks,genres=union_genres)
         print(r)
     
     
