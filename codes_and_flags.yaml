@@ -1,226 +1,301 @@
 Afrikaans:
   flag: ZA
   lcode: af
+  family: Indo-European
 Amharic:
   flag: ET
   lcode: am
+  family: Afro-Asiatic
 Ancient Greek:
   flag: GR
   lcode: grc
+  family: Indo-European
 Arabic:
   flag: SA-AL
   lcode: ar
+  family: Afro-Asiatic
 Armenian:
   flag: AM
   lcode: hy
+  family: Indo-European
 Bambara:
   flag: ML
   lcode: bm
+  family: Niger-Congo
 Bangla:
   flag: BD
   lcode: bn
+  family: Indo-European
 Basque:
   flag: ES-PV
   lcode: eu
+  family: Basque
 Belarusian:
   flag: BY
   lcode: be
+  family: Indo-European
 Bengali:
   flag: BD
   lcode: bn
+  family: Indo-European
 Bulgarian:
   flag: BG
   lcode: bg
+  family: Indo-European
 Buryat:
   flag: RU-BU
   lcode: bxr
+  family: Mongolic
 Cantonese:
   flag: HK
   lcode: yue
+  family: Sino-Tibetan
 Catalan:
   flag: ES-CT
   lcode: ca
+  family: Indo-European
 Chinese:
   flag: CN
   lcode: zh
+  family: Sino-Tibetan
 Coptic:
   flag: COP
   lcode: cop
+  family: Afro-Asiatic
 Croatian:
   flag: HR
   lcode: hr
+  family: Indo-European
 Czech:
   flag: CZ
   lcode: cs
+  family: Indo-European
 Danish:
   flag: DK
   lcode: da
+  family: Indo-European
 Dargwa:
   flag: RU-DA
   lcode: dar
+  family: Northeast Caucasian
 Dutch:
   flag: NL
   lcode: nl
+  family: Indo-European
 English:
   flag: US
   lcode: en
+  family: Indo-European
 Erzya:
   flag: RU-ERZYA
   lcode: myv
+  family: Uralic
 Estonian:
   flag: EE
   lcode: et
+  family: Uralic
 Faroese:
   flag: FO
   lcode: fo
+  family: Indo-European
 Finnish:
   flag: FI
   lcode: fi
+  family: Uralic
 French:
   flag: FR
   lcode: fr
+  family: Indo-European
 Galician:
   flag: ES-GA
   lcode: gl
+  family: Indo-European
 German:
   flag: DE
   lcode: de
+  family: Indo-European
 Gothic:
   flag: BYZ
   lcode: got
+  family: Indo-European
 Greek:
   flag: GR
   lcode: el
+  family: Indo-European
 Hebrew:
   flag: IL
   lcode: he
+  family: Afro-Asiatic
 Hindi:
   flag: IN
   lcode: hi
+  family: Indo-European
 Hungarian:
   flag: HU
   lcode: hu
+  family: Uralic
 Indonesian:
   flag: ID
   lcode: id
+  family: Austronesian
 Irish:
   flag: IE
   lcode: ga
+  family: Indo-European
 Italian:
   flag: IT
   lcode: it
+  family: Indo-European
 Japanese:
   flag: JP
   lcode: ja
+  family: Japonic
 Kazakh:
   flag: KZ
   lcode: kk
+  family: Turkic
 Korean:
   flag: KR
   lcode: ko
+  family: Koreanic
 Kurmanji:
   flag: TR
   lcode: kmr
+  family: Indo-European
 Latin:
   flag: VA
   lcode: la
+  family: Indo-European
 Latvian:
   flag: LV
   lcode: lv
+  family: Indo-European
 Lithuanian:
   flag: LT
   lcode: lt
+  family: Indo-European
 Maltese:
   flag: MT
   lcode: mt
+  family: Afro-Asiatic
 Marathi:
   flag: IN
   lcode: mr
+  family: Indo-European
 Naija:
   flag: NG
   lcode: pcm
+  family: Indo-European
 North Sami:
   flag: SAMI
   lcode: sme
+  family: Uralic
 Norwegian:
   flag: 'NO'
   lcode: 'no'
+  family: Indo-European
 Old Church Slavonic:
   flag: MORAVA
   lcode: cu
+  family: Indo-European
 Old French:
   flag: FR-ROYAL
   lcode: fro
+  family: Indo-European
 Persian:
   flag: IR
   lcode: fa
+  family: Indo-European
 Polish:
   flag: PL
   lcode: pl
+  family: Indo-European
 Portuguese:
   flag: PT
   lcode: pt
+  family: Indo-European
 Romanian:
   flag: RO
   lcode: ro
+  family: Indo-European
 Romansh:
   flag: CH
   lcode: rm
+  family: Indo-European
 Russian:
   flag: RU
   lcode: ru
+  family: Indo-European
 Sanskrit:
   flag: IN
   lcode: sa
+  family: Indo-European
 Serbian:
   flag: RS
   lcode: sr
+  family: Indo-European
 Slovak:
   flag: SK
   lcode: sk
+  family: Indo-European
 Slovenian:
   flag: SI
   lcode: sl
+  family: Indo-European
 Somali:
   flag: SO
   lcode: so
+  family: Afro-Asiatic
 Sorani:
   flag: IQ-KRD
   lcode: ckb
+  family: Indo-European
 Spanish:
   flag: ES
   lcode: es
+  family: Indo-European
 Swedish:
   flag: SE
   lcode: sv
+  family: Indo-European
 Swedish Sign Language:
   flag: SE
   lcode: swl
+  family: Sign languages
 Tamil:
   flag: IN
   lcode: ta
+  family: Dravidian
 Telugu:
   flag: IN
   lcode: te
+  family: Dravidian
 Thai:
   flag: TH
   lcode: th
+  family: Tai-Kadai
 Turkish:
   flag: TR
   lcode: tr
+  family: Turkic
 Ukrainian:
   flag: UA
   lcode: uk
+  family: Indo-European
 Upper Sorbian:
   flag: HSB
   lcode: hsb
+  family: Indo-European
 Urdu:
   flag: IN
   lcode: ur
+  family: Indo-European
 Uyghur:
   flag: CN
   lcode: ug
+  family: Turkic
 Vietnamese:
   flag: VN
   lcode: vi
+  family: Austroasiatic
 
