@@ -89,7 +89,7 @@ English:
 Erzya:
   flag: RU-ERZYA
   lcode: myv
-  family: Uralic
+  family: Uralic, Mordvinic
 Estonian:
   flag: EE
   lcode: et
