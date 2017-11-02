@@ -121,9 +121,13 @@ if __name__=="__main__":
     tbanks={} #language -> [tbank,tbank,...]
 
     for f_name in args.input:
-        with open(f_name) as f:
-            tbank=json.load(f)
-            tbanks.setdefault(tbank["language_name"],[]).append(tbank)
+        try:
+            with open(f_name) as f:
+                tbank=json.load(f)
+                tbanks.setdefault(tbank["language_name"],[]).append(tbank)
+        except:
+            print("Whoa, couldn't load", f_name, file=sys.stderr)
+                
             
     lang_template=t_env.get_template("language.md")
     for lang,lang_tbanks in sorted(tbanks.items()):
@@ -137,7 +141,7 @@ if __name__=="__main__":
         if args.skip=="withdata" and sum_counts["word"]>0:
             continue
         lang_tbanks.sort(key=lambda tb: tb["counts"]["word"],reverse=True) #Sort treebanks by size
-        r=lang_template.render(flag=codes_flags[lang]["flag"],language_name=lang,counts=sum_counts,treebanks=lang_tbanks,genres=union_genres)
+        r=lang_template.render(flag=codes_flags[lang]["flag"],language_name=lang,counts=sum_counts,treebanks=lang_tbanks,genres=union_genres,language_family=codes_flags[lang]["family"])
         print(r)
     
     

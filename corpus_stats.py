@@ -108,18 +108,28 @@ class TreebankInfo:
         metadata_keys=["Documentation status", "Data source", "Data available since", "License", "Genre", "Contributors", "Contact", "Lemmas", "UPOS", "XPOS", "Features", "Relations", "Contributing"]
         metadata_re=re.compile(r"^(%s)\s*:\s*(.*)$"%("|".join(metadata_keys)),re.I)
 
+        in_summary=False
+        summary=[]
         metadata_dict=self.readme_data_raw
         with open(f_name) as f:
             for line in f:
                 line=line.strip()
                 match=metadata_re.match(line)
-                if not match:
-                    continue
-                else:
+                if match:
                     metadata_dict[match.group(1).lower().strip()]=match.group(2).strip()
+                    continue
+                if re.match(r"^#\s*Summary", line):
+                    in_summary=True
+                    continue
+                if re.match(r"^#(\s|$)",line):
+                    in_summary=False
+                    continue
+                if in_summary:
+                    summary.append(line)
+                    
         #metadata_dict gets remembered in self.readme_data_raw
 
-        meta={"license":("unknown","unknown"), "avail":"unknown", "genre":[], "contributors":[], "contact":[]} #Processed meta
+        meta={"license":("unknown","unknown"), "avail":"unknown", "genre":[], "contributors":[], "contact":[], "summary":("\n".join(summary)).strip()} #Processed meta
         #license
         if "license" in metadata_dict:
             lic=metadata_dict["license"]

@@ -5,6 +5,7 @@
     <span class="widespan"><span class="hint--top hint--info" data-hint="{{treebanks|length}} treebank{% if treebanks|length > 1 %}s{% endif %}">{{treebanks|length}}</span></span>
     <span class="widespan"><span class="hint--top hint--info" data-hint="{{counts.token|tsepk}} tokens {{counts.word|tsepk}} words {{counts.tree|tsepk}} sentences">{{counts.word|tsepk(use_k=true)}}</span></span>
     <span class="doublewidespan">{{genres|genre_filter|safe}}</span>
+    <span class="doublewidespan">{{language_family}}</span>
 
   </div>   <!-- end of {{language_name}} accordion row -->
 
@@ -15,9 +16,9 @@
 
     <div class="jquery-ui-subaccordion-closed">     <!-- start of {{language_name}} treebank list -->
        {% for tbank in treebanks %}
-     	  <div> <!-- start of {{language_name}} / {{tbank.treebank_code|default("(default)",true)}} entry -->
+     	  <div> <!-- start of {{language_name}} / {{tbank.treebank_code|default("Original",true)}} entry -->
 	    <span class="flagspan"></span>
-	    <span class="doublewidespan">{{tbank.treebank_code|default("(default)",true)}}</span>
+	    <span class="doublewidespan">{{tbank.treebank_code|default("Original",true)}}</span>
 	    <span class="widespan"><span class="hint--top hint--info" data-hint="{{tbank.counts.token|tsepk}} tokens {{tbank.counts.word|tsepk}} words {{tbank.counts.tree|tsepk}} sentences">{{tbank.counts.word|tsepk(use_k=true)}}</span></span>
 	    <span class="widespan">{{tbank.counts|tag_filter|safe}}</span>
 	    <span class="widespan">{{tbank.meta|annotation_filter|safe}}</span>
@@ -26,7 +27,7 @@
 	  </div>
 	  <div>
 	  
-	    What should go in this space?	     
+	    {{tbank.meta.summary|default("Please add a summary section to the treebank readme file",true)}}
 
 	    <ul>
 	      <li>Contributors: {{tbank.meta.contributors|contributor_filter}} </li>
@@ -34,8 +35,8 @@
               <li><a href="https://github.com/UniversalDependencies/{{tbank.repo_name}}/blob/master/{{tbank.readme_file}}">README</a></li>
 	    </ul>
 
-	    What should go in this space?
-	  </div> <!-- end of {{language_name}} / {{tbank.treebank_code|default("(default)",true)}} entry -->
+	    <p>&nbsp;</p>
+	  </div> <!-- end of {{language_name}} / {{tbank.treebank_code|default("Original",true)}} entry -->
        {% endfor %}
     
     </div> <!-- end of {{language_name}} treebank list -->
