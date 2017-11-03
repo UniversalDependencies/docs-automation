@@ -9,7 +9,7 @@ Amharic:
 Ancient Greek:
   flag: GR
   lcode: grc
-  family: IE, Hellenic
+  family: IE, Greek
 Arabic:
   flag: SA-AL
   lcode: ar
@@ -21,31 +21,31 @@ Armenian:
 Bambara:
   flag: ML
   lcode: bm
-  family: Niger-Congo
+  family: Mande
 Bangla:
   flag: BD
   lcode: bn
-  family: IE, Indo-Iranian
+  family: IE, Indic
 Basque:
   flag: ES-PV
   lcode: eu
-  family: Isolate (Vasconic)
+  family: Basque
 Belarusian:
   flag: BY
   lcode: be
-  family: IE, Balto-Slavic
+  family: IE, Slavic
 Bengali:
   flag: BD
   lcode: bn
-  family: IE, Indo-Iranian
+  family: IE, Indic
 Bulgarian:
   flag: BG
   lcode: bg
-  family: IE, Balto-Slavic
+  family: IE, Slavic
 Buryat:
   flag: RU-BU
   lcode: bxr
-  family: Mongolic
+  family: Altaic
 Cantonese:
   flag: HK
   lcode: yue
@@ -53,7 +53,7 @@ Cantonese:
 Catalan:
   flag: ES-CT
   lcode: ca
-  family: IE, Italic
+  family: IE, Romance
 Chinese:
   flag: CN
   lcode: zh
@@ -65,11 +65,11 @@ Coptic:
 Croatian:
   flag: HR
   lcode: hr
-  family: IE, Balto-Slavic
+  family: IE, Slavic
 Czech:
   flag: CZ
   lcode: cs
-  family: IE, Balto-Slavic
+  family: IE, Slavic
 Danish:
   flag: DK
   lcode: da
@@ -77,7 +77,7 @@ Danish:
 Dargwa:
   flag: RU-DA
   lcode: dar
-  family: Northeast Caucasian
+  family: Nakho-Dagestanian
 Dutch:
   flag: NL
   lcode: nl
@@ -89,11 +89,11 @@ English:
 Erzya:
   flag: RU-ERZYA
   lcode: myv
-  family: Uralic, Mordvinic
+  family: Uralic, Mordvin
 Estonian:
   flag: EE
   lcode: et
-  family: Uralic, Finno-Ugric
+  family: Uralic, Finnic
 Faroese:
   flag: FO
   lcode: fo
@@ -101,15 +101,15 @@ Faroese:
 Finnish:
   flag: FI
   lcode: fi
-  family: Uralic, Finno-Ugric
+  family: Uralic, Finnic
 French:
   flag: FR
   lcode: fr
-  family: IE, Italic
+  family: IE, Romance
 Galician:
   flag: ES-GA
   lcode: gl
-  family: IE, Italic
+  family: IE, Romance
 German:
   flag: DE
   lcode: de
@@ -121,7 +121,7 @@ Gothic:
 Greek:
   flag: GR
   lcode: el
-  family: IE, Hellenic
+  family: IE, Greek
 Hebrew:
   flag: IL
   lcode: he
@@ -129,11 +129,11 @@ Hebrew:
 Hindi:
   flag: IN
   lcode: hi
-  family: IE, Indo-Iranian
+  family: IE, Indic
 Hungarian:
   flag: HU
   lcode: hu
-  family: Uralic, Finno-Ugric
+  family: Uralic, Ugric
 Indonesian:
   flag: ID
   lcode: id
@@ -145,11 +145,11 @@ Irish:
 Italian:
   flag: IT
   lcode: it
-  family: IE, Italic
+  family: IE, Romance
 Japanese:
   flag: JP
   lcode: ja
-  family: Japonic
+  family: Japanese
 Kazakh:
   flag: KZ
   lcode: kk
@@ -157,23 +157,23 @@ Kazakh:
 Korean:
   flag: KR
   lcode: ko
-  family: Koreanic
+  family: Korean
 Kurmanji:
   flag: TR
   lcode: kmr
-  family: IE, Indo-Iranian
+  family: IE, Iranian
 Latin:
   flag: VA
   lcode: la
-  family: IE, Italic
+  family: IE, Latin
 Latvian:
   flag: LV
   lcode: lv
-  family: IE, Balto-Slavic
+  family: IE, Baltic
 Lithuanian:
   flag: LT
   lcode: lt
-  family: IE, Balto-Slavic
+  family: IE, Baltic
 Maltese:
   flag: MT
   lcode: mt
@@ -181,7 +181,7 @@ Maltese:
 Marathi:
   flag: IN
   lcode: mr
-  family: IE, Indo-Iranian
+  family: IE, Indic
 Naija:
   flag: NG
   lcode: pcm
@@ -197,51 +197,51 @@ Norwegian:
 Old Church Slavonic:
   flag: MORAVA
   lcode: cu
-  family: IE, Balto-Slavic
+  family: IE, Slavic
 Old French:
   flag: FR-ROYAL
   lcode: fro
-  family: IE, Italic
+  family: IE, Romance
 Persian:
   flag: IR
   lcode: fa
-  family: IE, Indo-Iranian
+  family: IE, Iranian
 Polish:
   flag: PL
   lcode: pl
-  family: IE, Balto-Slavic
+  family: IE, Slavic
 Portuguese:
   flag: PT
   lcode: pt
-  family: IE, Italic
+  family: IE, Romance
 Romanian:
   flag: RO
   lcode: ro
-  family: IE, Italic
+  family: IE, Romance
 Romansh:
   flag: CH
   lcode: rm
-  family: IE, Italic
+  family: IE, Romance
 Russian:
   flag: RU
   lcode: ru
-  family: IE, Balto-Slavic
+  family: IE, Slavic
 Sanskrit:
   flag: IN
   lcode: sa
-  family: IE, Indo-Iranian
+  family: IE, Indic
 Serbian:
   flag: RS
   lcode: sr
-  family: IE, Balto-Slavic
+  family: IE, Slavic
 Slovak:
   flag: SK
   lcode: sk
-  family: IE, Balto-Slavic
+  family: IE, Slavic
 Slovenian:
   flag: SI
   lcode: sl
-  family: IE, Balto-Slavic
+  family: IE, Slavic
 Somali:
   flag: SO
   lcode: so
@@ -249,11 +249,11 @@ Somali:
 Sorani:
   flag: IQ-KRD
   lcode: ckb
-  family: IE, Indo-Iranian
+  family: IE, Iranian
 Spanish:
   flag: ES
   lcode: es
-  family: IE, Italic
+  family: IE, Romance
 Swedish:
   flag: SE
   lcode: sv
@@ -281,15 +281,15 @@ Turkish:
 Ukrainian:
   flag: UA
   lcode: uk
-  family: IE, Balto-Slavic
+  family: IE, Slavic
 Upper Sorbian:
   flag: HSB
   lcode: hsb
-  family: IE, Balto-Slavic
+  family: IE, Slavic
 Urdu:
   flag: IN
   lcode: ur
-  family: IE, Indo-Iranian
+  family: IE, Indic
 Uyghur:
   flag: CN
   lcode: ug
@@ -297,5 +297,5 @@ Uyghur:
 Vietnamese:
   flag: VN
   lcode: vi
-  family: Austroasiatic
+  family: Austro-Asiatic
 
