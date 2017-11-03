@@ -5,7 +5,7 @@
     <span class="widespan"><span class="hint--top hint--info" data-hint="{{treebanks|length}} treebank{% if treebanks|length > 1 %}s{% endif %}">{{treebanks|length}}</span></span>
     <span class="widespan"><span class="hint--top hint--info" data-hint="{{counts.token|tsepk}} tokens {{counts.word|tsepk}} words {{counts.tree|tsepk}} sentences">{{counts.word|tsepk(use_k=true)}}</span></span>
     <span class="doublewidespan">{{genres|genre_filter|safe}}</span>
-    <span class="doublewidespan">{{language_family}}</span>
+    <span class="triplewidespan">{{language_family}}</span>
 
   </div>   <!-- end of {{language_name}} accordion row -->
 
@@ -21,7 +21,7 @@
 	    <span class="doublewidespan">{{tbank.treebank_code|default("Original",true)}}</span>
 	    <span class="widespan"><span class="hint--top hint--info" data-hint="{{tbank.counts.token|tsepk}} tokens {{tbank.counts.word|tsepk}} words {{tbank.counts.tree|tsepk}} sentences">{{tbank.counts.word|tsepk(use_k=true)}}</span></span>
 	    <span class="widespan">{{tbank.counts|tag_filter|safe}}</span>
-	    <span class="widespan">{{tbank.meta|annotation_filter|safe}}</span>
+	    <!-- <span class="widespan">{{tbank.meta|annotation_filter|safe}}</span> -->
 	    <span class="doublewidespan">{{tbank.meta.genre|genre_filter|safe}}</span>
 	    <span class="widespan">{{tbank.meta.license|license_filter|safe}}</span>
 	  </div>
@@ -32,7 +32,7 @@
 	    <ul>
 	      <li>Contributors: {{tbank.meta.contributors|contributor_filter}} </li>
               <li>Repository <a href="https://github.com/UniversalDependencies/{{tbank.repo_name}}/tree/master">master</a> <a href="https://github.com/UniversalDependencies/{{tbank.repo_name}}/tree/dev">dev</a></li>
-              <li><a href="https://github.com/UniversalDependencies/{{tbank.repo_name}}/blob/master/{{tbank.readme_file}}">README</a></li>
+              <li><a href="https://github.com/UniversalDependencies/{{tbank.repo_name}}/blob/dev/{{tbank.readme_file}}">README</a></li>
 	    </ul>
 
 	    <p>&nbsp;</p>

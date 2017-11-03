@@ -21,7 +21,7 @@ def thousand_sep_filter(val,use_k=False):
         return "{:,}".format(val)
     else:
         if val==0:
-            return "0K"
+            return "-"
         elif val<1000:
             return "<1K"
         else:
