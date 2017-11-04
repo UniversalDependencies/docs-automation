@@ -22,10 +22,6 @@ Bambara:
   flag: ML
   lcode: bm
   family: Mande
-Bangla:
-  flag: BD
-  lcode: bn
-  family: IE, Indic
 Basque:
   flag: ES-PV
   lcode: eu
