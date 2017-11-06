@@ -33,6 +33,7 @@
 	      <li>Contributors: {{tbank.meta.contributors|contributor_filter}} </li>
               <li>Repository <a href="https://github.com/UniversalDependencies/{{tbank.repo_name}}/tree/master">master</a> <a href="https://github.com/UniversalDependencies/{{tbank.repo_name}}/tree/dev">dev</a></li>
               <li><a href="https://github.com/UniversalDependencies/{{tbank.repo_name}}/blob/dev/{{tbank.readme_file}}">README</a></li>
+	      <li><a href="treebanks/{{tbank.treebank_lcode_code}}/index.html">Treebank hub page</a></li>
 	    </ul>
 
 	    <p>&nbsp;</p>
@@ -43,6 +44,10 @@
 
   <h3> Language documentation </h3>
 
-  Some language documentation.
+  {% if language_hub %}
+  See the <a href="{{language_code}}/index.html">language documentation page</a>.
+  {% else %}
+  The language hub documentation has not yet been created or ported from the UDv1 documentation.
+  {% endif %}
 
   </div>   <!-- end of {{language_name}} accordion body -->

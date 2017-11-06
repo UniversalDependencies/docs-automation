@@ -6,6 +6,7 @@ import argparse
 import yaml
 import sys
 import functools
+import os.path
 
 def sum_dicts(dicts):
     #dicts is a bunch of dicts with int values, for all keys sums all values
@@ -99,6 +100,7 @@ if __name__=="__main__":
     opt_parser.add_argument('--codes-flags', help="Language code and flag file")
     opt_parser.add_argument('--genre-symbols', help="Json with genre symbols")
     opt_parser.add_argument('--skip', default=None, action="store", help="'empty' or 'withdata' or nothing to keep all")
+    opt_parser.add_argument('--docs-dir', default="docs-src", action="store", help="Docs dir so we can check for existence of files. Default '%(default)s'.")
     opt_parser.add_argument('input', nargs='+', help='Input corpus stat json files')
     args=opt_parser.parse_args()
 
@@ -141,7 +143,12 @@ if __name__=="__main__":
         if args.skip=="withdata" and sum_counts["word"]>0:
             continue
         lang_tbanks.sort(key=lambda tb: tb["counts"]["word"],reverse=True) #Sort treebanks by size
-        r=lang_template.render(flag=codes_flags[lang]["flag"],language_name=lang,counts=sum_counts,treebanks=lang_tbanks,genres=union_genres,language_family=codes_flags[lang]["family"])
+        language_code=codes_flags[lang]["lcode"]
+        if os.path.exists(os.path.join(args.docs_dir,"_"+language_code,"index.md")):
+            language_hub="index.md"
+        else:
+            language_hub=None
+        r=lang_template.render(flag=codes_flags[lang]["flag"],language_name=lang,language_code=language_code,language_hub=language_hub,counts=sum_counts,treebanks=lang_tbanks,genres=union_genres,language_family=codes_flags[lang]["family"])
         print(r)
     
     

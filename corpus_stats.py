@@ -57,8 +57,9 @@ class TreebankInfo:
         self.deprel_counter={} #key:deprel value: count
         self.readme_data_raw={} #raw key-value pairs from readme
         self.language_name=None
-        self.treebank_code=None
-        self.language_code=None
+        self.treebank_code=None #xxx
+        self.treebank_lcode_code=None #cs_xxx
+        self.language_code=None #cs
 
     def count_cols(self,cols):
         if cols[ID].isdigit() or "." in cols[ID]: #word or empty word
@@ -174,6 +175,7 @@ class TreebankInfo:
         final["counts"]={"token":self.token_count, "word":self.word_count, "tree":self.tree_count, "word_w_lemma":self.words_with_lemma_count, "word_w_deps":self.words_with_deps_count, "fvals": self.f_val_counter, "deprels": self.deprel_counter, "word_not_underscore":self.words_not_underscore}
         final["language_name"]=self.language_name
         final["treebank_code"]=self.treebank_code
+        final["treebank_lcode_code"]=self.treebank_lcode_code
         final["language_code"]=self.language_code
         final["repo_name"]=self.repo_name
         final["readme_file"]=self.readme_file
@@ -221,7 +223,9 @@ if __name__=="__main__":
             with open(args.codes_flags) as f:
                 codes_flags=yaml.load(f)
             stats.language_code=codes_flags[stats.language_name]["lcode"]
-
+            stats.treebank_lcode_code=stats.language_code
+            if stats.treebank_code:
+                stats.treebank_lcode_code+="_"+stats.treebank_code.lower()
         
     for f_name in args.input:
         match=re.match(r"^([a-z_]+)-ud-(train|dev|test)(-[a-z]+)?\.conllu$",os.path.basename(f_name))
