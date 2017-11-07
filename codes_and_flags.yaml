@@ -261,11 +261,11 @@ Swedish Sign Language:
 Tamil:
   flag: IN
   lcode: ta
-  family: Dravidian
+  family: Dravidian, Southern
 Telugu:
   flag: IN
   lcode: te
-  family: Dravidian
+  family: Dravidian, South Central
 Thai:
   flag: TH
   lcode: th
