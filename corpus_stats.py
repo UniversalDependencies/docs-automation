@@ -92,11 +92,19 @@ class TreebankInfo:
 
     def count(self,f_name):
         """f_name is conllu, counts stuff in f_name"""
-        with open(f_name) as f:
-            for comments,tree in trees(f):
-                self.tree_count+=1
-                for cols in tree:
-                    self.count_cols(cols)
+        try:
+            with open(f_name) as f:
+                for comments,tree in trees(f):
+                    try:
+                        self.tree_count+=1
+                        for cols in tree:
+                            self.count_cols(cols)
+                    except:
+                        print("Error in tree\n", "\n".join(comments), file=sys.stderr)
+                        print("\n".join("\t".join(cols) for cols in tree), file=sys.stderr)
+        except:
+            print("Giving up on",f_name,file=sys.stderr)
+
 # Documentation status: complete
 # Data source: semi-automatic
 # Data available since: UD v1.0
