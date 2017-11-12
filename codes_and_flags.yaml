@@ -41,7 +41,7 @@ Bulgarian:
 Buryat:
   flag: RU-BU
   lcode: bxr
-  family: Altaic, Mongolic
+  family: Mongolic
 Cantonese:
   flag: HK
   lcode: yue
@@ -149,7 +149,7 @@ Japanese:
 Kazakh:
   flag: KZ
   lcode: kk
-  family: Altaic, Turkic
+  family: Turkic
 Korean:
   flag: KR
   lcode: ko
@@ -273,7 +273,7 @@ Thai:
 Turkish:
   flag: TR
   lcode: tr
-  family: Altaic, Turkic
+  family: Turkic
 Ukrainian:
   flag: UA
   lcode: uk
@@ -289,7 +289,7 @@ Urdu:
 Uyghur:
   flag: CN
   lcode: ug
-  family: Altaic, Turkic
+  family: Turkic
 Vietnamese:
   flag: VN
   lcode: vi
