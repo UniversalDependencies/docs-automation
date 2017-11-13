@@ -149,7 +149,7 @@ Japanese:
 Kazakh:
   flag: KZ
   lcode: kk
-  family: Turkic
+  family: Turkic, Northwestern
 Korean:
   flag: KR
   lcode: ko
@@ -273,7 +273,7 @@ Thai:
 Turkish:
   flag: TR
   lcode: tr
-  family: Turkic
+  family: Turkic, Southwestern
 Ukrainian:
   flag: UA
   lcode: uk
@@ -289,7 +289,7 @@ Urdu:
 Uyghur:
   flag: CN
   lcode: ug
-  family: Turkic
+  family: Turkic, Southeastern
 Vietnamese:
   flag: VN
   lcode: vi
