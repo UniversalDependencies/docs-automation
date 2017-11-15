@@ -146,6 +146,10 @@ Japanese:
   flag: JP
   lcode: ja
   family: Japanese
+Kannada:
+  flag: IN
+  lcode: kn
+  family: Dravidian, Southern
 Kazakh:
   flag: KZ
   lcode: kk
