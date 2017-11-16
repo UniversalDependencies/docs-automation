@@ -4,6 +4,11 @@ This repository contains code running the universaldependencies.org page automat
 
 The various components of the automation, especially the main language table, need metadata and stats gathered from the treebank data and the machine-readable section of the language readme. This is saved as a json file, one file per treebank, and is re-run every time anything changes in the corresponding treebank repository. All auto-generation scripts source from this json.
 
+To run the following code, you need Python3 with the 'yaml' module installed.
+If it complains about the missing 'yaml' module, install it using:
+
+    pip3 install --user pyyaml
+
     repo_dir="/some/path/UD_Finnish-TDT"
     OUTDIR="_corpus_metadata"
     python3 corpus_stats.py --readme-dir $repo_dir --repo-name $(basename $repo_dir) --codes-flags ./codes_and_flags.yaml --json $repo_dir/*-ud-{train,dev,test}*.conllu > $OUTDIR/$(basename $repo_dir).json
