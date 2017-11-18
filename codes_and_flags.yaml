@@ -162,6 +162,10 @@ Kurmanji:
   flag: TR
   lcode: kmr
   family: IE, Iranian
+Kyrgyz:
+  flag: KG
+  lcode: ky
+  family: Turkic, Northwestern
 Latin:
   flag: VA
   lcode: la
