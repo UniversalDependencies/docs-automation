@@ -30,8 +30,8 @@ The accordion table on the UD index page is included from `_includes/at_glance.h
 
 The script can be given `--skip empty` or `--skip withdata` to generate separate tables for languages with/without data:
 
-    python3 at_glance.py --codes codes_and_flags.yaml --genre genre_symbols.json --docs-dir docs-src _corpus_metadata/*.json --skip empty > ../docs/_includes/at_glance.html
-    python3 at_glance.py --codes codes_and_flags.yaml --genre genre_symbols.json --docs-dir docs-src _corpus_metadata/*.json --skip withdata > ../docs/_includes/at_glance_empty.html
+    python3 at_glance.py --codes codes_and_flags.yaml --genre genre_symbols.json --docs-dir ../docs _corpus_metadata/*.json --skip empty > ../docs/_includes/at_glance.html
+    python3 at_glance.py --codes codes_and_flags.yaml --genre genre_symbols.json --docs-dir ../docs _corpus_metadata/*.json --skip withdata > ../docs/_includes/at_glance_empty.html
 
 The table is generated from the Jinja2 template in `templates/language.md`, with several custom filters found in `at_glance.py`. These are fed the data straight from the treebank jsons and refer to their structure. If you add any functionality, please keep the template tidy without complex ifs, and implement complex stuff as custom filters.
 
