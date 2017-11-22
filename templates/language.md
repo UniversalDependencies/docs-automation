@@ -42,6 +42,10 @@
     
     </div> <!-- end of {{language_name}} treebank list -->
 
+    {% if tbank_comparison %}		 
+    See <a href="treebanks/{{tbank_comparison}}">here</a> for comparative statistics of {{language_name}} treebanks.
+    {% endif %}
+
   <h3> Language documentation </h3>
 
   {% if language_hub %}

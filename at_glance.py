@@ -148,7 +148,12 @@ if __name__=="__main__":
             language_hub="index.md"
         else:
             language_hub=None
-        r=lang_template.render(flag=codes_flags[lang]["flag"],language_name=lang,language_code=language_code,language_hub=language_hub,counts=sum_counts,treebanks=lang_tbanks,genres=union_genres,language_family=codes_flags[lang]["family"])
+        if os.path.exists(os.path.join(args.docs_dir,"treebanks",language_code+"-comparison.md")):
+            tbank_comparison=language_code+"-comparison.html"
+        else:
+            tbank_comparison=None
+
+        r=lang_template.render(flag=codes_flags[lang]["flag"],language_name=lang,language_code=language_code,language_hub=language_hub,tbank_comparison=tbank_comparison,counts=sum_counts,treebanks=lang_tbanks,genres=union_genres,language_family=codes_flags[lang]["family"])
         print(r)
     
     
