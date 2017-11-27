@@ -1,5 +1,11 @@
 This repository contains code running the universaldependencies.org page automation.
 
+# Getting all language repositories
+
+The scripts below assume you have all UD treebank repositories cloned. You can do this with the help of this script:
+
+    ./fetch_ud_repos.sh
+
 # Treebank and language metadata and stats
 
 The various components of the automation, especially the main language table, need metadata and stats gathered from the treebank data and the machine-readable section of the language readme. This is saved as a json file, one file per treebank, and is re-run every time anything changes in the corresponding treebank repository. All auto-generation scripts source from this json.
@@ -9,6 +15,8 @@ If it complains about the missing 'yaml' module, install it using:
 
     pip3 install --user pyyaml
     pip3 install --user jinja2
+
+and then you can 
 
     repo_dir="/some/path/UD_Finnish-TDT"
     OUTDIR="_corpus_metadata"
