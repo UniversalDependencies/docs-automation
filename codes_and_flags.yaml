@@ -106,6 +106,10 @@ Galician:
   flag: ES-GA
   lcode: gl
   family: IE, Romance
+Georgian:
+  flag: GE
+  lcode: ka
+  family: Kartvelian
 German:
   flag: DE
   lcode: de
