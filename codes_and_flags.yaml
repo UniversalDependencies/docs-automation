@@ -306,4 +306,7 @@ Vietnamese:
   flag: VN
   lcode: vi
   family: Austro-Asiatic
-
+Yoruba:
+  flag: NG
+  lcode: yo
+  family: Niger-Congo
