@@ -43,3 +43,14 @@ with write access for user www-data:
 mkdir log
 setfacl -m u:www-data:rwx log
 
+The main script that must be symlinked or copied to cgi/unidep is githook.pl.
+This script will be invoked by a POST request from Github when a user pushes to
+a UD repository. The URL of the script must be registered with the Universal-
+Dependencies organization on Github:
+
+https://github.com/organizations/UniversalDependencies/settings/hooks
+
+Currently, the URL pointing to Dan's installation is
+
+http://quest.ms.mff.cuni.cz/cgi-bin/zeman/unidep/githook.pl
+
