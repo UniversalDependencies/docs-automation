@@ -29,4 +29,17 @@ to clone the repositories.
 clone_one.sh UD_Afrikaans
 clone_all.sh
 ud-treebank-list.txt # used by clone_all.sh
- 
+
+Note that the clone_one.sh script modifies default rights for newly created files
+so that both the users 'www-data' and 'zeman' get full access. If the www-data
+adds new files by git pull, I still want to be able to remove them when necessary.
+If you are installing this infrastructure on your server, you probably want to
+change 'zeman' to your username. And you may want to verify that the CGI scripts
+indeed run as user 'www-data' on your system.
+
+Now we need a folder called log, lying in cgi/unidep next to the UD repositories,
+with write access for user www-data:
+
+mkdir log
+setfacl -m u:www-data:rwx log
+
