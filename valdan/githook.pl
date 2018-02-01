@@ -101,8 +101,15 @@ if(defined($result))
         }
         elsif(scalar(@changed) > 0)
         {
-            ###!!!
-            system("echo We need to re-validate the following treebanks: ".join(' ', @changed)." >log/gitpull.log");
+            my @folders = list_ud_folders();
+            foreach my $folder (@folders)
+            {
+                my $record = get_ud_files_and_codes($folder);
+                if(exists($changed{$record->{ltcode}}))
+                {
+                    system("perl update-validation-report.pl $folder >log/gitpull.log 2>&1");
+                }
+            }
         }
     }
 }
