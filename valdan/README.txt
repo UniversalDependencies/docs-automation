@@ -42,6 +42,10 @@ If you are installing this infrastructure on your server, you probably want to
 change 'zeman' to your username. And you may want to verify that the CGI scripts
 indeed run as user 'www-data' on your system.
 
+Similarly to the UD treebank folders, the repository tools must also be cloned
+with complete access permissions for the users zeman and www-data. (But unlike
+the treebank repositories, tools should stay in the master branch.)
+
 Now we need a folder called log, lying in cgi/unidep next to the UD repositories,
 with write access for user www-data:
 
@@ -58,4 +62,12 @@ https://github.com/organizations/UniversalDependencies/settings/hooks
 Currently, the URL pointing to Dan's installation is
 
 http://quest.ms.mff.cuni.cz/cgi-bin/zeman/unidep/githook.pl
+
+Github shows a list of recent "payloads" sent to the githook script. If it shows
+a red icon and a warning that the payload could not be delivered before timeout,
+it does not necessarily mean that the process was really unsuccessful. We need
+a lot of time to get the updated data and process them, and Apache will not send
+the output of the githook script (i.e., our response to Github) before we are done.
+Github may thus think that we are not responding despite everything being OK
+at our end.
 

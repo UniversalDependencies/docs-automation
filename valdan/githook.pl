@@ -49,30 +49,21 @@ print LOG ("commit = $result->{head_commit}{id}\n");
 print LOG ("message = $result->{head_commit}{message}\n");
 print LOG ("timestamp = $result->{head_commit}{timestamp}\n");
 print LOG ("pusher = $result->{pusher}{name}\n");
-print LOG ("pusher's e-mail = $result->{pusher}{email}\n");
-close(LOG);
+print LOG ("email = $result->{pusher}{email}\n");
 vypsat_html_konec();
 if(defined($result))
 {
     if($result->{repository}{name} =~ m/^UD_/)
     {
-        open(LOG, ">>log/datalog.txt");
-        print LOG ("\n\n\n-------------------------------------------------------------------------------\n");
-        print LOG ("repository = $result->{repository}{name}\n");
-        print LOG ("ref        = $result->{ref}\n");
-        print LOG ("commit     = $result->{head_commit}{id}\n");
-        print LOG ("message    = $result->{head_commit}{message}\n");
-        print LOG ("timestamp  = $result->{head_commit}{timestamp}\n");
-        print LOG ("pusher     = $result->{pusher}{name}\n");
-        print LOG ("email      = $result->{pusher}{email}\n");
-        close(LOG);
+        write_datalog($result);
         # Now we must update our copy of that repository and update validation status.
         my $folder = $result->{repository}{name};
         system("perl update-validation-report.pl $folder >log/gitpull.log 2>&1");
     }
     elsif($result->{repository}{name} eq 'tools')
     {
-        system("cd tools ; git pull --no-edit ; cd ..");
+        write_datalog($result);
+        system("(cd tools ; git pull --no-edit ; cd ..) >log/gitpull.log 2>&1");
         # We must figure out what files have changed.
         # Validator data files typically lead to re-validation of one treebank.
         # Validator script leads to re-validation of all treebanks.
@@ -98,10 +89,12 @@ if(defined($result))
         my @changed = sort(keys(%changed));
         if($revalidate_all)
         {
+            print LOG ("changed = validate.py\n");
             system("perl validate_all.pl >log/gitpull.log 2>&1");
         }
         elsif(scalar(@changed) > 0)
         {
+            print LOG ("changed = ".join(' ', @changed)."\n");
             my @folders = list_ud_folders();
             foreach my $folder (@folders)
             {
@@ -113,6 +106,27 @@ if(defined($result))
             }
         }
     }
+}
+close(LOG);
+
+
+
+#------------------------------------------------------------------------------
+# Zapíše do logu informace o pushi, na který reagujeme.
+#------------------------------------------------------------------------------
+sub write_datalog
+{
+    my $result = shift;
+    open(DLOG, ">>log/datalog.txt");
+    print DLOG ("\n\n\n-------------------------------------------------------------------------------\n");
+    print DLOG ("repository = $result->{repository}{name}\n");
+    print DLOG ("ref        = $result->{ref}\n");
+    print DLOG ("commit     = $result->{head_commit}{id}\n");
+    print DLOG ("message    = $result->{head_commit}{message}\n");
+    print DLOG ("timestamp  = $result->{head_commit}{timestamp}\n");
+    print DLOG ("pusher     = $result->{pusher}{name}\n");
+    print DLOG ("email      = $result->{pusher}{email}\n");
+    close(DLOG);
 }
 
 
@@ -427,18 +441,7 @@ sub get_ud_files_and_codes
     my $code;
     my $lcode;
     my $tcode;
-    if($n==0)
-    {
-        if($section eq 'any')
-        {
-            print STDERR ("WARNING: No data found in '$path/$udfolder'\n");
-        }
-        else
-        {
-            print STDERR ("WARNING: No $section data found in '$path/$udfolder'\n");
-        }
-    }
-    else
+    if($n>0)
     {
         if($n>1 && $section ne 'any')
         {
