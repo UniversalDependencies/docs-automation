@@ -49,7 +49,8 @@ while(<REPORT>)
 }
 close(REPORT);
 print("<hr />\n");
-print("Total $nvalid valid, $nerror error, $nempty empty.<br />\n");
+my $n = $nvalid + $nerror + $nempty;
+print("Total $n, valid $nvalid, error $nerror, empty $nempty.<br />\n");
 vypsat_html_konec();
 
 
@@ -80,6 +81,7 @@ body {
 }
     .field-tip .tip-content {
         position:absolute;
+        z-index:2; /* added by Dan; subsequent text lines might be longer than the current one, and we do not want them to appear above our tooltip */
         top:-22px; /* - top padding */
         right:9999px;
         width:800px;
