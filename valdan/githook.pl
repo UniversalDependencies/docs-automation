@@ -141,6 +141,12 @@ sub jsonparse
     }
     return ($result, $json);
 }
+
+
+
+#------------------------------------------------------------------------------
+# Reads a hash from JSON string.
+#------------------------------------------------------------------------------
 sub jsonparse_hash
 {
     my $json = shift;
@@ -190,6 +196,12 @@ sub jsonparse_hash
     }
     return (\%hash, $json);
 }
+
+
+
+#------------------------------------------------------------------------------
+# Reads an array from JSON string.
+#------------------------------------------------------------------------------
 sub jsonparse_array
 {
     my $json = shift;
@@ -224,6 +236,12 @@ sub jsonparse_array
     }
     return (\@array, $json);
 }
+
+
+
+#------------------------------------------------------------------------------
+# Reads a string from JSON string.
+#------------------------------------------------------------------------------
 sub jsonparse_string
 {
     my $json = shift;
@@ -241,6 +259,12 @@ sub jsonparse_string
     }
     return ($string, $json);
 }
+
+
+
+#------------------------------------------------------------------------------
+# Reads a number from JSON string.
+#------------------------------------------------------------------------------
 sub jsonparse_number
 {
     my $json = shift;
@@ -248,6 +272,12 @@ sub jsonparse_number
     my $number = $1;
     return ($number, $json);
 }
+
+
+
+#------------------------------------------------------------------------------
+# Reads a true/false value from JSON string.
+#------------------------------------------------------------------------------
 sub jsonparse_boolean
 {
     my $json = shift;
@@ -266,6 +296,12 @@ sub jsonparse_boolean
     }
     return ($result, $json);
 }
+
+
+
+#------------------------------------------------------------------------------
+# Reads a bareword (e.g. null) from JSON string.
+#------------------------------------------------------------------------------
 sub jsonparse_bareword # not true and false (for those see above) but e.g. null
 {
     my $json = shift;
