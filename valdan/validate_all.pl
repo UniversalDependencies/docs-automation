@@ -9,9 +9,6 @@ use open ':utf8';
 binmode(STDIN, ':utf8');
 binmode(STDOUT, ':utf8');
 binmode(STDERR, ':utf8');
-# Uvést cestu k Danovým sdíleným knihovnám. Uživatel, pod kterým běží CGI skript, ji nezná.
-use lib '/home/zeman/lib';
-use dzsys;
 
 my @folders = list_ud_folders();
 open(REPORT, ">validation-report.txt") or die("Cannot write validation-report.txt: $!");
