@@ -17,6 +17,11 @@ cgi/unidep
 |     +- githook.pl
 +- githook.pl ---> symlink to docs-automation/valdan/githook.pl
 
+You must configure your web server to follow symlinks for this to work. Otherwise
+the server will send '403 Forbidden' back to Github, and it will not invoke the
+script. If you cannot configure your web server, maybe you have to use a hard link
+or just a copy of the script.
+
 The UD data repositories must be cloned via the HTTPS protocol (as opposed to SSH)
 because the CGI scripts run under the user www-data and cannot use my personal
 SSH key to sign in to Github. Their files and subfolders must grant rwx permissions

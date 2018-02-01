@@ -63,52 +63,10 @@ if(defined($result) && $result->{repository}{name} =~ m/^UD_/)
     print LOG ("timestamp  = $result->{head_commit}{timestamp}\n");
     print LOG ("pusher     = $result->{pusher}{name}\n");
     print LOG ("email      = $result->{pusher}{email}\n");
-    # Now we must update our copy of that repository.
-    my $folder = $result->{repository}{name};
-    system("(cd $folder ; git pull --no-edit ; cd ..) >> log/gitpull.log 2>&1");
-    my $record = get_ud_files_and_codes($folder);
-    my $treebank_message;
-    if(scalar(@{$record->{files}}) > 0)
-    {
-        my $folder_success = 1;
-        system("date > log/$folder.log 2>&1");
-        foreach my $file (@{$record->{files}})
-        {
-            my $command = "tools/validate.py --lang $record->{ltcode} $folder/$file";
-            system("echo $command >> log/$folder.log");
-            my $result = dzsys::saferun("$command >> log/$folder.log 2>&1");
-            $folder_success = $folder_success && $result;
-        }
-        $treebank_message = $folder_success ? "$folder: VALID" : "$folder: ERROR";
-    }
-    else
-    {
-        $treebank_message = "$folder: EMPTY";
-    }
-    print LOG ("status     = $treebank_message\n");
     close(LOG);
-    # Update the validation report that comprises all treebanks.
-    my %valreps;
-    open(REPORT, "validation-report.txt");
-    while(<REPORT>)
-    {
-        s/\r?\n$//;
-        if(m/^(UD_.+):/)
-        {
-            $valreps{$1} = $_;
-        }
-    }
-    close(REPORT);
-    $valreps{$folder} = $treebank_message;
-    my @treebanks = sort(keys(%valreps));
-    ###!!! This is still not safe enough! If two processes try to modify the file at the same time, it can get corrupt!
-    dzsys::saferun("cp validation-report.txt validation-report.bak");
-    open(REPORT, ">validation-report.txt");
-    foreach my $treebank (@treebanks)
-    {
-        print REPORT ("$valreps{$treebank}\n");
-    }
-    close(REPORT);
+    # Now we must update our copy of that repository and update validation status.
+    my $folder = $result->{repository}{name};
+    system("perl update-validation-report.pl $folder >log/gitpull.log 2>&1");
 }
 
 
