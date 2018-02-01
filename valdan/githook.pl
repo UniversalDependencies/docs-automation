@@ -52,21 +52,59 @@ print LOG ("pusher = $result->{pusher}{name}\n");
 print LOG ("pusher's e-mail = $result->{pusher}{email}\n");
 close(LOG);
 vypsat_html_konec();
-if(defined($result) && $result->{repository}{name} =~ m/^UD_/)
+if(defined($result))
 {
-    open(LOG, ">>log/datalog.txt");
-    print LOG ("\n\n\n-------------------------------------------------------------------------------\n");
-    print LOG ("repository = $result->{repository}{name}\n");
-    print LOG ("ref        = $result->{ref}\n");
-    print LOG ("commit     = $result->{head_commit}{id}\n");
-    print LOG ("message    = $result->{head_commit}{message}\n");
-    print LOG ("timestamp  = $result->{head_commit}{timestamp}\n");
-    print LOG ("pusher     = $result->{pusher}{name}\n");
-    print LOG ("email      = $result->{pusher}{email}\n");
-    close(LOG);
-    # Now we must update our copy of that repository and update validation status.
-    my $folder = $result->{repository}{name};
-    system("perl update-validation-report.pl $folder >log/gitpull.log 2>&1");
+    if($result->{repository}{name} =~ m/^UD_/)
+    {
+        open(LOG, ">>log/datalog.txt");
+        print LOG ("\n\n\n-------------------------------------------------------------------------------\n");
+        print LOG ("repository = $result->{repository}{name}\n");
+        print LOG ("ref        = $result->{ref}\n");
+        print LOG ("commit     = $result->{head_commit}{id}\n");
+        print LOG ("message    = $result->{head_commit}{message}\n");
+        print LOG ("timestamp  = $result->{head_commit}{timestamp}\n");
+        print LOG ("pusher     = $result->{pusher}{name}\n");
+        print LOG ("email      = $result->{pusher}{email}\n");
+        close(LOG);
+        # Now we must update our copy of that repository and update validation status.
+        my $folder = $result->{repository}{name};
+        system("perl update-validation-report.pl $folder >log/gitpull.log 2>&1");
+    }
+    elsif($result->{repository}{name} eq 'tools')
+    {
+        # We must figure out what files have changed.
+        # Validator data files typically lead to re-validation of one treebank.
+        # Validator script leads to re-validation of all treebanks.
+        # Other tools are irrelevant.
+        my %changed;
+        my $revalidate_all = 0;
+        foreach my $commit (@{$result->{commits}})
+        {
+            foreach my $file (@{$commit->{added}}, @{$commit->{modified}})
+            {
+                if($file eq 'validate.py')
+                {
+                    $revalidate_all = 1;
+                    last;
+                }
+                elsif($file =~ m-^data/(deprel|feat_val|tokens_w_space)\.(.+)$-)
+                {
+                    my $ltcode = $2;
+                    $changed{$ltcode}++;
+                }
+            }
+        }
+        my @changed = sort(keys(%changed));
+        if($revalidate_all)
+        {
+            system("perl validate_all.pl >log/gitpull.log 2>&1");
+        }
+        elsif(scalar(@changed) > 0)
+        {
+            ###!!!
+            system("echo We need to re-validate the following treebanks: ".join(' ', @changed)." >log/gitpull.log");
+        }
+    }
 }
 
 
