@@ -72,6 +72,7 @@ if(defined($result))
     }
     elsif($result->{repository}{name} eq 'tools')
     {
+        system("cd tools ; git pull --no-edit ; cd ..");
         # We must figure out what files have changed.
         # Validator data files typically lead to re-validation of one treebank.
         # Validator script leads to re-validation of all treebanks.
