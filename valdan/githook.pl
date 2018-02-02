@@ -99,7 +99,7 @@ if(defined($result))
             foreach my $folder (@folders)
             {
                 my $record = get_ud_files_and_codes($folder);
-                if(exists($changed{$record->{ltcode}}))
+                if(exists($changed{$record->{lcode}}))
                 {
                     system("perl update-validation-report.pl $folder >log/gitpull.log 2>&1");
                 }

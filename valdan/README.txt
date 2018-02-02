@@ -42,7 +42,11 @@ If you are installing this infrastructure on your server, you probably want to
 change 'zeman' to your username. And you may want to verify that the CGI scripts
 indeed run as user 'www-data' on your system.
 
-Similarly to the UD treebank folders, the repository tools must also be cloned
+Private repositories must be excluded from automatic validation because they require
+authentication even for git pull via HTTPS. (At the time of this writing we have
+one private UD treebank: UD_Korean-Sejong.)
+
+Similarly to the UD treebank folders, the repository 'tools' must also be cloned
 with complete access permissions for the users zeman and www-data. (But unlike
 the treebank repositories, tools should stay in the master branch.)
 
