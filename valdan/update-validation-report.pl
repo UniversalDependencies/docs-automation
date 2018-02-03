@@ -31,7 +31,9 @@ if(scalar(@{$record->{files}}) > 0)
         if($file =~ m/test/)
         {
             print STDERR ("Testing shared task requirements on $folder/$file...\n");
-            $stmessage = `test-shared-task.pl $folder/$file`;
+            #my $stresult = saferun("perl test-shared-task.pl $folder/$file");
+            #print STDERR ("result = $stresult\n");
+            $stmessage = `perl test-shared-task.pl $folder/$file`;
             $stmessage =~ s/\r?\n$//;
         }
     }
@@ -52,7 +54,7 @@ open(REPORT, "validation-report.txt");
 while(<REPORT>)
 {
     s/\r?\n$//;
-    if(m/^(UD_.+):/)
+    if(m/^(UD_.+?):/)
     {
         $valreps{$1} = $_;
     }
@@ -74,7 +76,8 @@ close(REPORT);
 #------------------------------------------------------------------------------
 #!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 # This function comes from Dan's library dzsys. I do not want to depend on that
-# library here, so I am copying the function.
+# library here, so I am copying the function. I have also modified it so that
+# it does not throw exceptions.
 #!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 #
 # Calls an external program. Uses system(). In addition, echoes the command
@@ -94,14 +97,15 @@ sub saferun
     # The external program does not exist, is not executable or the execution failed for other reasons.
     if($?==-1)
     {
-        die("ERROR: Failed to execute: $command\n  $!\n");
+        print STDERR ("ERROR: Failed to execute: $command\n  $!\n");
+        return;
     }
     # We were able to start the external program but its execution failed.
     elsif($? & 127)
     {
         printf STDERR ("ERROR: Execution of: $command\n  died with signal %d, %s coredump\n",
             ($? & 127), ($? & 128) ? 'with' : 'without');
-        die;
+        return;
     }
     # The external program ended "successfully" (this still does not guarantee
     # that the external program returned zero!)

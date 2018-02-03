@@ -53,17 +53,24 @@ print LOG ("email = $result->{pusher}{email}\n");
 vypsat_html_konec();
 if(defined($result))
 {
+    my $valilog = 'log/validation.log';
     if($result->{repository}{name} =~ m/^UD_/)
     {
         write_datalog($result);
+        system("echo ====================================================================== >>$valilog");
+        system("date >>$valilog");
+        system("echo Hook on $result->{repository}{name} >>$valilog");
         # Now we must update our copy of that repository and update validation status.
         my $folder = $result->{repository}{name};
-        system("perl update-validation-report.pl $folder >log/gitpull.log 2>&1");
+        system("perl update-validation-report.pl $folder >>$valilog 2>&1");
     }
     elsif($result->{repository}{name} eq 'tools')
     {
         write_datalog($result);
-        system("(cd tools ; git pull --no-edit ; cd ..) >log/gitpull.log 2>&1");
+        system("echo ====================================================================== >>$valilog");
+        system("date >>$valilog");
+        system("echo Hook on $result->{repository}{name} >>$valilog");
+        system("(cd tools ; git pull --no-edit ; cd ..) >>$valilog 2>&1");
         # We must figure out what files have changed.
         # Validator data files typically lead to re-validation of one treebank.
         # Validator script leads to re-validation of all treebanks.
@@ -90,7 +97,7 @@ if(defined($result))
         if($revalidate_all)
         {
             print LOG ("changed = validate.py\n");
-            system("perl validate_all.pl >log/gitpull.log 2>&1");
+            system("perl validate_all.pl >>$valilog 2>&1");
         }
         elsif(scalar(@changed) > 0)
         {
@@ -101,7 +108,7 @@ if(defined($result))
                 my $record = get_ud_files_and_codes($folder);
                 if(exists($changed{$record->{lcode}}))
                 {
-                    system("perl update-validation-report.pl $folder >log/gitpull.log 2>&1");
+                    system("perl update-validation-report.pl $folder >>$valilog 2>&1");
                 }
             }
         }
