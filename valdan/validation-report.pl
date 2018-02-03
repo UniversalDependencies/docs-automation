@@ -10,9 +10,11 @@ binmode(STDOUT, ':utf8');
 binmode(STDERR, ':utf8');
 
 vypsat_html_zacatek();
+print("<p>Hover the mouse pointer over a treebank name to see validation summary.</p>\n");
 my $nvalid = 0;
 my $nerror = 0;
 my $nempty = 0;
+my $nstask = 0;
 open(REPORT, "validation-report.txt") or die("Cannot read validation-report.txt: $!");
 while(<REPORT>)
 {
@@ -27,12 +29,13 @@ while(<REPORT>)
     {
         $color = 'green';
         $nvalid++;
+        $nstask++ unless(m/not in shared task/);
     }
     elsif(m/EMPTY/)
     {
         $nempty++;
     }
-    if(m/^(UD_.+):/)
+    if(m/^(UD_.+?):/)
     {
         my $folder = $1;
         if(-e "log/$folder.log")
@@ -50,7 +53,7 @@ while(<REPORT>)
 close(REPORT);
 print("<hr />\n");
 my $n = $nvalid + $nerror + $nempty;
-print("Total $n, valid $nvalid, error $nerror, empty $nempty.<br />\n");
+print("Total $n, valid $nvalid ($nstask in shared task), error $nerror, empty $nempty.<br />\n");
 vypsat_html_konec();
 
 

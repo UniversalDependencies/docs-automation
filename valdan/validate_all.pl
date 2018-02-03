@@ -11,9 +11,15 @@ binmode(STDOUT, ':utf8');
 binmode(STDERR, ':utf8');
 
 my @folders = list_ud_folders();
-open(REPORT, ">validation-report.txt") or die("Cannot write validation-report.txt: $!");
-system("cp validation-report.txt old-validation-report.txt");
-system("echo -n '' > validation-report.txt");
+###!!! We may want to erase the entire report first, if some treebanks were
+###!!! renamed or removed, this will ensure they no longer appear in the report.
+###!!! However, normally it is not necessary, and we do not have to wait for
+###!!! everything to complete until we see all treebanks again.
+if(0)
+{
+    system("cp validation-report.txt old-validation-report.txt");
+    system("echo -n '' > validation-report.txt");
+}
 foreach my $folder (@folders)
 {
     print("$folder\n");

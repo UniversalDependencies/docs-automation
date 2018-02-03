@@ -16,6 +16,7 @@ exit if(!defined($folder));
 system("cd $folder ; git pull --no-edit ; cd ..");
 my $record = get_ud_files_and_codes($folder);
 my $treebank_message;
+my $stmessage = 'not in shared task: no test data';
 if(scalar(@{$record->{files}}) > 0)
 {
     my $folder_success = 1;
@@ -26,13 +27,25 @@ if(scalar(@{$record->{files}}) > 0)
         system("echo $command >> log/$folder.log");
         my $result = saferun("$command >> log/$folder.log 2>&1");
         $folder_success = $folder_success && $result;
+        # Test additional requirements on shared task treebanks.
+        if($file =~ m/test/)
+        {
+            print STDERR ("Testing shared task requirements on $folder/$file...\n");
+            $stmessage = `test-shared-task.pl $folder/$file`;
+            $stmessage =~ s/\r?\n$//;
+        }
     }
     $treebank_message = $folder_success ? "$folder: VALID" : "$folder: ERROR";
+    if($folder_success && $stmessage ne '')
+    {
+        $treebank_message .= " ($stmessage)";
+    }
 }
 else
 {
     $treebank_message = "$folder: EMPTY";
 }
+print STDERR ("$treebank_message\n");
 # Update the validation report that comprises all treebanks.
 my %valreps;
 open(REPORT, "validation-report.txt");
