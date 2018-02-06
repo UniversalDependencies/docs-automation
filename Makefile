@@ -1,6 +1,8 @@
-# Usage: REFRESH="../UD_Chinese-GSD ../UD_French-GSD ../UD_German-GSD ../UD_Indonesian-GSD ../UD_Japanese-GSD ../UD_Korean-GSD ../UD_Russian-GSD ../UD_Spanish-GSD" make dan
-dan:
+# Usage: REFRESH=../UD_Chinese-GSD make refresh
+refresh:
 	refresh_corpus_data.sh $(REFRESH)
+
+dan:
 	python3 at_glance.py --codes codes_and_flags.yaml --genre genre_symbols.json --docs-dir ../docs _corpus_metadata/*.json --skip empty > ../docs/_includes/at_glance.html
 	python3 at_glance.py --codes codes_and_flags.yaml --genre genre_symbols.json --docs-dir ../docs _corpus_metadata/*.json --skip withdata > ../docs/_includes/at_glance_empty.html
 
