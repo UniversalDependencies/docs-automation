@@ -34,6 +34,10 @@ Bengali:
   flag: BD
   lcode: bn
   family: IE, Indic
+Breton:
+  flag: FR-BRE
+  lcode: br
+  family: IE, Celtic
 Bulgarian:
   flag: BG
   lcode: bg
