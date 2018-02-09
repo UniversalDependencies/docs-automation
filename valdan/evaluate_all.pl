@@ -10,19 +10,19 @@ binmode(STDIN, ':utf8');
 binmode(STDOUT, ':utf8');
 binmode(STDERR, ':utf8');
 
-my @folders = list_ud_folders();
-###!!! We may want to erase the entire report first, if some treebanks were
-###!!! renamed or removed, this will ensure they no longer appear in the report.
-###!!! However, normally it is not necessary, and we do not have to wait for
-###!!! everything to complete until we see all treebanks again.
-if(0)
+# The script evaluate_treebank.pl needs udlib, which in turn needs JSON::Parse
+# and YAML. If we are running on a server where these modules are not installed
+# globally (e.g., quest.ms.mff.cuni.cz), we can install them using cpanm to a
+# local folder 'perllib'.
+my $include = '';
+if(-d 'perllib/lib/perl5')
 {
-    system("cp validation-report.txt old-validation-report.txt");
-    system("echo -n '' > evaluation-report.txt");
+    $include = '-I perllib/lib/perl5';
 }
+my @folders = list_ud_folders();
 foreach my $folder (@folders)
 {
-    system("perl -Itools tools/evaluate_treebank.pl $folder");
+    system("perl $include -Itools tools/evaluate_treebank.pl $folder");
 }
 
 

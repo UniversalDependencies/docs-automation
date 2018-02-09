@@ -77,6 +77,7 @@ if(defined($result))
         # Other tools are irrelevant.
         my %changed;
         my $revalidate_all = 0;
+        my $reevaluate_all = 0;
         foreach my $commit (@{$result->{commits}})
         {
             foreach my $file (@{$commit->{added}}, @{$commit->{modified}})
@@ -84,7 +85,10 @@ if(defined($result))
                 if($file eq 'validate.py')
                 {
                     $revalidate_all = 1;
-                    last;
+                }
+                elsif($file eq 'evaluate_treebank.pl')
+                {
+                    $reevaluate_all = 1;
                 }
                 elsif($file =~ m-^data/(deprel|feat_val|tokens_w_space)\.(.+)$-)
                 {
@@ -111,6 +115,11 @@ if(defined($result))
                     system("perl update-validation-report.pl $folder >>$valilog 2>&1");
                 }
             }
+        }
+        if($reevaluate_all)
+        {
+            print LOG ("changed = evaluate_treebank.pl\n");
+            system("perl evaluate_all.pl | tee evaluation-report.txt >>$valilog 2>&1");
         }
     }
 }
@@ -317,8 +326,21 @@ sub jsonparse_string
     {
         die("Quotation mark expected at '$json'.");
     }
-    $json =~ s/^([^"]+)//s; #"
-    my $string = $1;
+    my $string;
+    while(1)
+    {
+        $json =~ s/^([^"]+)//s; #"
+        $string .= $1;
+        # If the quotation mark is preceded by a backslash, it is part of the string.
+        if($string =~ m/\\$/ && $json =~ s/^"//) #"
+        {
+            $string =~ s/\\$/"/; #"
+        }
+        else
+        {
+            last;
+        }
+    }
     # We must see a quotation mark.
     if(!($json =~ s/^"//)) #"
     {

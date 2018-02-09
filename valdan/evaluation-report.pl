@@ -31,10 +31,37 @@ my @folders = keys(%hash);
     $result;
 }
 (@folders);
+# If we want to group treebanks by languages, we need a list of winners per language.
+my @winners;
+my %map;
 foreach my $folder (@folders)
 {
-    my $starsid = sprintf("stars%02d", $hash{$folder}{stars}*10);
-    print("<img id=\"$starsid\" src=\"http://universaldependencies.org/img/img_trans.gif\" /> $folder $hash{$folder}{score} $hash{$folder}{stars}<br />\n");
+    my $language;
+    if($folder =~ m/^UD_(.+?)(-|$)/)
+    {
+        $language = $1;
+    }
+    if(!exists($map{$language}))
+    {
+        push(@winners, $folder);
+        $map{$language}++;
+    }
+}
+foreach my $winner (@winners)
+{
+    my $language;
+    if($winner =~ m/^UD_(.+?)(-|$)/)
+    {
+        $language = $1;
+    }
+    foreach my $folder (@folders)
+    {
+        if($folder =~ m/^UD_$language(-|$)/)
+        {
+            my $starsid = sprintf("stars%02d", $hash{$folder}{stars}*10);
+            print("<img id=\"$starsid\" src=\"http://universaldependencies.org/img/img_trans.gif\" /> $folder $hash{$folder}{score} $hash{$folder}{stars}<br />\n");
+        }
+    }
 }
 vypsat_html_konec();
 
