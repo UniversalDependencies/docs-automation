@@ -22,7 +22,8 @@ if(-d 'perllib/lib/perl5')
 my @folders = list_ud_folders();
 foreach my $folder (@folders)
 {
-    system("perl $include -Itools tools/evaluate_treebank.pl $folder");
+    print("$folder\n");
+    system("perl update-validation-report.pl $folder");
 }
 
 
