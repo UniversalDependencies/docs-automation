@@ -99,7 +99,7 @@ def stars_filter(stars):
     Used from the template to produce stars rating the treebank.
     """
     ###!!! DZ: I don't know whether the filter can take too parameters. I would need both score and stars here.
-    return '<span class="hint--top hint--info" data-hint="%f">%f</span>'%(stars,stars)
+    return '<span class="hint--top hint--info" data-hint="%f">%3.1f</span>'%(stars,stars)
 
 
 
