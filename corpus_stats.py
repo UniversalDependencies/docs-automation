@@ -185,8 +185,8 @@ class TreebankInfo:
                 line=line.strip()
                 match=result_re.match(line)
                 if match:
-                    self.score=match.group(1)
-                    self.stars=match.group(2)
+                    self.score=float(match.group(1))
+                    self.stars=float(match.group(2))
 
 
 
