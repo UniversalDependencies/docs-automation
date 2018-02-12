@@ -24,7 +24,7 @@
 	    <!-- <span class="widespan">{{tbank.meta|annotation_filter|safe}}</span> -->
 	    <span class="doublewidespan">{{tbank.meta.genre|genre_filter|safe}}</span>
 	    <span class="widespan">{{tbank.meta.license|license_filter|safe}}</span>
-	    <span class="widespan">{{tbank.stars|stars_filter|safe}}</span>
+	    <span class="widespan">{{(tbank.score,tbank.stars)|stars_filter|safe}}</span>
 	  </div>
 	  <div>
 
