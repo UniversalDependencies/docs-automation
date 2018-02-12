@@ -99,11 +99,9 @@ def stars_filter(scorestars):
     Used from the template to produce stars rating the treebank.
     Takes a pair of floats (score,stars).
     """
-    ###!!! DZ: I don't know whether the filter can take two parameters. I would need both score and stars here.
     score=scorestars[0]
     stars=scorestars[1]
-    # <img src="http://universaldependencies.org/img/stars25.png" style="max-height:1em; vertical-align:middle">
-    return '<span class="hint--top hint--info" data-hint="%f">%3.1f</span>'%(score,stars)
+    return '<span class="hint--top hint--info" data-hint="%f"><img src="/img/stars%02d.png" style="max-height:1em; vertical-align:middle" /></span>'%(score,stars*10)
 
 
 
