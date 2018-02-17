@@ -141,7 +141,7 @@ Hungarian:
 Indonesian:
   flag: ID
   lcode: id
-  family: Austronesian
+  family: Austronesian, Malayo-Sumbawan
 Irish:
   flag: IE
   lcode: ga
@@ -274,6 +274,10 @@ Swedish Sign Language:
   flag: SE
   lcode: swl
   family: Sign Language
+Tagalog:
+  flag: PH
+  lcode: tl
+  family: Austronesian, Greater Central Philippine
 Tamil:
   flag: IN
   lcode: ta
