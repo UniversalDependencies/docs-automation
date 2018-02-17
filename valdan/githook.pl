@@ -54,7 +54,9 @@ vypsat_html_konec();
 if(defined($result))
 {
     my $valilog = 'log/validation.log';
-    if($result->{repository}{name} =~ m/^UD_/)
+    # Change in dev branch of a treebank repository should trigger re-validation of the data.
+    # Ignore changes in other branches.
+    if($result->{repository}{name} =~ m/^UD_/ && $result->{ref} eq 'refs/heads/dev')
     {
         write_datalog($result);
         system("echo ====================================================================== >>$valilog");
@@ -64,7 +66,9 @@ if(defined($result))
         my $folder = $result->{repository}{name};
         system("perl update-validation-report.pl $folder >>$valilog 2>&1");
     }
-    elsif($result->{repository}{name} eq 'tools')
+    # Change in master branch of repository tools may mean changed validation algorithm.
+    # Ignore changes in other branches.
+    elsif($result->{repository}{name} eq 'tools' && $result->{ref} eq 'refs/heads/master')
     {
         write_datalog($result);
         system("echo ====================================================================== >>$valilog");
