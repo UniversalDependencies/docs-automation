@@ -15,14 +15,14 @@ my $folder = $ARGV[0];
 exit if(!defined($folder));
 $folder =~ s:/$::;
 $folder =~ s:^\./::;
-system("cd $folder ; git pull --no-edit ; cd ..");
+system("cd $folder ; (git pull --no-edit >/dev/null 2>&1) ; cd ..");
 system("date > log/$folder.eval.log 2>&1");
 my $command = "perl -I perllib/lib/perl5 -I tools tools/evaluate_treebank.pl --verbose $folder";
 system("echo $command >> log/$folder.eval.log");
 system("$command >> log/$folder.eval.log 2>&1");
 my $treebank_message = `grep $folder log/$folder.eval.log | tail -1`;
 $treebank_message =~ s/\r?\n$//;
-print STDERR ("$treebank_message\n");
+print("$treebank_message\n");
 # Update the evaluation report that comprises all treebanks.
 my %evalreps;
 open(REPORT, "evaluation-report.txt");

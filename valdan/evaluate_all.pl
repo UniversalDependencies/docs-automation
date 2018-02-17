@@ -22,8 +22,7 @@ if(-d 'perllib/lib/perl5')
 my @folders = list_ud_folders();
 foreach my $folder (@folders)
 {
-    print("$folder\n");
-    system("perl update-validation-report.pl $folder");
+    system("perl update-evaluation-report.pl $folder");
 }
 
 

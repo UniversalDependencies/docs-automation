@@ -8,6 +8,13 @@ use open ':utf8';
 binmode(STDIN, ':utf8');
 binmode(STDOUT, ':utf8');
 binmode(STDERR, ':utf8');
+# Install JSON::Parse and YAML locally to the following folder.
+# (Assuming they are not available system-wide on the web server, and we only have permissions to install locally.)
+use lib 'perllib/lib/perl5';
+use lib 'tools';
+use udlib;
+
+my $lhash = udlib::get_language_hash();
 
 vypsat_html_zacatek();
 my %hash;
@@ -50,16 +57,28 @@ foreach my $folder (@folders)
 foreach my $winner (@winners)
 {
     my $language;
+    my $flagcode;
     if($winner =~ m/^UD_(.+?)(-|$)/)
     {
         $language = $1;
+    }
+    my $language_no_underscores = $language;
+    $language_no_underscores =~ s/_/ /g;
+    if(exists($lhash->{$language_no_underscores}))
+    {
+        $flagcode = $lhash->{$language_no_underscores}{flag};
     }
     foreach my $folder (@folders)
     {
         if($folder =~ m/^UD_$language(-|$)/)
         {
             my $starsid = sprintf("stars%02d", $hash{$folder}{stars}*10);
-            print("<img id=\"$starsid\" src=\"http://universaldependencies.org/img/img_trans.gif\" /> $folder $hash{$folder}{score} $hash{$folder}{stars}<br />\n");
+            my $flag = '';
+            if(defined($flagcode))
+            {
+                $flag = '<img width="32" src="http://universaldependencies.org/flags/svg/'.$flagcode.'.svg" style="border:1px solid grey;" />';
+            }
+            print("<img id=\"$starsid\" src=\"http://universaldependencies.org/img/img_trans.gif\" /> $flag $folder $hash{$folder}{score} $hash{$folder}{stars}<br />\n");
         }
     }
 }
