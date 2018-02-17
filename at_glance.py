@@ -46,7 +46,7 @@ def tag_filter(counts):
     else:
         result+=empty_span
     return result
-    
+
 def annotation_filter(metadata):
     """Used from the template to produce the conversion logo"""
     source=metadata["source"]["all"]
@@ -66,7 +66,7 @@ def genre_filter(genres,genre_symbols={}):
     symbols=" ".join(genres)
     spans="".join(span%genre_symbols.get(g,"file-o") for g in genres)
     return '<span class="hint--top hint--info" data-hint="%s">%s</span>'%(symbols,spans)
-    
+
 
 def license_filter(lic):
     """Used from the template to produce the license logo"""
@@ -93,7 +93,17 @@ def contributor_filter(contributors):
         else:
             cont_list.append(parts[0])
     return ", ".join(cont_list)
-        
+
+def stars_filter(scorestars):
+    """
+    Used from the template to produce stars rating the treebank.
+    Takes a pair of floats (score,stars).
+    """
+    score=scorestars[0]
+    stars=scorestars[1]
+    return '<span class="hint--top hint--info" data-hint="%f"><img src="/img/stars%02d.png" style="max-height:1em; vertical-align:middle" /></span>'%(score,stars*10)
+
+
 
 if __name__=="__main__":
     opt_parser = argparse.ArgumentParser(description='Generates the index page table')
@@ -119,6 +129,7 @@ if __name__=="__main__":
     t_env.filters["genre_filter"]=functools.partial(genre_filter,genre_symbols=genre_symbols)
     t_env.filters["license_filter"]=license_filter
     t_env.filters["contributor_filter"]=contributor_filter
+    t_env.filters["stars_filter"]=stars_filter
 
     tbanks={} #language -> [tbank,tbank,...]
 
@@ -129,8 +140,8 @@ if __name__=="__main__":
                 tbanks.setdefault(tbank["language_name"],[]).append(tbank)
         except:
             print("Whoa, couldn't load", f_name, file=sys.stderr)
-                
-            
+
+
     lang_template=t_env.get_template("language.md")
     for lang,lang_tbanks in sorted(tbanks.items()):
         sum_counts=sum_dicts(list(tbank["counts"] for tbank in lang_tbanks))
@@ -143,6 +154,8 @@ if __name__=="__main__":
         if args.skip=="withdata" and sum_counts["word"]>0:
             continue
         lang_tbanks.sort(key=lambda tb: tb["counts"]["word"],reverse=True) #Sort treebanks by size
+        # Or sort them by evaluation score:
+        # lang_tbanks.sort(key=lambda tb: tb["score"],reverse=True)
         language_code=codes_flags[lang]["lcode"]
         if os.path.exists(os.path.join(args.docs_dir,"_"+language_code,"index.md")):
             language_hub="index.md"
@@ -155,5 +168,5 @@ if __name__=="__main__":
 
         r=lang_template.render(flag=codes_flags[lang]["flag"],language_name=lang,language_code=language_code,language_hub=language_hub,tbank_comparison=tbank_comparison,counts=sum_counts,treebanks=lang_tbanks,genres=union_genres,language_family=codes_flags[lang]["family"])
         print(r)
-    
-    
+
+

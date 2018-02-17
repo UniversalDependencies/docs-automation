@@ -16,7 +16,7 @@ ID,FORM,LEMMA,UPOS,XPOS,FEATS,HEAD,DEPREL,DEPS,MISC=range(10)
 def trees(inp):
     """
     `inp` object yielding lines
-    
+
     Yields the input a tree at a time.
     """
     comments=[] #List of comment lines to go with the current tree
@@ -60,6 +60,8 @@ class TreebankInfo:
         self.treebank_code=None #xxx
         self.treebank_lcode_code=None #cs_xxx
         self.language_code=None #cs
+        self.score=0 # <0;1> # read eval.log from master branch
+        self.stars=0 # 0 | 0.5 | ... | 4.5 | 5
 
     def count_cols(self,cols):
         if cols[ID].isdigit() or "." in cols[ID]: #word or empty word
@@ -88,7 +90,7 @@ class TreebankInfo:
                 head,deprel=head_and_deprel.split(u":",1)
                 self.deprel_counter[deprel]=self.deprel_counter.get(deprel,0)+1
 
-        
+
 
     def count(self,f_name):
         """f_name is conllu, counts stuff in f_name"""
@@ -135,7 +137,7 @@ class TreebankInfo:
                     continue
                 if in_summary:
                     summary.append(line)
-                    
+
         #metadata_dict gets remembered in self.readme_data_raw
 
         meta={"license":("unknown","unknown"), "avail":"unknown", "genre":[], "contributors":[], "contact":[], "summary":("\n".join(summary)).strip()} #Processed meta
@@ -173,10 +175,20 @@ class TreebankInfo:
         meta["source"]["relations"]=metadata_dict.get("Relations","unknown")
         meta["where_contribute"]=metadata_dict.get("Contributing","unknown")
         self.meta=meta
-            
-        
-            
-        
+
+    def read_eval(self,f_name):
+        self.score=0
+        self.stars=0
+        with open(f_name) as f:
+            result_re=re.compile(r"^UD_\S+\t([-+0-9\.e]+)\t([0-9\.]+)$")
+            for line in f:
+                line=line.strip()
+                match=result_re.match(line)
+                if match:
+                    self.score=float(match.group(1))
+                    self.stars=float(match.group(2))
+
+
 
     def as_json(self,args=None):
         final={}
@@ -188,6 +200,8 @@ class TreebankInfo:
         final["repo_name"]=self.repo_name
         final["readme_file"]=self.readme_file
         final["meta"]=self.meta
+        final["score"]=self.score
+        final["stars"]=self.stars
         if args and args.exclude_counts_from_json:
             final["counts"]={}
         return json.dumps(final,indent=4,sort_keys=True)
@@ -202,10 +216,10 @@ if __name__=="__main__":
     opt_parser.add_argument("--json",default=False,action="store_true",help="Dump stats as JSON")
     opt_parser.add_argument("--exclude-counts-from-json",default=False,action="store_true",help="Exclude counts from JSON. Only needed for debugging really.")
     args=opt_parser.parse_args()
-    
+
     stats=TreebankInfo()
 
-            
+
 
     if args.readme_dir:
         for dn in ("README.txt","README.md"):
@@ -213,6 +227,8 @@ if __name__=="__main__":
                 stats.read_readme(os.path.join(args.readme_dir,dn))
                 stats.readme_file=dn
                 break
+        if os.path.exists(os.path.join(args.readme_dir,"eval.log")):
+            stats.read_eval(os.path.join(args.readme_dir,"eval.log"))
 
     if args.repo_name:
         stats.repo_name=args.repo_name
@@ -234,7 +250,7 @@ if __name__=="__main__":
             stats.treebank_lcode_code=stats.language_code
             if stats.treebank_code:
                 stats.treebank_lcode_code+="_"+stats.treebank_code.lower()
-        
+
     for f_name in args.input:
         match=re.match(r"^([a-z_]+)-ud-(train|dev|test)(-[a-z]+)?\.conllu$",os.path.basename(f_name))
         if match:

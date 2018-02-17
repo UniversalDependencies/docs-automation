@@ -24,9 +24,10 @@
 	    <!-- <span class="widespan">{{tbank.meta|annotation_filter|safe}}</span> -->
 	    <span class="doublewidespan">{{tbank.meta.genre|genre_filter|safe}}</span>
 	    <span class="widespan">{{tbank.meta.license|license_filter|safe}}</span>
+	    <!--span class="widespan">{{(tbank.score,tbank.stars)|stars_filter|safe}}</span-->
 	  </div>
 	  <div>
-	  
+
 	    {{tbank.meta.summary|default("Please add a summary section to the treebank readme file",true)}}
 
 	    <ul>
@@ -39,10 +40,10 @@
 	    <p>&nbsp;</p>
 	  </div> <!-- end of {{language_name}} / {{tbank.treebank_code|default("Original",true)}} entry -->
        {% endfor %}
-    
+
     </div> <!-- end of {{language_name}} treebank list -->
 
-    {% if tbank_comparison %}		 
+    {% if tbank_comparison %}
     See <a href="treebanks/{{tbank_comparison}}">here</a> for comparative statistics of {{language_name}} treebanks.
     {% endif %}
 
