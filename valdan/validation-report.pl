@@ -15,6 +15,7 @@ my $nvalid = 0;
 my $nerror = 0;
 my $nempty = 0;
 my $nstask = 0;
+my %languages_stask;
 open(REPORT, "validation-report.txt") or die("Cannot read validation-report.txt: $!");
 while(<REPORT>)
 {
@@ -29,7 +30,14 @@ while(<REPORT>)
     {
         $color = 'green';
         $nvalid++;
-        $nstask++ unless(m/not in shared task/);
+        unless(m/not in shared task/)
+        {
+            $nstask++;
+            if(m/^UD_([A-Za-z_]+)[-:]/)
+            {
+                $languages_stask{$1}++;
+            }
+        }
     }
     elsif(m/EMPTY/)
     {
@@ -53,7 +61,8 @@ while(<REPORT>)
 close(REPORT);
 print("<hr />\n");
 my $n = $nvalid + $nerror + $nempty;
-print("Total $n, valid $nvalid ($nstask in shared task), error $nerror, empty $nempty.<br />\n");
+my $nlstask = scalar(keys(%languages_stask));
+print("Total $n, valid $nvalid ($nstask in shared task, $nlstask languages in shared task), error $nerror, empty $nempty.<br />\n");
 vypsat_html_konec();
 
 

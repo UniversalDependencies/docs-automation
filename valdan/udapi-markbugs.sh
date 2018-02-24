@@ -15,7 +15,7 @@ export LC_ALL=en_US.utf8
 # into our home: ~/.local/lib/python3.4/site-packages. However, user www-data
 # will not find the packages there. Hence we assume that ~/.local/lib/python3.4
 # has been recursively copied to the current folder as pythonlib.
-export PYTHONPATH=pythonlib/site-packages
+export PYTHONPATH=pythonlib/python3.4/site-packages
 
 # Finally, we assume that Udapi itself also exists (as a clone of the Github
 # repository) in the current folder, in a subfolder named udapi-python. We will

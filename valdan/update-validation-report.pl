@@ -25,7 +25,7 @@ if(scalar(@{$record->{files}}) > 0)
     system("date > log/$folder.log 2>&1");
     foreach my $file (@{$record->{files}})
     {
-        my $command = "tools/validate.py --lang $record->{lcode} --max-err=10 $folder/$file";
+        my $command = "./validate.sh --lang $record->{lcode} --max-err=10 $folder/$file";
         system("echo $command >> log/$folder.log");
         my $result = saferun("$command >> log/$folder.log 2>&1");
         $folder_success = $folder_success && $result;
