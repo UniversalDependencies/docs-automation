@@ -13,7 +13,9 @@ binmode(STDERR, ':utf8');
 
 my $folder = $ARGV[0];
 exit if(!defined($folder));
-system("cd $folder ; git pull --no-edit ; cd ..");
+$folder =~ s:/$::;
+$folder =~ s:^\./::;
+system("cd $folder ; (git pull --no-edit >/dev/null 2>&1) ; cd ..");
 my $record = get_ud_files_and_codes($folder);
 my $treebank_message;
 my $stmessage = 'not in shared task: no test data';
