@@ -15,6 +15,8 @@ mkdir -p $OUTDIR
 
 for repo_dir in $*
 do
+    echo ==================================================
+    echo $repo_dir
     pushd $repo_dir
     # In general, the UD front page should show information based on the master branch.
     # However, for upcoming treebanks (not released before), the dev branch should be used instead.
