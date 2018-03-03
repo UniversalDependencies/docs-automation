@@ -10,3 +10,6 @@ dan:
 	python3 at_glance.py --codes codes_and_flags.yaml --genre genre_symbols.json --docs-dir ../docs _corpus_metadata/*.json --skip withdata > ../docs/_includes/at_glance_empty.html
 
 all: refresh_all dan
+	cd ../docs
+	git pull --no-edit
+	git status
