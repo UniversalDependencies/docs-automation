@@ -1,3 +1,4 @@
+#!/bin/bash
 # Receives a list of directories of UD repos to rerun
 # Switches each repo to master before collecting data. Switches back to dev afterwards.
 # This way we collect information relevant to the most recent official UD release (provided the repos are up-to-date).
