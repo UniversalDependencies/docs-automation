@@ -9,6 +9,19 @@ binmode(STDIN, ':utf8');
 binmode(STDOUT, ':utf8');
 binmode(STDERR, ':utf8');
 
+# The client may want to get just the information rather than a fancy report.
+if($ENV{QUERY_STRING} =~ m/text_only/)
+{
+    print("Content-type: text/plain\n\n");
+    open(REPORT, "validation-report.txt") or die("Cannot read validation-report.txt: $!");
+    while(<REPORT>)
+    {
+        print;
+    }
+    close(REPORT);
+    exit();
+}
+
 vypsat_html_zacatek();
 print("<p>Hover the mouse pointer over a treebank name to see validation summary.</p>\n");
 my $nvalid = 0;
