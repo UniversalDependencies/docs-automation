@@ -4,7 +4,8 @@
     <span class="doublewidespan">{{language_name}}</span>
     <span class="widespan"><span class="hint--top hint--info" data-hint="{{treebanks|length}} treebank{% if treebanks|length > 1 %}s{% endif %}">{{treebanks|length}}</span></span>
     <span class="widespan"><span class="hint--top hint--info" data-hint="{{counts.token|tsepk}} tokens {{counts.word|tsepk}} words {{counts.tree|tsepk}} sentences">{{counts.word|tsepk(use_k=true)}}</span></span>
-    <span class="doublewidespan">{{genres|genre_filter|safe}}</span>
+    <!-- English has so many genres that they no longer fit in doublewidespan. -->
+    <span class="triplewidespan">{{genres|genre_filter|safe}}</span>
     <span class="triplewidespan">{{language_family}}</span>
 
   </div>   <!-- end of {{language_name}} accordion row -->
