@@ -6,12 +6,15 @@
     "academic":"graduation-cap",
     "medical":"eyedropper",
     "legal":"legal",
+    "government":"fort-awesome",
     "blog":"calendar",
+    "reviews":"thumbs-o-up",
     "social":"feed",
+    "email":"envelope",
     "spoken":"comment-o",
     "wiki":"wikipedia-w",
     "web":"globe",
     "bible":"cloud",
     "grammar-examples":"magic",
-    "reviews":"thumbs-o-up"
+    "learner-essays":"edit"
 }
