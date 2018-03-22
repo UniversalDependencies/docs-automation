@@ -162,6 +162,10 @@ Kazakh:
   flag: KZ
   lcode: kk
   family: Turkic, Northwestern
+Komi Zyrian:
+  flag: RU-KO
+  lcode: kpv
+  family: Uralic, Permic
 Korean:
   flag: KR
   lcode: ko
