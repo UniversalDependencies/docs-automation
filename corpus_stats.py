@@ -198,6 +198,7 @@ class TreebankInfo:
         final["treebank_lcode_code"]=self.treebank_lcode_code
         final["language_code"]=self.language_code
         final["repo_name"]=self.repo_name
+        final["repo_branch"]=self.repo_branch
         final["readme_file"]=self.readme_file
         final["meta"]=self.meta
         final["score"]=self.score
@@ -212,6 +213,7 @@ if __name__=="__main__":
     opt_parser.add_argument('input', nargs='+', help='Input conllu files')
     opt_parser.add_argument('--readme-dir', help='Directory to look for a readme file to go with this data')
     opt_parser.add_argument('--repo-name',help="Something like UD_Finnish-TDT, used to guess language name and treebank suffix code")
+    opt_parser.add_argument('--repo-branch',help='master|dev')
     opt_parser.add_argument('--codes-flags',help="Language code and flag file")
     opt_parser.add_argument("--json",default=False,action="store_true",help="Dump stats as JSON")
     opt_parser.add_argument("--exclude-counts-from-json",default=False,action="store_true",help="Exclude counts from JSON. Only needed for debugging really.")
@@ -250,6 +252,11 @@ if __name__=="__main__":
             stats.treebank_lcode_code=stats.language_code
             if stats.treebank_code:
                 stats.treebank_lcode_code+="_"+stats.treebank_code.lower()
+
+    # We may want to get rid of the argument and test the branch ourselves by calling
+    # git branch | grep '*' | sed 's/^\*\s*//'
+    if args.repo_branch:
+        stats.repo_branch=args.repo_branch
 
     for f_name in args.input:
         match=re.match(r"^([a-z_]+)-ud-(train|dev|test)(-[a-z]+)?\.conllu$",os.path.basename(f_name))

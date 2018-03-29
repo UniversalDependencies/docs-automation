@@ -20,6 +20,7 @@ do
     pushd $repo_dir
     # In general, the UD front page should show information based on the master branch.
     # However, for upcoming treebanks (not released before), the dev branch should be used instead.
+    repo_branch=master
     git checkout master
     if [ $PULL == 1 ] ; then
         git pull
@@ -28,6 +29,7 @@ do
       echo conllu files found
     else
       echo conllu files not found, switching back to dev
+      repo_branch=dev
       git checkout dev
       if [ $PULL == 1 ] ; then
           git pull
@@ -35,7 +37,7 @@ do
     fi
     popd
     echo $(basename $repo_dir)
-    python3 corpus_stats.py --readme-dir $repo_dir --repo-name $(basename $repo_dir) --codes-flags ./codes_and_flags.yaml --json $repo_dir/*-ud-{train,dev,test}*.conllu > $OUTDIR/$(basename $repo_dir).json
+    python3 corpus_stats.py --readme-dir $repo_dir --repo-name $(basename $repo_dir) --repo-branch $repo_branch --codes-flags ./codes_and_flags.yaml --json $repo_dir/*-ud-{train,dev,test}*.conllu > $OUTDIR/$(basename $repo_dir).json
     pushd $repo_dir
     git checkout dev
     popd
