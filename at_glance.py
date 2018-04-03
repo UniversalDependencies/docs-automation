@@ -153,9 +153,9 @@ if __name__=="__main__":
             continue
         if args.skip=="withdata" and sum_counts["word"]>0:
             continue
-        lang_tbanks.sort(key=lambda tb: tb["counts"]["word"],reverse=True) #Sort treebanks by size
-        # Or sort them by evaluation score:
-        # lang_tbanks.sort(key=lambda tb: tb["score"],reverse=True)
+        # Sort treebanks by evaluation score (this is new) or by size (this is old; comment one of the two lines):
+        #lang_tbanks.sort(key=lambda tb: tb["counts"]["word"],reverse=True)
+        lang_tbanks.sort(key=lambda tb: tb["score"],reverse=True)
         language_code=codes_flags[lang]["lcode"]
         if os.path.exists(os.path.join(args.docs_dir,"_"+language_code,"index.md")):
             language_hub="index.md"
