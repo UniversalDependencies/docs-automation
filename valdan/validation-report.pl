@@ -21,6 +21,22 @@ if($ENV{QUERY_STRING} =~ m/text_only/)
     close(REPORT);
     exit();
 }
+# We may be also asked for the validation log of a particular treebank.
+elsif($ENV{QUERY_STRING} =~ m/(UD_[A-Za-z_]+-[A-Za-z]+)/ && -f "log/$1.log")
+{
+    print("Content-type: text/plain; charset=utf-8\n\n");
+    open(REPORT, "log/$1.log") or die("Cannot read log/$1.log: $!");
+    while(<REPORT>)
+    {
+        print;
+    }
+    close(REPORT);
+    exit();
+}
+
+###!!! Temporarily, I want to see shared task treebanks first, then the rest.
+my $shared_task_first = 1;
+my $deferred;
 
 vypsat_html_zacatek();
 print("<p>Hover the mouse pointer over a treebank name to see validation summary.</p>\n");
@@ -59,19 +75,45 @@ while(<REPORT>)
     if(m/^(UD_.+?):/)
     {
         my $folder = $1;
+        my $html;
         if(-e "log/$folder.log")
         {
-            print("<span class='field-tip' style='color:$color'>$_<span class='tip-content'><pre>");
-            print(`cat log/$folder.log`);
-            print("</pre></span></span><br />\n");
+            my $reportlink = '';
+            if(m/ERROR/)
+            {
+                $reportlink = " (<a href=\"validation-report.pl?$folder\">report</a>)";
+            }
+            $html .= "<span class='field-tip' style='color:$color'>$_<span class='tip-content'><pre>";
+            $html .= `cat log/$folder.log`;
+            $html .= "</pre></span></span>$reportlink<br />\n";
         }
         else
         {
-            print("<span style='color:$color'>$_</span><br />\n");
+            $html .= "<span style='color:$color'>$_</span><br />\n";
+        }
+        if($shared_task_first)
+        {
+            if(m/VALID/ && !m/not in shared task/)
+            {
+                print($html);
+            }
+            else
+            {
+                $deferred .= $html;
+            }
+        }
+        else
+        {
+            print($html);
         }
     }
 }
 close(REPORT);
+if($shared_task_first && defined($deferred))
+{
+    print("<hr />\n");
+    print($deferred);
+}
 print("<hr />\n");
 my $n = $nvalid + $nerror + $nempty;
 my $nlstask = scalar(keys(%languages_stask));
