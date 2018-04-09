@@ -13,7 +13,7 @@ export LC_ALL=en_US.utf8
 # Validate.py depends the regex module that may not be installed system-wide.
 # If we installed it locally using pip install --user regex, it is now in our
 # home: ~/.local/lib/python2.7/site-packages. However, user www-data will not
-# the packages there. Hence we assume that ~/.local/lib/python2.7 has been
+# find the packages there. Hence we assume that ~/.local/lib/python2.7 has been
 # recursively copied to the pythonlib subfolder of the current folder.
 export PYTHONPATH=pythonlib/python2.7/site-packages
 
