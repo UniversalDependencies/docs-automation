@@ -65,7 +65,7 @@ if(scalar(@{$record->{files}}) > 0)
     {
         $stmessage = 'not in shared task: intra-language inconsistency';
     }
-    elsif($stmessage ne '' && $folder !~ m/^($stpresel)$/)
+    elsif($stmessage eq '' && $folder !~ m/^($stpresel)$/)
     {
         $stmessage = 'not in shared task: not ready in time';
     }
