@@ -254,6 +254,10 @@ Serbian:
   flag: RS
   lcode: sr
   family: IE, Slavic
+Shipibo Konibo:
+  flag: PE
+  lcode: shp
+  family: Panoan
 Slovak:
   flag: SK
   lcode: sk
