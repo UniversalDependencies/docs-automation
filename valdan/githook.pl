@@ -94,7 +94,7 @@ if(defined($result))
                 {
                     $reevaluate_all = 1;
                 }
-                elsif($file =~ m-^data/(deprel|feat_val|tokens_w_space)\.(.+)$-)
+                elsif($file =~ m-^data/(e?deprel|feat_val|tokens_w_space)\.(.+)$-)
                 {
                     my $ltcode = $2;
                     $changed{$ltcode}++;
