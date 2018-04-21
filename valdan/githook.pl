@@ -86,7 +86,7 @@ if(defined($result))
         {
             foreach my $file (@{$commit->{added}}, @{$commit->{modified}})
             {
-                if($file eq 'validate.py')
+                if($file =~ m/^(validate.py|check_files.pl)$/)
                 {
                     $revalidate_all = 1;
                 }

@@ -23,11 +23,17 @@ if(scalar(@{$record->{files}}) > 0)
 {
     my $folder_success = 1;
     system("date > log/$folder.log 2>&1");
+    # Check list of files and metadata in README.
+    my $command = "tools/check_files.pl $folder";
+    system("echo $command >> log/$folder.log");
+    my $result = saferun("perl -I perllib/lib/perl5 -I perllib/lib/perl5/x86_64-linux-gnu-thread-multi $command >> log/$folder.log 2>&1");
+    $folder_success = $folder_success && $result;
+    # Check individual data files.
     foreach my $file (@{$record->{files}})
     {
-        my $command = "./validate.sh --lang $record->{lcode} --max-err=10 $folder/$file";
+        $command = "./validate.sh --lang $record->{lcode} --max-err=10 $folder/$file";
         system("echo $command >> log/$folder.log");
-        my $result = saferun("$command >> log/$folder.log 2>&1");
+        $result = saferun("$command >> log/$folder.log 2>&1");
         $folder_success = $folder_success && $result;
         # Test additional requirements on shared task treebanks.
         if($file =~ m/test/)
