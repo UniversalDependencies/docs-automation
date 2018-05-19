@@ -330,3 +330,11 @@ Yoruba:
   flag: NG
   lcode: yo
   family: Niger-Congo
+Warlpiri:
+  flag: AU
+  lcode: wbp
+  family: Pama-Nyungan
+Welsh:
+  flag: GB-WLS
+  lcode: cy
+  family: IE, Celtic
