@@ -326,10 +326,6 @@ Vietnamese:
   flag: VN
   lcode: vi
   family: Austro-Asiatic, Viet-Muong
-Yoruba:
-  flag: NG
-  lcode: yo
-  family: Niger-Congo
 Warlpiri:
   flag: AU
   lcode: wbp
@@ -338,3 +334,7 @@ Welsh:
   flag: GB-WLS
   lcode: cy
   family: IE, Celtic
+Yoruba:
+  flag: NG
+  lcode: yo
+  family: Niger-Congo
