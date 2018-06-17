@@ -334,7 +334,11 @@ Welsh:
   flag: GB-WLS
   lcode: cy
   family: IE, Celtic
+Wolof:
+  flag: SN
+  lcode: wo
+  family: Niger-Congo, Northern Atlantic
 Yoruba:
   flag: NG
   lcode: yo
-  family: Niger-Congo
+  family: Niger-Congo, Defoid
