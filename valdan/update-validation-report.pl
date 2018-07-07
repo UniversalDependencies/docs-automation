@@ -18,7 +18,6 @@ $folder =~ s:^\./::;
 system("cd $folder ; (git pull --no-edit >/dev/null 2>&1) ; cd ..");
 my $record = get_ud_files_and_codes($folder);
 my $treebank_message;
-my $stmessage = 'not in shared task: no test data';
 if(scalar(@{$record->{files}}) > 0)
 {
     my $folder_success = 1;
@@ -35,51 +34,8 @@ if(scalar(@{$record->{files}}) > 0)
         system("echo $command >> log/$folder.log");
         $result = saferun("$command >> log/$folder.log 2>&1");
         $folder_success = $folder_success && $result;
-        # Test additional requirements on shared task treebanks.
-        if($file =~ m/test/)
-        {
-            print STDERR ("Testing shared task requirements on $folder/$file...\n");
-            #my $stresult = saferun("perl test-shared-task.pl $folder/$file");
-            #print STDERR ("result = $stresult\n");
-            $stmessage = `perl test-shared-task.pl $folder/$file`;
-            $stmessage =~ s/\r?\n$//;
-        }
-    }
-    ###!!! Manually remove from the shared task treebanks that we do not want there although they are valid.
-    my @stpresel = qw(UD_Afrikaans-AfriBooms UD_Ancient_Greek-PROIEL UD_Ancient_Greek-Perseus
-    UD_Arabic-PADT UD_Armenian-ArmTDP UD_Basque-BDT UD_Breton-KEB UD_Bulgarian-BTB
-    UD_Buryat-BDT UD_Catalan-AnCora UD_Chinese-GSD UD_Croatian-SET
-    UD_Czech-CAC UD_Czech-FicTree UD_Czech-PDT UD_Czech-PUD UD_Danish-DDT
-    UD_Dutch-Alpino UD_Dutch-LassySmall
-    UD_English-EWT UD_English-GUM UD_English-LinES UD_English-PUD UD_Estonian-EDT
-    UD_Faroese-OFT UD_Finnish-FTB UD_Finnish-PUD UD_Finnish-TDT
-    UD_French-GSD UD_French-Sequoia UD_French-Spoken UD_Galician-CTG UD_Galician-TreeGal
-    UD_German-GSD UD_Gothic-PROIEL UD_Greek-GDT UD_Hebrew-HTB UD_Hindi-HDTB
-    UD_Hungarian-Szeged UD_Indonesian-GSD UD_Irish-IDT UD_Italian-ISDT UD_Italian-PoSTWITA
-    UD_Japanese-GSD UD_Japanese-Modern UD_Kazakh-KTB UD_Korean-GSD UD_Korean-Kaist
-    UD_Kurmanji-MG UD_Latin-ITTB UD_Latin-PROIEL UD_Latin-Perseus UD_Latvian-LVTB
-    UD_Naija-NSC UD_North_Sami-Giella
-    UD_Norwegian-Bokmaal UD_Norwegian-Nynorsk UD_Norwegian-NynorskLIA
-    UD_Old_Church_Slavonic-PROIEL UD_Old_French-SRCMF UD_Persian-Seraji
-    UD_Polish-LFG UD_Polish-SZ UD_Portuguese-Bosque UD_Romanian-RRT
-    UD_Russian-SynTagRus UD_Russian-Taiga UD_Serbian-SET UD_Slovak-SNK
-    UD_Slovenian-SSJ UD_Slovenian-SST UD_Spanish-AnCora
-    UD_Swedish-LinES UD_Swedish-PUD UD_Swedish-Talbanken UD_Thai-PUD UD_Turkish-IMST
-    UD_Ukrainian-IU UD_Upper_Sorbian-UFAL UD_Urdu-UDTB UD_Uyghur-UDT UD_Vietnamese-VTB);
-    my $stpresel = join('|', @stpresel);
-    if($folder =~ m/^UD_(Russian-GSD|Spanish-GSD|Turkish-PUD)$/)
-    {
-        $stmessage = 'not in shared task: intra-language inconsistency';
-    }
-    elsif($stmessage eq '' && $folder !~ m/^($stpresel)$/)
-    {
-        $stmessage = 'not in shared task: not ready in time';
     }
     $treebank_message = $folder_success ? "$folder: VALID" : "$folder: ERROR";
-    if($folder_success && $stmessage ne '')
-    {
-        $treebank_message .= " ($stmessage)";
-    }
 }
 else
 {

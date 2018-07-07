@@ -35,7 +35,7 @@ elsif($ENV{QUERY_STRING} =~ m/(UD_[A-Za-z_]+-[A-Za-z]+)/ && -f "log/$1.log")
 }
 
 ###!!! Temporarily, I want to see shared task treebanks first, then the rest.
-my $shared_task_first = 1;
+my $shared_task_first = 0;
 my $deferred;
 
 vypsat_html_zacatek();
@@ -43,8 +43,7 @@ print("<p>Hover the mouse pointer over a treebank name to see validation summary
 my $nvalid = 0;
 my $nerror = 0;
 my $nempty = 0;
-my $nstask = 0;
-my %languages_stask;
+my %languages_valid;
 open(REPORT, "validation-report.txt") or die("Cannot read validation-report.txt: $!");
 while(<REPORT>)
 {
@@ -59,14 +58,12 @@ while(<REPORT>)
     {
         $color = 'green';
         $nvalid++;
-        unless(m/not in shared task/)
-        {
-            $nstask++;
-            if(m/^UD_([A-Za-z_]+)[-:]/)
-            {
-                $languages_stask{$1}++;
-            }
-        }
+        my $language = $_;
+        $language =~ s/:.*//;
+        $language =~ s/-.*//;
+        $language =~ s/^UD_//;
+        $language =~ s/_/ /g;
+        $languages_valid{$language}++;
     }
     elsif(m/EMPTY/)
     {
@@ -91,21 +88,7 @@ while(<REPORT>)
         {
             $html .= "<span style='color:$color'>$_</span><br />\n";
         }
-        if($shared_task_first)
-        {
-            if(m/VALID/ && !m/not in shared task/)
-            {
-                print($html);
-            }
-            else
-            {
-                $deferred .= $html;
-            }
-        }
-        else
-        {
-            print($html);
-        }
+        print($html);
     }
 }
 close(REPORT);
@@ -116,8 +99,8 @@ if($shared_task_first && defined($deferred))
 }
 print("<hr />\n");
 my $n = $nvalid + $nerror + $nempty;
-my $nlstask = scalar(keys(%languages_stask));
-print("Total $n, valid $nvalid ($nstask in shared task, $nlstask languages in shared task), error $nerror, empty $nempty.<br />\n");
+my $nlvalid = scalar(keys(%languages_valid));
+print("Total $n, valid $nvalid ($nlvalid languages), error $nerror, empty $nempty.<br />\n");
 vypsat_html_konec();
 
 
