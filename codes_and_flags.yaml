@@ -2,6 +2,10 @@ Afrikaans:
   flag: ZA
   lcode: af
   family: IE, Germanic
+Akkadian:
+  flag: IQ
+  lcode: akk
+  family: Afro-Asiatic, Semitic
 Amharic:
   flag: ET
   lcode: am
