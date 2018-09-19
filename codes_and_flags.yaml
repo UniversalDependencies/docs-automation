@@ -262,6 +262,10 @@ Shipibo Konibo:
   flag: PE
   lcode: shp
   family: Panoan
+Sindhi:
+  flag: PK
+  lcode: sd
+  family: IE, Indic
 Slovak:
   flag: SK
   lcode: sk
