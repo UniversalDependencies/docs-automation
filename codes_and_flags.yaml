@@ -38,6 +38,10 @@ Bengali:
   flag: BD
   lcode: bn
   family: IE, Indic
+Bhojpuri:
+  flag: IN
+  lcode: bho
+  family: IE, Indic
 Breton:
   flag: FR-BRE
   lcode: br
