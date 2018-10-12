@@ -142,6 +142,10 @@ Hindi:
   flag: IN
   lcode: hi
   family: IE, Indic
+Hindi English:
+  flag: IN
+  lcode: qhe
+  family: Code switching
 Hungarian:
   flag: HU
   lcode: hu
