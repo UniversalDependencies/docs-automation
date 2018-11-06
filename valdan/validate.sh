@@ -20,3 +20,4 @@ export PYTHONPATH=pythonlib/python2.7/site-packages
 # Finally, we assume that validate.py itself resides in a local clone of the
 # tools repository from UD Github.
 python tools/validate.py $*
+python3 tools/validate-python3.py $*
