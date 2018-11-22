@@ -126,6 +126,43 @@ if(defined($result))
             system("perl evaluate_all.pl | tee evaluation-report.txt >>$valilog 2>&1");
         }
     }
+    # Change in pages_source branch of repository docs may mean changes in documentation that are reflected in validation.
+    elsif($result->{repository}{name} eq 'docs' && $result->{ref} eq 'refs/heads/pages_source')
+    {
+        write_datalog($result);
+        system("echo ====================================================================== >>$valilog");
+        system("date >>$valilog");
+        system("echo Hook on $result->{repository}{name} >>$valilog");
+        system("(cd docs ; git pull --no-edit ; cd ..) >>$valilog 2>&1");
+        # We must figure out what files have changed.
+        # At present we are only interested in index files of language-specific documentation.
+        my %changed;
+        foreach my $commit (@{$result->{commits}})
+        {
+            foreach my $file (@{$commit->{added}}, @{$commit->{modified}})
+            {
+                if($file =~ m-^_([a-z]+)/index\.md$-)
+                {
+                    my $ltcode = $1;
+                    $changed{$ltcode}++;
+                }
+            }
+        }
+        my @changed = sort(keys(%changed));
+        if(scalar(@changed) > 0)
+        {
+            print LOG ("changed = ".join(' ', @changed)."\n");
+            my @folders = list_ud_folders();
+            foreach my $folder (@folders)
+            {
+                my $record = get_ud_files_and_codes($folder);
+                if(exists($changed{$record->{lcode}}))
+                {
+                    system("perl update-validation-report.pl $folder >>$valilog 2>&1");
+                }
+            }
+        }
+    }
 }
 close(LOG);
 
