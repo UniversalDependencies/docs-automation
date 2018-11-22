@@ -141,7 +141,7 @@ if(defined($result))
         {
             foreach my $file (@{$commit->{added}}, @{$commit->{modified}})
             {
-                if($file =~ m-^_([a-z]+)/index\.md$-)
+                if($file =~ m:^_([a-z]+)/index\.md$:)
                 {
                     my $ltcode = $1;
                     $changed{$ltcode}++;
