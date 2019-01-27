@@ -66,6 +66,10 @@ Chinese:
   flag: CN
   lcode: zh
   family: Sino-Tibetan
+Classical Chinese:
+  flag: CN-QING
+  lcode: lzh
+  family: Sino-Tibetan
 Coptic:
   flag: COP
   lcode: cop
