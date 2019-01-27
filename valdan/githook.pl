@@ -139,7 +139,7 @@ if(defined($result))
         my %changed;
         foreach my $commit (@{$result->{commits}})
         {
-            foreach my $file (@{$commit->{added}}, @{$commit->{modified}})
+            foreach my $file (@{$commit->{added}}, @{$commit->{modified}}, @{$commit->{removed}})
             {
                 if($file =~ m:^_([a-z]+)/index\.md$:)
                 {
