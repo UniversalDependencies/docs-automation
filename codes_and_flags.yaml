@@ -1,306 +1,382 @@
 Afrikaans:
   flag: ZA
   lcode: af
+  iso3: afr
   family: IE, Germanic
 Akkadian:
   flag: IQ
   lcode: akk
+  iso3: akk
   family: Afro-Asiatic, Semitic
 Amharic:
   flag: ET
   lcode: am
+  iso3: amh
   family: Afro-Asiatic, Semitic
 Ancient Greek:
   flag: GR
   lcode: grc
+  iso3: grc
   family: IE, Greek
 Arabic:
   flag: SA-AL
   lcode: ar
+  iso3: ara
   family: Afro-Asiatic, Semitic
 Armenian:
   flag: AM
   lcode: hy
+  iso3: hye
   family: IE, Armenian
 Bambara:
   flag: ML
   lcode: bm
+  iso3: bam
   family: Mande
 Basque:
   flag: ES-PV
   lcode: eu
+  iso3: eus
   family: Basque
 Belarusian:
   flag: BY
   lcode: be
+  iso3: bel
   family: IE, Slavic
 Bengali:
   flag: BD
   lcode: bn
+  iso3: ben
   family: IE, Indic
 Bhojpuri:
   flag: IN
   lcode: bho
+  iso3: bho
   family: IE, Indic
 Breton:
   flag: FR-BRE
   lcode: br
+  iso3: bre
   family: IE, Celtic
 Bulgarian:
   flag: BG
   lcode: bg
+  iso3: bul
   family: IE, Slavic
 Buryat:
   flag: RU-BU
   lcode: bxr
+  iso3: bxr
   family: Mongolic
 Cantonese:
   flag: HK
   lcode: yue
+  iso3: yue
   family: Sino-Tibetan
 Catalan:
   flag: ES-CT
   lcode: ca
+  iso3: cat
   family: IE, Romance
 Chinese:
   flag: CN
   lcode: zh
+  iso3: cmn
   family: Sino-Tibetan
 Classical Chinese:
   flag: CN-QING
   lcode: lzh
+  iso3: lzh
   family: Sino-Tibetan
 Coptic:
   flag: COP
   lcode: cop
+  iso3: cop
   family: Afro-Asiatic, Egyptian
 Croatian:
   flag: HR
   lcode: hr
+  iso3: hrv
   family: IE, Slavic
 Czech:
   flag: CZ
   lcode: cs
+  iso3: ces
   family: IE, Slavic
 Danish:
   flag: DK
   lcode: da
+  iso3: dan
   family: IE, Germanic
 Dargwa:
   flag: RU-DA
   lcode: dar
+  iso3: dar
   family: Nakho-Dagestanian
 Dutch:
   flag: NL
   lcode: nl
+  iso3: nld
   family: IE, Germanic
 English:
   flag: GB
   lcode: en
+  iso3: eng
   family: IE, Germanic
 Erzya:
   flag: RU-ERZYA
   lcode: myv
+  iso3: myv
   family: Uralic, Mordvin
 Estonian:
   flag: EE
   lcode: et
+  iso3: est
   family: Uralic, Finnic
 Faroese:
   flag: FO
   lcode: fo
+  iso3: fao
   family: IE, Germanic
 Finnish:
   flag: FI
   lcode: fi
+  iso3: fin
   family: Uralic, Finnic
 French:
   flag: FR
   lcode: fr
+  iso3: fra
   family: IE, Romance
 Galician:
   flag: ES-GA
   lcode: gl
+  iso3: gal
   family: IE, Romance
 Georgian:
   flag: GE
   lcode: ka
+  iso3: kat
   family: Kartvelian
 German:
   flag: DE
   lcode: de
+  iso3: deu
   family: IE, Germanic
 Gothic:
   flag: BYZ
   lcode: got
+  iso3: got
   family: IE, Germanic
 Greek:
   flag: GR
   lcode: el
+  iso3: ell
   family: IE, Greek
 Hebrew:
   flag: IL
   lcode: he
+  iso3: heb
   family: Afro-Asiatic, Semitic
 Hindi:
   flag: IN
   lcode: hi
+  iso3: hin
   family: IE, Indic
 Hindi English:
   flag: IN
   lcode: qhe
+  iso3: qhe
   family: Code switching
 Hungarian:
   flag: HU
   lcode: hu
+  iso3: hun
   family: Uralic, Ugric
 Indonesian:
   flag: ID
   lcode: id
+  iso3: ind
   family: Austronesian, Malayo-Sumbawan
 Irish:
   flag: IE
   lcode: ga
+  iso3: gle
   family: IE, Celtic
 Italian:
   flag: IT
   lcode: it
+  iso3: ita
   family: IE, Romance
 Japanese:
   flag: JP
   lcode: ja
+  iso3: jpn
   family: Japanese
 Kannada:
   flag: IN
   lcode: kn
+  iso3: kan
   family: Dravidian, Southern
 Kazakh:
   flag: KZ
   lcode: kk
+  iso3: kaz
   family: Turkic, Northwestern
 Komi Zyrian:
   flag: RU-KO
   lcode: kpv
+  iso3: kpv
   family: Uralic, Permic
 Korean:
   flag: KR
   lcode: ko
+  iso3: kor
   family: Korean
 Kurmanji:
   flag: TR
   lcode: kmr
+  iso3: kmr
   family: IE, Iranian
 Kyrgyz:
   flag: KG
   lcode: ky
+  iso3: kir
   family: Turkic, Northwestern
 Latin:
   flag: VA
   lcode: la
+  iso3: lat
   family: IE, Latin
 Latvian:
   flag: LV
   lcode: lv
+  iso3: lav
   family: IE, Baltic
 Lithuanian:
   flag: LT
   lcode: lt
+  iso3: lit
   family: IE, Baltic
 Maltese:
   flag: MT
   lcode: mt
+  iso3: mlt
   family: Afro-Asiatic, Semitic
 Marathi:
   flag: IN
   lcode: mr
+  iso3: mar
   family: IE, Indic
 Naija:
   flag: NG
   lcode: pcm
+  iso3: pcm
   family: Creole
 North Sami:
   flag: SAMI
   lcode: sme
+  iso3: sme
   family: Uralic, Sami
 Norwegian:
   flag: 'NO'
   lcode: 'no'
+  iso3: nor
   family: IE, Germanic
 Old Church Slavonic:
   flag: MORAVA
   lcode: cu
+  iso3: chu
   family: IE, Slavic
 Old French:
   flag: FR-ROYAL
   lcode: fro
+  iso3: fro
   family: IE, Romance
 Persian:
   flag: IR
   lcode: fa
+  iso3: fas
   family: IE, Iranian
 Pnar:
   flag: IN
   lcode: pbv
+  iso3: pbv
   family: Austro-Asiatic, Khasian
 Polish:
   flag: PL
   lcode: pl
+  iso3: pol
   family: IE, Slavic
 Portuguese:
   flag: PT
   lcode: pt
+  iso3: por
   family: IE, Romance
 Romanian:
   flag: RO
   lcode: ro
+  iso3: ron
   family: IE, Romance
 Romansh:
   flag: CH
   lcode: rm
+  iso3: roh
   family: IE, Romance
 Russian:
   flag: RU
   lcode: ru
+  iso3: rus
   family: IE, Slavic
 Sanskrit:
   flag: IN
   lcode: sa
+  iso3: san
   family: IE, Indic
 Serbian:
   flag: RS
   lcode: sr
+  iso3: srp
   family: IE, Slavic
 Shipibo Konibo:
   flag: PE
   lcode: shp
+  iso3: shp
   family: Panoan
 Sindhi:
   flag: PK
   lcode: sd
+  iso3: snd
   family: IE, Indic
 Slovak:
   flag: SK
   lcode: sk
+  iso3: slk
   family: IE, Slavic
 Slovenian:
   flag: SI
   lcode: sl
+  iso3: slv
   family: IE, Slavic
 Somali:
   flag: SO
   lcode: so
+  iso3: som
   family: Afro-Asiatic, Cushitic
 Sorani:
   flag: IQ-KRD
   lcode: ckb
+  iso3: ckb
   family: IE, Iranian
 Spanish:
   flag: ES
   lcode: es
+  iso3: spa
   family: IE, Romance
 Swedish:
   flag: SE
   lcode: sv
+  iso3: swe
   family: IE, Germanic
 Swedish Sign Language:
   flag: SE
@@ -309,56 +385,70 @@ Swedish Sign Language:
 Tagalog:
   flag: PH
   lcode: tl
+  iso3: tgl
   family: Austronesian, Central Philippine
 Tamil:
   flag: IN
   lcode: ta
+  iso3: tam
   family: Dravidian, Southern
 Telugu:
   flag: IN
   lcode: te
+  iso3: tel
   family: Dravidian, South Central
 Thai:
   flag: TH
   lcode: th
+  iso3: tha
   family: Tai-Kadai
 Turkish:
   flag: TR
   lcode: tr
+  iso3: tur
   family: Turkic, Southwestern
 Ukrainian:
   flag: UA
   lcode: uk
+  iso3: ukr
   family: IE, Slavic
 Upper Sorbian:
   flag: HSB
   lcode: hsb
+  iso3: hsb
   family: IE, Slavic
 Urdu:
   flag: IN
   lcode: ur
+  iso3: urd
   family: IE, Indic
 Uyghur:
   flag: CN
   lcode: ug
+  iso3: uig
   family: Turkic, Southeastern
 Vietnamese:
   flag: VN
   lcode: vi
+  iso3: vie
   family: Austro-Asiatic, Viet-Muong
 Warlpiri:
   flag: AU
   lcode: wbp
+  iso3: wbp
   family: Pama-Nyungan
 Welsh:
   flag: GB-WLS
   lcode: cy
+  iso3: cym
   family: IE, Celtic
 Wolof:
   flag: SN
   lcode: wo
+  iso3: wol
   family: Niger-Congo, Northern Atlantic
 Yoruba:
   flag: NG
   lcode: yo
+  iso3: yor
   family: Niger-Congo, Defoid
