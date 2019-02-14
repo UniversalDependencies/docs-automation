@@ -28,6 +28,11 @@ Armenian:
   lcode: hy
   iso3: hye
   family: IE, Armenian
+Assyrian:
+  flag: IQ
+  lcode: aii
+  iso3: aii
+  family: Afro-Asiatic, Semitic
 Bambara:
   flag: ML
   lcode: bm
