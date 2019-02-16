@@ -127,7 +127,7 @@ if(defined($result))
         }
     }
     # Change in pages_source branch of repository docs may mean changes in documentation that are reflected in validation.
-    elsif($result->{repository}{name} eq 'docs' && $result->{ref} eq 'refs/heads/pages_source')
+    elsif($result->{repository}{name} eq 'docs' && $result->{ref} eq 'refs/heads/pages-source')
     {
         write_datalog($result);
         system("echo ====================================================================== >>$valilog");
