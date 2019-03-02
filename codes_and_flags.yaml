@@ -223,6 +223,11 @@ Kannada:
   lcode: kn
   iso3: kan
   family: Dravidian, Southern
+Karelian:
+  flag: RU-KR
+  lcode: krl
+  iso3: krl
+  family: Uralic, Finnic
 Kazakh:
   flag: KZ
   lcode: kk
@@ -263,6 +268,11 @@ Lithuanian:
   lcode: lt
   iso3: lit
   family: IE, Baltic
+Livvi:
+  flag: RU-KR
+  lcode: olo
+  iso3: olo
+  family: Uralic, Finnic
 Maltese:
   flag: MT
   lcode: mt
