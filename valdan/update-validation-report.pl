@@ -30,7 +30,7 @@ if(scalar(@{$record->{files}}) > 0)
     # Check individual data files.
     foreach my $file (@{$record->{files}})
     {
-        $command = "./validate.sh --lang $record->{lcode} --max-err=10 $folder/$file";
+        $command = "./validate.sh --lang $record->{lcode} --max-err=100 $folder/$file";
         system("echo $command >> log/$folder.log");
         $result = saferun("$command >> log/$folder.log 2>&1");
         $folder_success = $folder_success && $result;
