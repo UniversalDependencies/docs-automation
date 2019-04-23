@@ -308,6 +308,11 @@ Old French:
   lcode: fro
   iso3: fro
   family: IE, Romance
+Old Russian:
+  flag: RU-IVAN
+  lcode: orv
+  iso3: orv
+  family: IE, Slavic
 Persian:
   flag: IR
   lcode: fa
