@@ -273,6 +273,11 @@ Livvi:
   lcode: olo
   iso3: olo
   family: Uralic, Finnic
+Macedonian:
+  flag: MK
+  lcode: mk
+  iso3: mkd
+  family: IE, Slavic
 Maltese:
   flag: MT
   lcode: mt
