@@ -288,6 +288,11 @@ Marathi:
   lcode: mr
   iso3: mar
   family: IE, Indic
+Mbya Guarani:
+  flag: PY
+  lcode: gun
+  iso3: gun
+  family: Tupian
 Naija:
   flag: NG
   lcode: pcm
