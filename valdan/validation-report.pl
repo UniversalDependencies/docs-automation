@@ -81,7 +81,8 @@ while(<REPORT>)
                 $reportlink = " (<a href=\"validation-report.pl?$folder\">report</a>)";
             }
             $html .= "<span class='field-tip' style='color:$color'>$_<span class='tip-content'><pre>";
-            $html .= `cat log/$folder.log`;
+            my $log = `cat log/$folder.log`;
+            $html .= zneskodnit_html($log);
             $html .= "</pre></span></span>$reportlink<br />\n";
         }
         else
@@ -185,4 +186,19 @@ sub vypsat_html_konec
 </html>
 EOF
     ;
+}
+
+
+
+#------------------------------------------------------------------------------
+# V textu zneškodní znaky, které mají zvláštní význam v HTML.
+#------------------------------------------------------------------------------
+sub zneskodnit_html
+{
+    my $text = shift;
+    $text =~ s/&/&amp;/sg;
+    $text =~ s/"/&quot;/sg; #"
+    $text =~ s/</&lt;/sg;
+    $text =~ s/>/&gt;/sg;
+    return $text;
 }
