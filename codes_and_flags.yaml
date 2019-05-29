@@ -363,6 +363,11 @@ Sanskrit:
   lcode: sa
   iso3: san
   family: IE, Indic
+Scottish Gaelic:
+  flag: GB-SCT
+  lcode: gd
+  iso3: gla
+  family: IE, Celtic
 Serbian:
   flag: RS
   lcode: sr
