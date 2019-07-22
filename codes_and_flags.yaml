@@ -28,6 +28,11 @@ Armenian:
   lcode: hy
   iso3: hye
   family: IE, Armenian
+Assamese:
+  flag: IN
+  lcode: as
+  iso3: asm
+  family: IE, Indic
 Assyrian:
   flag: IQ-AII
   lcode: aii
