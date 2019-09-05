@@ -298,6 +298,11 @@ Mbya Guarani:
   lcode: gun
   iso3: gun
   family: Tupian
+Moksha:
+  flag: RU-MOKSHA
+  lcode: mdf
+  iso3: mdf
+  family: Uralic, Mordvin
 Naija:
   flag: NG
   lcode: pcm
@@ -388,6 +393,11 @@ Sindhi:
   lcode: sd
   iso3: snd
   family: IE, Indic
+Skolt Sami:
+  flag: SAMI
+  lcode: sms
+  iso3: sms
+  family: Uralic, Sami
 Slovak:
   flag: SK
   lcode: sk
