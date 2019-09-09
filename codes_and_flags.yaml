@@ -432,6 +432,11 @@ Swedish Sign Language:
   flag: SE
   lcode: swl
   family: Sign Language
+Swiss German:
+  flag: CH
+  lcode: gsw
+  iso3: gsw
+  family: IE, Germanic
 Tagalog:
   flag: PH
   lcode: tl
