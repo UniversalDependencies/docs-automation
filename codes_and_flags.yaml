@@ -108,6 +108,11 @@ Croatian:
   lcode: hr
   iso3: hrv
   family: IE, Slavic
+Cusco Quechua:
+  flag: PE
+  lcode: quz
+  iso3: quz
+  family: Quechuan
 Czech:
   flag: CZ
   lcode: cs
