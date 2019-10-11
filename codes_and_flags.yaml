@@ -243,6 +243,11 @@ Kazakh:
   lcode: kk
   iso3: kaz
   family: Turkic, Northwestern
+Komi Permyak:
+  flag: RU-PER-KPO
+  lcode: koi
+  iso3: koi
+  family: Uralic, Permic
 Komi Zyrian:
   flag: RU-KO
   lcode: kpv
