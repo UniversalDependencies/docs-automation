@@ -41,28 +41,36 @@ my $deferred;
 vypsat_html_zacatek();
 print("<p>Hover the mouse pointer over a treebank name to see validation summary.</p>\n");
 my $nvalid = 0;
+my $nlegacy = 0;
 my $nerror = 0;
 my $nempty = 0;
+my %languages;
 my %languages_valid;
 open(REPORT, "validation-report.txt") or die("Cannot read validation-report.txt: $!");
 while(<REPORT>)
 {
     s/\r?\n$//;
+    my $language = $_;
+    $language =~ s/:.*//;
+    $language =~ s/-.*//;
+    $language =~ s/^UD_//;
+    $language =~ s/_/ /g;
     my $color = 'black';
     if(m/ERROR/)
     {
         $color = 'red';
         $nerror++;
     }
+    elsif(m/LEGACY/)
+    {
+        $color = 'purple';
+        $nlegacy++;
+        $languages_valid{$language}++;
+    }
     elsif(m/VALID/)
     {
         $color = 'green';
         $nvalid++;
-        my $language = $_;
-        $language =~ s/:.*//;
-        $language =~ s/-.*//;
-        $language =~ s/^UD_//;
-        $language =~ s/_/ /g;
         $languages_valid{$language}++;
     }
     elsif(m/EMPTY/)
@@ -72,22 +80,38 @@ while(<REPORT>)
     if(m/^(UD_.+?):/)
     {
         my $folder = $1;
+        $languages{$language}++;
         my $html;
         if(-e "log/$folder.log")
         {
+            my $errorlist = '';
             my $reportlink = '';
-            if(m/ERROR/)
+            if(s/(ERROR; DISCARD|ERROR; BACKUP \d+\.\d+|LEGACY)(\s*\(.+?\))/$1/)
+            {
+                $errorlist = $2;
+            }
+            if(m/(ERROR; DISCARD|ERROR; BACKUP \d+\.\d+|LEGACY)/)
             {
                 $reportlink = " (<a href=\"validation-report.pl?$folder\">report</a>)";
             }
-            $html .= "<span class='field-tip' style='color:$color'>$_<span class='tip-content'><pre>";
+            $html .= "<span class='field-tip' style='color:$color;font-weight:bold'>$_<span class='tip-content'><pre>";
             my $log = `cat log/$folder.log`;
+            # Only show the beginning of the log here.
+            my @lines = split(/\n/, $log);
+            my $n = 20;
+            if(scalar(@lines) > $n)
+            {
+                splice(@lines, $n);
+                push(@lines, '...');
+                push(@lines, 'Follow the report link to see the full validation report.');
+                $log = join("\n", @lines)."\n";
+            }
             $html .= zneskodnit_html($log);
-            $html .= "</pre></span></span>$reportlink<br />\n";
+            $html .= "</pre></span></span>$errorlist$reportlink<br />\n";
         }
         else
         {
-            $html .= "<span style='color:$color'>$_</span><br />\n";
+            $html .= "<span style='color:$color;font-weight:bold'>$_</span><br />\n";
         }
         print($html);
     }
@@ -99,9 +123,12 @@ if($shared_task_first && defined($deferred))
     print($deferred);
 }
 print("<hr />\n");
-my $n = $nvalid + $nerror + $nempty;
+my $n = $nvalid + $nlegacy + $nerror + $nempty;
 my $nlvalid = scalar(keys(%languages_valid));
-print("Total $n, valid $nvalid ($nlvalid languages), error $nerror, empty $nempty.<br />\n");
+my $nltotal = scalar(keys(%languages));
+my $nlerror = $nltotal-$nlvalid;
+print("Total $n, valid $nvalid, legacy $nlegacy, error $nerror, empty $nempty.<br />\n");
+print("Total $nltotal languages, valid/legacy $nlvalid, error/empty $nlerror.<br />\n");
 vypsat_html_konec();
 
 
