@@ -34,10 +34,6 @@ elsif($ENV{QUERY_STRING} =~ m/(UD_[A-Za-z_]+-[A-Za-z]+)/ && -f "log/$1.log")
     exit();
 }
 
-###!!! Temporarily, I want to see shared task treebanks first, then the rest.
-my $shared_task_first = 0;
-my $deferred;
-
 vypsat_html_zacatek();
 my $timer = get_timer('Nov 1, 2019 23:59:59');
 print("<h1>Universal Dependencies Validation Report ($timer)</h1>\n");
@@ -121,11 +117,6 @@ while(<REPORT>)
     }
 }
 close(REPORT);
-if($shared_task_first && defined($deferred))
-{
-    print("<hr />\n");
-    print($deferred);
-}
 print("<hr />\n");
 my $n = $nvalid + $nlegacy + $nerror + $nempty;
 my $nlvalid = scalar(keys(%languages_valid));
