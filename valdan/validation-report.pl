@@ -55,6 +55,14 @@ while(<REPORT>)
     $language =~ s/-.*//;
     $language =~ s/^UD_//;
     $language =~ s/_/ /g;
+    # If a legacy treebank has an exception that is no longer needed, the line will end with UNEXCEPT and a list of error ids.
+    # We should modify the message so that it does not confuse the data maintainers. We also should not format this message
+    # like we format the main result.
+    my $unexcept = '';
+    if(s/UNEXCEPT\s*(.*)//)
+    {
+        $unexcept = " <span style='color:gray'>The following legacy exceptions are no longer needed: $1</span>";
+    }
     my $color = 'black';
     if(m/ERROR/)
     {
@@ -107,11 +115,11 @@ while(<REPORT>)
                 $log = join("\n", @lines)."\n";
             }
             $html .= zneskodnit_html($log);
-            $html .= "</pre></span></span>$errorlist$reportlink<br />\n";
+            $html .= "</pre></span></span>$errorlist$reportlink$unexcept<br />\n";
         }
         else
         {
-            $html .= "<span style='color:$color;font-weight:bold'>$_</span><br />\n";
+            $html .= "<span style='color:$color;font-weight:bold'>$_</span>$unexcept<br />\n";
         }
         print($html);
     }
