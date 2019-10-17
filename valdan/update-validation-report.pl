@@ -28,10 +28,6 @@ if(scalar(@{$record->{files}}) > 0)
     system("echo $command >> log/$folder.log");
     my $result = saferun("perl -I perllib/lib/perl5 -I perllib/lib/perl5/x86_64-linux-gnu-thread-multi $command >> log/$folder.log 2>&1");
     $folder_success = $folder_success && $result;
-    if(!$result)
-    {
-        $error_stats{'L0 Files readme-or-filename'}++;
-    }
     # Check individual data files.
     foreach my $file (@{$record->{files}})
     {
@@ -39,8 +35,8 @@ if(scalar(@{$record->{files}}) > 0)
         system("echo $command >> log/$folder.log");
         $result = saferun("$command >> log/$folder.log 2>&1");
         $folder_success = $folder_success && $result;
-        count_error_types("log/$folder.log", \%error_stats);
     }
+    count_error_types("log/$folder.log", \%error_stats);
     my @error_types = sort(keys(%error_stats));
     my @testids = map {my @f = split(/\s+/, $_); $f[2]} (@error_types);
     my $error_stats = '';
