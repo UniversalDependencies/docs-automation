@@ -39,7 +39,11 @@ my $shared_task_first = 0;
 my $deferred;
 
 vypsat_html_zacatek();
-print("<p>Hover the mouse pointer over a treebank name to see validation summary.</p>\n");
+my $timer = get_timer('Nov 1, 2019 23:59:59');
+print("<h1>Universal Dependencies Validation Report ($timer)</h1>\n");
+print(get_explanation());
+print("<p>Hover the mouse pointer over a treebank name to see validation summary. Click on the “report” link to see the full output of the validation software.</p>\n");
+print("<hr />\n");
 my $nvalid = 0;
 my $nlegacy = 0;
 my $nerror = 0;
@@ -130,6 +134,89 @@ my $nlerror = $nltotal-$nlvalid;
 print("Total $n, valid $nvalid, legacy $nlegacy, error $nerror, empty $nempty.<br />\n");
 print("Total $nltotal languages, valid/legacy $nlvalid, error/empty $nlerror.<br />\n");
 vypsat_html_konec();
+
+
+
+#------------------------------------------------------------------------------
+# Generates explanatory text.
+#------------------------------------------------------------------------------
+sub get_explanation
+{
+    my $text = <<EOF
+    <p>This is the output of automatic on-line validation of UD data.
+    Besides the official UD validation script, <tt>validate.py</tt>,
+    it also runs <tt>check_files.pl</tt> to make sure that each treebank
+    repository contains the expected files with expected names.
+    All tests are conducted in the <tt>dev</tt> branch of the respective
+    repository, and they are rerun each time the contents of the branch is
+    modified. They are also rerun whenever the validation software changes.</p>
+
+    <p>The report on this page is an important indicator whether the current
+    contents of the <tt>dev</tt> branch can be released when the release time
+    comes. The treebanks with the green <span style='color:green;font-weight:bold'>VALID</span>
+    label are fine and ready to go. The purple <span style='color:purple;font-weight:bold'>LEGACY</span>
+    treebanks are not fine but we can still release them. They were considered
+    valid at the time of a previous release and the only errors that are reported
+    now are based on new tests that were not available when the treebank was
+    approved. Finally, if a treebank has the red <span style='color:red;font-weight:bold'>ERROR</span>
+    label, it cannot be released in this state. Either the treebank is new and
+    does not pass all currently available tests, or the treebank is not new
+    but new types of errors were introduced in it. New treebanks will only be
+    released when they are completely valid. If an old treebank contains new
+    errors, we will re-release its previous version and ignore the <tt>dev</tt>
+    branch.</p>
+
+    <p>See the <a href="https://universaldependencies.org/release_checklist.html">release
+    checklist</a> for more information on treebank requirements and validation.</p>
+EOF
+    ;
+    return $text;
+}
+
+
+
+#------------------------------------------------------------------------------
+# Generates countdown timer (from https://www.w3schools.com/howto/howto_js_countdown.asp)
+#------------------------------------------------------------------------------
+sub get_timer
+{
+    my $deadline = shift; # "Jan 5, 2021 15:37:25"
+    my $text = <<EOF
+data freeze in: <span id="timer"></span><script>
+// Set the date we're counting down to
+var countDownDate = new Date("$deadline").getTime();
+
+// Update the count down every 1 second
+var x = setInterval(function() {
+
+  // Get today's date and time
+  var now = new Date().getTime();
+
+  // Find the distance between now and the count down date
+  var distance = countDownDate - now;
+
+  // Time calculations for days, hours, minutes and seconds
+  var days = Math.floor(distance / (1000 * 60 * 60 * 24));
+  var hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+  var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+  var seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+  // Output the result in an element with id="timer"
+  document.getElementById("timer").innerHTML = days + "d " + hours + "h "
+  + minutes + "m " + seconds + "s";
+
+  // If the count down is over, write some text
+  if (distance < 0) {
+    clearInterval(x);
+    document.getElementById("timer").innerHTML = "FROZEN NOW";
+  }
+}, 1000);
+</script>
+EOF
+    ;
+    $text =~ s/\s+$//s;
+    return $text;
+}
 
 
 
