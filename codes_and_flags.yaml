@@ -293,6 +293,11 @@ Macedonian:
   lcode: mk
   iso3: mkd
   family: IE, Slavic
+Maghrebi Arabic French:
+  flag: DZ
+  lcode: qaf
+  iso3: qaf
+  family: Code switching
 Maltese:
   flag: MT
   lcode: mt
