@@ -208,6 +208,11 @@ Hungarian:
   lcode: hu
   iso3: hun
   family: Uralic, Ugric
+Icelandic:
+  flag: IS
+  lcode: is
+  iso3: isl
+  family: IE, Germanic
 Indonesian:
   flag: ID
   lcode: id
