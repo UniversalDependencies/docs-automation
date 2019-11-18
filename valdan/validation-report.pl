@@ -35,7 +35,7 @@ elsif($ENV{QUERY_STRING} =~ m/(UD_[A-Za-z_]+-[A-Za-z]+)/ && -f "log/$1.log")
 }
 
 vypsat_html_zacatek();
-my $timer = get_timer('Nov 1, 2019 23:59:59');
+my $timer = get_timer('May 1, 2020 23:59:59');
 print("<h1>Universal Dependencies Validation Report ($timer)</h1>\n");
 print(get_explanation());
 print("<p>Hover the mouse pointer over a treebank name to see validation summary. Click on the “report” link to see the full output of the validation software.</p>\n");
