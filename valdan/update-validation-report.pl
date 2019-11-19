@@ -122,6 +122,7 @@ BEGIN
         'UD_Amharic-ATT'                => ['lang-spec-doc', 'goeswith-gap', 'leaf-aux-cop', 'leaf-cc', 'leaf-mark-case', 'right-to-left-goeswith', 'punct-is-nonproj', 'rel-upos-advmod', 'rel-upos-aux', 'rel-upos-cc', 'rel-upos-cop', 'rel-upos-det', 'rel-upos-expl', 'rel-upos-mark', 'rel-upos-nummod', 'too-many-subjects', 'upos-rel-punct', 'aux-lemma', 'cop-lemma'],
         'UD_Ancient_Greek-PROIEL'       => ['lang-spec-doc', 'leaf-cc', 'orphan-parent', 'aux-lemma'],
         'UD_Ancient_Greek-Perseus'      => ['lang-spec-doc', 'leaf-aux-cop', 'leaf-cc', 'leaf-mark-case', 'leaf-punct', 'punct-causes-nonproj', 'punct-is-nonproj', 'rel-upos-advmod', 'rel-upos-aux', 'rel-upos-case', 'rel-upos-cc', 'rel-upos-cop', 'rel-upos-mark', 'rel-upos-punct', 'upos-rel-punct'],
+        'UD_Arabic-NYUAD'               => ['aux-lemma'],
         'UD_Arabic-PADT'                => ['punct-is-nonproj', 'rel-upos-cop', 'upos-rel-punct', 'aux-lemma', 'cop-lemma'],
         'UD_Arabic-PUD'                 => ['goeswith-gap', 'goeswith-nospace', 'leaf-aux-cop', 'leaf-fixed', 'leaf-goeswith', 'leaf-mark-case', 'orphan-parent', 'punct-is-nonproj', 'rel-upos-advmod', 'rel-upos-aux', 'rel-upos-case', 'rel-upos-cop', 'rel-upos-det', 'rel-upos-mark', 'rel-upos-nummod', 'aux-lemma', 'cop-lemma'],
         'UD_Bambara-CRB'                => ['lang-spec-doc', 'leaf-aux-cop', 'leaf-cc', 'leaf-fixed', 'orphan-parent', 'punct-causes-nonproj', 'punct-is-nonproj', 'rel-upos-advmod', 'rel-upos-aux', 'rel-upos-case', 'rel-upos-cc', 'rel-upos-punct', 'aux-lemma'],
