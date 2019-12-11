@@ -7,7 +7,8 @@ That poses a problem for versioning of the scripts themselves (we
 want to avoid nested git folders). Therefore I recommend to have
 this repository (docs-automation) checked out as a sibling to the
 UD data repositories, and to symlink from the CGI folder down here
-to the real (and versioned) implementation of the scripts.
+to the real (and versioned) implementation of the scripts; the same
+can be done with other important files including this README.
 
 cgi/unidep
 +- UD_Afrikaans
@@ -24,6 +25,25 @@ work. Otherwise the server will send '403 Forbidden' back to
 Github, and it will not invoke the script. If you cannot configure
 your web server, maybe you have to use a hard link or just a copy
 of the script.
+
+Other than the above, the main cgi folder should contain only log
+files in the 'log' subfolder, and the folders 'perllib' and
+'pythonlib' with locally installed modules. These are not
+versioned.
+
+
+
+# Access Permissions
+
+User www-data must have write access to all treebank folders, to
+the 'docs' and 'tools' repos, to the 'log' folder, and to all files
+and subfolders of these folders. Furthermore, the mask must be set
+so that any new files I create (e.g. via git pull) will
+automatically grant access to user www-data. Similarly, the mask of
+user www-data must ensure that any files created by that user will
+be writable by me. All this can be achieved with the setfacl
+command (access control lists). See the script clone_one.sh for how
+it is done when cloning a new UD treebank.
 
 The UD data repositories must be cloned via the HTTPS protocol (as
 opposed to SSH) because the CGI scripts run under the user www-data
@@ -65,8 +85,9 @@ stay in the master branch.)
 Now we need a folder called log, lying in cgi/unidep next to the UD
 repositories, with write access for user www-data:
 
-mkdir log
-setfacl -R -m u:www-data:rwx log
+  mkdir log
+  setfacl -R -m u:www-data:rwx log
+  setfacl -R -m u:zeman:rwx log
 
 The main script that must be symlinked or copied to cgi/unidep is
 githook.pl. This script will be invoked by a POST request from
@@ -100,24 +121,6 @@ with the information above. This should be fixed.
 
 
 
-# Versioning
-
-A large part of this folder are clones of Github-hosted
-repositories. They contain the data that we check. We synchronize
-them via git pull every time Github sends us a notification that
-their contents has changed.
-
-The scripts that make UD Validator work are versioned in
-docs-automation (see also the note on hard links below). Other
-important files, including this README file, are versioned there as
-well. This repository is not synchronized automatically.
-
-Other than the above, this folder should contain only log files in
-the 'log' folder, and the folders 'perllib' and 'pythonlib' with
-locally installed modules. These are not versioned.
-
-
-
 # Hard Links
 
 Some scripts in this folder are hard-linked with same-named scripts
@@ -135,22 +138,6 @@ creates a new file, instead of simply writing in the old file. We
 can run the script lnquest.sh after git pull and it will recreate
 the hard links. There are hard-coded paths in the script, so it
 must be modified when the validator is installed on a new server.
-
-
-
-# Access Permissions
-
-User www-data must have write access to all treebank folders, to
-the docs and tools repos, to the 'log' folder, and to all files and
-subfolders of these folders. Furthermore, the mask must be set so
-that any new files I create (e.g. via git pull) will automatically
-grant access to user www-data. Similarly, the mask of user www-data
-must ensure that any files created by that user will be writable by
-me.
-
-All this can be achieved with the setfacl command (access control
-lists). See the script clone_one.sh for how it is done when cloning
-a new UD treebank.
 
 
 
