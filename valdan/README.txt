@@ -56,9 +56,9 @@ we can use the extended rights management with access control lists
 (setfacl). The following scripts can be used to clone the
 repositories.
 
-clone_one.sh UD_Afrikaans
-clone_all.sh
-ud-treebank-list.txt # used by clone_all.sh
+  clone_one.sh UD_Afrikaans
+  clone_all.sh
+  ud-treebank-list.txt # used by clone_all.sh
 
 (Update: I usually use just clone_one.sh. The file
 ud-treebank-list.txt has not been updated for a long time, and on
@@ -88,6 +88,14 @@ repositories, with write access for user www-data:
   mkdir log
   setfacl -R -m u:www-data:rwx log
   setfacl -R -m u:zeman:rwx log
+
+Finally, user www-data also needs write access to four files that
+reside directly in the main cgi folder:
+
+  validation-report.txt
+  validation-report.bak
+  evaluation-report.txt
+  evaluation-report.bak
 
 The main script that must be symlinked or copied to cgi/unidep is
 githook.pl. This script will be invoked by a POST request from
@@ -133,16 +141,38 @@ first, as there are hard-coded paths in it.
 
 
 
-=========================================================================================
-2019-12-11 Merging two READMEs into one. The information below partially overlaps
-with the information above. This should be fixed.
-=========================================================================================
-
-
-
-# Other Notes
+# Perl and Python Libraries
 
 The validation server uses Perl and Python with certain libraries
 that must be installed separately. It is possible to install them
 without root permissions to local folders called 'perllib' and
 'pythonlib' but we must tell Perl and Python where to find them.
+
+Perl needs the module LWP::Simple. It can be installed as an Ubuntu
+package:
+
+  sudo apt-get install libwww-perl
+
+Perl further needs the modules JSON::Parse and YAML. I was not able
+to find corresponding Ubuntu packages (libjson-perl and
+libconfig-json-perl did not help), but they can be installed
+directly from CPAN:
+
+  sudo cpan JSON::Parse
+  sudo cpan YAML
+
+If we do not have superuser access to the server, we can install
+them to the user-writable space, then copy them to the cgi folder
+and always call Perl with the -I option, telling it where the
+libraries are. This is in fact what our scripts do when invoking
+other scripts, which need the libraries (see for example the source
+code of update-validation-report.pl). However, simple copying of
+the library folder from one server to another is likely to cause
+problems, as the libraries may be compiled for a different
+architecture. Even if we install the libraries with superuser
+permissions to the system space, we want to make sure that their
+copies from the other architecture are erased from the local
+perllib. On the other hand, the local perllib also contains some of
+my own Perl libraries (starting with a lowercase letter and ending
+with '.pm'); we want to keep these, as one of the validation
+scripts uses them.
