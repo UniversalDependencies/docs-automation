@@ -176,3 +176,27 @@ perllib. On the other hand, the local perllib also contains some of
 my own Perl libraries (starting with a lowercase letter and ending
 with '.pm'); we want to keep these, as one of the validation
 scripts uses them.
+
+As for Python, we need the tool 'pip3' to install additional
+modules. The tool is available as a package for Ubuntu:
+
+  sudo apt-get install python3-pip
+
+Once we have pip3, we can install the module 'regex'. If we do it
+with sudo, it should by installed system-wide and thus usable by
+the user www-data. Without sudo it will be installed in our home
+folder and we will have to copy the installation to the folder
+'pythonlib' in the cgi folder.
+
+  sudo pip3 install regex
+
+The other option is to install locally for the current user:
+
+  pip3 install --user regex
+
+then copy ~/.local/lib/python3.4 to pythonlib/python3.4
+
+We have shell envelopes for Python scripts that we use, and these
+envelopes first set PYTHONLIB to point to the local pythonlib.
+(They also set locale to digest UTF8 input.) These settings are
+essential and the user www-data does not have them by default.
