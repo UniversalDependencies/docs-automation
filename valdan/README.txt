@@ -114,30 +114,29 @@ despite everything being OK at our end.
 
 
 
-=========================================================================================
-2019-12-11 Merging two READMEs into one. The information below partially overlaps
-with the information above. This should be fixed.
-=========================================================================================
-
-
-
 # Hard Links
 
-Some scripts in this folder are hard-linked with same-named scripts
-in docs-automation/valdan. It's because I want to version the
-scripts and the docs-automation repository lies next to the data
-repositories. However, as CGI scripts, they need to be invoked in
-the superordinate folder.
-
-I cannot use symlinks because the web server refuses to follow
-them. (But it could be probably configured to follow them.)
+If it is not possible to configure Apache to follow symlinks in the
+cgi-bin folder, we may use hard links between scripts in the main
+folder and their versioned copies in docs-automation/valdan.
 
 Note that git pull in docs-automation will break the hard links
 because git first removes (i.e., unlinks) the old file and then
 creates a new file, instead of simply writing in the old file. We
 can run the script lnquest.sh after git pull and it will recreate
-the hard links. There are hard-coded paths in the script, so it
-must be modified when the validator is installed on a new server.
+the hard links.
+
+The hard links will obviously be broken also if the whole
+validation application is copied to a new server. The script
+lnquest.sh can be used to restore them but it has to be edited
+first, as there are hard-coded paths in it.
+
+
+
+=========================================================================================
+2019-12-11 Merging two READMEs into one. The information below partially overlaps
+with the information above. This should be fixed.
+=========================================================================================
 
 
 
