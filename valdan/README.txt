@@ -200,3 +200,40 @@ We have shell envelopes for Python scripts that we use, and these
 envelopes first set PYTHONLIB to point to the local pythonlib.
 (They also set locale to digest UTF8 input.) These settings are
 essential and the user www-data does not have them by default.
+
+
+
+# Apache Configuration
+
+To turn on CGI functionality of the web server, it may be necessary
+to turn on the Apache module cgid, which does not seem to be on by
+default. We may also need to symlink from /var/www/cgi-bin to
+/usr/lib/cgi-bin.
+
+  https://code-maven.com/set-up-cgi-with-apache
+
+See the Apache documentation on configuration options, e.g., for
+the HTTP Server 2.4, see
+
+  https://httpd.apache.org/docs/2.4/configuring.html
+
+The main configuration file is typically called 'httpd.conf' but
+depending on system, other files may be relevant. For example, this
+may be the entry point for a virtual host:
+
+  /etc/apache2/sites-enabled/000-default.conf
+
+If the validation report is the only content or service provided by
+the server, we may want to redirect the top-level URL to the actual
+script that produces the report. This can be achieved by adding the
+following directive to the configuration file (adjust to the actual
+URL of the final script on your machine):
+
+  Redirect /index.html "http://quest.ms.mff.cuni.cz/udvalidator/cgi-bin/unidep/validation-report.pl"
+
+Whenever we change the configuration of the server, we must restart
+the server:
+
+  sudo service apache2 reload
+
+Now we can test the new behavior in the browser.
