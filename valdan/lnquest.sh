@@ -4,9 +4,9 @@
 # Copyright © 2019 Dan Zeman <zeman@ufal.mff.cuni.cz>
 # License: GNU GPL
 
-cd /home/zeman/cgi/unidep/docs-automation/valdan
-if [[ "$(pwd)" == "/home/zeman/cgi/unidep/docs-automation/valdan" ]] ; then
-    for i in *.sh *.pl ; do
+cd /home/zeman/unidep/docs-automation/valdan
+if [[ "$(pwd)" == "/home/zeman/unidep/docs-automation/valdan" ]] ; then
+    for i in *.sh *.pl README* ; do
     rm -f ../../$i
     ln $i ../../$i
     done
