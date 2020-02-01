@@ -298,6 +298,11 @@ Macedonian:
   lcode: mk
   iso3: mkd
   family: IE, Slavic
+Magahi:
+  flag: IN
+  lcode: mag
+  iso3: mag
+  family: IE, Indic
 Maghrebi Arabic French:
   flag: DZ
   lcode: qaf
