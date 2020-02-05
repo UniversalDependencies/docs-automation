@@ -8,6 +8,11 @@ Akkadian:
   lcode: akk
   iso3: akk
   family: Afro-Asiatic, Semitic
+Albanian:
+  flag: AL
+  lcode: sq
+  iso3: sqi
+  family: IE, Albanian
 Amharic:
   flag: ET
   lcode: am
