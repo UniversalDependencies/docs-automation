@@ -343,6 +343,11 @@ Naija:
   lcode: pcm
   iso3: pcm
   family: Creole
+Ndengereko:
+  flag: TZ
+  lcode: ndg
+  iso3: ndg
+  family: Niger-Congo, Bantoid
 North Sami:
   flag: SAMI
   lcode: sme
