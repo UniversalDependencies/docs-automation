@@ -363,6 +363,11 @@ Old French:
   lcode: fro
   iso3: fro
   family: IE, Romance
+Old Irish:
+  flag: IE-FOUR
+  lcode: sga
+  iso3: sga
+  family: IE, Celtic
 Old Russian:
   flag: RU-IVAN
   lcode: orv
