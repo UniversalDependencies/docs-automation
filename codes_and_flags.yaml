@@ -333,6 +333,11 @@ Mbya Guarani:
   lcode: gun
   iso3: gun
   family: Tupian
+Middle Irish:
+  flag: IE-FOUR
+  lcode: mga
+  iso3: mga
+  family: IE, Celtic
 Moksha:
   flag: RU-MOKSHA
   lcode: mdf
@@ -398,6 +403,11 @@ Portuguese:
   lcode: pt
   iso3: por
   family: IE, Romance
+Primitive Irish:
+  flag: IE-FOUR
+  lcode: pgl
+  iso3: pgl
+  family: IE, Celtic
 Romanian:
   flag: RO
   lcode: ro
