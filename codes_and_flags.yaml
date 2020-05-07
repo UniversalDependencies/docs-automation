@@ -33,6 +33,11 @@ Arabic:
   lcode: ar
   iso3: ara
   family: Afro-Asiatic, Semitic
+Archaic Irish:
+  flag: IE-FOUR
+  lcode: pgl
+  iso3: pgl
+  family: IE, Celtic
 Armenian:
   flag: AM
   lcode: hy
@@ -403,11 +408,6 @@ Portuguese:
   lcode: pt
   iso3: por
   family: IE, Romance
-Primitive Irish:
-  flag: IE-FOUR
-  lcode: pgl
-  iso3: pgl
-  family: IE, Celtic
 Romanian:
   flag: RO
   lcode: ro
