@@ -368,6 +368,11 @@ Norwegian:
   lcode: 'no'
   iso3: nor
   family: IE, Germanic
+Occitan:
+  flag: FR-OCC
+  lcode: oc
+  iso3: oci
+  family: IE, Romance
 Old Church Slavonic:
   flag: MORAVA
   lcode: cu
