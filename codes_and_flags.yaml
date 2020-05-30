@@ -223,6 +223,11 @@ Hindi English:
   lcode: qhe
   iso3: qhe
   family: Code switching
+Hittite:
+  flag: TR
+  lcode: hit
+  iso3: hit
+  family: IE, Anatolian
 Hungarian:
   flag: HU
   lcode: hu
