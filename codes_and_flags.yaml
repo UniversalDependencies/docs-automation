@@ -338,6 +338,11 @@ Maltese:
   lcode: mt
   iso3: mlt
   family: Afro-Asiatic, Semitic
+Manx:
+  flag: IM
+  lcode: gv
+  iso3: glv
+  family: IE, Celtic
 Marathi:
   flag: IN
   lcode: mr
