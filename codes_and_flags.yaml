@@ -363,6 +363,11 @@ Moksha:
   lcode: mdf
   iso3: mdf
   family: Uralic, Mordvin
+Mongolian:
+  flag: MN
+  lcode: mn
+  iso3: mon
+  family: Mongolic
 Naija:
   flag: NG
   lcode: pcm
