@@ -308,6 +308,11 @@ Latvian:
   lcode: lv
   iso3: lav
   family: IE, Baltic
+Laz:
+  flag: TR
+  lcode: lzz
+  iso3: lzz
+  family: Kartvelian
 Lithuanian:
   flag: LT
   lcode: lt
