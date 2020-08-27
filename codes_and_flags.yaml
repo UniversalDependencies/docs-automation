@@ -503,6 +503,11 @@ Sorani:
   lcode: ckb
   iso3: ckb
   family: IE, Iranian
+South Levantine Arabic:
+  flag: JO
+  lcode: ajp
+  iso3: ajp
+  family: Afro-Asiatic, Semitic
 Spanish:
   flag: ES
   lcode: es
