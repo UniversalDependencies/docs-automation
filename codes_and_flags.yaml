@@ -428,6 +428,11 @@ Old Russian:
   lcode: orv
   iso3: orv
   family: IE, Slavic
+Old Saxon:
+  flag: DE-HRR
+  lcode: osx
+  iso3: osx
+  family: IE, Germanic
 Persian:
   flag: IR
   lcode: fa
@@ -528,6 +533,11 @@ Spanish:
   lcode: es
   iso3: spa
   family: IE, Romance
+Sumerian:
+  flag: IQ
+  lcode: sux
+  iso3: sux
+  family: Sumerian
 Swedish:
   flag: SE
   lcode: sv
