@@ -273,6 +273,11 @@ Kazakh:
   lcode: kk
   iso3: kaz
   family: Turkic, Northwestern
+Khunsari:
+  flag: IR
+  lcode: kfm
+  iso3: kfm
+  family: IE, Iranian
 Komi Permyak:
   flag: RU-PER-KPO
   lcode: koi
@@ -378,6 +383,11 @@ Naija:
   lcode: pcm
   iso3: pcm
   family: Creole
+Nayini:
+  flag: IR
+  lcode: nyq
+  iso3: nyq
+  family: IE, Iranian
 Ndengeleko:
   flag: TZ
   lcode: ndg
@@ -493,6 +503,11 @@ Slovenian:
   lcode: sl
   iso3: slv
   family: IE, Slavic
+Soi:
+  flag: IR
+  lcode: soj
+  iso3: soj
+  family: IE, Iranian
 Somali:
   flag: SO
   lcode: so
