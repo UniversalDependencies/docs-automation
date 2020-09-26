@@ -491,6 +491,8 @@ sub saferun
 #==============================================================================
 # The following functions are available in tools/udlib.pm. However, udlib uses
 # JSON::Parse, which is not installed on quest, so we cannot use it here.
+# Moreover, I have modified the functions here and they are no longer
+# equivalent to the original in udlib.pm.
 #==============================================================================
 
 
@@ -518,18 +520,8 @@ sub get_ud_files_and_codes
     {
         print STDERR ("WARNING: Unexpected folder name '$udfolder'\n");
     }
-    # Look for training, development or test data.
-    my $section = 'any'; # training|development|test|any
-    my %section_re =
-    (
-        # Training data in UD_Czech are split to four files.
-        'training'    => 'train(-[clmv])?',
-        'development' => 'dev',
-        'test'        => 'test',
-        'any'         => '(train(-[clmv])?|dev|test)'
-    );
     opendir(DIR, "$path/$udfolder") or die("Cannot read the contents of '$path/$udfolder': $!");
-    my @files = sort(grep {-f "$path/$udfolder/$_" && m/.+-ud-$section_re{$section}\.conllu$/} (readdir(DIR)));
+    my @files = sort(grep {-f "$path/$udfolder/$_" && m/\.conllu$/i} (readdir(DIR)));
     closedir(DIR);
     my $n = scalar(@files);
     my $code;
@@ -537,22 +529,12 @@ sub get_ud_files_and_codes
     my $tcode;
     if($n==0)
     {
-        if($section eq 'any')
-        {
-            print STDERR ("WARNING: No data found in '$path/$udfolder'\n");
-        }
-        else
-        {
-            print STDERR ("WARNING: No $section data found in '$path/$udfolder'\n");
-        }
+        print STDERR ("WARNING: No data found in '$path/$udfolder'\n");
     }
     else
     {
-        if($n>1 && $section ne 'any')
-        {
-            print STDERR ("WARNING: Folder '$path/$udfolder' contains multiple ($n) files that look like $section data.\n");
-        }
-        $files[0] =~ m/^(.+)-ud-$section_re{$section}\.conllu$/;
+        # Extract the language code and treebank code from the first file name.
+        $files[0] =~ m/^(.+)-ud-.+\.conllu$/;
         $lcode = $code = $1;
         if($code =~ m/^([^_]+)_(.+)$/)
         {
@@ -570,9 +552,7 @@ sub get_ud_files_and_codes
         'ltcode' => $code, # for compatibility with some tools, this code is provided both as 'code' and as 'ltcode'
         'lcode'  => $lcode,
         'tcode'  => $tcode,
-        'files'  => \@files,
-        $section => $files[0]
+        'files'  => \@files
     );
-    #print STDERR ("$udfolder\tlname $langname\ttname $tbkext\tcode $code\tlcode $lcode\ttcode $tcode\t$section $files[0]\n");
     return \%record;
 }
