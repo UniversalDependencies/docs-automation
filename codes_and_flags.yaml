@@ -362,7 +362,7 @@ Mbya Guarani:
   flag: PY
   lcode: gun
   iso3: gun
-  family: Tupian
+  family: Tupian, Tupi-Guarani
 Middle Irish:
   flag: IE-FOUR
   lcode: mga
@@ -378,6 +378,11 @@ Mongolian:
   lcode: mn
   iso3: mon
   family: Mongolic
+Munduruku:
+  flag: BR
+  lcode: myu
+  iso3: myu
+  family: Tupian, Munduruku
 Naija:
   flag: NG
   lcode: pcm
@@ -572,6 +577,11 @@ Thai:
   lcode: th
   iso3: tha
   family: Tai-Kadai
+Tupinamba:
+  flag: BR
+  lcode: tpn
+  iso3: tpn
+  family: Tupian, Tupi-Guarani
 Turkish:
   flag: TR
   lcode: tr
