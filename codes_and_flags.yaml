@@ -13,6 +13,11 @@ Akkadian:
   lcode: akk
   iso3: akk
   family: Afro-Asiatic, Semitic
+Akuntsu:
+  flag: BR
+  lcode: aqz
+  iso3: aqz
+  family: Tupian, Tupari
 Albanian:
   flag: AL
   lcode: sq
