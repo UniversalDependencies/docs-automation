@@ -33,6 +33,11 @@ Ancient Greek:
   lcode: grc
   iso3: grc
   family: IE, Greek
+Apurina:
+  flag: BR
+  lcode: apu
+  iso3: apu
+  family: Arawakan
 Arabic:
   flag: SA-AL
   lcode: ar
