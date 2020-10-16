@@ -448,6 +448,11 @@ Old Saxon:
   lcode: osx
   iso3: osx
   family: IE, Germanic
+Old Turkish:
+  flag: TURKIC
+  lcode: otk
+  iso3: otk
+  family: Turkic, Northeastern
 Persian:
   flag: IR
   lcode: fa
