@@ -602,6 +602,11 @@ Turkish:
   lcode: tr
   iso3: tur
   family: Turkic, Southwestern
+Turkish German:
+  flag: TR
+  lcode: qtd
+  iso3: qtd
+  family: Code switching
 Ukrainian:
   flag: UA
   lcode: uk
