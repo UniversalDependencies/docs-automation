@@ -242,7 +242,7 @@ else
     Exceptions include deficient paradigms (different present and past copula,
     positive and negative, imperfect and iterative), and also the Romance verbs
     <i>ser</i> and <i>estar</i> (both equivalents of “to be”). In contrast,
-    equivalents of “to become, to look like, to be called” etc. are not copulas
+    equivalents of “to become, to stay, to look like, to be called” etc. are not copulas
     in UD, even if a traditional grammar classifies them as such. In UD they
     should head an <tt><a href="https://universaldependencies.org/u/dep/xcomp.html">xcomp</a></tt>
     relation instead. A copula is normally tagged <a href="https://universaldependencies.org/u/pos/AUX_.html">AUX</a>.
