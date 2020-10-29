@@ -283,6 +283,11 @@ Kazakh:
   lcode: kk
   iso3: kaz
   family: Turkic, Northwestern
+Khoekhoe:
+  flag: NA
+  lcode: naq
+  iso3: naq
+  family: Khoe-Kwadi
 Khunsari:
   flag: IR
   lcode: kfm
