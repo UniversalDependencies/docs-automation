@@ -157,7 +157,7 @@ Dargwa:
   flag: RU-DA
   lcode: dar
   iso3: dar
-  family: Nakho-Dagestanian
+  family: Nakh-Daghestanian, Lak-Dargwa
 Dutch:
   flag: NL
   lcode: nl
@@ -333,6 +333,11 @@ Laz:
   lcode: lzz
   iso3: lzz
   family: Kartvelian
+Lezgian:
+  flag: RU-DA
+  lcode: lez
+  iso3: lez
+  family: Nakh-Daghestanian, Lezgic
 Lithuanian:
   flag: LT
   lcode: lt
