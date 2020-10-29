@@ -398,6 +398,11 @@ Marathi:
   lcode: mr
   iso3: mar
   family: IE, Indic
+Mauka:
+  flag: CI
+  lcode: mxx
+  iso3: mxx
+  family: Mande
 Mbya Guarani:
   flag: PY
   lcode: gun
