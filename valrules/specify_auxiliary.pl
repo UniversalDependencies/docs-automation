@@ -22,7 +22,24 @@ if ( !defined($languages) )
     die "Cannot read the list of languages";
 }
 # The $languages hash is indexed by language names. Create a mapping from language codes.
+# At the same time, separate family from genus where applicable.
 my %lname_by_code; map {$lname_by_code{$languages->{$_}{lcode}} = $_} (keys(%{$languages}));
+foreach my $lname (keys(%{$languages}))
+{
+    $lname_by_code{$languages->{$lname}{lcode}} = $lname;
+    my $family_genus = $languages->{$lname}{family};
+    if($family_genus =~ m/^(.+),\s*(.+)$/)
+    {
+        $languages->{$lname}{familygenus} = $family_genus;
+        $languages->{$lname}{family} = $1;
+        $languages->{$lname}{genus} = $2;
+    }
+    else
+    {
+        $languages->{$lname}{familygenus} = $family_genus;
+        $languages->{$lname}{genus} = '';
+    }
+}
 # We must set our own PATH even if we do not depend on it.
 # The system call may potentially use it, and the one from outside is considered insecure.
 $ENV{'PATH'} = $path.':/home/zeman/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin';
@@ -199,8 +216,37 @@ EOF
     print("  <h2>Known auxiliaries for this and other languages</h2>\n");
     print("  <table>\n");
     print("    <tr><th colspan=2>Language</th><th>Total</th><th>Lemmas</th></tr>\n");
+    # First display the actual language.
+    # Then display languages from the same family and genus.
+    # Then languages from the same family but different genera.
+    # Then all remaining languages.
+    my $myfamilygenus = $languages->{$lname_by_code{$lcode}}{familygenus};
+    my $myfamily = $languages->{$lname_by_code{$lcode}}{family};
+    my $mygenus = $languages->{$lname_by_code{$lcode}}{genus};
     foreach my $row (@data)
     {
+        next unless($row->{lcode} eq $lcode);
+        my $n = scalar(@{$row->{auxlist}});
+        print("    <tr><td>$lname_by_code{$row->{lcode}}</td><td>$row->{lcode}</td><td>$n</td><td>".join(' ', @{$row->{auxlist}})."</td></tr>\n");
+        last;
+    }
+    foreach my $row (@data)
+    {
+        next if($row->{lcode} eq $lcode);
+        next unless($languages->{$lname_by_code{$row->{lcode}}}{familygenus} eq $myfamilygenus);
+        my $n = scalar(@{$row->{auxlist}});
+        print("    <tr><td>$lname_by_code{$row->{lcode}}</td><td>$row->{lcode}</td><td>$n</td><td>".join(' ', @{$row->{auxlist}})."</td></tr>\n");
+    }
+    foreach my $row (@data)
+    {
+        next if($languages->{$lname_by_code{$row->{lcode}}}{familygenus} eq $myfamilygenus);
+        next unless($languages->{$lname_by_code{$row->{lcode}}}{family} eq $myfamily);
+        my $n = scalar(@{$row->{auxlist}});
+        print("    <tr><td>$lname_by_code{$row->{lcode}}</td><td>$row->{lcode}</td><td>$n</td><td>".join(' ', @{$row->{auxlist}})."</td></tr>\n");
+    }
+    foreach my $row (@data)
+    {
+        next if($languages->{$lname_by_code{$row->{lcode}}}{family} eq $myfamily);
         my $n = scalar(@{$row->{auxlist}});
         print("    <tr><td>$lname_by_code{$row->{lcode}}</td><td>$row->{lcode}</td><td>$n</td><td>".join(' ', @{$row->{auxlist}})."</td></tr>\n");
     }
