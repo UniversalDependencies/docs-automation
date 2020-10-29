@@ -197,7 +197,13 @@ EOF
       <td>Example<br/>
         <small>mark the auxiliary by enclosing it in square brackets, e.g., “he [has] done it”</small>
       </td>
-      <td>English translation of the example</td>
+EOF
+        ;
+        unless($lcode eq 'en')
+        {
+            print("      <td>English translation of the example</td>\n");
+        }
+        print <<EOF
       <td>Comment</td>
     </tr>
     <tr>
@@ -222,7 +228,13 @@ EOF
       </td>
       <td><input name=rule type=text /></td>
       <td><input name=example type=text /></td>
-      <td><input name=exampleen type=text /></td>
+EOF
+        ;
+        unless($lcode eq 'en')
+        {
+            print("      <td><input name=exampleen type=text /></td>\n");
+        }
+        print <<EOF
       <td><input name=comment type=text /></td>
     </tr>
   </table>
