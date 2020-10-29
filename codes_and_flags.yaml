@@ -388,6 +388,11 @@ Middle Irish:
   lcode: mga
   iso3: mga
   family: IE, Celtic
+Mizo:
+  flag: IN
+  lcode: lus
+  iso3: lus
+  family: Sino-Tibetan
 Moksha:
   flag: RU-MOKSHA
   lcode: mdf
