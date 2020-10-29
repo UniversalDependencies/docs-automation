@@ -42,6 +42,19 @@ print <<EOF
     function as auxiliaries in some constructions and as full verbs in others
     (e.g., <i>to have</i> in English). There are also auxiliaries whose nature
     is completely different from verbs in the given language.</p>
+  <p><strong>Remember:</strong> A language typically has at most one lemma for
+    <a href="https://universaldependencies.org/u/dep/cop.html">copula</a>.
+    Exceptions include deficient paradigms (different present and past copula,
+    positive and negative, imperfect and iterative), and also the Romance verbs
+    <i>ser</i> and <i>estar</i> (both equivalents of “to be”). In contrast,
+    equivalents of “to become, to look like, to be called” etc. are not copulas
+    in UD, even if a traditional grammar classifies them as such. In UD they
+    should head an <tt><a href="https://universaldependencies.org/u/dep/xcomp.html">xcomp</a></tt>
+    relation instead. A copula is normally tagged <a href="https://universaldependencies.org/u/pos/AUX_.html">AUX</a>.
+    Exception: in some languages a personal or demonstrative pronoun /
+    determiner can be used as a copula and then we keep it tagged
+    <a href="https://universaldependencies.org/u/pos/PRON.html">PRON</a> or
+    <a href="https://universaldependencies.org/u/pos/DET.html">DET</a>.</p>
   <form>
   <table>
     <tr>
