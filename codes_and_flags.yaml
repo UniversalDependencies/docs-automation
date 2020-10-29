@@ -323,6 +323,11 @@ Korean:
   lcode: ko
   iso3: kor
   family: Korean
+Koromfe:
+  flag: BF
+  lcode: kfz
+  iso3: kfz
+  family: Niger-Congo, Northern-Central Gur
 Kurmanji:
   flag: TR
   lcode: kmr
