@@ -56,7 +56,15 @@ print <<EOF
 <head>
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
   <title>Specify auxiliaries in UD</title>
-  <style type="text/css"> img {border: none;} </style>
+  <style type="text/css">
+    img {border: none;}
+    img.flag {
+      vertical-align: middle;
+      border: solid grey 1px;
+      height: 1em;
+      margin: 0 1em;
+    }
+  </style>
 </head>
 <body>
   <h1>Specify auxiliaries for English</h1>
@@ -97,7 +105,7 @@ if($lemma eq '')
     my @familylines;
     foreach my $family (sort(keys(%families)))
     {
-        my @lnames = map {"<img src=\"https://universaldependencies.org/flags/svg/$languages->{$_}{flag}.svg\" height=32 />&nbsp;$_"} (sort(grep {$languages->{$_}{family} eq $family} (keys(%{$languages}))));
+        my @lnames = map {"<img class=\"flag\" src=\"https://universaldependencies.org/flags/svg/$languages->{$_}{flag}.svg\" />&nbsp;$_"} (sort(grep {$languages->{$_}{family} eq $family} (keys(%{$languages}))));
         my $familyline = "$family: ".join(', ', @lnames);
         push(@familylines, $familyline);
     }
