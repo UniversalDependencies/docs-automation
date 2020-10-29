@@ -198,11 +198,11 @@ EOF
     # Print the data on the web page.
     print("  <h2>Known auxiliaries for this and other languages</h2>\n");
     print("  <table>\n");
-    print("    <tr><th>Language</th><th>Total</th><th>Lemmas</th></tr>\n");
+    print("    <tr><th colspan=2>Language</th><th>Total</th><th>Lemmas</th></tr>\n");
     foreach my $row (@data)
     {
         my $n = scalar(@{$row->{auxlist}});
-        print("    <tr><td>$row->{lcode}</td><td>$n</td><td>".join(' ', @{$row->{auxlist}})."</td></tr>\n");
+        print("    <tr><td>$lname_by_code{$row->{lcode}}</td><td>$row->{lcode}</td><td>$n</td><td>".join(' ', @{$row->{auxlist}})."</td></tr>\n");
     }
     print("  </table>\n");
 }
