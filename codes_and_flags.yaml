@@ -488,6 +488,11 @@ Portuguese:
   lcode: pt
   iso3: por
   family: IE, Romance
+Purki:
+  flag: IN
+  lcode: prx
+  iso3: prx
+  family: Sino-Tibetan
 Romanian:
   flag: RO
   lcode: ro
