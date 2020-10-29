@@ -198,10 +198,11 @@ EOF
     # Print the data on the web page.
     print("  <h2>Known auxiliaries for this and other languages</h2>\n");
     print("  <table>\n");
-    print("    <tr><th>Language</th><th>Lemmas</th></tr>\n");
+    print("    <tr><th>Language</th><th>Total</th><th>Lemmas</th></tr>\n");
     foreach my $row (@data)
     {
-        print("    <tr><td>$row->{lcode}</td><td>".join(' ', @{$row->{auxlist}})."</td></tr>\n");
+        my $n = scalar(@{$row->{auxlist}});
+        print("    <tr><td>$row->{lcode}</td><td>$n</td><td>".join(' ', @{$row->{auxlist}})."</td></tr>\n");
     }
     print("  </table>\n");
 }
@@ -241,6 +242,10 @@ sub read_auxiliaries_from_python
         {
             my $lcode = $1;
             my $auxlist = $2;
+            if(!exists($lname_by_code{$lcode}))
+            {
+                die "Encountered unknown language code '$lcode' when reading the auxiliary list from Python";
+            }
             my @auxlist = ();
             while($auxlist =~ s/^'(.+?)'//)
             {
