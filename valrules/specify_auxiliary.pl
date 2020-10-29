@@ -194,35 +194,7 @@ EOF
         ;
     }
     # Read the data file.
-    my @data;
-    my $datafile = "$path/data.txt";
-    open(DATA, $datafile) or die("Cannot read '$datafile': $!");
-    # For a start, the data file contains a copy of the lines from the Python source of the validator.
-    while(<DATA>)
-    {
-        # Remove the line break.
-        s/\r?\n$//;
-        # Skip comments.
-        next if(m/^\s*\#/);
-        # A data line looks like this:
-        # 'en':  ['be', 'have', 'do', 'will', 'would', 'may', 'might', 'can', 'could', 'shall', 'should', 'must', 'get', 'ought'],
-        # It could use different syntax and the entry could even be split into
-        # multiple lines but we ignore such possibilities for now.
-        if(m/'([a-z]{2,3})':\s*\[\s*('.+?'(?:\s*,\s*'.+?')*)\s*\]/)
-        {
-            my $lcode = $1;
-            my $auxlist = $2;
-            my @auxlist = ();
-            while($auxlist =~ s/^'(.+?)'//)
-            {
-                my $lemma = $1;
-                push(@auxlist, $lemma);
-                $auxlist =~ s/^\s*,\s*//;
-            }
-            push(@data, {'lcode' => $lcode, 'auxlist' => \@auxlist});
-        }
-    }
-    close(DATA);
+    my @data = read_auxiliaries_from_python();
     # Print the data on the web page.
     print("  <h2>Known auxiliaries for this and other languages</h2>\n");
     print("  <table>\n");
@@ -238,3 +210,50 @@ print <<EOF
 </html>
 EOF
 ;
+
+
+
+#------------------------------------------------------------------------------
+# Reads the list of auxiliaries from an excerpt from the Python source code
+# of the validator. This function is needed temporarily until we move the data
+# to a separate JSON file.
+#------------------------------------------------------------------------------
+sub read_auxiliaries_from_python
+{
+    my @data;
+    my $datafile = "$path/data.txt";
+    # We need a buffer because some lists are spread across several lines.
+    my $buffer = '';
+    open(DATA, $datafile) or die("Cannot read '$datafile': $!");
+    while(<DATA>)
+    {
+        # Remove the line break.
+        s/\r?\n$//;
+        # Skip comments.
+        next if(m/^\s*\#/);
+        s/\#.*//;
+        $buffer .= $_;
+        # A data line looks like this:
+        # 'en':  ['be', 'have', 'do', 'will', 'would', 'may', 'might', 'can', 'could', 'shall', 'should', 'must', 'get', 'ought'],
+        # Spaces are not interesting and line breaks can be harmful. Remove them.
+        $buffer =~ s/\s//gs;
+        if($buffer =~ m/'([a-z]{2,3})':\[('.+?'(?:,'.+?')*)\]/)
+        {
+            my $lcode = $1;
+            my $auxlist = $2;
+            my @auxlist = ();
+            while($auxlist =~ s/^'(.+?)'//)
+            {
+                my $lemma = $1;
+                push(@auxlist, $lemma);
+                $auxlist =~ s/^\s*,\s*//;
+            }
+            push(@data, {'lcode' => $lcode, 'auxlist' => \@auxlist});
+            # Empty the buffer.
+            ###!!! Ignore the possibility that a new list starts on the same line.
+            $buffer = '';
+        }
+    }
+    close(DATA);
+    return @data;
+}
