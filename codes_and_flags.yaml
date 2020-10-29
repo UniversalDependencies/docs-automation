@@ -63,6 +63,11 @@ Assyrian:
   lcode: aii
   iso3: aii
   family: Afro-Asiatic, Semitic
+Babungo:
+  flag: CM
+  lcode: bav
+  iso3: bav
+  family: Niger-Congo, Bantoid
 Bambara:
   flag: ML
   lcode: bm
