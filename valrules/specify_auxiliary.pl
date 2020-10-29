@@ -100,15 +100,18 @@ if($lemma eq '')
 {
     print("  <p>No <tt>lemma</tt> parameter received.</p>\n");
     # Print the list of known languages.
+    print("  <p><strong>Languages:</strong></p>\n");
+    print("  <table>\n");
     my %families; map {$families{$languages->{$_}{family}}++} (keys(%{$languages}));
     my @familylines;
     foreach my $family (sort(keys(%families)))
     {
-        my @lnames = map {"<img class=\"flag\" src=\"https://universaldependencies.org/flags/svg/$languages->{$_}{flag}.svg\" />&nbsp;$_"} (sort(grep {$languages->{$_}{family} eq $family} (keys(%{$languages}))));
-        my $familyline = "$family: ".join(', ', @lnames);
-        push(@familylines, $familyline);
+        print("  <tr><td>$family:</td><td>");
+        my @lnames = sort(grep {$languages->{$_}{family} eq $family} (keys(%{$languages})));
+        print(join(', ', map {"<img class=\"flag\" src=\"https://universaldependencies.org/flags/svg/$languages->{$_}{flag}.svg\" />&nbsp;$_"} (@lnames)));
+        print("</td></tr>\n");
     }
-    print("  <p><strong>Languages:</strong><br/>\n", join("<br/>\n", @familylines), "</p>\n");
+    print("  </table>\n");
 }
 else
 {
