@@ -28,13 +28,17 @@ if ( exists($ENV{HTTP_X_FORWARDED_FOR}) && $ENV{HTTP_X_FORWARDED_FOR} =~ m/^(\d+
 my $lemma = $query->param('lemma');
 # Variables with the data from the form are tainted. Running them through a regular
 # expression will untaint them and Perl will allow us to use them.
-if ( $lemma =~ m/^\s*(\pL+)\s*$/ )
+if ( $lemma =~ m/^\s*$/ )
+{
+    $lemma = '';
+}
+elsif ( $lemma =~ m/^\s*(\pL+)\s*$/ )
 {
     $lemma = $1;
 }
 else
 {
-    die "Lemma '$lemma' is empty or contains non-letter characters";
+    die "Lemma '$lemma' contains non-letter characters";
 }
 $query->charset('utf-8'); # makes the charset explicitly appear in the headers
 print($query->header());
@@ -75,6 +79,15 @@ print <<EOF
     determiner can be used as a copula and then we keep it tagged
     <a href="https://universaldependencies.org/u/pos/PRON.html">PRON</a> or
     <a href="https://universaldependencies.org/u/pos/DET.html">DET</a>.</p>
+EOF
+;
+if($lemma eq '')
+{
+    print("  <p>No <tt>lemma</tt> parameter received.</p>\n");
+}
+else
+{
+  print <<EOF
   <form action="specify_auxiliary.pl" method="post" enctype="multipart/form-data">
   <table>
     <tr>
@@ -118,7 +131,8 @@ print <<EOF
   <input name=save type=submit value="Save" />
   </form>
 EOF
-;
+  ;
+}
 # Read the data file.
 my @data;
 my $datafile = "$path/data.txt";
