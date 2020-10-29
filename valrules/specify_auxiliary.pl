@@ -15,6 +15,12 @@ use Encode;
 
 # Path to the data on the web server.
 my $path = '/home/zeman/unidep/docs-automation/valrules';
+# Read the list of known languages.
+my $languages = LoadFile('/home/zeman/unidep/docs-automation/codes_and_flags.yaml');
+if ( !defined($languages) )
+{
+    die "Cannot read the list of languages";
+}
 # We must set our own PATH even if we do not depend on it.
 # The system call may potentially use it, and the one from outside is considered insecure.
 $ENV{'PATH'} = $path.':/home/zeman/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin';
@@ -86,6 +92,18 @@ EOF
 if($lemma eq '')
 {
     print("  <p>No <tt>lemma</tt> parameter received.</p>\n");
+    # Print the list of known languages.
+    my @lnames = sort
+    {
+        my $r = $languages->{$a}{family} cmp $languages->{$b}{family};
+        unless($r)
+        {
+            $r = $a cmp $b;
+        }
+        $r
+    }
+    (keys(%{$languages}));
+    print("  <p><strong>Languages:</strong> ", join(', ', @lnames), "</p>\n");
 }
 else
 {
