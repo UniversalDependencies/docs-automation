@@ -21,6 +21,8 @@ if ( !defined($languages) )
 {
     die "Cannot read the list of languages";
 }
+# The $languages hash is indexed by language names. Create a mapping from language codes.
+my %lname_by_code; map {$lname_by_code{$languages->{$_}{lcode}} = $_} (keys(%{$languages}));
 # We must set our own PATH even if we do not depend on it.
 # The system call may potentially use it, and the one from outside is considered insecure.
 $ENV{'PATH'} = $path.':/home/zeman/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin';
@@ -44,10 +46,14 @@ if ( $lcode =~ m/^\s*$/ )
 elsif ( $lcode =~ m/^([a-z]{2,3})$/ )
 {
     $lcode = $1;
+    if(!exists($lname_by_code{$lcode}))
+    {
+        die "Unknown language code '$lcode'";
+    }
 }
 else
 {
-    die ("Language code '$lcode' does not consist of two or three lowercase English letters");
+    die "Language code '$lcode' does not consist of two or three lowercase English letters";
 }
 if ( $lemma =~ m/^\s*$/ )
 {
@@ -105,7 +111,7 @@ if($lcode eq '')
 else
 {
     print <<EOF
-  <h1>Specify auxiliaries for English</h1>
+  <h1>Specify auxiliaries for $lname_by_code{$lcode}</h1>
   <p><strong>Remember:</strong> Not everything that a traditional grammar labels
     as auxiliary is necessarily an <a href="https://universaldependencies.org/u/pos/AUX_.html">auxiliary in UD</a>.
     Just because a verb combines with another verb does not necessarily mean
