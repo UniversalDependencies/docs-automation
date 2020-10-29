@@ -264,20 +264,23 @@ EOF
         print("    <li>exampleen = '".htmlescape($exampleen)."'</li>\n") unless($exampleen eq '');
         print("    <li>comment = '".htmlescape($comment)."'</li>\n") unless($comment eq '');
         print("  </ul>\n");
-    }
-    if($lemma eq '')
-    {
-        my $n = scalar(@myauxlist);
-        if($n > 0)
-        {
-            print("  <h2 style='color:red'>You have $n undocumented auxiliaries!</h2>\n");
-            print("  <p>Please edit each undocumented auxiliary and supply the missing information.</p>\n");
-            print("  <p>".join(' ', map {my $l = $_; $l =~ s/\PL//g; $l = 'XXX' if($l eq ''); "<a href=\"specify_auxiliary.pl?lcode=$lcode&amp;lemma=$l\">$l</a>"} (@myauxlist))."</p>\n");
-        }
+        print("  <p style='color:red'><strong>WARNING:</strong> Real saving has not been implemented yet.</p>\n");
     }
     else
     {
-        print <<EOF
+        if($lemma eq '')
+        {
+            my $n = scalar(@myauxlist);
+            if($n > 0)
+            {
+                print("  <h2 style='color:red'>You have $n undocumented auxiliaries!</h2>\n");
+                print("  <p>Please edit each undocumented auxiliary and supply the missing information.</p>\n");
+                print("  <p>".join(' ', map {my $l = $_; $l =~ s/\PL//g; $l = 'XXX' if($l eq ''); "<a href=\"specify_auxiliary.pl?lcode=$lcode&amp;lemma=$l\">$l</a>"} (@myauxlist))."</p>\n");
+            }
+        }
+        else
+        {
+            print <<EOF
   <form action="specify_auxiliary.pl" method="post" enctype="multipart/form-data">
   <input name=lcode type=hidden value="$lcode" />
   <table>
@@ -291,12 +294,12 @@ EOF
         <small>mark the auxiliary by enclosing it in square brackets, e.g., “he [has] done it”</small>
       </td>
 EOF
-        ;
-        unless($lcode eq 'en')
-        {
-            print("      <td>English translation of the example</td>\n");
-        }
-        print <<EOF
+            ;
+            unless($lcode eq 'en')
+            {
+                print("      <td>English translation of the example</td>\n");
+            }
+            print <<EOF
       <td>Comment</td>
     </tr>
     <tr>
@@ -322,19 +325,20 @@ EOF
       <td><input name=rule type=text /></td>
       <td><input name=example type=text /></td>
 EOF
-        ;
-        unless($lcode eq 'en')
-        {
-            print("      <td><input name=exampleen type=text /></td>\n");
-        }
-        print <<EOF
+            ;
+            unless($lcode eq 'en')
+            {
+                print("      <td><input name=exampleen type=text /></td>\n");
+            }
+            print <<EOF
       <td><input name=comment type=text /></td>
     </tr>
   </table>
   <input name=save type=submit value="Save" />
   </form>
 EOF
-        ;
+            ;
+        }
     }
     # Print the data on the web page.
     print("  <h2>Known auxiliaries for this and other languages</h2>\n");
