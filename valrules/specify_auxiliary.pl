@@ -93,17 +93,15 @@ if($lemma eq '')
 {
     print("  <p>No <tt>lemma</tt> parameter received.</p>\n");
     # Print the list of known languages.
-    my @lnames = sort
+    my %families; map {$families{$languages->{$_}{family}}++} (keys(%{$languages}));
+    my @familylines;
+    foreach my $family (sort(keys(%families)))
     {
-        my $r = $languages->{$a}{family} cmp $languages->{$b}{family};
-        unless($r)
-        {
-            $r = $a cmp $b;
-        }
-        $r
+        my @lnames = sort(grep {$languages->{$_}{family} eq $family} (keys(%{$languages})));
+        my $familyline = "$family: ".join(', ', @lnames);
+        push(@familylines, $familyline);
     }
-    (keys(%{$languages}));
-    print("  <p><strong>Languages:</strong> ", join(', ', @lnames), "</p>\n");
+    print("  <p><strong>Languages:</strong><br/>\n", join("<br/>\n", @familylines), "</p>\n");
 }
 else
 {
