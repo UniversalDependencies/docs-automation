@@ -39,7 +39,7 @@ my $lcode = $query->param('lcode');
 my $lemma = $query->param('lemma');
 # Variables with the data from the form are tainted. Running them through a regular
 # expression will untaint them and Perl will allow us to use them.
-if ( $lcode =~ m/^\s*$/ )
+if ( !defined($lcode) || $lcode =~ m/^\s*$/ )
 {
     $lcode = '';
 }
@@ -55,7 +55,7 @@ else
 {
     die "Language code '$lcode' does not consist of two or three lowercase English letters";
 }
-if ( $lemma =~ m/^\s*$/ )
+if ( !defined($lemma) || $lemma =~ m/^\s*$/ )
 {
     $lemma = '';
 }
