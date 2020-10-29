@@ -428,6 +428,11 @@ Mizo:
   lcode: lus
   iso3: lus
   family: Sino-Tibetan
+Mojave:
+  flag: US-AZ
+  lcode: mov
+  iso3: mov
+  family: Hokan
 Moksha:
   flag: RU-MOKSHA
   lcode: mdf
