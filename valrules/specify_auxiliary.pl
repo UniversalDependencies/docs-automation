@@ -18,6 +18,24 @@ my $path = '/home/zeman/unidep/docs-automation/valrules';
 $ENV{'PATH'} = $path.':/home/zeman/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin';
 # Print the output.
 my $query = new CGI;
+my $remoteaddr = $query->remote_addr();
+# The traffic is being forwarded through quest, so normally we see quest's local address as the remote address.
+# Let's see if we have the real remote address in the environment.
+if ( exists($ENV{HTTP_X_FORWARDED_FOR}) && $ENV{HTTP_X_FORWARDED_FOR} =~ m/^(\d+\.\d+\.\d+\.\d+)$/ )
+{
+    $remoteaddr = $1;
+}
+my $lemma = $query->param('lemma');
+# Variables with the data from the form are tainted. Running them through a regular
+# expression will untaint them and Perl will allow us to use them.
+if ( $lemma =~ m/^\s*(\pL+)\s*$/ )
+{
+    $lemma = $1;
+}
+else
+{
+    die "Lemma '$lemma' is empty or contains non-letter characters";
+}
 $query->charset('utf-8'); # makes the charset explicitly appear in the headers
 print($query->header());
 print <<EOF
@@ -57,7 +75,7 @@ print <<EOF
     determiner can be used as a copula and then we keep it tagged
     <a href="https://universaldependencies.org/u/pos/PRON.html">PRON</a> or
     <a href="https://universaldependencies.org/u/pos/DET.html">DET</a>.</p>
-  <form>
+  <form action="specify_auxiliary.pl" method="post" enctype="multipart/form-data">
   <table>
     <tr>
       <td>Lemma</td>
