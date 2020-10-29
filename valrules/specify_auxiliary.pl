@@ -97,7 +97,7 @@ if($lemma eq '')
     my @familylines;
     foreach my $family (sort(keys(%families)))
     {
-        my @lnames = sort(grep {$languages->{$_}{family} eq $family} (keys(%{$languages})));
+        my @lnames = map {"<img src=\"https://universaldependencies.org/flags/svg/$languages->{$_}{flag}.svg\" height=32 />&nbsp;$_"} (sort(grep {$languages->{$_}{family} eq $family} (keys(%{$languages}))));
         my $familyline = "$family: ".join(', ', @lnames);
         push(@familylines, $familyline);
     }
