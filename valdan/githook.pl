@@ -170,7 +170,11 @@ if(defined($result))
         system("echo ====================================================================== >>$valilog");
         system("date >>$valilog");
         system("echo Hook on $result->{repository}{name} >>$valilog");
-        system("(cd docs-automation ; git pull --no-edit ; ./valdan/lnquest.sh ; cd ..) >>$valilog 2>&1");
+        # When pulling from Github manually, we also run ./valdan/lnquest.sh in order to restore the hard links from the top folder.
+        # However, this cannot be done by user www-data who is not trusted enough. So if the critical scripts are changed,
+        # they will be updated automatically in the repo but the production version will be detached and kept the same until
+        # I go there and manually run lnquest.sh.
+        system("(cd docs-automation ; git pull --no-edit ; cd ..) >>$valilog 2>&1");
     }
 }
 close(LOG);
