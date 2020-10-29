@@ -62,7 +62,6 @@ print <<EOF
       vertical-align: middle;
       border: solid grey 1px;
       height: 1em;
-      margin: 0 1em;
     }
   </style>
 </head>
