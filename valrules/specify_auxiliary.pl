@@ -127,6 +127,20 @@ if($lcode eq '')
 # Language code specified. We can edit auxiliaries of that language.
 else
 {
+    # Read the data file.
+    my @data = read_auxiliaries_from_python();
+    my @mydata = grep {$_->{lcode} eq $lcode} (@data);
+    # It is possible that there are no auxiliaries for my language so far.
+    # However, there must not be multiple entries for the same language.
+    if(scalar(@mydata)>1)
+    {
+        die "There are ".scalar(@mydata)." entries for language '$lcode' in the current database of auxiliaries";
+    }
+    my @myauxlist = ();
+    if(scalar(@mydata)==1)
+    {
+        @myauxlist = @{$mydata[0]{auxlist}};
+    }
     print <<EOF
   <h1>Specify auxiliaries for $lname_by_code{$lcode}</h1>
   <p><strong>Remember:</strong> Not everything that a traditional grammar labels
@@ -158,9 +172,12 @@ else
     <a href="https://universaldependencies.org/u/pos/DET.html">DET</a>.</p>
 EOF
     ;
-    if($lemma eq '')
+    my $n = scalar(@myauxlist);
+    if($n > 0)
     {
-        print("  <p>No <tt>lemma</tt> parameter received.</p>\n");
+        print("  <h2 style='color:red'>You have $n undocumented auxiliaries!</h2>\n");
+        print("  <p>Please edit each undocumented auxiliary and supply the missing information.</p>\n");
+        print("  <p>".join(' ', map {my $l = $_; $l =~ s/\PL//g; $l = 'XXX' if($l eq ''); "<a href=\"specify_auxiliary.pl?lcode=$lcode&amp;lemma=$l\">$l</a>"} (@myauxlist))."</p>\n");
     }
     else
     {
@@ -210,8 +227,6 @@ EOF
 EOF
         ;
     }
-    # Read the data file.
-    my @data = read_auxiliaries_from_python();
     # Print the data on the web page.
     print("  <h2>Known auxiliaries for this and other languages</h2>\n");
     print("  <table>\n");
