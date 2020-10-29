@@ -93,7 +93,7 @@ if($lcode eq '')
 {
     print("  <h1>Specify auxiliaries for a language</h1>\n");
     # Print the list of known languages.
-    print("  <p><strong>Languages:</strong></p>\n");
+    print("  <p><strong>Select a language:</strong></p>\n");
     print("  <table>\n");
     my %families; map {$families{$languages->{$_}{family}}++} (keys(%{$languages}));
     my @familylines;
@@ -101,7 +101,7 @@ if($lcode eq '')
     {
         print("  <tr><td>$family:</td><td>");
         my @lnames = sort(grep {$languages->{$_}{family} eq $family} (keys(%{$languages})));
-        print(join(', ', map {"<img class=\"flag\" src=\"https://universaldependencies.org/flags/svg/$languages->{$_}{flag}.svg\" />&nbsp;$_"} (@lnames)));
+        print(join(', ', map {"<img class=\"flag\" src=\"https://universaldependencies.org/flags/svg/$languages->{$_}{flag}.svg\" />&nbsp;<a href=\"specify_auxiliary.pl?$languages->{$_}{lcode}\">$_</a>"} (@lnames)));
         print("</td></tr>\n");
     }
     print("  </table>\n");
