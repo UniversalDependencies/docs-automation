@@ -163,6 +163,14 @@ if(defined($result))
             }
         }
     }
+    # Change in master branch of repository docs-automation may mean new languages were added or the validation infrastructure modified.
+    elsif($result->{repository}{name} eq 'docs' && $result->{ref} eq 'refs/heads/pages-source')
+    {
+        write_datalog($result);
+        system("echo ====================================================================== >>$valilog");
+        system("date >>$valilog");
+        system("echo Hook on $result->{repository}{name} >>$valilog");
+        system("(cd docs-automation ; git pull --no-edit ; valdan/lnquest.sh ; cd ..) >>$valilog 2>&1");
 }
 close(LOG);
 
