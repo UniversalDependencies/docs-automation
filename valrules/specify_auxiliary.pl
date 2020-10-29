@@ -85,6 +85,19 @@ else
 {
     die "Lemma '$lemma' contains non-letter characters";
 }
+# function rule example exampleen comment submit
+if ( !defined($function) || $function =~ m/^\s*$/ )
+{
+    $function = '';
+}
+elsif ( $function =~ m/^([A-Za-z :(,)]+)$/ )
+{
+    $function = $1;
+}
+else
+{
+    die "Function '$function' contains unrecognized string";
+}
 $query->charset('utf-8'); # makes the charset explicitly appear in the headers
 print($query->header());
 print <<EOF
@@ -173,6 +186,8 @@ else
     <a href="https://universaldependencies.org/u/pos/DET.html">DET</a>.</p>
 EOF
     ;
+    #------------------------------------------------------------------------------
+    # We are processing a Save request after a lemma was edited.
     if($lemma eq '')
     {
         my $n = scalar(@myauxlist);
