@@ -333,6 +333,11 @@ Kyrgyz:
   lcode: ky
   iso3: kir
   family: Turkic, Northwestern
+Lango:
+  flag: UG
+  lcode: laj
+  iso3: laj
+  family: Eastern Sudanic, Nilotic
 Latin:
   flag: VA
   lcode: la
