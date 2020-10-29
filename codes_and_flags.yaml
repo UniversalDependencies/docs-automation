@@ -413,6 +413,11 @@ Munduruku:
   lcode: myu
   iso3: myu
   family: Tupian, Munduruku
+Muruwari:
+  flag: AU-ABORIGINAL
+  lcode: zmu
+  iso3: zmu
+  family: Pama-Nyungan
 Naija:
   flag: NG
   lcode: pcm
