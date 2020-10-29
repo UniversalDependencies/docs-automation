@@ -8,6 +8,7 @@ use File::Basename;
 #binmode(STDIN, ':utf8');
 binmode(STDOUT, ':utf8');
 binmode(STDERR, ':utf8');
+use open ':utf8';
 use Encode;
 
 # Path to the data on the web server.
@@ -116,6 +117,7 @@ while(<DATA>)
 }
 close(DATA);
 # Print the data on the web page.
+print("  <h2>Known auxiliaries for this and other languages</h2>\n");
 print("  <table>\n");
 print("    <tr><th>Language</th><th>Lemmas</th></tr>\n");
 foreach my $row (@data)
