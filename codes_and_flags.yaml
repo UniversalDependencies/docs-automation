@@ -682,3 +682,8 @@ Yoruba:
   lcode: yo
   iso3: yor
   family: Niger-Congo, Defoid
+Yukulta:
+  flag: AU-ABORIGINAL
+  lcode: gcd
+  iso3: gcd
+  family: Tangkic
