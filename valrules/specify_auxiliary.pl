@@ -316,10 +316,11 @@ EOF
           <option>Periphrastic voice: causative</option>
           <option>Periphrastic mood: conditional</option>
           <option>Periphrastic mood: imperative</option>
-          <option>Needed in negative clauses (like English <i>do</i>)</option>
-          <option>Needed in interrogative clauses (like English <i>do</i>)</option>
-          <option>Modal auxiliary: necessitative <i>(must, should)</i></option>
-          <option>Modal auxiliary: potential <i>(can, might)</i></option>
+          <option>Needed in negative clauses (like English “do”)</option>
+          <option>Needed in interrogative clauses (like English “do”)</option>
+          <option>Modal auxiliary: necessitative (“must, should”)</option>
+          <option>Modal auxiliary: potential (“can, might”)</option>
+          <option>Modal auxiliary: desiderative (“want”)</option>
         </select>
       </td>
       <td><input name=rule type=text /></td>
