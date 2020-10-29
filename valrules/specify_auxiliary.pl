@@ -172,12 +172,15 @@ else
     <a href="https://universaldependencies.org/u/pos/DET.html">DET</a>.</p>
 EOF
     ;
-    my $n = scalar(@myauxlist);
-    if($n > 0)
+    if($lemma eq '')
     {
-        print("  <h2 style='color:red'>You have $n undocumented auxiliaries!</h2>\n");
-        print("  <p>Please edit each undocumented auxiliary and supply the missing information.</p>\n");
-        print("  <p>".join(' ', map {my $l = $_; $l =~ s/\PL//g; $l = 'XXX' if($l eq ''); "<a href=\"specify_auxiliary.pl?lcode=$lcode&amp;lemma=$l\">$l</a>"} (@myauxlist))."</p>\n");
+        my $n = scalar(@myauxlist);
+        if($n > 0)
+        {
+            print("  <h2 style='color:red'>You have $n undocumented auxiliaries!</h2>\n");
+            print("  <p>Please edit each undocumented auxiliary and supply the missing information.</p>\n");
+            print("  <p>".join(' ', map {my $l = $_; $l =~ s/\PL//g; $l = 'XXX' if($l eq ''); "<a href=\"specify_auxiliary.pl?lcode=$lcode&amp;lemma=$l\">$l</a>"} (@myauxlist))."</p>\n");
+        }
     }
     else
     {
