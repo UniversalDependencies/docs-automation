@@ -39,6 +39,7 @@ foreach my $lname (keys(%{$languages}))
         $languages->{$lname}{familygenus} = $family_genus;
         $languages->{$lname}{genus} = '';
     }
+    $languages->{$lname}{family} = 'Indo-European' if($languages->{$lname}{family} eq 'IE');
 }
 # We must set our own PATH even if we do not depend on it.
 # The system call may potentially use it, and the one from outside is considered insecure.
