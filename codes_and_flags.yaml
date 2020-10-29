@@ -228,6 +228,11 @@ Greek:
   lcode: el
   iso3: ell
   family: IE, Greek
+Hausa:
+  flag: NG
+  lcode: ha
+  iso3: hau
+  family: Afro-Asiatic, West Chadic
 Hebrew:
   flag: IL
   lcode: he
