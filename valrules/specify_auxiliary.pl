@@ -5,6 +5,8 @@ use utf8;
 use CGI;
 use CGI::Carp qw(fatalsToBrowser);
 use File::Basename;
+use JSON::Parse 'json_file_to_perl';
+use YAML qw(LoadFile);
 #binmode(STDIN, ':utf8');
 binmode(STDOUT, ':utf8');
 binmode(STDERR, ':utf8');
