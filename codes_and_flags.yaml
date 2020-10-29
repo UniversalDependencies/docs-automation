@@ -73,6 +73,11 @@ Basque:
   lcode: eu
   iso3: eus
   family: Basque
+Batad Ifugao:
+  flag: PH
+  lcode: ifb
+  iso3: ifb
+  family: Austronesian, Northern Luzon
 Belarusian:
   flag: BY
   lcode: be
