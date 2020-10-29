@@ -115,17 +115,18 @@ else
 {
     die "Rule '$rule' contains unrecognized string";
 }
-if( !defined($example) || $example =~ m/^\s*$/ )
+# The example should contain square brackets that mark the auxiliary form.
+if(!defined($example) || $example =~ m/^\s*$/)
 {
     $example = '';
 }
-elsif( $example =~ m/^([A-Za-z :\(,\)]+)$/ )
+elsif($example =~ m/^([\pL ]*\[\pL+\][\pL ]*)$/)
 {
     $example = $1;
 }
 else
 {
-    die "Example '$example' contains unrecognized string";
+    die "Unrecognized example '$example' either lacks the square brackets around the auxiliary form or contains characters other than letters and spaces";
 }
 if( !defined($exampleen) || $exampleen =~ m/^\s*$/ )
 {
