@@ -187,6 +187,7 @@ EOF
     {
         print <<EOF
   <form action="specify_auxiliary.pl" method="post" enctype="multipart/form-data">
+  <input name=lcode type=hidden value="$lcode" />
   <table>
     <tr>
       <td>Lemma</td>
