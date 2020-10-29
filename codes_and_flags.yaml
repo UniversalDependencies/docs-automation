@@ -198,6 +198,11 @@ French:
   lcode: fr
   iso3: fra
   family: IE, Romance
+Ga:
+  flag: NG
+  lcode: gqa
+  iso3: gqa
+  family: Afro-Asiatic, Biu-Mandara
 Galician:
   flag: ES-GA
   lcode: gl
