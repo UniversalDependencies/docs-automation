@@ -33,9 +33,22 @@ if ( exists($ENV{HTTP_X_FORWARDED_FOR}) && $ENV{HTTP_X_FORWARDED_FOR} =~ m/^(\d+
 {
     $remoteaddr = $1;
 }
+my $lcode = $query->param('lcode');
 my $lemma = $query->param('lemma');
 # Variables with the data from the form are tainted. Running them through a regular
 # expression will untaint them and Perl will allow us to use them.
+if ( $lcode =~ m/^\s*$/ )
+{
+    $lcode = '';
+}
+elsif ( $lcode =~ m/^([a-z]{2,3})$/ )
+{
+    $lcode = $1;
+}
+else
+{
+    die ("Language code '$lcode' does not consist of two or three lowercase English letters");
+}
 if ( $lemma =~ m/^\s*$/ )
 {
     $lemma = '';
@@ -66,6 +79,32 @@ print <<EOF
   </style>
 </head>
 <body>
+EOF
+;
+#------------------------------------------------------------------------------
+# No language code specified. Show the list of known languages.
+if($lcode eq '')
+{
+    print("  <h1>Specify auxiliaries for a language</h1>\n");
+    # Print the list of known languages.
+    print("  <p><strong>Languages:</strong></p>\n");
+    print("  <table>\n");
+    my %families; map {$families{$languages->{$_}{family}}++} (keys(%{$languages}));
+    my @familylines;
+    foreach my $family (sort(keys(%families)))
+    {
+        print("  <tr><td>$family:</td><td>");
+        my @lnames = sort(grep {$languages->{$_}{family} eq $family} (keys(%{$languages})));
+        print(join(', ', map {"<img class=\"flag\" src=\"https://universaldependencies.org/flags/svg/$languages->{$_}{flag}.svg\" />&nbsp;$_"} (@lnames)));
+        print("</td></tr>\n");
+    }
+    print("  </table>\n");
+}
+#------------------------------------------------------------------------------
+# Language code specified. We can edit auxiliaries of that language.
+else
+{
+    print <<EOF
   <h1>Specify auxiliaries for English</h1>
   <p><strong>Remember:</strong> Not everything that a traditional grammar labels
     as auxiliary is necessarily an <a href="https://universaldependencies.org/u/pos/AUX_.html">auxiliary in UD</a>.
@@ -95,27 +134,14 @@ print <<EOF
     <a href="https://universaldependencies.org/u/pos/PRON.html">PRON</a> or
     <a href="https://universaldependencies.org/u/pos/DET.html">DET</a>.</p>
 EOF
-;
-if($lemma eq '')
-{
-    print("  <p>No <tt>lemma</tt> parameter received.</p>\n");
-    # Print the list of known languages.
-    print("  <p><strong>Languages:</strong></p>\n");
-    print("  <table>\n");
-    my %families; map {$families{$languages->{$_}{family}}++} (keys(%{$languages}));
-    my @familylines;
-    foreach my $family (sort(keys(%families)))
+    ;
+    if($lemma eq '')
     {
-        print("  <tr><td>$family:</td><td>");
-        my @lnames = sort(grep {$languages->{$_}{family} eq $family} (keys(%{$languages})));
-        print(join(', ', map {"<img class=\"flag\" src=\"https://universaldependencies.org/flags/svg/$languages->{$_}{flag}.svg\" />&nbsp;$_"} (@lnames)));
-        print("</td></tr>\n");
+        print("  <p>No <tt>lemma</tt> parameter received.</p>\n");
     }
-    print("  </table>\n");
-}
-else
-{
-  print <<EOF
+    else
+    {
+        print <<EOF
   <form action="specify_auxiliary.pl" method="post" enctype="multipart/form-data">
   <table>
     <tr>
@@ -159,47 +185,48 @@ else
   <input name=save type=submit value="Save" />
   </form>
 EOF
-  ;
-}
-# Read the data file.
-my @data;
-my $datafile = "$path/data.txt";
-open(DATA, $datafile) or die("Cannot read '$datafile': $!");
-# For a start, the data file contains a copy of the lines from the Python source of the validator.
-while(<DATA>)
-{
-    # Remove the line break.
-    s/\r?\n$//;
-    # Skip comments.
-    next if(m/^\s*\#/);
-    # A data line looks like this:
-    # 'en':  ['be', 'have', 'do', 'will', 'would', 'may', 'might', 'can', 'could', 'shall', 'should', 'must', 'get', 'ought'],
-    # It could use different syntax and the entry could even be split into
-    # multiple lines but we ignore such possibilities for now.
-    if(m/'([a-z]{2,3})':\s*\[\s*('.+?'(?:\s*,\s*'.+?')*)\s*\]/)
-    {
-        my $lcode = $1;
-        my $auxlist = $2;
-        my @auxlist = ();
-        while($auxlist =~ s/^'(.+?)'//)
-        {
-            my $lemma = $1;
-            push(@auxlist, $lemma);
-            $auxlist =~ s/^\s*,\s*//;
-        }
-        push(@data, {'lcode' => $lcode, 'auxlist' => \@auxlist});
+        ;
     }
+    # Read the data file.
+    my @data;
+    my $datafile = "$path/data.txt";
+    open(DATA, $datafile) or die("Cannot read '$datafile': $!");
+    # For a start, the data file contains a copy of the lines from the Python source of the validator.
+    while(<DATA>)
+    {
+        # Remove the line break.
+        s/\r?\n$//;
+        # Skip comments.
+        next if(m/^\s*\#/);
+        # A data line looks like this:
+        # 'en':  ['be', 'have', 'do', 'will', 'would', 'may', 'might', 'can', 'could', 'shall', 'should', 'must', 'get', 'ought'],
+        # It could use different syntax and the entry could even be split into
+        # multiple lines but we ignore such possibilities for now.
+        if(m/'([a-z]{2,3})':\s*\[\s*('.+?'(?:\s*,\s*'.+?')*)\s*\]/)
+        {
+            my $lcode = $1;
+            my $auxlist = $2;
+            my @auxlist = ();
+            while($auxlist =~ s/^'(.+?)'//)
+            {
+                my $lemma = $1;
+                push(@auxlist, $lemma);
+                $auxlist =~ s/^\s*,\s*//;
+            }
+            push(@data, {'lcode' => $lcode, 'auxlist' => \@auxlist});
+        }
+    }
+    close(DATA);
+    # Print the data on the web page.
+    print("  <h2>Known auxiliaries for this and other languages</h2>\n");
+    print("  <table>\n");
+    print("    <tr><th>Language</th><th>Lemmas</th></tr>\n");
+    foreach my $row (@data)
+    {
+        print("    <tr><td>$row->{lcode}</td><td>".join(' ', @{$row->{auxlist}})."</td></tr>\n");
+    }
+    print("  </table>\n");
 }
-close(DATA);
-# Print the data on the web page.
-print("  <h2>Known auxiliaries for this and other languages</h2>\n");
-print("  <table>\n");
-print("    <tr><th>Language</th><th>Lemmas</th></tr>\n");
-foreach my $row (@data)
-{
-    print("    <tr><td>$row->{lcode}</td><td>".join(' ', @{$row->{auxlist}})."</td></tr>\n");
-}
-print("  </table>\n");
 print <<EOF
 </body>
 </html>
