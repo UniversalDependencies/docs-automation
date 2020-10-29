@@ -201,7 +201,7 @@ EOF
       <td>Comment</td>
     </tr>
     <tr>
-      <td><input name=lemma type=text /></td>
+      <td><input name=lemma type=text value="$lemma" /></td>
       <td>
         <select name=function>
           <option>-----</option>
