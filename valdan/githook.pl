@@ -170,7 +170,7 @@ if(defined($result))
         system("echo ====================================================================== >>$valilog");
         system("date >>$valilog");
         system("echo Hook on $result->{repository}{name} >>$valilog");
-        system("(cd docs-automation ; git pull --no-edit ; valdan/lnquest.sh ; cd ..) >>$valilog 2>&1");
+        system("(cd docs-automation ; git pull --no-edit ; ./valdan/lnquest.sh ; cd ..) >>$valilog 2>&1");
     }
 }
 close(LOG);
