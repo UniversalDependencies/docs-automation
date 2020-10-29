@@ -257,6 +257,13 @@ EOF
     if($save)
     {
         print("  <h2>This is a result of a Save button</h2>\n");
+        print("  <ul>\n");
+        print("    <li>lemma = '$lemma'</li>\n") unless($lemma eq '');
+        print("    <li>function = '".htmlescape($function)."'</li>\n") unless($function eq '');
+        print("    <li>example = '".htmlescape($example)."'</li>\n") unless($example eq '');
+        print("    <li>exampleen = '".htmlescape($exampleen)."'</li>\n") unless($exampleen eq '');
+        print("    <li>comment = '".htmlescape($comment)."'</li>\n") unless($comment eq '');
+        print("  </ul>\n");
     }
     if($lemma eq '')
     {
@@ -424,4 +431,18 @@ sub read_auxiliaries_from_python
     }
     close(DATA);
     return @data;
+}
+
+
+
+#------------------------------------------------------------------------------
+# Escapes HTML control characters in a string.
+#------------------------------------------------------------------------------
+sub htmlescape
+{
+    my $x = shift;
+    $x =~ s/&/&amp;/g;
+    $x =~ s/</&lt;/g;
+    $x =~ s/>/&gt;/g;
+    return $x;
 }
