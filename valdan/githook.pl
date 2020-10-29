@@ -164,7 +164,7 @@ if(defined($result))
         }
     }
     # Change in master branch of repository docs-automation may mean new languages were added or the validation infrastructure modified.
-    elsif($result->{repository}{name} eq 'docs' && $result->{ref} eq 'refs/heads/pages-source')
+    elsif($result->{repository}{name} eq 'docs-automation' && $result->{ref} eq 'refs/heads/master')
     {
         write_datalog($result);
         system("echo ====================================================================== >>$valilog");
