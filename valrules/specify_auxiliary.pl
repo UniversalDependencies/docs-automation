@@ -55,13 +55,19 @@ if ( exists($ENV{HTTP_X_FORWARDED_FOR}) && $ENV{HTTP_X_FORWARDED_FOR} =~ m/^(\d+
 }
 my $lcode = $query->param('lcode');
 my $lemma = $query->param('lemma');
+my $function = $query->param('function');
+my $rule = $query->param('rule');
+my $example = $query->param('example');
+my $exampleen = $query->param('exampleen');
+my $comment = $query->param('comment');
+my $save = $query->param('save');
 # Variables with the data from the form are tainted. Running them through a regular
 # expression will untaint them and Perl will allow us to use them.
-if ( !defined($lcode) || $lcode =~ m/^\s*$/ )
+if( !defined($lcode) || $lcode =~ m/^\s*$/ )
 {
     $lcode = '';
 }
-elsif ( $lcode =~ m/^([a-z]{2,3})$/ )
+elsif( $lcode =~ m/^([a-z]{2,3})$/ )
 {
     $lcode = $1;
     if(!exists($lname_by_code{$lcode}))
@@ -73,11 +79,11 @@ else
 {
     die "Language code '$lcode' does not consist of two or three lowercase English letters";
 }
-if ( !defined($lemma) || $lemma =~ m/^\s*$/ )
+if( !defined($lemma) || $lemma =~ m/^\s*$/ )
 {
     $lemma = '';
 }
-elsif ( $lemma =~ m/^\s*(\pL+)\s*$/ )
+elsif( $lemma =~ m/^\s*(\pL+)\s*$/ )
 {
     $lemma = $1;
 }
@@ -85,18 +91,77 @@ else
 {
     die "Lemma '$lemma' contains non-letter characters";
 }
-# function rule example exampleen comment submit
-if ( !defined($function) || $function =~ m/^\s*$/ )
+if( !defined($function) || $function =~ m/^\s*$/ )
 {
     $function = '';
 }
-elsif ( $function =~ m/^([A-Za-z :(,)]+)$/ )
+elsif( $function =~ m/^([A-Za-z :\(,\)]+)$/ )
 {
     $function = $1;
 }
 else
 {
     die "Function '$function' contains unrecognized string";
+}
+if( !defined($rule) || $rule =~ m/^\s*$/ )
+{
+    $rule = '';
+}
+elsif( $rule =~ m/^([A-Za-z :\(,\)]+)$/ )
+{
+    $rule = $1;
+}
+else
+{
+    die "Rule '$rule' contains unrecognized string";
+}
+if( !defined($example) || $example =~ m/^\s*$/ )
+{
+    $example = '';
+}
+elsif( $example =~ m/^([A-Za-z :\(,\)]+)$/ )
+{
+    $example = $1;
+}
+else
+{
+    die "Example '$example' contains unrecognized string";
+}
+if( !defined($exampleen) || $exampleen =~ m/^\s*$/ )
+{
+    $exampleen = '';
+}
+elsif( $exampleen =~ m/^([A-Za-z :\(,\)]+)$/ )
+{
+    $exampleen = $1;
+}
+else
+{
+    die "English example translation '$exampleen' contains unrecognized string";
+}
+if( !defined($comment) || $comment =~ m/^\s*$/ )
+{
+    $comment = '';
+}
+elsif( $comment =~ m/^([A-Za-z :\(,\)]+)$/ )
+{
+    $comment = $1;
+}
+else
+{
+    die "Comment '$comment' contains unrecognized string";
+}
+if(!defined($save))
+{
+    $save = '';
+}
+elsif($save =~ m/^Save$/)
+{
+    $save = 1;
+}
+else
+{
+    die "Unrecognized save button '$save'";
 }
 $query->charset('utf-8'); # makes the charset explicitly appear in the headers
 print($query->header());
@@ -188,6 +253,10 @@ EOF
     ;
     #------------------------------------------------------------------------------
     # We are processing a Save request after a lemma was edited.
+    if($save)
+    {
+        print("  <h2>This is a result of a Save button</h2>\n");
+    }
     if($lemma eq '')
     {
         my $n = scalar(@myauxlist);
