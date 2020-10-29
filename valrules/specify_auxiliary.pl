@@ -35,7 +35,9 @@ print <<EOF
     Just because a verb combines with another verb does not necessarily mean
     that one of the verbs is auxiliary; the usual alternative in UD is treating
     one of the verbs as an <tt><a href="https://universaldependencies.org/u/dep/xcomp.html">xcomp</a></tt>
-    of the other. Language-specific tests whether a verb is auxiliary are
+    of the other, or in some languages as a serial verb construction
+    (<tt><a href="https://universaldependencies.org/u/dep/compound.html">compound:svc</a></tt>).
+    Language-specific tests whether a verb is auxiliary are
     grammatical rather than semantic: just because something has a modal or
     near-modal meaning does not mean that it is an auxiliary, and in some
     languages modal verbs do not count as auxiliaries at all. Some verbs
