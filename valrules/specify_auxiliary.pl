@@ -223,7 +223,7 @@ EOF
             ;
             foreach my $f (@functions)
             {
-                print("          <option>".htmlescape($f[0])."</option>\n");
+                print("          <option>".htmlescape($f->[0])."</option>\n");
             }
             print <<EOF
         </select>
