@@ -303,7 +303,7 @@ sub get_parameters
     #--------------------------------------------------------------------------
     # Language code. If not provided, we show the introductory list of
     # languages.
-    $config{lcode} = $query->param('lcode');
+    $config{lcode} = decode('utf8', $query->param('lcode'));
     if(!defined($config{lcode}) || $config{lcode} =~ m/^\s*$/)
     {
         $config{lcode} = '';
@@ -338,7 +338,7 @@ sub get_parameters
     #--------------------------------------------------------------------------
     # Function is a descriptive text (e.g. "Periphrastic aspect: perfect")
     # taken from a pre-defined list of options.
-    $config{function} = $query->param('function');
+    $config{function} = decode('utf8', $query->param('function'));
     if(!defined($config{function}) || $config{function} =~ m/^\s*$/)
     {
         $config{function} = '';
@@ -357,7 +357,7 @@ sub get_parameters
     # a participle of the main verb"). It is not restricted to a pre-defined
     # set of options but it should not need more than English letters, spaces,
     # and some basic punctuation.
-    $config{rule} = $query->param('rule');
+    $config{rule} = decode('utf8', $query->param('rule'));
     if(!defined($config{rule}) || $config{rule} =~ m/^\s*$/)
     {
         $config{rule} = '';
@@ -378,7 +378,7 @@ sub get_parameters
     # it is not necessary if we make sure to always escape them when inserting
     # them in HTML we generate). We may need the apostrophe in some languages,
     # though.
-    $config{example} = $query->param('example');
+    $config{example} = decode('utf8', $query->param('example'));
     if(!defined($config{example}) || $config{example} =~ m/^\s*$/)
     {
         $config{example} = '';
@@ -411,7 +411,7 @@ sub get_parameters
     # not English. We can probably allow the same regular expressions as for
     # the original example, although we typically do not need non-English
     # letters in the English translation.
-    $config{exampleen} = $query->param('exampleen');
+    $config{exampleen} = decode('utf8', $query->param('exampleen'));
     if(!defined($config{exampleen}) || $config{exampleen} =~ m/^\s*$/)
     {
         $config{exampleen} = '';
@@ -439,7 +439,7 @@ sub get_parameters
     # Comment is an optional English text. Since it may contain a word from the
     # language being documented, we should allow everything that is allowed in
     # the example.
-    $config{comment} = $query->param('comment');
+    $config{comment} = decode('utf8', $query->param('comment'));
     if(!defined($config{comment}) || $config{comment} =~ m/^\s*$/)
     {
         $config{comment} = '';
@@ -465,7 +465,7 @@ sub get_parameters
     }
     #--------------------------------------------------------------------------
     # The parameter 'save' comes from the Save button which submitted the form.
-    $config{save} = $query->param('save');
+    $config{save} = decode('utf8', $query->param('save'));
     if(!defined($config{save}))
     {
         $config{save} = 0;
