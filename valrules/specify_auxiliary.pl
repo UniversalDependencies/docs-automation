@@ -322,7 +322,7 @@ sub get_parameters
     }
     #--------------------------------------------------------------------------
     # Lemma identifies the auxiliary that we are editing or going to edit.
-    $config{lemma} = $query->param('lemma');
+    $config{lemma} = decode('utf8', $query->param('lemma'));
     if(!defined($config{lemma}) || $config{lemma} =~ m/^\s*$/)
     {
         $config{lemma} = '';
