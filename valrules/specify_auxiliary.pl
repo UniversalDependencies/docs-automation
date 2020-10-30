@@ -162,17 +162,64 @@ EOF
     ;
     #------------------------------------------------------------------------------
     # We are processing a Save request after a lemma was edited.
+    # We have briefly checked that the parameters match expected regular expressions.
+    # Nevertheless, only now we can also report an error if a parameter is empty.
     if($config{save})
     {
         print("  <h2>This is a result of a Save button</h2>\n");
         print("  <ul>\n");
-        print("    <li>user = '$config{ghu}'</li>\n") unless($config{ghu} eq '');
-        print("    <li>robot = '$config{smartquestion}'</li>\n") unless($config{smartquestion} eq '');
-        print("    <li>lemma = '$config{lemma}'</li>\n") unless($config{lemma} eq '');
-        print("    <li>function = '".htmlescape($config{function})."'</li>\n") unless($config{function} eq '');
-        print("    <li>example = '".htmlescape($config{example})."'</li>\n") unless($config{example} eq '');
-        print("    <li>exampleen = '".htmlescape($config{exampleen})."'</li>\n") unless($config{exampleen} eq '');
-        print("    <li>comment = '".htmlescape($config{comment})."'</li>\n") unless($config{comment} eq '');
+        if($config{ghu} ne '')
+        {
+            print("    <li>user = '$config{ghu}'</li>\n");
+        }
+        else
+        {
+            print("    <li style='color:red'>ERROR: Missing Github user name</li>\n");
+        }
+        if($config{smartquestion} eq 'no')
+        {
+            print("    <li>robot = '$config{smartquestion}'</li>\n");
+        }
+        else
+        {
+            print("    <li style='color:red'>ERROR: Unsatisfactory robotic response</li>\n");
+        }
+        if($config{lemma} ne '')
+        {
+            print("    <li>lemma = '$config{lemma}'</li>\n");
+        }
+        else
+        {
+            print("    <li style='color:red'>ERROR: Missing lemma</li>\n");
+        }
+        if($config{function} ne '')
+        {
+            print("    <li>function = '".htmlescape($config{function})."'</li>\n");
+        }
+        else
+        {
+            print("    <li style='color:red'>ERROR: Missing function</li>\n");
+        }
+        if($config{example} ne '')
+        {
+            print("    <li>example = '".htmlescape($config{example})."'</li>\n");
+        }
+        else
+        {
+            print("    <li style='color:red'>ERROR: Missing example</li>\n");
+        }
+        if($config{exampleen} ne '')
+        {
+            print("    <li>exampleen = '".htmlescape($config{exampleen})."'</li>\n");
+        }
+        elsif($config{lcode} ne 'en')
+        {
+            print("    <li style='color:red'>ERROR: Missing English translation of the example</li>\n");
+        }
+        if($config{comment} ne '')
+        {
+            print("    <li>comment = '".htmlescape($config{comment})."'</li>\n");
+        }
         print("  </ul>\n");
         print("  <p style='color:red'><strong>WARNING:</strong> Real saving has not been implemented yet.</p>\n");
     }
