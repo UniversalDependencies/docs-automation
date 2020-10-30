@@ -222,7 +222,8 @@ else
         @myauxlist = @{$mydata[0]{auxlist}};
     }
     print <<EOF
-  <h1>Specify auxiliaries for $lname_by_code{$lcode}</h1>
+  <h1><img class=\"flag\" src=\"https://universaldependencies.org/flags/png/$languages->{$lname_by_code{$lcode}}{flag}.png\" />
+    Specify auxiliaries for $lname_by_code{$lcode}</h1>
   <p><strong>Remember:</strong> Not everything that a traditional grammar labels
     as auxiliary is necessarily an <a href="https://universaldependencies.org/u/pos/AUX_.html">auxiliary in UD</a>.
     Just because a verb combines with another verb does not necessarily mean
