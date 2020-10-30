@@ -193,7 +193,7 @@ EOF
   <input name=lcode type=hidden value="$config{lcode}" />
   <p>Please tell us your Github user name:
     <input name=ghu type=text />
-    Are you a robot? (one word) <input name=smartquestion type=text /><br />
+    Are you a robot? (one word) <input name=smartquestion type=text size=10 /><br />
     <small>Your edits will be ultimately propagated to UD Github repositories
     and we need to be able to link them to a particular user if there are any
     issues to be discussed. This is not a problem when you edit directly on
@@ -215,7 +215,7 @@ EOF
       <td>Comment</td>
     </tr>
     <tr>
-      <td><input name=lemma type=text value="$config{lemma}" /></td>
+      <td><input name=lemma type=text size=10 value="$config{lemma}" /></td>
       <td>
         <select name=function>
           <option>-----</option>
@@ -228,13 +228,13 @@ EOF
             print <<EOF
         </select>
       </td>
-      <td><input name=rule type=text /></td>
-      <td><input name=example type=text /></td>
+      <td><input name=rule type=text size=30 /></td>
+      <td><input name=example type=text size=30 /></td>
 EOF
             ;
             unless($config{lcode} eq 'en')
             {
-                print("      <td><input name=exampleen type=text /></td>\n");
+                print("      <td><input name=exampleen type=text size=30 /></td>\n");
             }
             print <<EOF
       <td><input name=comment type=text /></td>
