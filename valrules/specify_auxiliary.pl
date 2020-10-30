@@ -53,117 +53,7 @@ if ( exists($ENV{HTTP_X_FORWARDED_FOR}) && $ENV{HTTP_X_FORWARDED_FOR} =~ m/^(\d+
 {
     $remoteaddr = $1;
 }
-my $lcode = $query->param('lcode');
-my $lemma = $query->param('lemma');
-my $function = $query->param('function');
-my $rule = $query->param('rule');
-my $example = $query->param('example');
-my $exampleen = $query->param('exampleen');
-my $comment = $query->param('comment');
-my $save = $query->param('save');
-# Variables with the data from the form are tainted. Running them through a regular
-# expression will untaint them and Perl will allow us to use them.
-if( !defined($lcode) || $lcode =~ m/^\s*$/ )
-{
-    $lcode = '';
-}
-elsif( $lcode =~ m/^([a-z]{2,3})$/ )
-{
-    $lcode = $1;
-    if(!exists($lname_by_code{$lcode}))
-    {
-        die "Unknown language code '$lcode'";
-    }
-}
-else
-{
-    die "Language code '$lcode' does not consist of two or three lowercase English letters";
-}
-if( !defined($lemma) || $lemma =~ m/^\s*$/ )
-{
-    $lemma = '';
-}
-elsif( $lemma =~ m/^\s*(\pL+)\s*$/ )
-{
-    $lemma = $1;
-}
-else
-{
-    die "Lemma '$lemma' contains non-letter characters";
-}
-if( !defined($function) || $function =~ m/^\s*$/ )
-{
-    $function = '';
-}
-elsif( $function =~ m/^([A-Za-z :\(,\)]+)$/ )
-{
-    $function = $1;
-}
-else
-{
-    die "Function '$function' contains unrecognized string";
-}
-if( !defined($rule) || $rule =~ m/^\s*$/ )
-{
-    $rule = '';
-}
-elsif( $rule =~ m/^([A-Za-z :\(,\)]+)$/ )
-{
-    $rule = $1;
-}
-else
-{
-    die "Rule '$rule' contains unrecognized string";
-}
-# The example should contain square brackets that mark the auxiliary form.
-if(!defined($example) || $example =~ m/^\s*$/)
-{
-    $example = '';
-}
-elsif($example =~ m/^([\pL ]*\[\pL+\][\pL ]*)$/)
-{
-    $example = $1;
-}
-else
-{
-    die "Unrecognized example '$example' either lacks the square brackets around the auxiliary form or contains characters other than letters and spaces";
-}
-if( !defined($exampleen) || $exampleen =~ m/^\s*$/ )
-{
-    $exampleen = '';
-}
-elsif( $exampleen =~ m/^([A-Za-z :\(,\)]+)$/ )
-{
-    $exampleen = $1;
-}
-else
-{
-    die "English example translation '$exampleen' contains unrecognized string";
-}
-if( !defined($comment) || $comment =~ m/^\s*$/ )
-{
-    $comment = '';
-}
-elsif( $comment =~ m/^([A-Za-z :\(,\)]+)$/ )
-{
-    $comment = $1;
-}
-else
-{
-    die "Comment '$comment' contains unrecognized string";
-}
-if(!defined($save))
-{
-    $save = '';
-}
-elsif($save =~ m/^Save$/)
-{
-    $save = 1;
-}
-else
-{
-    die "Unrecognized save button '$save'";
-}
+my %config = get_parameters($query, \%lname_by_code);
 $query->charset('utf-8'); # makes the charset explicitly appear in the headers
 print($query->header());
 print <<EOF
@@ -186,7 +76,7 @@ EOF
 ;
 #------------------------------------------------------------------------------
 # No language code specified. Show the list of known languages.
-if($lcode eq '')
+if($config{lcode} eq '')
 {
     print("  <h1>Specify auxiliaries for a language</h1>\n");
     # Print the list of known languages.
@@ -209,12 +99,12 @@ else
 {
     # Read the data file.
     my @data = read_auxiliaries_from_python();
-    my @mydata = grep {$_->{lcode} eq $lcode} (@data);
+    my @mydata = grep {$_->{lcode} eq $config{lcode}} (@data);
     # It is possible that there are no auxiliaries for my language so far.
     # However, there must not be multiple entries for the same language.
     if(scalar(@mydata)>1)
     {
-        die "There are ".scalar(@mydata)." entries for language '$lcode' in the current database of auxiliaries";
+        die "There are ".scalar(@mydata)." entries for language '$config{lcode}' in the current database of auxiliaries";
     }
     my @myauxlist = ();
     if(scalar(@mydata)==1)
@@ -222,8 +112,8 @@ else
         @myauxlist = @{$mydata[0]{auxlist}};
     }
     print <<EOF
-  <h1><img class=\"flag\" src=\"https://universaldependencies.org/flags/png/$languages->{$lname_by_code{$lcode}}{flag}.png\" />
-    Specify auxiliaries for $lname_by_code{$lcode}</h1>
+  <h1><img class=\"flag\" src=\"https://universaldependencies.org/flags/png/$languages->{$lname_by_code{$config{lcode}}}{flag}.png\" />
+    Specify auxiliaries for $lname_by_code{$config{lcode}}</h1>
   <p><strong>Remember:</strong> Not everything that a traditional grammar labels
     as auxiliary is necessarily an <a href="https://universaldependencies.org/u/pos/AUX_.html">auxiliary in UD</a>.
     Just because a verb combines with another verb does not necessarily mean
@@ -255,35 +145,35 @@ EOF
     ;
     #------------------------------------------------------------------------------
     # We are processing a Save request after a lemma was edited.
-    if($save)
+    if($config{save})
     {
         print("  <h2>This is a result of a Save button</h2>\n");
         print("  <ul>\n");
-        print("    <li>lemma = '$lemma'</li>\n") unless($lemma eq '');
-        print("    <li>function = '".htmlescape($function)."'</li>\n") unless($function eq '');
-        print("    <li>example = '".htmlescape($example)."'</li>\n") unless($example eq '');
-        print("    <li>exampleen = '".htmlescape($exampleen)."'</li>\n") unless($exampleen eq '');
-        print("    <li>comment = '".htmlescape($comment)."'</li>\n") unless($comment eq '');
+        print("    <li>lemma = '$config{lemma}'</li>\n") unless($config{lemma} eq '');
+        print("    <li>function = '".htmlescape($config{function})."'</li>\n") unless($config{function} eq '');
+        print("    <li>example = '".htmlescape($config{example})."'</li>\n") unless($config{example} eq '');
+        print("    <li>exampleen = '".htmlescape($config{exampleen})."'</li>\n") unless($config{exampleen} eq '');
+        print("    <li>comment = '".htmlescape($config{comment})."'</li>\n") unless($config{comment} eq '');
         print("  </ul>\n");
         print("  <p style='color:red'><strong>WARNING:</strong> Real saving has not been implemented yet.</p>\n");
     }
     else
     {
-        if($lemma eq '')
+        if($config{lemma} eq '')
         {
             my $n = scalar(@myauxlist);
             if($n > 0)
             {
                 print("  <h2 style='color:red'>You have $n undocumented auxiliaries!</h2>\n");
                 print("  <p>Please edit each undocumented auxiliary and supply the missing information.</p>\n");
-                print("  <p>".join(' ', map {my $l = $_; $l =~ s/\PL//g; $l = 'XXX' if($l eq ''); "<a href=\"specify_auxiliary.pl?lcode=$lcode&amp;lemma=$l\">$l</a>"} (@myauxlist))."</p>\n");
+                print("  <p>".join(' ', map {my $l = $_; $l =~ s/\PL//g; $l = 'XXX' if($l eq ''); "<a href=\"specify_auxiliary.pl?lcode=$config{lcode}&amp;lemma=$l\">$l</a>"} (@myauxlist))."</p>\n");
             }
         }
         else
         {
             print <<EOF
   <form action="specify_auxiliary.pl" method="post" enctype="multipart/form-data">
-  <input name=lcode type=hidden value="$lcode" />
+  <input name=lcode type=hidden value="$config{lcode}" />
   <p>Please tell us your Github user name:
     <input name=ghu type=text />
     Are you a robot? (one word) <input name=smartquestion type=text /><br />
@@ -300,7 +190,7 @@ EOF
       <td>Example</td>
 EOF
             ;
-            unless($lcode eq 'en')
+            unless($config{lcode} eq 'en')
             {
                 print("      <td>English translation of the example</td>\n");
             }
@@ -308,7 +198,7 @@ EOF
       <td>Comment</td>
     </tr>
     <tr>
-      <td><input name=lemma type=text value="$lemma" /></td>
+      <td><input name=lemma type=text value="$config{lemma}" /></td>
       <td>
         <select name=function>
           <option>-----</option>
@@ -332,7 +222,7 @@ EOF
       <td><input name=example type=text /></td>
 EOF
             ;
-            unless($lcode eq 'en')
+            unless($config{lcode} eq 'en')
             {
                 print("      <td><input name=exampleen type=text /></td>\n");
             }
@@ -360,19 +250,19 @@ EOF
     # Then display languages from the same family and genus.
     # Then languages from the same family but different genera.
     # Then all remaining languages.
-    my $myfamilygenus = $languages->{$lname_by_code{$lcode}}{familygenus};
-    my $myfamily = $languages->{$lname_by_code{$lcode}}{family};
-    my $mygenus = $languages->{$lname_by_code{$lcode}}{genus};
+    my $myfamilygenus = $languages->{$lname_by_code{$config{lcode}}}{familygenus};
+    my $myfamily = $languages->{$lname_by_code{$config{lcode}}}{family};
+    my $mygenus = $languages->{$lname_by_code{$config{lcode}}}{genus};
     foreach my $row (@data)
     {
-        next unless($row->{lcode} eq $lcode);
+        next unless($row->{lcode} eq $config{lcode});
         my $n = scalar(@{$row->{auxlist}});
         print("    <tr><td>$lname_by_code{$row->{lcode}}</td><td>$row->{lcode}</td><td>$n</td><td>".join(' ', @{$row->{auxlist}})."</td></tr>\n");
         last;
     }
     foreach my $row (@data)
     {
-        next if($row->{lcode} eq $lcode);
+        next if($row->{lcode} eq $config{lcode});
         next unless($languages->{$lname_by_code{$row->{lcode}}}{familygenus} eq $myfamilygenus);
         my $n = scalar(@{$row->{auxlist}});
         print("    <tr><td>$lname_by_code{$row->{lcode}}</td><td>$row->{lcode}</td><td>$n</td><td>".join(' ', @{$row->{auxlist}})."</td></tr>\n");
@@ -397,6 +287,199 @@ print <<EOF
 </html>
 EOF
 ;
+
+
+
+#------------------------------------------------------------------------------
+# Reads the CGI parameters, checks their values and untaints them so that they
+# can be safely used in the code. Untainting happens when the value is run
+# through a regular expression.
+#------------------------------------------------------------------------------
+sub get_parameters
+{
+    my $query = shift; # The CGI object that can supply the parameters.
+    my $lname_by_code = shift; # hash ref
+    my %config; # our hash where we store the parameters
+    #--------------------------------------------------------------------------
+    # Language code. If not provided, we show the introductory list of
+    # languages.
+    $config{lcode} = $query->param('lcode');
+    if(!defined($config{lcode}) || $config{lcode} =~ m/^\s*$/)
+    {
+        $config{lcode} = '';
+    }
+    elsif($config{lcode} =~ m/^([a-z]{2,3})$/)
+    {
+        $config{lcode} = $1;
+        if(!exists($lname_by_code->{$config{lcode}}))
+        {
+            die "Unknown language code '$config{lcode}'";
+        }
+    }
+    else
+    {
+        die "Language code '$config{lcode}' does not consist of two or three lowercase English letters";
+    }
+    #--------------------------------------------------------------------------
+    # Lemma identifies the auxiliary that we are editing or going to edit.
+    $config{lemma} = $query->param('lemma');
+    if(!defined($config{lemma}) || $config{lemma} =~ m/^\s*$/)
+    {
+        $config{lemma} = '';
+    }
+    elsif($config{lemma} =~ m/^\s*(\pL+)\s*$/)
+    {
+        $config{lemma} = $1;
+    }
+    else
+    {
+        die "Lemma '$config{lemma}' contains non-letter characters";
+    }
+    #--------------------------------------------------------------------------
+    # Function is a descriptive text (e.g. "Periphrastic aspect: perfect")
+    # taken from a pre-defined list of options.
+    $config{function} = $query->param('function');
+    if(!defined($config{function}) || $config{function} =~ m/^\s*$/)
+    {
+        $config{function} = '';
+    }
+    ###!!! We should check the exact selection.
+    elsif($config{function} =~ m/^([A-Za-z :\(,\)]+)$/)
+    {
+        $config{function} = $1;
+    }
+    else
+    {
+        die "Function '$config{function}' contains unrecognized string";
+    }
+    #--------------------------------------------------------------------------
+    # Rule is a descriptive text (e.g. "combination of the auxiliary with
+    # a participle of the main verb"). It is not restricted to a pre-defined
+    # set of options but it should not need more than English letters, spaces,
+    # and some basic punctuation.
+    $config{rule} = $query->param('rule');
+    if(!defined($config{rule}) || $config{rule} =~ m/^\s*$/)
+    {
+        $config{rule} = '';
+    }
+    elsif($config{rule} =~ m/^([-A-Za-z \.:\(,;\)]+)$/)
+    {
+        $config{rule} = $1;
+    }
+    else
+    {
+        die "Rule '$config{rule}' contains characters other than English letters, space, period, comma, semicolon, colon, hyphen, and round brackets";
+    }
+    #--------------------------------------------------------------------------
+    # Example in the original language may contain letters (including Unicode
+    # letters), spaces, punctuation (including Unicode punctuation). Square
+    # brackets have a special meaning, they mark the word we focus on. We
+    # probably do not need < > & "" and we could ban them for safety (but
+    # it is not necessary if we make sure to always escape them when inserting
+    # them in HTML we generate). We may need the apostrophe in some languages,
+    # though.
+    $config{example} = $query->param('example');
+    if(!defined($config{example}) || $config{example} =~ m/^\s*$/)
+    {
+        $config{example} = '';
+    }
+    else
+    {
+        # Remove duplicate, leading and trailing spaces.
+        $config{example} =~ s/^\s+//;
+        $config{example} =~ s/\s+$//;
+        $config{example} =~ s/\s+/ /sg;
+        if($config{example} !~ m/^[\pL\pP ]+$/)
+        {
+            die "Example '$config{example}' contains characters other than letters, punctuation and space";
+        }
+        elsif($config{example} =~ m/[<>&"]/) # "
+        {
+            die "Example '$config{example}' contains less-than, greater-than, ampersand or the ASCII quote";
+        }
+        elsif($config{example} !~ m/\[\pL+\]/)
+        {
+            die "Example '$config{example}' does not contain a sequence of letters enclosed in [square brackets]";
+        }
+        if($config{example} =~ m/^(.+)$/)
+        {
+            $config{example} = $1;
+        }
+    }
+    #--------------------------------------------------------------------------
+    # English translation of the example is provided if the current language is
+    # not English. We can probably allow the same regular expressions as for
+    # the original example, although we typically do not need non-English
+    # letters in the English translation.
+    $config{exampleen} = $query->param('exampleen');
+    if(!defined($config{exampleen}) || $config{exampleen} =~ m/^\s*$/)
+    {
+        $config{exampleen} = '';
+    }
+    else
+    {
+        # Remove duplicate, leading and trailing spaces.
+        $config{exampleen} =~ s/^\s+//;
+        $config{exampleen} =~ s/\s+$//;
+        $config{exampleen} =~ s/\s+/ /sg;
+        if($config{exampleen} !~ m/^[\pL\pP ]+$/)
+        {
+            die "Example translation '$config{exampleen}' contains characters other than letters, punctuation and space";
+        }
+        elsif($config{exampleen} =~ m/[<>&"]/) # "
+        {
+            die "Example translation '$config{exampleen}' contains less-than, greater-than, ampersand or the ASCII quote";
+        }
+        if($config{exampleen} =~ m/^(.+)$/)
+        {
+            $config{exampleen} = $1;
+        }
+    }
+    #--------------------------------------------------------------------------
+    # Comment is an optional English text. Since it may contain a word from the
+    # language being documented, we should allow everything that is allowed in
+    # the example.
+    $config{comment} = $query->param('comment');
+    if(!defined($config{comment}) || $config{comment} =~ m/^\s*$/)
+    {
+        $config{comment} = '';
+    }
+    else
+    {
+        # Remove duplicate, leading and trailing spaces.
+        $config{comment} =~ s/^\s+//;
+        $config{comment} =~ s/\s+$//;
+        $config{comment} =~ s/\s+/ /sg;
+        if($config{comment} !~ m/^[\pL\pP ]+$/)
+        {
+            die "Comment '$config{comment}' contains characters other than letters, punctuation and space";
+        }
+        elsif($config{comment} =~ m/[<>&"]/) # "
+        {
+            die "Comment '$config{comment}' contains less-than, greater-than, ampersand or the ASCII quote";
+        }
+        if($config{comment} =~ m/^(.+)$/)
+        {
+            $config{comment} = $1;
+        }
+    }
+    #--------------------------------------------------------------------------
+    # The parameter 'save' comes from the Save button which submitted the form.
+    $config{save} = $query->param('save');
+    if(!defined($config{save}))
+    {
+        $config{save} = 0;
+    }
+    elsif($config{save} =~ m/^Save$/)
+    {
+        $config{save} = 1;
+    }
+    else
+    {
+        die "Unrecognized save button '$config{save}'";
+    }
+    return %config;
+}
 
 
 
