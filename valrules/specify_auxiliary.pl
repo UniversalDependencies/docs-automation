@@ -283,6 +283,14 @@ EOF
             print <<EOF
   <form action="specify_auxiliary.pl" method="post" enctype="multipart/form-data">
   <input name=lcode type=hidden value="$lcode" />
+  <p>Please tell us your Github user name:
+    <input name=ghu type=text />
+    Are you a robot? (one word) <input name=smartquestion type=text /><br />
+    <small>Your edits will be ultimately propagated to UD Github repositories
+    and we need to be able to link them to a particular user if there are any
+    issues to be discussed. This is not a problem when you edit directly on
+    Github, but here the actual push action will be formally done by another
+    user.</small></p>
   <table>
     <tr>
       <td>Lemma</td>
