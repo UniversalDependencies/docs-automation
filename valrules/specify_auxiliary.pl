@@ -166,6 +166,8 @@ EOF
     {
         print("  <h2>This is a result of a Save button</h2>\n");
         print("  <ul>\n");
+        print("    <li>user = '$config{ghu}'</li>\n") unless($config{ghu} eq '');
+        print("    <li>robot = '$config{smartquestion}'</li>\n") unless($config{smartquestion} eq '');
         print("    <li>lemma = '$config{lemma}'</li>\n") unless($config{lemma} eq '');
         print("    <li>function = '".htmlescape($config{function})."'</li>\n") unless($config{function} eq '');
         print("    <li>example = '".htmlescape($config{example})."'</li>\n") unless($config{example} eq '');
@@ -330,6 +332,37 @@ sub get_parameters
     else
     {
         die "Language code '$config{lcode}' does not consist of two or three lowercase English letters";
+    }
+    #--------------------------------------------------------------------------
+    # Github user name. Some names may look like e-mail addresses.
+    $config{ghu} = decode('utf8', $query->param('ghu'));
+    if(!defined($config{ghu}) || $config{ghu} =~ m/^\s*$/)
+    {
+        $config{ghu} = '';
+    }
+    elsif($config{ghu} =~ m/^([-A-Za-z_0-9\@\.]+)$/)
+    {
+        $config{ghu} = $1;
+    }
+    else
+    {
+        die "Unrecognized name '$config{ghu}'";
+    }
+    #--------------------------------------------------------------------------
+    # Smart question is a primitive measure against robots that find the page
+    # accidentally. Expected answer is "no".
+    $config{smartquestion} = decode('utf8', $query->param('smartquestion'));
+    if(!defined($config{smartquestion}) || $config{smartquestion} =~ m/^\s*$/)
+    {
+        $config{smartquestion} = '';
+    }
+    elsif($config{smartquestion} =~ m/^\s*no\s*$/i)
+    {
+        $config{smartquestion} = 'no';
+    }
+    else
+    {
+        die "Unsatisfactory robotic response :-)";
     }
     #--------------------------------------------------------------------------
     # Lemma identifies the auxiliary that we are editing or going to edit.
