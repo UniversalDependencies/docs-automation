@@ -295,12 +295,8 @@ EOF
     <tr>
       <td>Lemma</td>
       <td>Function</td>
-      <td>Rule<br/>
-        <small>e.g. “combination of the auxiliary and a past participle of the main verb”</small>
-      </td>
-      <td>Example<br/>
-        <small>mark the auxiliary by enclosing it in square brackets, e.g., “he [has] done it”</small>
-      </td>
+      <td>Rule</td>
+      <td>Example</td>
 EOF
             ;
             unless($lcode eq 'en')
@@ -342,8 +338,14 @@ EOF
             print <<EOF
       <td><input name=comment type=text /></td>
     </tr>
+    <tr>
+      <td><input name=save type=submit value="Save" /></td>
+      <td></td>
+      <td><small>e.g. “combination of the auxiliary and a past participle of the main verb”</small></td>
+      <td><small>mark the auxiliary by enclosing it in square brackets, e.g., “he [has] done it”</small></td>
+      <!-- empty cells under english example and comment omitted (the one under english example would have to appear only if lcode is not en -->
+    </tr>
   </table>
-  <input name=save type=submit value="Save" />
   </form>
 EOF
             ;
