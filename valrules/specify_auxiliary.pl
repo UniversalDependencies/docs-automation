@@ -41,6 +41,23 @@ foreach my $lname (keys(%{$languages}))
     }
     $languages->{$lname}{family} = 'Indo-European' if($languages->{$lname}{family} eq 'IE');
 }
+my @functions =
+(
+    ['Copula', 'cop'],
+    ['Periphrastic aspect: perfect', 'Aspect=Perf'],
+    ['Periphrastic aspect: progressive', 'Aspect=Prog'],
+    ['Periphrastic tense: past', 'Tense=Past'],
+    ['Periphrastic tense: future', 'Tense=Fut'],
+    ['Periphrastic voice: passive', 'Voice=Pass'],
+    ['Periphrastic voice: causative', 'Voice=Cau'],
+    ['Periphrastic mood: conditional', 'Mood=Cnd'],
+    ['Periphrastic mood: imperative', 'Mood=Imp'],
+    ['Needed in negative clauses (like English “do”, not like “not”)', 'negative'],
+    ['Needed in interrogative clauses (like English “do”)', 'interrogative'],
+    ['Modal auxiliary: necessitative (“must, should”)', 'Mood=Nec'],
+    ['Modal auxiliary: potential (“can, might”)', 'Mood=Pot'],
+    ['Modal auxiliary: desiderative (“want”)', 'Mood=Des']
+);
 # We must set our own PATH even if we do not depend on it.
 # The system call may potentially use it, and the one from outside is considered insecure.
 $ENV{'PATH'} = $path.':/home/zeman/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin';
@@ -53,7 +70,7 @@ if ( exists($ENV{HTTP_X_FORWARDED_FOR}) && $ENV{HTTP_X_FORWARDED_FOR} =~ m/^(\d+
 {
     $remoteaddr = $1;
 }
-my %config = get_parameters($query, \%lname_by_code);
+my %config = get_parameters($query, \%lname_by_code, \@functions);
 $query->charset('utf-8'); # makes the charset explicitly appear in the headers
 print($query->header());
 print <<EOF
@@ -202,20 +219,13 @@ EOF
       <td>
         <select name=function>
           <option>-----</option>
-          <option>Copula</option>
-          <option>Periphrastic aspect: perfect</option>
-          <option>Periphrastic aspect: progressive</option>
-          <option>Periphrastic tense: past</option>
-          <option>Periphrastic tense: future</option>
-          <option>Periphrastic voice: passive</option>
-          <option>Periphrastic voice: causative</option>
-          <option>Periphrastic mood: conditional</option>
-          <option>Periphrastic mood: imperative</option>
-          <option>Needed in negative clauses (like English “do”)</option>
-          <option>Needed in interrogative clauses (like English “do”)</option>
-          <option>Modal auxiliary: necessitative (“must, should”)</option>
-          <option>Modal auxiliary: potential (“can, might”)</option>
-          <option>Modal auxiliary: desiderative (“want”)</option>
+EOF
+            ;
+            foreach my $f (@functions)
+            {
+                print("          <option>".htmlescape($f[0])."</option>\n");
+            }
+            print <<EOF
         </select>
       </td>
       <td><input name=rule type=text /></td>
@@ -299,6 +309,7 @@ sub get_parameters
 {
     my $query = shift; # The CGI object that can supply the parameters.
     my $lname_by_code = shift; # hash ref
+    my $functions = shift; # ref to array of pairs (arrays)
     my %config; # our hash where we store the parameters
     #--------------------------------------------------------------------------
     # Language code. If not provided, we show the introductory list of
@@ -343,14 +354,17 @@ sub get_parameters
     {
         $config{function} = '';
     }
-    ###!!! We should check the exact selection.
-    elsif($config{function} =~ m/^([A-Za-z :\(,\)]+)$/)
-    {
-        $config{function} = $1;
-    }
     else
     {
-        die "Function '$config{function}' contains unrecognized string";
+        if($config{function} =~ m/^(.+)$/)
+        {
+            $config{function} = $1;
+        }
+        # Verify that the function is one of the functions we defined.
+        if(!scalar(grep {$_ eq $config{function}} (map {$_->[0]} (@{$functions}))))
+        {
+            die "Unrecognized function '$config{function}'";
+        }
     }
     #--------------------------------------------------------------------------
     # Rule is a descriptive text (e.g. "combination of the auxiliary with
