@@ -257,6 +257,13 @@ EOF
                 }
             }
             write_data_json(\%data, "$path/data.json");
+            print <<EOF
+  <form action="specify_auxiliary.pl" method="post" enctype="multipart/form-data">
+    <input name=lcode type=hidden value="$config{lcode}" />
+    <input name=ghu type=hidden value="$config{ghu}" />
+    <input name=gotolang type=submit value="Return to list" />
+  </form>
+            ;
         }
     }
     else
@@ -268,7 +275,7 @@ EOF
             {
                 print("  <h2 style='color:red'>You have $n undocumented auxiliaries!</h2>\n");
                 print("  <p>Please edit each undocumented auxiliary and supply the missing information.</p>\n");
-                print("  <p>".join(' ', map {my $l = $_; $l =~ s/\PL//g; $l = 'XXX' if($l eq ''); "<a href=\"specify_auxiliary.pl?lcode=$config{lcode}&amp;lemma=$l\">$l</a>"} (@myauxlist))."</p>\n");
+                print("  <p>".join(' ', map {my $l = $_; $l =~ s/\PL//g; $l = 'XXX' if($l eq ''); "<a href=\"specify_auxiliary.pl?lcode=$config{lcode}&amp;lemma=$l&amp;ghu=$config{ghu}\">$l</a>"} (@myauxlist))."</p>\n");
             }
         }
         else
@@ -277,7 +284,7 @@ EOF
   <form action="specify_auxiliary.pl" method="post" enctype="multipart/form-data">
   <input name=lcode type=hidden value="$config{lcode}" />
   <p>Please tell us your Github user name:
-    <input name=ghu type=text />
+    <input name=ghu type=text value="$config{ghu}" />
     Are you a robot? (one word) <input name=smartquestion type=text size=10 /><br />
     <small>Your edits will be ultimately propagated to UD Github repositories
     and we need to be able to link them to a particular user if there are any
