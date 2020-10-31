@@ -130,7 +130,7 @@ else
     # Nevertheless, only now we can also report an error if a parameter is empty.
     if($config{save})
     {
-        process_form_data();
+        process_form_data(%data);
     }
     else
     {
@@ -140,7 +140,7 @@ else
             # It is possible that there are no auxiliaries for my language so far.
             if(exists($data{$config{lcode}}))
             {
-                print_undocumented_auxiliaries();
+                print_undocumented_auxiliaries(%data);
             }
         }
         else
@@ -148,7 +148,7 @@ else
             print_lemma_form();
         }
         # Show all known auxiliaries so the user can compare. This and related languages first.
-        print_all_auxiliaries();
+        print_all_auxiliaries(%data);
     }
 }
 print <<EOF
@@ -164,6 +164,7 @@ EOF
 #------------------------------------------------------------------------------
 sub print_undocumented_auxiliaries
 {
+    my %data = @_;
     my @auxiliaries = @{$data{$config{lcode}}};
     my @undocumented = grep {$_->{status} ne 'documented'} (@auxiliaries);
     my $n = scalar(@undocumented);
@@ -268,6 +269,7 @@ EOF
 #------------------------------------------------------------------------------
 sub process_form_data
 {
+    my %data = @_;
     my $error = 0;
     print("  <h2>This is a result of a Save button</h2>\n");
     print("  <ul>\n");
@@ -416,6 +418,7 @@ EOF
 #------------------------------------------------------------------------------
 sub print_all_auxiliaries
 {
+    my %data = @_;
     # Print the data on the web page.
     print("  <h2>Known auxiliaries for this and other languages</h2>\n");
     print("  <table>\n");
