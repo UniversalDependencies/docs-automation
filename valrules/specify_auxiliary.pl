@@ -124,12 +124,6 @@ else
     {
         %data = read_data_json();
     }
-    # It is possible that there are no auxiliaries for my language so far.
-    my @myauxlist = ();
-    if(exists($data{$config{lcode}}))
-    {
-        @myauxlist = map {$_->{lemma}} (@{$data{$config{lcode}}});
-    }
     print <<EOF
   <h1><img class=\"flag\" src=\"https://universaldependencies.org/flags/png/$languages->{$lname_by_code{$config{lcode}}}{flag}.png\" />
     Specify auxiliaries for $lname_by_code{$config{lcode}}</h1>
@@ -271,12 +265,32 @@ EOF
     {
         if($config{lemma} eq '')
         {
-            my $n = scalar(@myauxlist);
-            if($n > 0)
+            # It is possible that there are no auxiliaries for my language so far.
+            if(exists($data{$config{lcode}}))
             {
-                print("  <h2 style='color:red'>You have $n undocumented auxiliaries!</h2>\n");
-                print("  <p>Please edit each undocumented auxiliary and supply the missing information.</p>\n");
-                print("  <p>".join(' ', map {my $l = $_; $l =~ s/\PL//g; $l = 'XXX' if($l eq ''); "<a href=\"specify_auxiliary.pl?ghu=$config{ghu}&amp;lcode=$config{lcode}&amp;lemma=$l\">$l</a>"} (@myauxlist))."</p>\n");
+                my @auxiliaries = @{$data{$config{lcode}}};
+                my @undocumented = grep {$_->{status} ne 'documented'} (@auxiliaries);
+                my $n = scalar(@undocumented);
+                if($n > 0)
+                {
+                    my @hrefs;
+                    foreach my $aux (@undocumented)
+                    {
+                        # For a safe URL we assume that the lemma contains only letters. That should not be a problem normally.
+                        my $lemma = $aux->{lemma};
+                        $lemma =~ s/\PL//g;
+                        my $alert = '';
+                        if($lemma ne $aux->{lemma})
+                        {
+                            $alert = " <span style='color:red'>ERROR: Lemma must consist only of letters but stripping non-letters from '".htmlescape($aux->{lemma})."' yields '$lemma'!</span>";
+                        }
+                        my $href = "<a href=\"specify_auxiliary.pl?ghu=$config{ghu}&amp;lcode=$config{lcode}&amp;lemma=$lemma\">$lemma</a>$alert";
+                        push(@hrefs, $href);
+                    }
+                    print("  <h2 style='color:red'>You have $n undocumented auxiliaries!</h2>\n");
+                    print("  <p>Please edit each undocumented auxiliary and supply the missing information.</p>\n");
+                    print("  <p>".join(' ', @hrefs)."</p>\n");
+                }
             }
         }
         else
