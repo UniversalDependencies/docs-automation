@@ -114,8 +114,16 @@ if($config{lcode} eq '')
 # Language code specified. We can edit auxiliaries of that language.
 else
 {
-    # Read the data file.
-    my %data = read_auxiliaries_from_python();
+    # Read the data file, either from the old Python list, or from JSON.
+    my %data;
+    if(0)
+    {
+        %data = read_auxiliaries_from_python();
+    }
+    else
+    {
+        %data = read_data_json();
+    }
     # It is possible that there are no auxiliaries for my language so far.
     my @myauxlist = ();
     if(exists($data{$config{lcode}}))
@@ -663,15 +671,36 @@ sub read_auxiliaries_from_python
 
 
 #------------------------------------------------------------------------------
-# Escapes HTML control characters in a string.
+# Reads the data about auxiliaries from the JSON file.
 #------------------------------------------------------------------------------
-sub htmlescape
+sub read_data_json
 {
-    my $x = shift;
-    $x =~ s/&/&amp;/g;
-    $x =~ s/</&lt;/g;
-    $x =~ s/>/&gt;/g;
-    return $x;
+    my %data;
+    my $datafile = "$path/data.json";
+    my $json = json_file_to_perl($datafile);
+    # The $json structure should contain two items, 'WARNING' and 'auxiliaries';
+    # the latter should be a reference to an array of hashes.
+    if(exists($json->{auxiliaries}) && ref($json->{auxiliaries}) eq 'ARRAY')
+    {
+        foreach my $record (@{$json->{auxiliaries}})
+        {
+            my $lcode = $record->{lcode};
+            if(!exists($lname_by_code{$lcode}))
+            {
+                die("Unknown language code '$lcode' in the JSON file");
+            }
+            # We do not have to copy the data item by item to a new record.
+            # We can simply copy the reference to the record (possibly after
+            # erasing the language code inside).
+            delete($record->{lcode});
+            push(@{$data{$lcode}}, $record);
+        }
+    }
+    else
+    {
+        die("No auxiliaries found in the JSON file");
+    }
+    return %data;
 }
 
 
@@ -823,4 +852,18 @@ sub escape_json_string
         log_fatal("The string must not contain control characters.");
     }
     return $string;
+}
+
+
+
+#------------------------------------------------------------------------------
+# Escapes HTML control characters in a string.
+#------------------------------------------------------------------------------
+sub htmlescape
+{
+    my $x = shift;
+    $x =~ s/&/&amp;/g;
+    $x =~ s/</&lt;/g;
+    $x =~ s/>/&gt;/g;
+    return $x;
 }
