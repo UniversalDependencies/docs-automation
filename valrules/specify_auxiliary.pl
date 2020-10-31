@@ -124,6 +124,257 @@ else
     {
         %data = read_data_json();
     }
+    #------------------------------------------------------------------------------
+    # We are processing a Save request after a lemma was edited.
+    # We have briefly checked that the parameters match expected regular expressions.
+    # Nevertheless, only now we can also report an error if a parameter is empty.
+    if($config{save})
+    {
+        process_form_data();
+    }
+    else
+    {
+        summarize_guidelines();
+        if($config{lemma} eq '')
+        {
+            # It is possible that there are no auxiliaries for my language so far.
+            if(exists($data{$config{lcode}}))
+            {
+                print_undocumented_auxiliaries();
+            }
+        }
+        else
+        {
+            print_lemma_form();
+        }
+        # Show all known auxiliaries so the user can compare. This and related languages first.
+        print_all_auxiliaries();
+    }
+}
+print <<EOF
+</body>
+</html>
+EOF
+;
+
+
+
+#------------------------------------------------------------------------------
+# Prints the list of undocumented auxiliaries.
+#------------------------------------------------------------------------------
+sub print_undocumented_auxiliaries
+{
+    my @auxiliaries = @{$data{$config{lcode}}};
+    my @undocumented = grep {$_->{status} ne 'documented'} (@auxiliaries);
+    my $n = scalar(@undocumented);
+    if($n > 0)
+    {
+        my @hrefs;
+        foreach my $aux (@undocumented)
+        {
+            # For a safe URL we assume that the lemma contains only letters. That should not be a problem normally.
+            my $lemma = $aux->{lemma};
+            $lemma =~ s/\PL//g;
+            my $alert = '';
+            if($lemma ne $aux->{lemma})
+            {
+                $alert = " <span style='color:red'>ERROR: Lemma must consist only of letters but stripping non-letters from '".htmlescape($aux->{lemma})."' yields '$lemma'!</span>";
+            }
+            my $href = "<a href=\"specify_auxiliary.pl?ghu=$config{ghu}&amp;lcode=$config{lcode}&amp;lemma=$lemma\">$lemma</a>$alert";
+            push(@hrefs, $href);
+        }
+        print("  <h2 style='color:red'>You have $n undocumented auxiliaries!</h2>\n");
+        print("  <p>Please edit each undocumented auxiliary and supply the missing information.</p>\n");
+        print("  <p>".join(' ', @hrefs)."</p>\n");
+    }
+}
+
+
+
+#------------------------------------------------------------------------------
+# Prints the form where a particular lemma can be edited.
+#------------------------------------------------------------------------------
+sub print_lemma_form
+{
+    print <<EOF
+  <form action="specify_auxiliary.pl" method="post" enctype="multipart/form-data">
+  <input name=lcode type=hidden value="$config{lcode}" />
+  <p>Please tell us your Github user name:
+    <input name=ghu type=text value="$config{ghu}" />
+    Are you a robot? (one word) <input name=smartquestion type=text size=10 /><br />
+    <small>Your edits will be ultimately propagated to UD Github repositories
+    and we need to be able to link them to a particular user if there are any
+    issues to be discussed. This is not a problem when you edit directly on
+    Github, but here the actual push action will be formally done by another
+    user.</small></p>
+  <table>
+    <tr>
+      <td>Lemma</td>
+      <td>Function</td>
+      <td>Rule</td>
+      <td>Example</td>
+EOF
+    ;
+    unless($config{lcode} eq 'en')
+    {
+        print("      <td>English translation of the example</td>\n");
+    }
+    print <<EOF
+      <td>Comment</td>
+    </tr>
+    <tr>
+      <td><input name=lemma type=text size=10 value="$config{lemma}" /></td>
+      <td>
+        <select name=function>
+          <option>-----</option>
+EOF
+    ;
+    foreach my $f (@functions)
+    {
+        print("          <option>".htmlescape($f->[0])."</option>\n");
+    }
+    print <<EOF
+        </select>
+      </td>
+      <td><input name=rule type=text size=30 /></td>
+      <td><input name=example type=text size=30 /></td>
+EOF
+    ;
+    unless($config{lcode} eq 'en')
+    {
+        print("      <td><input name=exampleen type=text size=30 /></td>\n");
+    }
+    print <<EOF
+      <td><input name=comment type=text /></td>
+    </tr>
+    <tr>
+      <td><input name=save type=submit value="Save" /></td>
+      <td></td>
+      <td><small>e.g. “combination of the auxiliary and a past participle of the main verb”</small></td>
+      <td><small>mark the auxiliary by enclosing it in square brackets, e.g., “he [has] done it”</small></td>
+      <!-- empty cells under english example and comment omitted (the one under english example would have to appear only if lcode is not en -->
+    </tr>
+  </table>
+  </form>
+EOF
+    ;
+}
+
+
+
+#------------------------------------------------------------------------------
+# Processes data submitted from a form and prints confirmation or an error
+# message.
+#------------------------------------------------------------------------------
+sub process_form_data
+{
+    my $error = 0;
+    print("  <h2>This is a result of a Save button</h2>\n");
+    print("  <ul>\n");
+    if($config{ghu} ne '')
+    {
+        print("    <li>user = '$config{ghu}'</li>\n");
+    }
+    else
+    {
+        print("    <li style='color:red'>ERROR: Missing Github user name</li>\n");
+        $error = 1;
+    }
+    if($config{smartquestion} eq 'no')
+    {
+        print("    <li>robot = '$config{smartquestion}'</li>\n");
+    }
+    else
+    {
+        print("    <li style='color:red'>ERROR: Unsatisfactory robotic response</li>\n");
+        $error = 1;
+    }
+    if($config{lemma} ne '')
+    {
+        print("    <li>lemma = '$config{lemma}'</li>\n");
+    }
+    else
+    {
+        print("    <li style='color:red'>ERROR: Missing lemma</li>\n");
+        $error = 1;
+    }
+    if($config{function} ne '')
+    {
+        print("    <li>function = '".htmlescape($config{function})."'</li>\n");
+    }
+    else
+    {
+        print("    <li style='color:red'>ERROR: Missing function</li>\n");
+        $error = 1;
+    }
+    if($config{example} ne '')
+    {
+        print("    <li>example = '".htmlescape($config{example})."'</li>\n");
+    }
+    else
+    {
+        print("    <li style='color:red'>ERROR: Missing example</li>\n");
+        $error = 1;
+    }
+    if($config{exampleen} ne '')
+    {
+        print("    <li>exampleen = '".htmlescape($config{exampleen})."'</li>\n");
+    }
+    elsif($config{lcode} ne 'en')
+    {
+        print("    <li style='color:red'>ERROR: Missing English translation of the example</li>\n");
+        $error = 1;
+    }
+    if($config{comment} ne '')
+    {
+        print("    <li>comment = '".htmlescape($config{comment})."'</li>\n");
+    }
+    print("  </ul>\n");
+    if($error)
+    {
+        print("  <p style='color:red'><strong>WARNING:</strong> Nothing was saved because there were errors.</p>\n");
+    }
+    else
+    {
+        print("  <p style='color:red'><strong>WARNING:</strong> Real saving has not been implemented yet.</p>\n");
+        my @auxlist = @{$data{$config{lcode}}};
+        foreach my $aux (@auxlist)
+        {
+            if($aux->{lemma} eq $config{lemma})
+            {
+                # Do I want to use my local time or universal time in the timestamps?
+                #my ($sec, $min, $hour, $mday, $mon, $year, $wday, $yday) = gmtime(time());
+                my ($sec, $min, $hour, $mday, $mon, $year, $wday, $yday) = localtime(time());
+                my $timestamp = sprintf("%04d-%02d-%02d-%02d-%02d-%02d", 1900+$year, 1+$mon, $mday, $hour, $min, $sec);
+                $aux->{lastchanged} = $timestamp;
+                $aux->{lastchanger} = $config{ghu};
+                $aux->{function} = $config{function};
+                $aux->{rule} = $config{rule};
+                $aux->{example} = $config{example};
+                $aux->{exampleen} = $config{exampleen};
+                $aux->{comment} = $config{comment};
+                $aux->{status} = 'documented';
+            }
+        }
+        write_data_json(\%data, "$path/data.json");
+        print <<EOF
+  <form action="specify_auxiliary.pl" method="post" enctype="multipart/form-data">
+    <input name=lcode type=hidden value="$config{lcode}" />
+    <input name=ghu type=hidden value="$config{ghu}" />
+    <input name=gotolang type=submit value="Return to list" />
+  </form>
+EOF
+        ;
+    }
+}
+
+
+
+#------------------------------------------------------------------------------
+# Prints the initial warning that not everything is an auxiliary.
+#------------------------------------------------------------------------------
+sub summarize_guidelines
+{
     print <<EOF
   <h1><img class=\"flag\" src=\"https://universaldependencies.org/flags/png/$languages->{$lname_by_code{$config{lcode}}}{flag}.png\" />
     Specify auxiliaries for $lname_by_code{$config{lcode}}</h1>
@@ -156,209 +407,15 @@ else
     <a href="https://universaldependencies.org/u/pos/DET.html">DET</a>.</p>
 EOF
     ;
-    #------------------------------------------------------------------------------
-    # We are processing a Save request after a lemma was edited.
-    # We have briefly checked that the parameters match expected regular expressions.
-    # Nevertheless, only now we can also report an error if a parameter is empty.
-    if($config{save})
-    {
-        my $error = 0;
-        print("  <h2>This is a result of a Save button</h2>\n");
-        print("  <ul>\n");
-        if($config{ghu} ne '')
-        {
-            print("    <li>user = '$config{ghu}'</li>\n");
-        }
-        else
-        {
-            print("    <li style='color:red'>ERROR: Missing Github user name</li>\n");
-            $error = 1;
-        }
-        if($config{smartquestion} eq 'no')
-        {
-            print("    <li>robot = '$config{smartquestion}'</li>\n");
-        }
-        else
-        {
-            print("    <li style='color:red'>ERROR: Unsatisfactory robotic response</li>\n");
-            $error = 1;
-        }
-        if($config{lemma} ne '')
-        {
-            print("    <li>lemma = '$config{lemma}'</li>\n");
-        }
-        else
-        {
-            print("    <li style='color:red'>ERROR: Missing lemma</li>\n");
-            $error = 1;
-        }
-        if($config{function} ne '')
-        {
-            print("    <li>function = '".htmlescape($config{function})."'</li>\n");
-        }
-        else
-        {
-            print("    <li style='color:red'>ERROR: Missing function</li>\n");
-            $error = 1;
-        }
-        if($config{example} ne '')
-        {
-            print("    <li>example = '".htmlescape($config{example})."'</li>\n");
-        }
-        else
-        {
-            print("    <li style='color:red'>ERROR: Missing example</li>\n");
-            $error = 1;
-        }
-        if($config{exampleen} ne '')
-        {
-            print("    <li>exampleen = '".htmlescape($config{exampleen})."'</li>\n");
-        }
-        elsif($config{lcode} ne 'en')
-        {
-            print("    <li style='color:red'>ERROR: Missing English translation of the example</li>\n");
-            $error = 1;
-        }
-        if($config{comment} ne '')
-        {
-            print("    <li>comment = '".htmlescape($config{comment})."'</li>\n");
-        }
-        print("  </ul>\n");
-        if($error)
-        {
-            print("  <p style='color:red'><strong>WARNING:</strong> Nothing was saved because there were errors.</p>\n");
-        }
-        else
-        {
-            print("  <p style='color:red'><strong>WARNING:</strong> Real saving has not been implemented yet.</p>\n");
-            my @auxlist = @{$data{$config{lcode}}};
-            foreach my $aux (@auxlist)
-            {
-                if($aux->{lemma} eq $config{lemma})
-                {
-                    # Do I want to use my local time or universal time in the timestamps?
-                    #my ($sec, $min, $hour, $mday, $mon, $year, $wday, $yday) = gmtime(time());
-                    my ($sec, $min, $hour, $mday, $mon, $year, $wday, $yday) = localtime(time());
-                    my $timestamp = sprintf("%04d-%02d-%02d-%02d-%02d-%02d", 1900+$year, 1+$mon, $mday, $hour, $min, $sec);
-                    $aux->{lastchanged} = $timestamp;
-                    $aux->{lastchanger} = $config{ghu};
-                    $aux->{function} = $config{function};
-                    $aux->{rule} = $config{rule};
-                    $aux->{example} = $config{example};
-                    $aux->{exampleen} = $config{exampleen};
-                    $aux->{comment} = $config{comment};
-                    $aux->{status} = 'documented';
-                }
-            }
-            write_data_json(\%data, "$path/data.json");
-            print <<EOF
-  <form action="specify_auxiliary.pl" method="post" enctype="multipart/form-data">
-    <input name=lcode type=hidden value="$config{lcode}" />
-    <input name=ghu type=hidden value="$config{ghu}" />
-    <input name=gotolang type=submit value="Return to list" />
-  </form>
-EOF
-            ;
-        }
-    }
-    else
-    {
-        if($config{lemma} eq '')
-        {
-            # It is possible that there are no auxiliaries for my language so far.
-            if(exists($data{$config{lcode}}))
-            {
-                my @auxiliaries = @{$data{$config{lcode}}};
-                my @undocumented = grep {$_->{status} ne 'documented'} (@auxiliaries);
-                my $n = scalar(@undocumented);
-                if($n > 0)
-                {
-                    my @hrefs;
-                    foreach my $aux (@undocumented)
-                    {
-                        # For a safe URL we assume that the lemma contains only letters. That should not be a problem normally.
-                        my $lemma = $aux->{lemma};
-                        $lemma =~ s/\PL//g;
-                        my $alert = '';
-                        if($lemma ne $aux->{lemma})
-                        {
-                            $alert = " <span style='color:red'>ERROR: Lemma must consist only of letters but stripping non-letters from '".htmlescape($aux->{lemma})."' yields '$lemma'!</span>";
-                        }
-                        my $href = "<a href=\"specify_auxiliary.pl?ghu=$config{ghu}&amp;lcode=$config{lcode}&amp;lemma=$lemma\">$lemma</a>$alert";
-                        push(@hrefs, $href);
-                    }
-                    print("  <h2 style='color:red'>You have $n undocumented auxiliaries!</h2>\n");
-                    print("  <p>Please edit each undocumented auxiliary and supply the missing information.</p>\n");
-                    print("  <p>".join(' ', @hrefs)."</p>\n");
-                }
-            }
-        }
-        else
-        {
-            print <<EOF
-  <form action="specify_auxiliary.pl" method="post" enctype="multipart/form-data">
-  <input name=lcode type=hidden value="$config{lcode}" />
-  <p>Please tell us your Github user name:
-    <input name=ghu type=text value="$config{ghu}" />
-    Are you a robot? (one word) <input name=smartquestion type=text size=10 /><br />
-    <small>Your edits will be ultimately propagated to UD Github repositories
-    and we need to be able to link them to a particular user if there are any
-    issues to be discussed. This is not a problem when you edit directly on
-    Github, but here the actual push action will be formally done by another
-    user.</small></p>
-  <table>
-    <tr>
-      <td>Lemma</td>
-      <td>Function</td>
-      <td>Rule</td>
-      <td>Example</td>
-EOF
-            ;
-            unless($config{lcode} eq 'en')
-            {
-                print("      <td>English translation of the example</td>\n");
-            }
-            print <<EOF
-      <td>Comment</td>
-    </tr>
-    <tr>
-      <td><input name=lemma type=text size=10 value="$config{lemma}" /></td>
-      <td>
-        <select name=function>
-          <option>-----</option>
-EOF
-            ;
-            foreach my $f (@functions)
-            {
-                print("          <option>".htmlescape($f->[0])."</option>\n");
-            }
-            print <<EOF
-        </select>
-      </td>
-      <td><input name=rule type=text size=30 /></td>
-      <td><input name=example type=text size=30 /></td>
-EOF
-            ;
-            unless($config{lcode} eq 'en')
-            {
-                print("      <td><input name=exampleen type=text size=30 /></td>\n");
-            }
-            print <<EOF
-      <td><input name=comment type=text /></td>
-    </tr>
-    <tr>
-      <td><input name=save type=submit value="Save" /></td>
-      <td></td>
-      <td><small>e.g. “combination of the auxiliary and a past participle of the main verb”</small></td>
-      <td><small>mark the auxiliary by enclosing it in square brackets, e.g., “he [has] done it”</small></td>
-      <!-- empty cells under english example and comment omitted (the one under english example would have to appear only if lcode is not en -->
-    </tr>
-  </table>
-  </form>
-EOF
-            ;
-        }
-    }
+}
+
+
+
+#------------------------------------------------------------------------------
+# Prints auxiliaries of all languages, this and related languages first.
+#------------------------------------------------------------------------------
+sub print_all_auxiliaries
+{
     # Print the data on the web page.
     print("  <h2>Known auxiliaries for this and other languages</h2>\n");
     print("  <table>\n");
@@ -383,11 +440,6 @@ EOF
     }
     print("  </table>\n");
 }
-print <<EOF
-</body>
-</html>
-EOF
-;
 
 
 
