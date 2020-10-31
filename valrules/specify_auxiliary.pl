@@ -684,7 +684,7 @@ sub write_data_json
     print JSON ($json);
     close(JSON);
     # Commit the changes to the repository and push them to Github.
-    system('/home/zeman/bin/git-push-docs-automation.sh');
+    system('/home/zeman/bin/git-push-docs-automation.sh > /dev/null');
 }
 
 
