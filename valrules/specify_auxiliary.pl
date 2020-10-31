@@ -150,7 +150,7 @@ else
         }
         else
         {
-            print_lemma_form();
+            print_lemma_form(%data);
         }
         # Show all known auxiliaries so the user can compare. This and related languages first.
         print_all_auxiliaries(%data);
@@ -240,6 +240,17 @@ EOF
 #------------------------------------------------------------------------------
 sub print_lemma_form
 {
+    my %data = @_;
+    my @records = grep {$_->{lemma} eq $config{lemma}} (@{$data{$config{lcode}}});
+    if(scalar(@records)==0)
+    {
+        die("Lemma '$config{lemma}' not found in language '$config{lcode}'");
+    }
+    my $record = $records[0];
+    my $hrule = htmlescape($record->{rule});
+    my $hexample = htmlescape($record->{example});
+    my $hexampleen = htmlescape($record->{exampleen});
+    my $hcomment = htmlescape($record->{comment});
     print <<EOF
   <form action="specify_auxiliary.pl" method="post" enctype="multipart/form-data">
   <input name=lcode type=hidden value="$config{lcode}" />
@@ -275,21 +286,26 @@ EOF
     ;
     foreach my $f (@functions)
     {
-        print("          <option>".htmlescape($f->[0])."</option>\n");
+        my $selected = '';
+        if($f->[0] eq $record->{function})
+        {
+            $selected = ' selected';
+        }
+        print("          <option$selected>".htmlescape($f->[0])."</option>\n");
     }
     print <<EOF
         </select>
       </td>
-      <td><input name=rule type=text size=30 /></td>
-      <td><input name=example type=text size=30 /></td>
+      <td><input name=rule type=text size=30 value="$hrule" /></td>
+      <td><input name=example type=text size=30 value="$hexample" /></td>
 EOF
     ;
     unless($config{lcode} eq 'en')
     {
-        print("      <td><input name=exampleen type=text size=30 /></td>\n");
+        print("      <td><input name=exampleen type=text size=30 value=\"$hexampleen\" /></td>\n");
     }
     print <<EOF
-      <td><input name=comment type=text /></td>
+      <td><input name=comment type=text value="$hcomment" /></td>
     </tr>
     <tr>
       <td><input name=save type=submit value="Save" /></td>
