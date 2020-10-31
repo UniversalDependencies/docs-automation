@@ -275,7 +275,7 @@ EOF
             {
                 print("  <h2 style='color:red'>You have $n undocumented auxiliaries!</h2>\n");
                 print("  <p>Please edit each undocumented auxiliary and supply the missing information.</p>\n");
-                print("  <p>".join(' ', map {my $l = $_; $l =~ s/\PL//g; $l = 'XXX' if($l eq ''); "<a href=\"specify_auxiliary.pl?lcode=$config{lcode}&amp;lemma=$l&amp;ghu=$config{ghu}\">$l</a>"} (@myauxlist))."</p>\n");
+                print("  <p>".join(' ', map {my $l = $_; $l =~ s/\PL//g; $l = 'XXX' if($l eq ''); "<a href=\"specify_auxiliary.pl?ghu=$config{ghu}&amp;lcode=$config{lcode}&amp;lemma=$l\">$l</a>"} (@myauxlist))."</p>\n");
             }
         }
         else
