@@ -240,6 +240,12 @@ EOF
                     my $timestamp = sprintf("%04d-%02d-%02d-%02d-%02d-%02d", 1900+$year, 1+$mon, $mday, $hour, $min, $sec);
                     $aux->{lastchanged} = $timestamp;
                     $aux->{lastchanger} = $config{ghu};
+                    $aux->{function} = $config{function};
+                    $aux->{rule} = $config{rule};
+                    $aux->{example} = $config{example};
+                    $aux->{exampleen} = $config{exampleen};
+                    $aux->{comment} = $config{comment};
+                    $aux->{status} = 'documented';
                 }
             }
             write_data_json(\%data, "$path/data.json");
