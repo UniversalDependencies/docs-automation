@@ -187,7 +187,7 @@
 {"lcode": "en", "lemma": "ought", "function": "", "rule": "", "example": "", "exampleen": "", "comment": "", "status": "undocumented", "lastchanged": "", "lastchanger": ""},
 {"lcode": "en", "lemma": "shall", "function": "", "rule": "", "example": "", "exampleen": "", "comment": "", "status": "undocumented", "lastchanged": "", "lastchanger": ""},
 {"lcode": "en", "lemma": "should", "function": "", "rule": "", "example": "", "exampleen": "", "comment": "", "status": "undocumented", "lastchanged": "", "lastchanger": ""},
-{"lcode": "en", "lemma": "will", "function": "", "rule": "", "example": "", "exampleen": "", "comment": "", "status": "undocumented", "lastchanged": "", "lastchanger": ""},
+{"lcode": "en", "lemma": "will", "function": "Periphrastic tense: future", "rule": "combination of the auxiliary and an infinitive of the main verb", "example": "he [will] come", "exampleen": "", "comment": "", "status": "documented", "lastchanged": "2020-10-31-19-00-29", "lastchanger": "dan-zeman"},
 {"lcode": "en", "lemma": "would", "function": "", "rule": "", "example": "", "exampleen": "", "comment": "", "status": "undocumented", "lastchanged": "", "lastchanger": ""},
 {"lcode": "es", "lemma": "deber", "function": "", "rule": "", "example": "", "exampleen": "", "comment": "", "status": "undocumented", "lastchanged": "", "lastchanger": ""},
 {"lcode": "es", "lemma": "estar", "function": "", "rule": "", "example": "", "exampleen": "", "comment": "", "status": "undocumented", "lastchanged": "", "lastchanger": ""},
