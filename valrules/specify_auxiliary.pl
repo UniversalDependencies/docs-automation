@@ -308,7 +308,7 @@ EOF
     my $myfamily = $languages->{$lname_by_code{$config{lcode}}}{family};
     my $mygenus = $languages->{$lname_by_code{$config{lcode}}}{genus};
     my @lcodes = sort(keys(%data));
-    my @lcodes_my_genus = grep {$_ ne $config{lcode} && $languages->{$lname_by_lcode{$_}}{familygenus} eq $myfamilygenus} (@lcodes);
+    my @lcodes_my_genus = grep {$_ ne $config{lcode} && $languages->{$lname_by_code{$_}}{familygenus} eq $myfamilygenus} (@lcodes);
     my @lcodes_my_family = grep {$languages->{$lname_by_code{$_}}{familygenus} ne $myfamilygenus && $languages->{$lname_by_code{$_}}{family} eq $myfamily} (@lcodes);
     my @lcodes_other = grep {$languages->{$lname_by_code{$_}}{family} ne $myfamily} (@lcodes);
     foreach my $lcode ($config{lcode}, @lcodes_my_genus, @lcodes_my_family, @lcodes_other)
