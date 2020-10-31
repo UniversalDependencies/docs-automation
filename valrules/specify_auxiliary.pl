@@ -362,7 +362,7 @@ EOF
     # Print the data on the web page.
     print("  <h2>Known auxiliaries for this and other languages</h2>\n");
     print("  <table>\n");
-    print("    <tr><th colspan=2>Language</th><th>Total</th><th>Lemmas</th></tr>\n");
+    print("    <tr><th colspan=2>Language</th><th>Total</th><th>Lemmas</th><th>Undocumented</th></tr>\n");
     # First display the actual language.
     # Then display languages from the same family and genus.
     # Then languages from the same family but different genera.
@@ -376,9 +376,10 @@ EOF
     my @lcodes_other = grep {$languages->{$lname_by_code{$_}}{family} ne $myfamily} (@lcodes);
     foreach my $lcode ($config{lcode}, @lcodes_my_genus, @lcodes_my_family, @lcodes_other)
     {
-        my @lemmas = map {$_->{lemma}} (@{$data{$lcode}});
-        my $n = scalar(@lemmas);
-        print("    <tr><td>$lname_by_code{$lcode}</td><td>$lcode</td><td>$n</td><td>".join(' ', @lemmas)."</td></tr>\n");
+        my @documented = map {$_->{lemma}} (grep {$_->{status} eq 'documented'} (@{$data{$lcode}}));
+        my @undocumented = map {$_->{lemma}} (grep {$_->{status} ne 'documented'} (@{$data{$lcode}}));
+        my $n = scalar(@documented)+scalar(@undocumented);
+        print("    <tr><td>$lname_by_code{$lcode}</td><td>$lcode</td><td>$n</td><td>".join(' ', @documented)."</td><td>".join(' ', @undocumented)."</td></tr>\n");
     }
     print("  </table>\n");
 }
