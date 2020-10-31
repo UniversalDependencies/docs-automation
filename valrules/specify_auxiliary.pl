@@ -160,6 +160,7 @@ EOF
     # Nevertheless, only now we can also report an error if a parameter is empty.
     if($config{save})
     {
+        my $error = 0;
         print("  <h2>This is a result of a Save button</h2>\n");
         print("  <ul>\n");
         if($config{ghu} ne '')
@@ -169,6 +170,7 @@ EOF
         else
         {
             print("    <li style='color:red'>ERROR: Missing Github user name</li>\n");
+            $error = 1;
         }
         if($config{smartquestion} eq 'no')
         {
@@ -177,6 +179,7 @@ EOF
         else
         {
             print("    <li style='color:red'>ERROR: Unsatisfactory robotic response</li>\n");
+            $error = 1;
         }
         if($config{lemma} ne '')
         {
@@ -185,6 +188,7 @@ EOF
         else
         {
             print("    <li style='color:red'>ERROR: Missing lemma</li>\n");
+            $error = 1;
         }
         if($config{function} ne '')
         {
@@ -193,6 +197,7 @@ EOF
         else
         {
             print("    <li style='color:red'>ERROR: Missing function</li>\n");
+            $error = 1;
         }
         if($config{example} ne '')
         {
@@ -201,6 +206,7 @@ EOF
         else
         {
             print("    <li style='color:red'>ERROR: Missing example</li>\n");
+            $error = 1;
         }
         if($config{exampleen} ne '')
         {
@@ -209,14 +215,22 @@ EOF
         elsif($config{lcode} ne 'en')
         {
             print("    <li style='color:red'>ERROR: Missing English translation of the example</li>\n");
+            $error = 1;
         }
         if($config{comment} ne '')
         {
             print("    <li>comment = '".htmlescape($config{comment})."'</li>\n");
         }
         print("  </ul>\n");
-        print("  <p style='color:red'><strong>WARNING:</strong> Real saving has not been implemented yet.</p>\n");
-        write_data_json(\%data, "$path/data.json");
+        if($error)
+        {
+            print("  <p style='color:red'><strong>WARNING:</strong> Nothing was saved because there were errors.</p>\n");
+        }
+        else
+        {
+            print("  <p style='color:red'><strong>WARNING:</strong> Real saving has not been implemented yet.</p>\n");
+            write_data_json(\%data, "$path/data.json");
+        }
     }
     else
     {
@@ -684,7 +698,7 @@ sub write_data_json
     print JSON ($json);
     close(JSON);
     # Commit the changes to the repository and push them to Github.
-    system('/home/zeman/bin/git-push-docs-automation.sh > /dev/null');
+    system('/home/zeman/bin/git-push-docs-automation.sh '."'$config{ghu}'".' > /dev/null');
 }
 
 
