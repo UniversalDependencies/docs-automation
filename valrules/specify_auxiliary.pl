@@ -359,6 +359,8 @@ sub process_form_data
             }
         }
         write_data_json(\%data, "$path/data.json");
+        # Commit the changes to the repository and push them to Github.
+        system("/home/zeman/bin/git-push-docs-automation.sh '$config{ghu}' '$config{lcode}' > /dev/null");
         print <<EOF
   <form action="specify_auxiliary.pl" method="post" enctype="multipart/form-data">
     <input name=lcode type=hidden value="$config{lcode}" />
@@ -823,8 +825,6 @@ sub write_data_json
     open(JSON, ">$filename") or die("Cannot write '$filename': $!");
     print JSON ($json);
     close(JSON);
-    # Commit the changes to the repository and push them to Github.
-    system('/home/zeman/bin/git-push-docs-automation.sh '."'$config{ghu}'".' > /dev/null');
 }
 
 
