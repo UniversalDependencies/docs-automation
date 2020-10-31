@@ -175,7 +175,7 @@
 {"lcode": "el", "lemma": "θα", "function": "", "rule": "", "example": "", "exampleen": "", "comment": "", "status": "undocumented", "lastchanged": "", "lastchanger": ""},
 {"lcode": "el", "lemma": "να", "function": "", "rule": "", "example": "", "exampleen": "", "comment": "", "status": "undocumented", "lastchanged": "", "lastchanger": ""},
 {"lcode": "el", "lemma": "πρέπει", "function": "", "rule": "", "example": "", "exampleen": "", "comment": "", "status": "undocumented", "lastchanged": "", "lastchanger": ""},
-{"lcode": "en", "lemma": "be", "function": "Copula", "rule": "combination of the copula with a nonverbal predicate", "example": "he [is] a teacher", "exampleen": "", "comment": "", "status": "documented", "lastchanged": "2020-10-31-18-10-36", "lastchanger": "dan-zeman"},
+{"lcode": "en", "lemma": "be", "function": "Copula", "rule": "combination of the copula with a nonverbal predicate", "example": "he [is] a teacher", "exampleen": "", "comment": "", "status": "documented", "lastchanged": "2020-10-31-18-33-04", "lastchanger": "dan-zeman"},
 {"lcode": "en", "lemma": "can", "function": "", "rule": "", "example": "", "exampleen": "", "comment": "", "status": "undocumented", "lastchanged": "", "lastchanger": ""},
 {"lcode": "en", "lemma": "could", "function": "", "rule": "", "example": "", "exampleen": "", "comment": "", "status": "undocumented", "lastchanged": "", "lastchanger": ""},
 {"lcode": "en", "lemma": "do", "function": "", "rule": "", "example": "", "exampleen": "", "comment": "", "status": "undocumented", "lastchanged": "", "lastchanger": ""},
