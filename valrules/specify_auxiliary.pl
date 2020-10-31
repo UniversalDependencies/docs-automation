@@ -115,18 +115,12 @@ if($config{lcode} eq '')
 else
 {
     # Read the data file.
-    my @data = read_auxiliaries_from_python();
-    my @mydata = grep {$_->{lcode} eq $config{lcode}} (@data);
+    my %data = read_auxiliaries_from_python();
     # It is possible that there are no auxiliaries for my language so far.
-    # However, there must not be multiple entries for the same language.
-    if(scalar(@mydata)>1)
-    {
-        die "There are ".scalar(@mydata)." entries for language '$config{lcode}' in the current database of auxiliaries";
-    }
     my @myauxlist = ();
-    if(scalar(@mydata)==1)
+    if(exists($data{$config{lcode}}))
     {
-        @myauxlist = @{$mydata[0]{auxlist}};
+        @myauxlist = map {$_->{lemma}} (@{$data{$config{lcode}}});
     }
     print <<EOF
   <h1><img class=\"flag\" src=\"https://universaldependencies.org/flags/png/$languages->{$lname_by_code{$config{lcode}}}{flag}.png\" />
@@ -222,7 +216,7 @@ EOF
         }
         print("  </ul>\n");
         print("  <p style='color:red'><strong>WARNING:</strong> Real saving has not been implemented yet.</p>\n");
-        write_data_json(\@data, "$path/data.json");
+        write_data_json(\%data, "$path/data.json");
     }
     else
     {
@@ -313,32 +307,15 @@ EOF
     my $myfamilygenus = $languages->{$lname_by_code{$config{lcode}}}{familygenus};
     my $myfamily = $languages->{$lname_by_code{$config{lcode}}}{family};
     my $mygenus = $languages->{$lname_by_code{$config{lcode}}}{genus};
-    foreach my $row (@data)
+    my @lcodes = sort(keys(%data));
+    my @lcodes_my_genus = grep {$_ ne $config{lcode} && $languages->{$lname_by_lcode{$_}}{familygenus} eq $myfamilygenus} (@lcodes);
+    my @lcodes_my_family = grep {$languages->{$lname_by_code{$_}}{familygenus} ne $myfamilygenus && $languages->{$lname_by_code{$_}}{family} eq $myfamily} (@lcodes);
+    my @lcodes_other = grep {$languages->{$lname_by_code{$_}}{family} ne $myfamily} (@lcodes);
+    foreach my $lcode ($config{lcode}, @lcodes_my_genus, @lcodes_my_family, @lcodes_other)
     {
-        next unless($row->{lcode} eq $config{lcode});
-        my $n = scalar(@{$row->{auxlist}});
-        print("    <tr><td>$lname_by_code{$row->{lcode}}</td><td>$row->{lcode}</td><td>$n</td><td>".join(' ', @{$row->{auxlist}})."</td></tr>\n");
-        last;
-    }
-    foreach my $row (@data)
-    {
-        next if($row->{lcode} eq $config{lcode});
-        next unless($languages->{$lname_by_code{$row->{lcode}}}{familygenus} eq $myfamilygenus);
-        my $n = scalar(@{$row->{auxlist}});
-        print("    <tr><td>$lname_by_code{$row->{lcode}}</td><td>$row->{lcode}</td><td>$n</td><td>".join(' ', @{$row->{auxlist}})."</td></tr>\n");
-    }
-    foreach my $row (@data)
-    {
-        next if($languages->{$lname_by_code{$row->{lcode}}}{familygenus} eq $myfamilygenus);
-        next unless($languages->{$lname_by_code{$row->{lcode}}}{family} eq $myfamily);
-        my $n = scalar(@{$row->{auxlist}});
-        print("    <tr><td>$lname_by_code{$row->{lcode}}</td><td>$row->{lcode}</td><td>$n</td><td>".join(' ', @{$row->{auxlist}})."</td></tr>\n");
-    }
-    foreach my $row (@data)
-    {
-        next if($languages->{$lname_by_code{$row->{lcode}}}{family} eq $myfamily);
-        my $n = scalar(@{$row->{auxlist}});
-        print("    <tr><td>$lname_by_code{$row->{lcode}}</td><td>$row->{lcode}</td><td>$n</td><td>".join(' ', @{$row->{auxlist}})."</td></tr>\n");
+        my @lemmas = map {$_->{lemma}} (@{$data{$lcode}});
+        my $n = scalar(@lemmas);
+        print("    <tr><td>$lname_by_code{$lcode}</td><td>$lcode</td><td>$n</td><td>".join(' ', @lemmas)."</td></tr>\n");
     }
     print("  </table>\n");
 }
@@ -585,7 +562,7 @@ sub get_parameters
 #------------------------------------------------------------------------------
 sub read_auxiliaries_from_python
 {
-    my @data;
+    my %data;
     my $datafile = "$path/data.txt";
     # We need a buffer because some lists are spread across several lines.
     my $buffer = '';
@@ -617,14 +594,37 @@ sub read_auxiliaries_from_python
                 push(@auxlist, $lemma);
                 $auxlist =~ s/^\s*,\s*//;
             }
-            push(@data, {'lcode' => $lcode, 'auxlist' => \@auxlist});
+            # Create a record for each auxiliary. All fields that we want to
+            # fill in the future are empty now, except for the lemma.
+            my @recordlist = ();
+            foreach my $lemma (@auxlist)
+            {
+                my %record =
+                (
+                    'lemma'       => $lemma,
+                    'function'    => '',
+                    'rule'        => '',
+                    'example'     => '',
+                    'exampleen'   => '',
+                    'comment'     => '',
+                    'status'      => 'undocumented',
+                    'lastchanged' => '',
+                    'lastchanger' => ''
+                );
+                push(@recordlist, \%record);
+            }
+            if(exists($data{$lcode}))
+            {
+                die("Duplicate auxiliary list for language '$lcode' in the Python source");
+            }
+            $data{$lcode} = \@recordlist;
             # Empty the buffer.
             ###!!! Ignore the possibility that a new list starts on the same line.
             $buffer = '';
         }
     }
     close(DATA);
-    return @data;
+    return %data;
 }
 
 
@@ -648,32 +648,32 @@ sub htmlescape
 #------------------------------------------------------------------------------
 sub write_data_json
 {
-    # Initially, the data is read from the Python code in the following manner.
+    # Initially, the data is read from the Python code.
     # This will change in the future and we will read the JSON file instead!
-    # push(@data, {'lcode' => $lcode, 'auxlist' => \@auxlist});
     my $data = shift;
     my $filename = shift;
     my $json = '{"WARNING": "Please do not edit this file manually. Such edits will be overwritten without notice. Go to http://quest.ms.mff.cuni.cz/udvalidator/cgi-bin/unidep/langspec/specify_auxiliary.pl instead.",'."\n\n";
     $json .= '"auxiliaries": ['."\n";
     my @jsonrecords = ();
-    foreach my $row (@{$data})
+    my @lcodes = sort(keys(%{$data}));
+    foreach my $lcode (@lcodes)
     {
-        my $lcode = $row->{lcode};
-        my @auxlist = @{$row->{auxlist}};
+        # Sort the list so that git diff is informative when we investigate changes.
+        my @auxlist = sort {$a->{lemma} cmp $b->{lemma}} (@{$data->{$lcode}});
         foreach my $aux (@auxlist)
         {
             my @record =
             (
-                ['lcode' => $lcode],
-                ['lemma' => $aux],
-                ['function' => ''],
-                ['rule' => ''],
-                ['example' => ''],
-                ['exampleen' => ''],
-                ['comment' => ''],
-                ['status' => 'undocumented'],
-                ['lastchanged' => ''],
-                ['lastchanger' => '']
+                ['lcode'       => $lcode],
+                ['lemma'       => $aux->{lemma}],
+                ['function'    => $aux->{function}],
+                ['rule'        => $aux->{rule}],
+                ['example'     => $aux->{example}],
+                ['exampleen'   => $aux->{exampleen}],
+                ['comment'     => $aux->{comment}],
+                ['status'      => $aux->{status}],
+                ['lastchanged' => $aux->{lastchanged}],
+                ['lastchanger' => $aux->{lastchanger}]
             );
             push(@jsonrecords, encode_json(@record));
         }
@@ -683,6 +683,8 @@ sub write_data_json
     open(JSON, ">$filename") or die("Cannot write '$filename': $!");
     print JSON ($json);
     close(JSON);
+    # Commit the changes to the repository and push them to Github.
+    system('/home/zeman/bin/git-push-docs-automation.sh');
 }
 
 
