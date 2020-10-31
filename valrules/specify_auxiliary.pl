@@ -263,6 +263,7 @@ EOF
     <input name=ghu type=hidden value="$config{ghu}" />
     <input name=gotolang type=submit value="Return to list" />
   </form>
+EOF
             ;
         }
     }
