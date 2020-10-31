@@ -224,7 +224,7 @@ EOF
       <td>Comment</td>
     </tr>
     <tr>
-      <td>$config{lemma}<input name=lemma type=hidden size=10 value="$config{lemma}" /></td>
+      <td><strong>$config{lemma}</strong><input name=lemma type=hidden size=10 value="$config{lemma}" /></td>
       <td>
         <select name=function>
           <option>-----</option>
