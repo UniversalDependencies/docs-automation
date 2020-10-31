@@ -235,8 +235,8 @@ EOF
                 if($aux->{lemma} eq $config{lemma})
                 {
                     # Do I want to use my local time or universal time in the timestamps?
-                    #my ($sec, $min, $hour, $mday, $mon, $year, $wday, $yday) = gmtime($time);
-                    my ($sec, $min, $hour, $mday, $mon, $year, $wday, $yday) = localtime($time);
+                    #my ($sec, $min, $hour, $mday, $mon, $year, $wday, $yday) = gmtime(time());
+                    my ($sec, $min, $hour, $mday, $mon, $year, $wday, $yday) = localtime(time());
                     my $timestamp = sprintf("%04d-%02d-%02d-%02d-%02d-%02d", 1900+$year, 1+$mon, $mday, $hour, $min, $sec);
                     $aux->{lastchanged} = $timestamp;
                     $aux->{lastchanger} = $config{ghu};
