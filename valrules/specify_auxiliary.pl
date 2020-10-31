@@ -220,17 +220,17 @@ sub print_edit_add_menu
         my $href = "<a href=\"specify_auxiliary.pl?ghu=$config{ghu}&amp;lcode=$config{lcode}&amp;lemma=$lemma\">$lemma</a>$alert";
         push(@hrefs, $href);
     }
-    print("  <h2 style='color:red'>You have $n undocumented auxiliaries!</h2>\n");
-    print("  <p>Please edit each undocumented auxiliary and supply the missing information.</p>\n");
-    print("  <p>".join(' ', @hrefs)."</p>\n");
-        print <<EOF
+    print("  <h2>Edit or add auxiliaries</h2>\n");
+    print("  <p>".join(' ', @hrefs)."\n");
+    print <<EOF
   <form action="specify_auxiliary.pl" method="post" enctype="multipart/form-data">
     <input name=lcode type=hidden value="$config{lcode}" />
     <input name=ghu type=hidden value="$config{ghu}" />
     <input name=add type=submit value="Add new" />
   </form>
 EOF
-        ;
+    ;
+    print("  </p>\n");
 }
 
 
