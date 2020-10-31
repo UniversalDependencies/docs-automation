@@ -137,10 +137,15 @@ else
         summarize_guidelines();
         if($config{lemma} eq '')
         {
+            my $n_undocumented = 0;
             # It is possible that there are no auxiliaries for my language so far.
             if(exists($data{$config{lcode}}))
             {
-                print_undocumented_auxiliaries(%data);
+                $n_undocumented = print_undocumented_auxiliaries(%data);
+            }
+            if($n_undocumented==0)
+            {
+                print_edit_add_menu(%data);
             }
         }
         else
@@ -188,6 +193,44 @@ sub print_undocumented_auxiliaries
         print("  <p>Please edit each undocumented auxiliary and supply the missing information.</p>\n");
         print("  <p>".join(' ', @hrefs)."</p>\n");
     }
+    return $n;
+}
+
+
+
+#------------------------------------------------------------------------------
+# Prints the list of documented auxiliaries for editing and the button to add
+# a new auxiliary.
+#------------------------------------------------------------------------------
+sub print_edit_add_menu
+{
+    my %data = @_;
+    my @auxiliaries = @{$data{$config{lcode}}};
+    my @hrefs;
+    foreach my $aux (@auxiliaries)
+    {
+        # For a safe URL we assume that the lemma contains only letters. That should not be a problem normally.
+        my $lemma = $aux->{lemma};
+        $lemma =~ s/\PL//g;
+        my $alert = '';
+        if($lemma ne $aux->{lemma})
+        {
+            $alert = " <span style='color:red'>ERROR: Lemma must consist only of letters but stripping non-letters from '".htmlescape($aux->{lemma})."' yields '$lemma'!</span>";
+        }
+        my $href = "<a href=\"specify_auxiliary.pl?ghu=$config{ghu}&amp;lcode=$config{lcode}&amp;lemma=$lemma\">$lemma</a>$alert";
+        push(@hrefs, $href);
+    }
+    print("  <h2 style='color:red'>You have $n undocumented auxiliaries!</h2>\n");
+    print("  <p>Please edit each undocumented auxiliary and supply the missing information.</p>\n");
+    print("  <p>".join(' ', @hrefs)."</p>\n");
+        print <<EOF
+  <form action="specify_auxiliary.pl" method="post" enctype="multipart/form-data">
+    <input name=lcode type=hidden value="$config{lcode}" />
+    <input name=ghu type=hidden value="$config{ghu}" />
+    <input name=add type=submit value="Add new" />
+  </form>
+EOF
+        ;
 }
 
 
