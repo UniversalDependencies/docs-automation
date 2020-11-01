@@ -154,7 +154,7 @@ else
         print_undocumented_auxiliaries(\%data);
         print_all_auxiliaries(\%data);
     }
-    elsif($config{add})
+    elsif($config{add}) # addcop and addnoncop will be used inside print_lemma_form()
     {
         summarize_guidelines();
         print_lemma_form(\%data);
@@ -240,7 +240,8 @@ sub print_edit_add_menu
   <form action="specify_auxiliary.pl" method="post" enctype="multipart/form-data">
     <input name=lcode type=hidden value="$config{lcode}" />
     <input name=ghu type=hidden value="$config{ghu}" />
-    <input name=add type=submit value="Add new" />
+    <input name=add type=submit value="Add copula" />
+    <input name=add type=submit value="Add other" />
   </form>
 EOF
     ;
@@ -266,7 +267,8 @@ sub print_lemma_form
             'rule'      => '',
             'example'   => '',
             'exampleen' => '',
-            'comment'   => ''
+            'comment'   => '',
+            'status'    => 'new'
         };
     }
     elsif(exists($data->{$config{lcode}}{$config{lemma}}))
@@ -320,21 +322,33 @@ EOF
         print("<input name=lemma type=text size=10 />");
     }
     print("</td>\n");
-    print("      <td>\n");
-    print("        <select name=function>\n");
-    print("          <option>-----</option>\n");
-    foreach my $f (@functions)
+    # If we are adding a copula, the function is fixed.
+    if($config{addcop})
     {
-        my $selected = '';
-        if($f->[0] eq $record->{function})
-        {
-            $selected = ' selected';
-        }
-        print("          <option$selected>".htmlescape($f->[0])."</option>\n");
+        print("      <td>Copula<input name=function type=hidden value=\"Copula\" /></td>\n");
+        print("      <td>combination of the copula with a nonverbal predicate<input name=rule type=hidden value=\"combination of the copula with a nonverbal predicate\" /></td>\n");
     }
-    print("        </select>\n");
-    print("      </td>\n");
-    print("      <td><input name=rule type=text size=30 value=\"$hrule\" /></td>\n");
+    else
+    {
+        print("      <td>\n");
+        print("        <select name=function>\n");
+        print("          <option>-----</option>\n");
+        foreach my $f (@functions)
+        {
+            # The Copula function should be available if we are documenting an undocumented auxiliary.
+            # Otherwise it is not available because we must use 'addcop', see above.
+            next if($f eq 'Copula' && $record->{status} ne 'undocumented');
+            my $selected = '';
+            if($f->[0] eq $record->{function})
+            {
+                $selected = ' selected';
+            }
+            print("          <option$selected>".htmlescape($f->[0])."</option>\n");
+        }
+        print("        </select>\n");
+        print("      </td>\n");
+        print("      <td><input name=rule type=text size=30 value=\"$hrule\" /></td>\n");
+    }
     print("      <td><input name=example type=text size=30 value=\"$hexample\" /></td>\n");
     unless($config{lcode} eq 'en')
     {
@@ -775,16 +789,26 @@ sub get_parameters
         die "Unrecognized save button '$config{save}'";
     }
     #--------------------------------------------------------------------------
-    # The parameter 'add' comes from the button that launches the form to add
-    # a new auxiliary.
+    # The parameter 'add' comes from the buttons that launch the form to add
+    # a new auxiliary (separate buttons for copula and other auxiliaries).
     $config{add} = decode('utf8', $query->param('add'));
     if(!defined($config{add}))
     {
         $config{add} = 0;
+        $config{addcop} = 0;
+        $config{addnoncop} = 0;
     }
-    elsif($config{add} =~ m/^Add new$/)
+    elsif($config{add} =~ m/^Add copula$/)
     {
+        $config{addcop} = 1;
         $config{add} = 1;
+        $config{addnoncop} = 0;
+    }
+    elsif($config{add} =~ m/^Add other$/)
+    {
+        $config{addnoncop} = 1;
+        $config{add} = 1;
+        $config{addcop} = 0;
     }
     else
     {
