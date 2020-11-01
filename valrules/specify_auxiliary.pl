@@ -193,7 +193,7 @@ sub print_undocumented_auxiliaries
         {
             # For a safe URL we assume that the lemma contains only letters. That should not be a problem normally.
             my $lemma = $lemma0;
-            $lemma =~ s/[^\pL\pM]//g;
+            $lemma =~ s/[^\p{L}\p{M}]//g;
             my $alert = '';
             if($lemma ne $lemma0)
             {
@@ -763,8 +763,8 @@ sub get_parameters
     {
         $config{lemma} = '';
     }
-    # Lemma can contain letters (L) and modifiers (M).
-    # An example of a modifier: U+94D DEVANAGARI SIGN VIRAMA.
+    # Lemma can contain letters (L) and marks (M).
+    # An example of a mark: U+94D DEVANAGARI SIGN VIRAMA.
     elsif($config{lemma} =~ m/^\s*([\pL\pM]+)\s*$/)
     {
         $config{lemma} = $1;
