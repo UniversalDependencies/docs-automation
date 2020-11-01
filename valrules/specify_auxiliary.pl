@@ -1111,7 +1111,7 @@ sub encode_json
         {
             if(!defined($pair->[1]))
             {
-                log_warn("Unknown value of attribute '$name'.");
+                die("Unknown value of attribute '$name'");
             }
             $value = $pair->[1];
             $value = escape_json_string($value);
