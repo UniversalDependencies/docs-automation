@@ -12,6 +12,7 @@ binmode(STDOUT, ':utf8');
 binmode(STDERR, ':utf8');
 use open ':utf8';
 use Encode;
+use charnames ();
 
 # Path to the data on the web server.
 my $path = '/home/zeman/unidep/docs-automation/valrules';
@@ -205,6 +206,20 @@ sub print_undocumented_auxiliaries
                 elsif($c =~ m/\pM/)
                 {
                     $lemma .= $c;
+                }
+                else
+                {
+                    my $properties;
+                    foreach my $prop (qw(L M N P S Z C))
+                    {
+                        if($c =~ m/\p$prop/)
+                        {
+                            $properties .= $prop;
+                        }
+                    }
+                    my $code = ord($c);
+                    my $name = charnames::viacode($code);
+                    printf("$c\t%5d\t%04X\t$properties\t$name\n", $code, $code);
                 }
             }
             my $alert = '';
