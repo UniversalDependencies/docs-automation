@@ -378,7 +378,16 @@ EOF
     print("      <td><input name=comment type=text value=\"$hcomment\" /></td>\n");
     print("    </tr>\n");
     print("    <tr>\n");
-    print("      <td><input name=save type=submit value=\"Save\" /></td>\n");
+    # If we are adding a new lemma, we will have to check that it is really new.
+    # Signal that with a slightly different button text, "Save new" instead of "Save".
+    if($config{add})
+    {
+        print("      <td><input name=save type=submit value=\"Save new\" /></td>\n");
+    }
+    else
+    {
+        print("      <td><input name=save type=submit value=\"Save\" /></td>\n");
+    }
     # Do not print the hint for the function/rule if the function/rule is fixed (copula).
     # But do print the hint for multiple copulas.
     if($config{addcop} || $record->{function} eq 'Copula')
@@ -441,6 +450,11 @@ sub process_form_data
     if($config{lemma} ne '')
     {
         print("    <li>lemma = '$config{lemma}'</li>\n");
+        if($config{savenew} && exists($data->{$config{lcode}}{$config{lemma}}))
+        {
+            print("    <li style='color:red'>ERROR: There already is an auxiliary with the lemma '$config{lemma}'. Instead of re-adding it, you should edit it</li>\n");
+            $error = 1;
+        }
     }
     else
     {
@@ -850,10 +864,17 @@ sub get_parameters
     if(!defined($config{save}))
     {
         $config{save} = 0;
+        $config{savenew} = 0;
     }
     elsif($config{save} =~ m/^Save$/)
     {
         $config{save} = 1;
+        $config{savenew} = 0;
+    }
+    elsif($config{save} =~ m/^Save new$/)
+    {
+        $config{save} = 1;
+        $config{savenew} = 1;
     }
     else
     {
