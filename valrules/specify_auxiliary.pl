@@ -130,7 +130,7 @@ else
     # It is possible that there are no auxiliaries for my language so far.
     if(exists($data{$config{lcode}}))
     {
-        my $auxiliaries = $data{config{lcode}};
+        my $auxiliaries = $data{$config{lcode}};
         $n_undocumented = scalar(grep {$auxiliaries->{$_}{status} ne 'documented'} (keys(%{$auxiliaries})));
     }
     # Perform an action according to the CGI parameters.
