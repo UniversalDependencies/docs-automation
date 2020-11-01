@@ -130,7 +130,8 @@ else
     # It is possible that there are no auxiliaries for my language so far.
     if(exists($data{$config{lcode}}))
     {
-        $n_undocumented =  scalar(grep {$_->{status} ne 'documented'} (@{$data{$config{lcode}}}));
+        my $auxiliaries = $data{config{lcode}};
+        $n_undocumented = scalar(grep {$auxiliaries->{$_}{status} ne 'documented'} (keys(%{$auxiliaries})));
     }
     # Perform an action according to the CGI parameters.
     # Saving may be needed even for documenting undocumented auxiliaries.
@@ -181,21 +182,21 @@ EOF
 sub print_undocumented_auxiliaries
 {
     my $data = shift;
-    my @auxiliaries = @{$data->{$config{lcode}}};
-    my @undocumented = grep {$_->{status} ne 'documented'} (@auxiliaries);
+    my %auxiliaries = %{$data->{$config{lcode}}};
+    my @undocumented = sort(grep {$auxiliaries{$_}{status} ne 'documented'} (keys(%auxiliaries)));
     my $n = scalar(@undocumented);
     if($n > 0)
     {
         my @hrefs;
-        foreach my $aux (@undocumented)
+        foreach my $lemma0 (@undocumented)
         {
             # For a safe URL we assume that the lemma contains only letters. That should not be a problem normally.
-            my $lemma = $aux->{lemma};
+            my $lemma = $lemma0;
             $lemma =~ s/\PL//g;
             my $alert = '';
-            if($lemma ne $aux->{lemma})
+            if($lemma ne $lemma0)
             {
-                $alert = " <span style='color:red'>ERROR: Lemma must consist only of letters but stripping non-letters from '".htmlescape($aux->{lemma})."' yields '$lemma'!</span>";
+                $alert = " <span style='color:red'>ERROR: Lemma must consist only of letters but stripping non-letters from '".htmlescape($lemma0)."' yields '$lemma'!</span>";
             }
             my $href = "<a href=\"specify_auxiliary.pl?ghu=$config{ghu}&amp;lcode=$config{lcode}&amp;lemma=$lemma\">$lemma</a>$alert";
             push(@hrefs, $href);
@@ -215,17 +216,18 @@ sub print_undocumented_auxiliaries
 sub print_edit_add_menu
 {
     my $data = shift;
-    my @auxiliaries = @{$data->{$config{lcode}}};
+    my %auxiliaries = %{$data->{$config{lcode}}};
+    my @lemmas = sort(keys(%auxiliaries));
     my @hrefs;
-    foreach my $aux (@auxiliaries)
+    foreach my $lemma0 (@lemmas)
     {
         # For a safe URL we assume that the lemma contains only letters. That should not be a problem normally.
-        my $lemma = $aux->{lemma};
+        my $lemma = $lemma0;
         $lemma =~ s/\PL//g;
         my $alert = '';
-        if($lemma ne $aux->{lemma})
+        if($lemma ne $lemma0)
         {
-            $alert = " <span style='color:red'>ERROR: Lemma must consist only of letters but stripping non-letters from '".htmlescape($aux->{lemma})."' yields '$lemma'!</span>";
+            $alert = " <span style='color:red'>ERROR: Lemma must consist only of letters but stripping non-letters from '".htmlescape($lemma0)."' yields '$lemma'!</span>";
         }
         my $href = "<a href=\"specify_auxiliary.pl?ghu=$config{ghu}&amp;lcode=$config{lcode}&amp;lemma=$lemma\">$lemma</a>$alert";
         push(@hrefs, $href);
@@ -251,12 +253,11 @@ EOF
 sub print_lemma_form
 {
     my $data = shift;
-    my @records = grep {$_->{lemma} eq $config{lemma}} (@{$data->{$config{lcode}}});
-    if(scalar(@records)==0)
+    if(!exists($data->{$config{lcode}}{$config{lemma}}))
     {
         die("Lemma '$config{lemma}' not found in language '$config{lcode}'");
     }
-    my $record = $records[0];
+    my $record = $data->{$config{lcode}}{$config{lemma}};
     my $hrule = htmlescape($record->{rule});
     my $hexample = htmlescape($record->{example});
     my $hexampleen = htmlescape($record->{exampleen});
@@ -411,25 +412,29 @@ sub process_form_data
     else
     {
         print("  <p style='color:red'><strong>WARNING:</strong> Real saving has not been implemented yet.</p>\n");
-        my @auxlist = @{$data->{$config{lcode}}};
-        foreach my $aux (@auxlist)
+        # Create a new record. If we are adding a new auxiliary, this will be
+        # its record. If we are editing an existing auxiliary, first copy the
+        # old values from the old values, then replace the edited ones, then
+        # replace the old record with the new one.
+        ###!!! At present a deep copy is not needed because there are no nested structures.
+        my %record;
+        if(exists($data->{$config{lcode}}{$config{lemma}}))
         {
-            if($aux->{lemma} eq $config{lemma})
-            {
-                # Do I want to use my local time or universal time in the timestamps?
-                #my ($sec, $min, $hour, $mday, $mon, $year, $wday, $yday) = gmtime(time());
-                my ($sec, $min, $hour, $mday, $mon, $year, $wday, $yday) = localtime(time());
-                my $timestamp = sprintf("%04d-%02d-%02d-%02d-%02d-%02d", 1900+$year, 1+$mon, $mday, $hour, $min, $sec);
-                $aux->{lastchanged} = $timestamp;
-                $aux->{lastchanger} = $config{ghu};
-                $aux->{function} = $config{function};
-                $aux->{rule} = $config{rule};
-                $aux->{example} = $config{example};
-                $aux->{exampleen} = $config{exampleen};
-                $aux->{comment} = $config{comment};
-                $aux->{status} = 'documented';
-            }
+            %record = %{$data->{$config{lcode}}{$config{lemma}}};
         }
+        # Do I want to use my local time or universal time in the timestamps?
+        #my ($sec, $min, $hour, $mday, $mon, $year, $wday, $yday) = gmtime(time());
+        my ($sec, $min, $hour, $mday, $mon, $year, $wday, $yday) = localtime(time());
+        my $timestamp = sprintf("%04d-%02d-%02d-%02d-%02d-%02d", 1900+$year, 1+$mon, $mday, $hour, $min, $sec);
+        $record{lastchanged} = $timestamp;
+        $record{lastchanger} = $config{ghu};
+        $record{function} = $config{function};
+        $record{rule} = $config{rule};
+        $record{example} = $config{example};
+        $record{exampleen} = $config{exampleen};
+        $record{comment} = $config{comment};
+        $record{status} = 'documented';
+        $data->{$config{lcode}}{$config{lemma}} = \%record;
         write_data_json($data, "$path/data.json");
         # Commit the changes to the repository and push them to Github.
         system("/home/zeman/bin/git-push-docs-automation.sh '$config{ghu}' '$config{lcode}' > /dev/null");
@@ -510,8 +515,9 @@ sub print_all_auxiliaries
     my @lcodes_other = grep {$languages->{$lname_by_code{$_}}{family} ne $myfamily} (@lcodes);
     foreach my $lcode ($config{lcode}, @lcodes_my_genus, @lcodes_my_family, @lcodes_other)
     {
-        my @documented = map {$_->{lemma}} (grep {$_->{status} eq 'documented'} (@{$data->{$lcode}}));
-        my @undocumented = map {$_->{lemma}} (grep {$_->{status} ne 'documented'} (@{$data->{$lcode}}));
+        my @lemmas = sort(keys(%{$data->{$lcode}}));
+        my @documented = grep {$data->{$lcode}{$_}{status} eq 'documented'} (@lemmas);
+        my @undocumented = grep {$data->{$lcode}{$_}{status} ne 'documented'} (@lemmas);
         my $n = scalar(@documented)+scalar(@undocumented);
         print("    <tr><td>$lname_by_code{$lcode}</td><td>$lcode</td><td>$n</td><td>".join(' ', @documented)."</td><td>".join(' ', @undocumented)."</td></tr>\n");
     }
@@ -805,12 +811,11 @@ sub read_auxiliaries_from_python
             }
             # Create a record for each auxiliary. All fields that we want to
             # fill in the future are empty now, except for the lemma.
-            my @recordlist = ();
+            my %hash;
             foreach my $lemma (@auxlist)
             {
                 my %record =
                 (
-                    'lemma'       => $lemma,
                     'function'    => '',
                     'rule'        => '',
                     'example'     => '',
@@ -820,13 +825,13 @@ sub read_auxiliaries_from_python
                     'lastchanged' => '',
                     'lastchanger' => ''
                 );
-                push(@recordlist, \%record);
+                $hash{$lemma} = \%record;
             }
             if(exists($data{$lcode}))
             {
                 die("Duplicate auxiliary list for language '$lcode' in the Python source");
             }
-            $data{$lcode} = \@recordlist;
+            $data{$lcode} = \%hash;
             # Empty the buffer.
             ###!!! Ignore the possibility that a new list starts on the same line.
             $buffer = '';
@@ -853,6 +858,7 @@ sub read_data_json
         foreach my $record (@{$json->{auxiliaries}})
         {
             my $lcode = $record->{lcode};
+            my $lemma = $record->{lemma};
             if(!exists($lname_by_code{$lcode}))
             {
                 die("Unknown language code '$lcode' in the JSON file");
@@ -861,7 +867,8 @@ sub read_data_json
             # We can simply copy the reference to the record (possibly after
             # erasing the language code inside).
             delete($record->{lcode});
-            push(@{$data{$lcode}}, $record);
+            delete($record->{lemma});
+            $data{$lcode}{$lemma} = $record;
         }
     }
     else
@@ -885,25 +892,25 @@ sub write_data_json
     my $json = '{"WARNING": "Please do not edit this file manually. Such edits will be overwritten without notice. Go to http://quest.ms.mff.cuni.cz/udvalidator/cgi-bin/unidep/langspec/specify_auxiliary.pl instead.",'."\n\n";
     $json .= '"auxiliaries": ['."\n";
     my @jsonrecords = ();
+    # Sort the list so that git diff is informative when we investigate changes.
     my @lcodes = sort(keys(%{$data}));
     foreach my $lcode (@lcodes)
     {
-        # Sort the list so that git diff is informative when we investigate changes.
-        my @auxlist = sort {$a->{lemma} cmp $b->{lemma}} (@{$data->{$lcode}});
-        foreach my $aux (@auxlist)
+        my @lemmas = sort(keys(%{$data->{$lcode}}));
+        foreach my $lemma (@lemmas)
         {
             my @record =
             (
                 ['lcode'       => $lcode],
-                ['lemma'       => $aux->{lemma}],
-                ['function'    => $aux->{function}],
-                ['rule'        => $aux->{rule}],
-                ['example'     => $aux->{example}],
-                ['exampleen'   => $aux->{exampleen}],
-                ['comment'     => $aux->{comment}],
-                ['status'      => $aux->{status}],
-                ['lastchanged' => $aux->{lastchanged}],
-                ['lastchanger' => $aux->{lastchanger}]
+                ['lemma'       => $lemma],
+                ['function'    => $data->{$lcode}{$lemma}{function}],
+                ['rule'        => $data->{$lcode}{$lemma}{rule}],
+                ['example'     => $data->{$lcode}{$lemma}{example}],
+                ['exampleen'   => $data->{$lcode}{$lemma}{exampleen}],
+                ['comment'     => $data->{$lcode}{$lemma}{comment}],
+                ['status'      => $data->{$lcode}{$lemma}{status}],
+                ['lastchanged' => $data->{$lcode}{$lemma}{lastchanged}],
+                ['lastchanger' => $data->{$lcode}{$lemma}{lastchanger}]
             );
             push(@jsonrecords, encode_json(@record));
         }
