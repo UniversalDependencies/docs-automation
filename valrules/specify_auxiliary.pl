@@ -216,24 +216,26 @@ sub print_undocumented_auxiliaries
 sub print_edit_add_menu
 {
     my $data = shift;
-    my %auxiliaries = %{$data->{$config{lcode}}};
-    my @lemmas = sort(keys(%auxiliaries));
-    my @hrefs;
-    foreach my $lemma0 (@lemmas)
-    {
-        # For a safe URL we assume that the lemma contains only letters. That should not be a problem normally.
-        my $lemma = $lemma0;
-        $lemma =~ s/\PL//g;
-        my $alert = '';
-        if($lemma ne $lemma0)
-        {
-            $alert = " <span style='color:red'>ERROR: Lemma must consist only of letters but stripping non-letters from '".htmlescape($lemma0)."' yields '$lemma'!</span>";
-        }
-        my $href = "<a href=\"specify_auxiliary.pl?ghu=$config{ghu}&amp;lcode=$config{lcode}&amp;lemma=$lemma\">$lemma</a>$alert";
-        push(@hrefs, $href);
-    }
     print("  <h2>Edit or add auxiliaries</h2>\n");
-    print("  <p>".join(' ', @hrefs)."\n");
+    if(exists($data->{$config{lcode}}))
+    {
+        my @lemmas = sort(keys(%{$data->{$config{lcode}}}));
+        my @hrefs;
+        foreach my $lemma0 (@lemmas)
+        {
+            # For a safe URL we assume that the lemma contains only letters. That should not be a problem normally.
+            my $lemma = $lemma0;
+            $lemma =~ s/\PL//g;
+            my $alert = '';
+            if($lemma ne $lemma0)
+            {
+                $alert = " <span style='color:red'>ERROR: Lemma must consist only of letters but stripping non-letters from '".htmlescape($lemma0)."' yields '$lemma'!</span>";
+            }
+            my $href = "<a href=\"specify_auxiliary.pl?ghu=$config{ghu}&amp;lcode=$config{lcode}&amp;lemma=$lemma\">$lemma</a>$alert";
+            push(@hrefs, $href);
+        }
+        print("  <p>".join(' ', @hrefs)."</p>\n");
+    }
     print <<EOF
   <form action="specify_auxiliary.pl" method="post" enctype="multipart/form-data">
     <input name=lcode type=hidden value="$config{lcode}" />
@@ -242,7 +244,6 @@ sub print_edit_add_menu
   </form>
 EOF
     ;
-    print("  </p>\n");
 }
 
 
