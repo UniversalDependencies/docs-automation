@@ -326,7 +326,7 @@ EOF
     if($config{addcop})
     {
         print("      <td>Copula<input name=function type=hidden value=\"Copula\" /></td>\n");
-        print("      <td>combination of the copula with a nonverbal predicate<input name=rule type=hidden value=\"combination of the copula with a nonverbal predicate\" /></td>\n");
+        print("      <td>combination of the copula and a nonverbal predicate<input name=rule type=hidden value=\"combination of the copula and a nonverbal predicate\" /></td>\n");
     }
     else
     {
@@ -356,11 +356,19 @@ EOF
     }
     print("      <td><input name=comment type=text value=\"$hcomment\" /></td>\n");
     print("    </tr>\n");
+    print("    <tr>\n");
+    print("      <td><input name=save type=submit value=\"Save\" /></td>\n");
+    print("      <td></td>\n");
+    # Do not print the hint for the rule if the rule is fixed (copula).
+    if($config{addcop})
+    {
+        print("      <td></td>\n");
+    }
+    else
+    {
+        print("      <td><small>e.g. “combination of the auxiliary and a past participle of the main verb”</small></td>\n");
+    }
     print <<EOF
-    <tr>
-      <td><input name=save type=submit value="Save" /></td>
-      <td></td>
-      <td><small>e.g. “combination of the auxiliary and a past participle of the main verb”</small></td>
       <td><small>mark the auxiliary by enclosing it in square brackets, e.g., “he [has] done it”</small></td>
       <!-- empty cells under english example and comment omitted (the one under english example would have to appear only if lcode is not en -->
     </tr>
