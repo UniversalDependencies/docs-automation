@@ -850,7 +850,7 @@ sub get_parameters
         $config{example} =~ s/^\s+//;
         $config{example} =~ s/\s+$//;
         $config{example} =~ s/\s+/ /sg;
-        if($config{example} !~ m/^[\pL\pP ]+$/)
+        if($config{example} !~ m/^[\pL\pM\pP ]+$/)
         {
             die "Example '$config{example}' contains characters other than letters, punctuation and space";
         }
@@ -858,7 +858,7 @@ sub get_parameters
         {
             die "Example '$config{example}' contains less-than, greater-than, ampersand or the ASCII quote";
         }
-        elsif($config{example} !~ m/\[\pL+\]/)
+        elsif($config{example} !~ m/\[[\pL\pM]+\]/)
         {
             die "Example '$config{example}' does not contain a sequence of letters enclosed in [square brackets]";
         }
@@ -883,7 +883,7 @@ sub get_parameters
         $config{exampleen} =~ s/^\s+//;
         $config{exampleen} =~ s/\s+$//;
         $config{exampleen} =~ s/\s+/ /sg;
-        if($config{exampleen} !~ m/^[\pL\pP ]+$/)
+        if($config{exampleen} !~ m/^[\pL\pM\pP ]+$/)
         {
             die "Example translation '$config{exampleen}' contains characters other than letters, punctuation and space";
         }
@@ -911,7 +911,7 @@ sub get_parameters
         $config{comment} =~ s/^\s+//;
         $config{comment} =~ s/\s+$//;
         $config{comment} =~ s/\s+/ /sg;
-        if($config{comment} !~ m/^[\pL\pP ]+$/)
+        if($config{comment} !~ m/^[\pL\pM\pP ]+$/)
         {
             die "Comment '$config{comment}' contains characters other than letters, punctuation and space";
         }
