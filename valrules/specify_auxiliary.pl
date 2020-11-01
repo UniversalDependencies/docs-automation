@@ -195,20 +195,23 @@ sub print_undocumented_auxiliaries
             # For a safe URL we assume that the lemma contains only letters. That should not be a problem normally.
             my $lemma = $lemma0;
             #$lemma =~ s/[^\p{L}\p{M}]//g;
-            my @characters = split(//, $lemma);
+            my @characters = split(//, $lemma0);
             $lemma = '';
             foreach my $c (@characters)
             {
                 if($c =~ m/\pL/)
                 {
+                    print("character '$c' is a letter,\n");
                     $lemma .= $c;
                 }
                 elsif($c =~ m/\pM/)
                 {
+                    print("character '$c' is a mark,\n");
                     $lemma .= $c;
                 }
                 else
                 {
+                    print("character '$c' is neither a letter nor a mark,\n");
                     my $properties;
                     foreach my $prop (qw(L M N P S Z C))
                     {
