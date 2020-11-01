@@ -358,7 +358,7 @@ EOF
     print("    </tr>\n");
     print("    <tr>\n");
     print("      <td><input name=save type=submit value=\"Save\" /></td>\n");
-    print("      <td></td>\n");
+    print("      <td><small>Missing function that conforms to the guidelines? Contact Dan!</small></td>\n");
     # Do not print the hint for the rule if the rule is fixed (copula).
     if($config{addcop})
     {
@@ -366,10 +366,10 @@ EOF
     }
     else
     {
-        print("      <td><small>e.g. “combination of the auxiliary and a past participle of the main verb”</small></td>\n");
+        print("      <td><small>E.g. “combination of the auxiliary and a past participle of the main verb”</small></td>\n");
     }
     print <<EOF
-      <td><small>mark the auxiliary by enclosing it in square brackets, e.g., “he [has] done it”</small></td>
+      <td><small>Mark the auxiliary by enclosing it in square brackets, e.g., “he [has] done it”</small></td>
       <!-- empty cells under english example and comment omitted (the one under english example would have to appear only if lcode is not en -->
     </tr>
   </table>
