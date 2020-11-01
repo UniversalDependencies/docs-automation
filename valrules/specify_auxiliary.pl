@@ -548,7 +548,6 @@ sub process_form_data
     }
     else
     {
-        print("  <p style='color:red'><strong>WARNING:</strong> Real saving has not been implemented yet.</p>\n");
         # Create a new record. If we are adding a new auxiliary, this will be
         # its record. If we are editing an existing auxiliary, first copy the
         # old values from the old values, then replace the edited ones, then
