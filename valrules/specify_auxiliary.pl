@@ -155,6 +155,9 @@ else
     }
     elsif($config{add})
     {
+        summarize_guidelines();
+        print_lemma_form(\%data);
+        print_all_auxiliaries(\%data);
     }
     else
     {
