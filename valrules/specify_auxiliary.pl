@@ -988,6 +988,8 @@ sub read_data_json
             # erasing the language code inside).
             delete($record->{lcode});
             delete($record->{lemma});
+            ###!!! Temporarily we need to define the value of deficient here because we added that field late.
+            $record->{deficient} = '' if(!defined($record->{deficient}));
             $data{$lcode}{$lemma} = $record;
         }
     }
