@@ -662,7 +662,7 @@ sub print_all_auxiliaries
     my @lcodes_my_family = grep {$languages->{$lname_by_code{$_}}{familygenus} ne $myfamilygenus && $languages->{$lname_by_code{$_}}{family} eq $myfamily} (@lcodes);
     my @lcodes_other = grep {$languages->{$lname_by_code{$_}}{family} ne $myfamily} (@lcodes);
     print("  <table>\n");
-    print("    <tr><th colspan=2>Language</th><th>Total</th><th>Copula</th><th>Perfect</th><th>Future</th><th>Passive</th><th>Conditional</th><th>Other</th><th>Undocumented</th></tr>\n");
+    print("    <tr><th colspan=2>Language</th><th>Total</th><th>Copula</th><th>Perfect</th><th>Future</th><th>Passive</th><th>Conditional</th><th>Necessitative</th><th>Other</th><th>Undocumented</th></tr>\n");
     foreach my $lcode ($config{lcode}, @lcodes_my_genus, @lcodes_my_family, @lcodes_other)
     {
         my @lemmas = sort(keys(%{$data->{$lcode}}));
@@ -673,7 +673,8 @@ sub print_all_auxiliaries
         my @future = grep {$data->{$lcode}{$_}{function} eq 'Periphrastic tense: future'} (@documented);
         my @passive = grep {$data->{$lcode}{$_}{function} eq 'Periphrastic voice: passive'} (@documented);
         my @conditional = grep {$data->{$lcode}{$_}{function} eq 'Periphrastic mood: conditional'} (@documented);
-        my @other = grep {$data->{$lcode}{$_}{function} !~ m/^(Copula|Periphrastic (aspect|tense|voice|mood): (perfect|future|passive|conditional))$/} (@documented);
+        my @necessitative = grep {$data->{$lcode}{$_}{function} eq 'Modal auxiliary: necessitative (“must, should”)'} (@documented);
+        my @other = grep {$data->{$lcode}{$_}{function} !~ m/^(Copula|Periphrastic (aspect|tense|voice|mood): (perfect|future|passive|conditional)|Modal auxiliary: necessitative (“must, should”))$/} (@documented);
         my $n = scalar(@documented)+scalar(@undocumented);
         print("    <tr><td>$lname_by_code{$lcode}</td><td>$lcode</td><td>$n</td>");
         print("<td>".join(' ', @copula)."</td>");
@@ -681,6 +682,7 @@ sub print_all_auxiliaries
         print("<td>".join(' ', @future)."</td>");
         print("<td>".join(' ', @passive)."</td>");
         print("<td>".join(' ', @conditional)."</td>");
+        print("<td>".join(' ', @necessitative)."</td>");
         print("<td>".join(' ', @other)."</td>");
         print("<td>".join(' ', @undocumented)."</td></tr>\n");
     }
