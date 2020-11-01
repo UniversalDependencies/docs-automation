@@ -324,7 +324,7 @@ EOF
     print("      <td>");
     if($config{lemma} ne '')
     {
-        print("$config{lemma}</strong><input name=lemma type=hidden size=10 value=\"$config{lemma}\" />");
+        print("<strong>$config{lemma}</strong><input name=lemma type=hidden size=10 value=\"$config{lemma}\" />");
     }
     else
     {
