@@ -47,6 +47,7 @@ my @functions =
     ['Periphrastic aspect: perfect', 'Aspect=Perf'],
     ['Periphrastic aspect: progressive', 'Aspect=Prog'],
     ['Periphrastic tense: past', 'Tense=Past'],
+    ['Periphrastic tense: present', 'Tense=Pres'],
     ['Periphrastic tense: future', 'Tense=Fut'],
     ['Periphrastic voice: passive', 'Voice=Pass'],
     ['Periphrastic voice: causative', 'Voice=Cau'],
