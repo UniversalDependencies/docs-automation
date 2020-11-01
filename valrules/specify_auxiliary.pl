@@ -662,16 +662,21 @@ sub print_all_auxiliaries
     my @lcodes_my_family = grep {$languages->{$lname_by_code{$_}}{familygenus} ne $myfamilygenus && $languages->{$lname_by_code{$_}}{family} eq $myfamily} (@lcodes);
     my @lcodes_other = grep {$languages->{$lname_by_code{$_}}{family} ne $myfamily} (@lcodes);
     print("  <table>\n");
-    print("    <tr><th colspan=2>Language</th><th>Total</th><th>Copula</th><th>Other</th><th>Undocumented</th></tr>\n");
+    print("    <tr><th colspan=2>Language</th><th>Total</th><th>Copula</th><th>Perf</th><th>Other</th><th>Undocumented</th></tr>\n");
     foreach my $lcode ($config{lcode}, @lcodes_my_genus, @lcodes_my_family, @lcodes_other)
     {
         my @lemmas = sort(keys(%{$data->{$lcode}}));
         my @documented = grep {$data->{$lcode}{$_}{status} eq 'documented'} (@lemmas);
         my @undocumented = grep {$data->{$lcode}{$_}{status} ne 'documented'} (@lemmas);
         my @copula = grep {$data->{$lcode}{$_}{function} eq 'Copula'} (@documented);
-        my @noncopula = grep {$data->{$lcode}{$_}{function} ne 'Copula'} (@documented);
+        my @perfect = grep {$data->{$lcode}{$_}{function} eq 'Periphrastic aspect: perfect'} (@documented);
+        my @other = grep {$data->{$lcode}{$_}{function} !~ m/^(Copula|Periphrastic aspect: perfect)$/} (@documented);
         my $n = scalar(@documented)+scalar(@undocumented);
-        print("    <tr><td>$lname_by_code{$lcode}</td><td>$lcode</td><td>$n</td><td>".join(' ', @copula)."</td><td>".join(' ', @noncopula)."</td><td>".join(' ', @undocumented)."</td></tr>\n");
+        print("    <tr><td>$lname_by_code{$lcode}</td><td>$lcode</td><td>$n</td>");
+        print("<td>".join(' ', @copula)."</td>");
+        print("<td>".join(' ', @perfect)."</td>");
+        print("<td>".join(' ', @other)."</td>");
+        print("<td>".join(' ', @undocumented)."</td></tr>\n");
     }
     print("  </table>\n");
 }
