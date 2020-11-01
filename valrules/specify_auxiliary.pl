@@ -304,7 +304,9 @@ sub print_lemma_form
 EOF
     ;
     # If we are adding or editing a copula, add a field where multiple copulas can be justified.
-    if($config{addcop} || $record->{function} eq 'Copula')
+    # This field should also be available if we are documenting a previously undocumented
+    # auxiliary, which could be a copula.
+    if($config{addcop} || $record->{function} eq 'Copula' || $record->{status} eq 'undocumented')
     {
         print("      <td>Deficient paradigm</td>\n");
     }
@@ -334,7 +336,6 @@ EOF
     {
         print("      <td>Copula<input name=function type=hidden value=\"Copula\" /></td>\n");
         print("      <td>combination of the copula and a nonverbal predicate<input name=rule type=hidden value=\"combination of the copula and a nonverbal predicate\" /></td>\n");
-        print("      <td><input name=deficient type=text size=30 value=\"$hdeficient\" /></td>\n");
     }
     else
     {
@@ -357,6 +358,10 @@ EOF
         print("      </td>\n");
         print("      <td><input name=rule type=text size=30 value=\"$hrule\" /></td>\n");
     }
+    if($config{addcop} || $record->{function} eq 'Copula' || $record->{status} eq 'undocumented')
+    {
+        print("      <td><input name=deficient type=text size=30 value=\"$hdeficient\" /></td>\n");
+    }
     print("      <td><input name=example type=text size=30 value=\"$hexample\" /></td>\n");
     unless($config{lcode} eq 'en')
     {
@@ -372,12 +377,15 @@ EOF
     {
         print("      <td></td>\n");
         print("      <td></td>\n");
-        print("      <td><small>If you want multiple copulas, you must justify each, e.g. “used in past tense only”</small></td>\n");
     }
     else
     {
         print("      <td><small>Missing function that conforms to the guidelines? Contact Dan!</small></td>\n");
         print("      <td><small>E.g. “combination of the auxiliary and a past participle of the main verb”</small></td>\n");
+    }
+    if($config{addcop} || $record->{function} eq 'Copula' || $record->{status} eq 'undocumented')
+    {
+        print("      <td><small>If you want multiple copulas, you must justify each, e.g. “used in past tense only”</small></td>\n");
     }
     print <<EOF
       <td><small>Mark the auxiliary by enclosing it in square brackets, e.g., “he [has] done it”</small></td>
