@@ -253,11 +253,29 @@ EOF
 sub print_lemma_form
 {
     my $data = shift;
-    if(!exists($data->{$config{lcode}}{$config{lemma}}))
+    # This function can be called for an empty lemma, in which case we want to
+    # add a new auxiliary. However, if the lemma is non-empty, it must be
+    # known.
+    my $record;
+    if($config{lemma} eq '')
+    {
+        $record =
+        {
+            'function'  => '',
+            'rule'      => '',
+            'example'   => '',
+            'exampleen' => '',
+            'comment'   => ''
+        };
+    }
+    elsif(exists($data->{$config{lcode}}{$config{lemma}}))
+    {
+        $record = $data->{$config{lcode}}{$config{lemma}};
+    }
+    else
     {
         die("Lemma '$config{lemma}' not found in language '$config{lcode}'");
     }
-    my $record = $data->{$config{lcode}}{$config{lemma}};
     my $hrule = htmlescape($record->{rule});
     my $hexample = htmlescape($record->{example});
     my $hexampleen = htmlescape($record->{exampleen});
@@ -288,13 +306,22 @@ EOF
     print <<EOF
       <td>Comment</td>
     </tr>
-    <tr>
-      <td><strong>$config{lemma}</strong><input name=lemma type=hidden size=10 value="$config{lemma}" /></td>
-      <td>
-        <select name=function>
-          <option>-----</option>
 EOF
     ;
+    print("    <tr>\n");
+    print("      <td>");
+    if($config{lemma} ne '')
+    {
+        print("$config{lemma}</strong><input name=lemma type=hidden size=10 value=\"$config{lemma}\" />");
+    }
+    else
+    {
+        print("<input name=lemma type=text size=10 />");
+    }
+    print("</td>\n");
+    print("      <td>\n");
+    print("        <select name=function>\n");
+    print("          <option>-----</option>\n");
     foreach my $f (@functions)
     {
         my $selected = '';
@@ -304,20 +331,17 @@ EOF
         }
         print("          <option$selected>".htmlescape($f->[0])."</option>\n");
     }
-    print <<EOF
-        </select>
-      </td>
-      <td><input name=rule type=text size=30 value="$hrule" /></td>
-      <td><input name=example type=text size=30 value="$hexample" /></td>
-EOF
-    ;
+    print("        </select>\n");
+    print("      </td>\n");
+    print("      <td><input name=rule type=text size=30 value=\"$hrule\" /></td>\n");
+    print("      <td><input name=example type=text size=30 value=\"$hexample\" /></td>\n");
     unless($config{lcode} eq 'en')
     {
         print("      <td><input name=exampleen type=text size=30 value=\"$hexampleen\" /></td>\n");
     }
+    print("      <td><input name=comment type=text value=\"$hcomment\" /></td>\n");
+    print("    </tr>\n");
     print <<EOF
-      <td><input name=comment type=text value="$hcomment" /></td>
-    </tr>
     <tr>
       <td><input name=save type=submit value="Save" /></td>
       <td></td>
