@@ -265,6 +265,7 @@ sub print_lemma_form
         {
             'function'  => '',
             'rule'      => '',
+            'deficient' => '',
             'example'   => '',
             'exampleen' => '',
             'comment'   => '',
@@ -280,6 +281,7 @@ sub print_lemma_form
         die("Lemma '$config{lemma}' not found in language '$config{lcode}'");
     }
     my $hrule = htmlescape($record->{rule});
+    my $hdeficient = htmlescape($record->{deficient});
     my $hexample = htmlescape($record->{example});
     my $hexampleen = htmlescape($record->{exampleen});
     my $hcomment = htmlescape($record->{comment});
@@ -299,9 +301,14 @@ sub print_lemma_form
       <td>Lemma</td>
       <td>Function</td>
       <td>Rule</td>
-      <td>Example</td>
 EOF
     ;
+    # If we are adding or editing a copula, add a field where multiple copulas can be justified.
+    if($config{addcop} || $record->{function} eq 'Copula')
+    {
+        print("      <td>Deficient paradigm</td>\n");
+    }
+    print("      <td>Example</td>\n");
     unless($config{lcode} eq 'en')
     {
         print("      <td>English translation of the example</td>\n");
@@ -327,6 +334,7 @@ EOF
     {
         print("      <td>Copula<input name=function type=hidden value=\"Copula\" /></td>\n");
         print("      <td>combination of the copula and a nonverbal predicate<input name=rule type=hidden value=\"combination of the copula and a nonverbal predicate\" /></td>\n");
+        print("      <td><input name=deficient type=text size=30 value=\"$hdeficient\" /></td>\n");
     }
     else
     {
@@ -359,10 +367,12 @@ EOF
     print("    <tr>\n");
     print("      <td><input name=save type=submit value=\"Save\" /></td>\n");
     # Do not print the hint for the function/rule if the function/rule is fixed (copula).
+    # But do print the hint for multiple copulas.
     if($config{addcop} || $record->{function} eq 'Copula')
     {
         print("      <td></td>\n");
         print("      <td></td>\n");
+        print("      <td><small>If you want multiple copulas, you must justify each, e.g. “used in past tense only”</small></td>\n");
     }
     else
     {
@@ -430,6 +440,20 @@ sub process_form_data
         print("    <li style='color:red'>ERROR: Missing function</li>\n");
         $error = 1;
     }
+    if($config{rule} ne '')
+    {
+        print("    <li>rule = '".htmlescape($config{rule})."'</li>\n");
+    }
+    else
+    {
+        print("    <li style='color:red'>ERROR: Missing rule</li>\n");
+        $error = 1;
+    }
+    # We will assess the obligatoriness of the 'deficient' parameter later.
+    if($config{deficient} ne '')
+    {
+        print("    <li>deficient = '".htmlescape($config{deficient})."'</li>\n");
+    }
     if($config{example} ne '')
     {
         print("    <li>example = '".htmlescape($config{example})."'</li>\n");
@@ -456,6 +480,7 @@ sub process_form_data
     if($error)
     {
         print("  <p style='color:red'><strong>WARNING:</strong> Nothing was saved because there were errors.</p>\n");
+        print("  <p>TO DO: obligatoriness of deficient</p>\n");
     }
     else
     {
@@ -690,6 +715,22 @@ sub get_parameters
         die "Rule '$config{rule}' contains characters other than English letters, space, period, comma, semicolon, colon, hyphen, and round brackets";
     }
     #--------------------------------------------------------------------------
+    # Deficient [paradigm] is a descriptive text that justifies a copula if
+    # there are multiple lemmas of copula in one language.
+    $config{deficient} = decode('utf8', $query->param('deficient'));
+    if(!defined($config{deficient}) || $config{deficient} =~ m/^\s*$/)
+    {
+        $config{deficient} = '';
+    }
+    elsif($config{deficient} =~ m/^([-A-Za-z \.:\(,;\)]+)$/)
+    {
+        $config{deficient} = $1;
+    }
+    else
+    {
+        die "Explanation of deficient copula paradigm '$config{deficient}' contains characters other than English letters, space, period, comma, semicolon, colon, hyphen, and round brackets";
+    }
+    #--------------------------------------------------------------------------
     # Example in the original language may contain letters (including Unicode
     # letters), spaces, punctuation (including Unicode punctuation). Square
     # brackets have a special meaning, they mark the word we focus on. We
@@ -876,6 +917,7 @@ sub read_auxiliaries_from_python
                 (
                     'function'    => '',
                     'rule'        => '',
+                    'deficient'   => '',
                     'example'     => '',
                     'exampleen'   => '',
                     'comment'     => '',
@@ -963,6 +1005,7 @@ sub write_data_json
                 ['lemma'       => $lemma],
                 ['function'    => $data->{$lcode}{$lemma}{function}],
                 ['rule'        => $data->{$lcode}{$lemma}{rule}],
+                ['deficient'   => $data->{$lcode}{$lemma}{deficient}],
                 ['example'     => $data->{$lcode}{$lemma}{example}],
                 ['exampleen'   => $data->{$lcode}{$lemma}{exampleen}],
                 ['comment'     => $data->{$lcode}{$lemma}{comment}],
