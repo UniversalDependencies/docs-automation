@@ -674,7 +674,7 @@ sub print_all_auxiliaries
         my @passive = grep {$data->{$lcode}{$_}{function} eq 'Periphrastic voice: passive'} (@documented);
         my @conditional = grep {$data->{$lcode}{$_}{function} eq 'Periphrastic mood: conditional'} (@documented);
         my @necessitative = grep {$data->{$lcode}{$_}{function} eq 'Modal auxiliary: necessitative (“must, should”)'} (@documented);
-        my @other = grep {$data->{$lcode}{$_}{function} !~ m/^(Copula|Periphrastic (aspect|tense|voice|mood): (perfect|future|passive|conditional)|Modal auxiliary: necessitative (“must, should”))$/} (@documented);
+        my @other = grep {$data->{$lcode}{$_}{function} !~ m/^(Copula|Periphrastic (aspect|tense|voice|mood): (perfect|future|passive|conditional)|Modal auxiliary: necessitative \(“must, should”\))$/} (@documented);
         my $n = scalar(@documented)+scalar(@undocumented);
         print("    <tr><td>$lname_by_code{$lcode}</td><td>$lcode</td><td>$n</td>");
         print("<td>".join(' ', @copula)."</td>");
