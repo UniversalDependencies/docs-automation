@@ -116,7 +116,7 @@ else
 {
     # Read the data file, either from the old Python list, or from JSON.
     my %data;
-    if(1)
+    if(0)
     {
         %data = read_auxiliaries_from_python();
     }
