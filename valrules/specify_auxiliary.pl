@@ -506,6 +506,40 @@ sub process_form_data
     {
         print("    <li>comment = '".htmlescape($config{comment})."'</li>\n");
     }
+    # Check whether there will be more than one copulas if we add this one to the data.
+    # If there will, check that all of them (including the new one) have a distinct
+    # explanation of its deficient paradigm.
+    if($config{function} eq 'Copula')
+    {
+        my %copjust;
+        foreach my $lemma (keys(%{$data->{$config{lcode}}}))
+        {
+            if($data->{$config{lcode}}{$lemma}{function} eq 'Copula')
+            {
+                $copjust{$lemma} = $data->{$config{lcode}}{$lemma}{deficient};
+            }
+        }
+        $copjust{$config{lemma}} = $config{deficient};
+        my $ok = 1;
+        my @copulas = sort(keys(%copjust));
+        my $n = scalar(@copulas);
+        if($n > 1)
+        {
+            foreach my $lemma (@copulas)
+            {
+                if($copjust{$lemma} eq '')
+                {
+                    print("    <li style='color:red'>ERROR: Copula '$lemma' does not have a deficient paradigm, hence there cannot be $n copulas</li>\n");
+                    $error = 1;
+                }
+                if($lemma ne $config{lemma} && $copjust{$lemma} eq $config{deficient})
+                {
+                    print("    <li style='color:red'>ERROR: Explanation of deficient paradigm '$config{deficient}' is identical to the explanation given for '$lemma'</li>\n");
+                    $error = 1;
+                }
+            }
+        }
+    }
     print("  </ul>\n");
     if($error)
     {
