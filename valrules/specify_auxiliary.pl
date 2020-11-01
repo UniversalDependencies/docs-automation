@@ -358,14 +358,15 @@ EOF
     print("    </tr>\n");
     print("    <tr>\n");
     print("      <td><input name=save type=submit value=\"Save\" /></td>\n");
-    print("      <td><small>Missing function that conforms to the guidelines? Contact Dan!</small></td>\n");
-    # Do not print the hint for the rule if the rule is fixed (copula).
+    # Do not print the hint for the function/rule if the function/rule is fixed (copula).
     if($config{addcop})
     {
+        print("      <td></td>\n");
         print("      <td></td>\n");
     }
     else
     {
+        print("      <td><small>Missing function that conforms to the guidelines? Contact Dan!</small></td>\n");
         print("      <td><small>E.g. “combination of the auxiliary and a past participle of the main verb”</small></td>\n");
     }
     print <<EOF
