@@ -217,6 +217,7 @@ sub print_edit_add_menu
 {
     my $data = shift;
     print("  <h2>Edit or add auxiliaries</h2>\n");
+    my @ndcop = ();
     if(exists($data->{$config{lcode}}))
     {
         my @lemmas = sort(keys(%{$data->{$config{lcode}}}));
@@ -235,16 +236,23 @@ sub print_edit_add_menu
             push(@hrefs, $href);
         }
         print("  <p>".join(' ', @hrefs)."</p>\n");
+        # Do not offer adding a copula if there already is a copula without documented deficient paradigm.
+        @ndcop = grep {$data->{$config{lcode}}{$_}{function} eq 'Copula' && $data->{$config{lcode}}{$_}{deficient} eq ''} (@lemmas);
     }
-    print <<EOF
-  <form action="specify_auxiliary.pl" method="post" enctype="multipart/form-data">
-    <input name=lcode type=hidden value="$config{lcode}" />
-    <input name=ghu type=hidden value="$config{ghu}" />
-    <input name=add type=submit value="Add copula" />
-    <input name=add type=submit value="Add other" />
-  </form>
-EOF
-    ;
+    print("  <form action=\"specify_auxiliary.pl\" method=\"post\" enctype=\"multipart/form-data\">\n");
+    print("    <input name=lcode type=hidden value=\"$config{lcode}\" />\n");
+    print("    <input name=ghu type=hidden value=\"$config{ghu}\" />\n");
+    if(scalar(@ndcop)==0)
+    {
+        print("    <input name=add type=submit value=\"Add copula\" />\n");
+        print("    <input name=add type=submit value=\"Add other\" />\n");
+    }
+    else
+    {
+        print("    The copula has been specified <i>(".join(', ', @ndcop).")</i>.\n");
+        print("    <input name=add type=submit value=\"Add non-copula\" />\n");
+    }
+    print("  </form>\n");
 }
 
 
@@ -730,6 +738,10 @@ sub get_parameters
     {
         $config{deficient} = '';
     }
+    elsif($config{deficient} !~ m/\pL{3}/)
+    {
+        die "Explanation of deficient copula paradigm '$config{deficient}' contains too few letters.";
+    }
     elsif($config{deficient} =~ m/^([-A-Za-z \.:\(,;\)]+)$/)
     {
         $config{deficient} = $1;
@@ -862,7 +874,7 @@ sub get_parameters
         $config{add} = 1;
         $config{addnoncop} = 0;
     }
-    elsif($config{add} =~ m/^Add other$/)
+    elsif($config{add} =~ m/^Add (other|non-copula)$/)
     {
         $config{addnoncop} = 1;
         $config{add} = 1;
