@@ -763,7 +763,9 @@ sub get_parameters
     {
         $config{lemma} = '';
     }
-    elsif($config{lemma} =~ m/^\s*(\pL+)\s*$/)
+    # Lemma can contain letters (L) and modifiers (M).
+    # An example of a modifier: U+94D DEVANAGARI SIGN VIRAMA.
+    elsif($config{lemma} =~ m/^\s*([\pL\pM]+)\s*$/)
     {
         $config{lemma} = $1;
     }
