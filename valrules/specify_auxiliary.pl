@@ -337,7 +337,7 @@ EOF
         {
             # The Copula function should be available if we are documenting an undocumented auxiliary.
             # Otherwise it is not available because we must use 'addcop', see above.
-            next if($f eq 'Copula' && $record->{status} ne 'undocumented');
+            next if($f->[0] eq 'Copula' && $record->{status} ne 'undocumented');
             my $selected = '';
             if($f->[0] eq $record->{function})
             {
