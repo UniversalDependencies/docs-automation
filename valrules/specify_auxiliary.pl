@@ -193,7 +193,8 @@ sub print_undocumented_auxiliaries
         {
             # For a safe URL we assume that the lemma contains only letters. That should not be a problem normally.
             my $lemma = $lemma0;
-            $lemma =~ s/[^\p{L}^\p{M}]//g;
+            #$lemma =~ s/[^\p{L}\p{M}]//g;
+            $lemma = join('', grep {m/[\pL\pM]/} (split(//, $lemma)));
             my $alert = '';
             if($lemma ne $lemma0)
             {
