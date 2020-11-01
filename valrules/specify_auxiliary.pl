@@ -322,8 +322,8 @@ EOF
         print("<input name=lemma type=text size=10 />");
     }
     print("</td>\n");
-    # If we are adding a copula, the function is fixed.
-    if($config{addcop})
+    # If we are adding or editing a copula, the function is fixed.
+    if($config{addcop} || $record->{function} eq 'Copula')
     {
         print("      <td>Copula<input name=function type=hidden value=\"Copula\" /></td>\n");
         print("      <td>combination of the copula and a nonverbal predicate<input name=rule type=hidden value=\"combination of the copula and a nonverbal predicate\" /></td>\n");
@@ -359,7 +359,7 @@ EOF
     print("    <tr>\n");
     print("      <td><input name=save type=submit value=\"Save\" /></td>\n");
     # Do not print the hint for the function/rule if the function/rule is fixed (copula).
-    if($config{addcop})
+    if($config{addcop} || $record->{function} eq 'Copula')
     {
         print("      <td></td>\n");
         print("      <td></td>\n");
