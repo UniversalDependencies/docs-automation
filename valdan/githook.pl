@@ -99,6 +99,11 @@ if(defined($result))
                     my $ltcode = $2;
                     $changed{$ltcode}++;
                 }
+                elsif($file eq 'data/data.json' && $commit->{message} =~ m/Updated data specific for ([a-z]{2,3})\.)
+                {
+                    my $ltcode = $1;
+                    $changed{$ltcode}++;
+                }
             }
         }
         my @changed = sort(keys(%changed));
