@@ -130,7 +130,7 @@ else
     # Nevertheless, only now we can also report an error if a parameter is empty.
     if($config{save})
     {
-        process_form_data(%data);
+        process_form_data(\%data);
     }
     else
     {
@@ -141,19 +141,19 @@ else
             # It is possible that there are no auxiliaries for my language so far.
             if(exists($data{$config{lcode}}))
             {
-                $n_undocumented = print_undocumented_auxiliaries(%data);
+                $n_undocumented = print_undocumented_auxiliaries(\%data);
             }
             if($n_undocumented==0)
             {
-                print_edit_add_menu(%data);
+                print_edit_add_menu(\%data);
             }
         }
         else
         {
-            print_lemma_form(%data);
+            print_lemma_form(\%data);
         }
         # Show all known auxiliaries so the user can compare. This and related languages first.
-        print_all_auxiliaries(%data);
+        print_all_auxiliaries(\%data);
     }
 }
 print <<EOF
@@ -169,8 +169,8 @@ EOF
 #------------------------------------------------------------------------------
 sub print_undocumented_auxiliaries
 {
-    my %data = @_;
-    my @auxiliaries = @{$data{$config{lcode}}};
+    my $data = shift;
+    my @auxiliaries = @{$data->{$config{lcode}}};
     my @undocumented = grep {$_->{status} ne 'documented'} (@auxiliaries);
     my $n = scalar(@undocumented);
     if($n > 0)
@@ -204,8 +204,8 @@ sub print_undocumented_auxiliaries
 #------------------------------------------------------------------------------
 sub print_edit_add_menu
 {
-    my %data = @_;
-    my @auxiliaries = @{$data{$config{lcode}}};
+    my $data = shift;
+    my @auxiliaries = @{$data->{$config{lcode}}};
     my @hrefs;
     foreach my $aux (@auxiliaries)
     {
@@ -240,8 +240,8 @@ EOF
 #------------------------------------------------------------------------------
 sub print_lemma_form
 {
-    my %data = @_;
-    my @records = grep {$_->{lemma} eq $config{lemma}} (@{$data{$config{lcode}}});
+    my $data = shift;
+    my @records = grep {$_->{lemma} eq $config{lemma}} (@{$data->{$config{lcode}}});
     if(scalar(@records)==0)
     {
         die("Lemma '$config{lemma}' not found in language '$config{lcode}'");
@@ -328,7 +328,7 @@ EOF
 #------------------------------------------------------------------------------
 sub process_form_data
 {
-    my %data = @_;
+    my $data = shift;
     my $error = 0;
     print("  <h2>This is a result of a Save button</h2>\n");
     print("  <ul>\n");
@@ -398,7 +398,7 @@ sub process_form_data
     else
     {
         print("  <p style='color:red'><strong>WARNING:</strong> Real saving has not been implemented yet.</p>\n");
-        my @auxlist = @{$data{$config{lcode}}};
+        my @auxlist = @{$data->{$config{lcode}}};
         foreach my $aux (@auxlist)
         {
             if($aux->{lemma} eq $config{lemma})
@@ -417,7 +417,7 @@ sub process_form_data
                 $aux->{status} = 'documented';
             }
         }
-        write_data_json(\%data, "$path/data.json");
+        write_data_json($data, "$path/data.json");
         # Commit the changes to the repository and push them to Github.
         system("/home/zeman/bin/git-push-docs-automation.sh '$config{ghu}' '$config{lcode}' > /dev/null");
         print <<EOF
@@ -479,7 +479,7 @@ EOF
 #------------------------------------------------------------------------------
 sub print_all_auxiliaries
 {
-    my %data = @_;
+    my $data = shift;
     # Print the data on the web page.
     print("  <h2>Known auxiliaries for this and other languages</h2>\n");
     print("  <table>\n");
@@ -491,14 +491,14 @@ sub print_all_auxiliaries
     my $myfamilygenus = $languages->{$lname_by_code{$config{lcode}}}{familygenus};
     my $myfamily = $languages->{$lname_by_code{$config{lcode}}}{family};
     my $mygenus = $languages->{$lname_by_code{$config{lcode}}}{genus};
-    my @lcodes = sort(keys(%data));
+    my @lcodes = sort(keys(%{$data}));
     my @lcodes_my_genus = grep {$_ ne $config{lcode} && $languages->{$lname_by_code{$_}}{familygenus} eq $myfamilygenus} (@lcodes);
     my @lcodes_my_family = grep {$languages->{$lname_by_code{$_}}{familygenus} ne $myfamilygenus && $languages->{$lname_by_code{$_}}{family} eq $myfamily} (@lcodes);
     my @lcodes_other = grep {$languages->{$lname_by_code{$_}}{family} ne $myfamily} (@lcodes);
     foreach my $lcode ($config{lcode}, @lcodes_my_genus, @lcodes_my_family, @lcodes_other)
     {
-        my @documented = map {$_->{lemma}} (grep {$_->{status} eq 'documented'} (@{$data{$lcode}}));
-        my @undocumented = map {$_->{lemma}} (grep {$_->{status} ne 'documented'} (@{$data{$lcode}}));
+        my @documented = map {$_->{lemma}} (grep {$_->{status} eq 'documented'} (@{$data->{$lcode}}));
+        my @undocumented = map {$_->{lemma}} (grep {$_->{status} ne 'documented'} (@{$data->{$lcode}}));
         my $n = scalar(@documented)+scalar(@undocumented);
         print("    <tr><td>$lname_by_code{$lcode}</td><td>$lcode</td><td>$n</td><td>".join(' ', @documented)."</td><td>".join(' ', @undocumented)."</td></tr>\n");
     }
