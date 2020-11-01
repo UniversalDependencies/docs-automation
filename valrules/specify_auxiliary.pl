@@ -519,6 +519,7 @@ sub process_form_data
         $record{lastchanger} = $config{ghu};
         $record{function} = $config{function};
         $record{rule} = $config{rule};
+        $record{deficient} = $config{deficient};
         $record{example} = $config{example};
         $record{exampleen} = $config{exampleen};
         $record{comment} = $config{comment};
