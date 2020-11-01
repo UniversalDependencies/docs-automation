@@ -647,7 +647,20 @@ sub print_all_auxiliaries
     my $myfamilygenus = $languages->{$lname_by_code{$config{lcode}}}{familygenus};
     my $myfamily = $languages->{$lname_by_code{$config{lcode}}}{family};
     my $mygenus = $languages->{$lname_by_code{$config{lcode}}}{genus};
-    my @lcodes = sort(keys(%{$data}));
+    my @lcodes = sort
+    {
+        my $r = $languages->{$lname_by_code{$a}}{family} cmp $languages->{$lname_by_code{$b}}{family};
+        unless($r)
+        {
+            $r = $languages->{$lname_by_code{$a}}{genus} cmp $languages->{$lname_by_code{$b}}{genus};
+            unless($r)
+            {
+                $r = $lname_by_code{$a} cmp $lname_by_code{$b};
+            }
+        }
+        $r
+    }
+    (keys(%{$data}));
     my @lcodes_my_genus = grep {$_ ne $config{lcode} && $languages->{$lname_by_code{$_}}{familygenus} eq $myfamilygenus} (@lcodes);
     my @lcodes_my_family = grep {$languages->{$lname_by_code{$_}}{familygenus} ne $myfamilygenus && $languages->{$lname_by_code{$_}}{family} eq $myfamily} (@lcodes);
     my @lcodes_other = grep {$languages->{$lname_by_code{$_}}{family} ne $myfamily} (@lcodes);
