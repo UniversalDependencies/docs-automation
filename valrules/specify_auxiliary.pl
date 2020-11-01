@@ -124,34 +124,42 @@ else
     {
         %data = read_data_json();
     }
-    #------------------------------------------------------------------------------
-    # We are processing a Save request after a lemma was edited.
-    # We have briefly checked that the parameters match expected regular expressions.
-    # Nevertheless, only now we can also report an error if a parameter is empty.
+    # Check whether there are any undocumented auxiliaries. Documenting them
+    # has higher priority than any other action the user may want to do.
+    my $n_undocumented = 0;
+    # It is possible that there are no auxiliaries for my language so far.
+    if(exists($data{$config{lcode}}))
+    {
+        $n_undocumented =  scalar(grep {$_->{status} ne 'documented'} (@{$data{$config{lcode}}}));
+    }
+    # Perform an action according to the CGI parameters.
+    # Saving may be needed even for documenting undocumented auxiliaries.
     if($config{save})
     {
         process_form_data(\%data);
     }
+    # If we are not saving but have received a lemma, it means the lemma should be edited.
+    # This may also be needed for documenting undocumented auxiliaries.
+    elsif($config{lemma} ne '')
+    {
+        summarize_guidelines();
+        print_lemma_form(\%data);
+        print_all_auxiliaries(\%data);
+    }
+    # Now if there are any undocumented auxiliaries, offer documenting them as the only possible action.
+    elsif($n_undocumented > 0)
+    {
+        summarize_guidelines();
+        print_undocumented_auxiliaries(\%data);
+        print_all_auxiliaries(\%data);
+    }
+    elsif($config{add})
+    {
+    }
     else
     {
         summarize_guidelines();
-        if($config{lemma} eq '')
-        {
-            my $n_undocumented = 0;
-            # It is possible that there are no auxiliaries for my language so far.
-            if(exists($data{$config{lcode}}))
-            {
-                $n_undocumented = print_undocumented_auxiliaries(\%data);
-            }
-            if($n_undocumented==0)
-            {
-                print_edit_add_menu(\%data);
-            }
-        }
-        else
-        {
-            print_lemma_form(\%data);
-        }
+        print_edit_add_menu(\%data);
         # Show all known auxiliaries so the user can compare. This and related languages first.
         print_all_auxiliaries(\%data);
     }
@@ -193,7 +201,6 @@ sub print_undocumented_auxiliaries
         print("  <p>Please edit each undocumented auxiliary and supply the missing information.</p>\n");
         print("  <p>".join(' ', @hrefs)."</p>\n");
     }
-    return $n;
 }
 
 
@@ -325,6 +332,9 @@ EOF
 #------------------------------------------------------------------------------
 # Processes data submitted from a form and prints confirmation or an error
 # message.
+# We are processing a Save request after a lemma was edited.
+# We have briefly checked that the parameters match expected regular expressions.
+# Nevertheless, only now we can also report an error if a parameter is empty.
 #------------------------------------------------------------------------------
 sub process_form_data
 {
@@ -729,6 +739,22 @@ sub get_parameters
     else
     {
         die "Unrecognized save button '$config{save}'";
+    }
+    #--------------------------------------------------------------------------
+    # The parameter 'add' comes from the button that launches the form to add
+    # a new auxiliary.
+    $config{add} = decode('utf8', $query->param('add'));
+    if(!defined($config{add}))
+    {
+        $config{add} = 0;
+    }
+    elsif($config{add} =~ m/^Add new$/)
+    {
+        $config{add} = 1;
+    }
+    else
+    {
+        die "Unrecognized add button '$config{add}'";
     }
     return %config;
 }
