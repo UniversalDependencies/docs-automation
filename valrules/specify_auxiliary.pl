@@ -646,6 +646,7 @@ sub print_all_auxiliaries
     my $myfamilygenus = $languages->{$lname_by_code{$config{lcode}}}{familygenus};
     my $myfamily = $languages->{$lname_by_code{$config{lcode}}}{family};
     my $mygenus = $languages->{$lname_by_code{$config{lcode}}}{genus};
+    my $rank = rank_languages_by_proximity_to($config{lcode}, grep {$languages->{$lname_by_code{$_}}{familygenus} eq $myfamilygenus} (keys(%{$data})));
     my @lcodes = sort
     {
         my $r = $languages->{$lname_by_code{$a}}{family} cmp $languages->{$lname_by_code{$b}}{family};
@@ -654,7 +655,14 @@ sub print_all_auxiliaries
             $r = $languages->{$lname_by_code{$a}}{genus} cmp $languages->{$lname_by_code{$b}}{genus};
             unless($r)
             {
-                $r = $lname_by_code{$a} cmp $lname_by_code{$b};
+                if(exists($rank->{$a}) && exists($rank->{$b}))
+                {
+                    $r = $rank->{$a} <=> $rank->{$b};
+                }
+                else
+                {
+                    $r = $lname_by_code{$a} cmp $lname_by_code{$b};
+                }
             }
         }
         $r
@@ -691,6 +699,102 @@ sub print_all_auxiliaries
         print("<td>".join(' ', @undocumented)."</td></tr>\n");
     }
     print("  </table>\n");
+}
+
+
+
+#------------------------------------------------------------------------------
+# Experimental sorting of languages by proximity to language X.
+#------------------------------------------------------------------------------
+sub rank_languages_by_proximity_to
+{
+    my $reflcode = shift; # language X
+    my @lcodes = @_; # all language codes to sort
+    # Sorting rules:
+    # - first language X
+    # - then other languages of the same genus
+    # - then other languages of the same family
+    # - then languages from other families
+    # - within the same genus, proximity of languages can be controlled by
+    #   a graph that we load from an external file
+    # - similarly we can control proximity of genera within the same family
+    # - similarly we can control proximity of families
+    # - if two languages (genera, families) are at the same distance following
+    #   the graph, they will be ordered alphabetically
+    my %graph;
+    open(GRAPH, 'langgraph.txt');
+    while(<GRAPH>)
+    {
+        chomp;
+        if(m/^(.+)----(.+)$/)
+        {
+            my $n1 = $1;
+            my $n2 = $2;
+            if($n1 ne $n2)
+            {
+                $graph{$n1}{$n2} = 1;
+                $graph{$n2}{$n1} = 1;
+            }
+        }
+        elsif(m/^(.+)--(\d+)--(.+)$/)
+        {
+            my $n1 = $1;
+            my $d = $2;
+            my $n2 = $3;
+            if($n1 ne $n2)
+            {
+                $graph{$n1}{$n2} = $d;
+                $graph{$n2}{$n1} = $d;
+            }
+        }
+    }
+    close(GRAPH);
+    # Compute order of other languages when traversing from X
+    # (roughly deep-first search, but observing distance from X and from the previous node at the same time).
+    # The algorithm will not work well if the edge values do not satisfy the
+    # triangle inequality but we do not check it.
+    my %rank;
+    my %done;
+    my @queue = ($reflcode);
+    my %qscore;
+    my $current;
+    my $lastrank = -1;
+    while($current = shift(@queue))
+    {
+        # Sanity check.
+        die "There is a bug in the program" if($done{$current});
+        # Increase the score of all remaining nodes in the queue by my score (read as if we would have to return via the edge just traversed).
+        foreach my $n (@queue)
+        {
+            $qscore{$n} += $qscore{$current};
+        }
+        delete($qscore{$current});
+        $rank{$current} = ++$lastrank;
+        if(exists($graph{$current}))
+        {
+            my @neighbors = grep {!$done{$_}} (keys(%{$graph{$current}}));
+            # Add the neighbors to the queue if they are not already there.
+            # Update there queue scores.
+            foreach my $n (@neighbors)
+            {
+                push(@queue, $n) unless(scalar(grep {$_ eq $n} (@queue)));
+                $qscore{$n} = $graph{$current}{$n};
+            }
+            # Reorder the queue by the new scores.
+            @queue = sort
+            {
+                my $r = $qscore{$a} <=> $qscore{$b};
+                unless($r)
+                {
+                    $r = $a cmp $b;
+                }
+                $r
+            }
+            (@queue);
+        }
+        $done{$current}++;
+    }
+    return \%rank;
 }
 
 
