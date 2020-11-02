@@ -313,6 +313,11 @@ Khunsari:
   lcode: kfm
   iso3: kfm
   family: IE, Iranian
+Kiga:
+  flag: UG
+  lcode: cgg
+  iso3: cgg
+  family: Niger-Congo, Bantoid
 Komi Permyak:
   flag: RU-PER-KPO
   lcode: koi
@@ -467,6 +472,11 @@ Ndengeleko:
   flag: TZ
   lcode: ndg
   iso3: ndg
+  family: Niger-Congo, Bantoid
+Nkore:
+  flag: UG
+  lcode: nyn
+  iso3: nyn
   family: Niger-Congo, Bantoid
 North Sami:
   flag: SAMI
