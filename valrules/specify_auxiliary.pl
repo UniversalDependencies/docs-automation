@@ -747,6 +747,10 @@ sub rank_languages_by_proximity_to
                 $graph{$n2}{$n1} = $d;
             }
         }
+        else
+        {
+            print STDERR ("Unrecognized graph line '$_'\n");
+        }
     }
     close(GRAPH);
     # Compute order of other languages when traversing from X

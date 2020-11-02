@@ -11,11 +11,11 @@ be----ru
 ru----uk
 cs--10--sl
 uk--10--bg
-sl--hr
-hr--sr
-sr--mk
-sr--bg
-bg--mk
-ru--orv
+sl----hr
+hr----sr
+sr----mk
+sr----bg
+bg----mk
+ru----orv
 orv--10--cu
 bg--10--cu
