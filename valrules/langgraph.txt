@@ -5,7 +5,7 @@ Germanic--2--Slavic
 Germanic--2--Baltic
 Romance--1--Latin
 Romance--2--Slavic
-Baltic--2--Slavic
+Baltic--1--Slavic
 Slavic--2--Albanian
 Slavic--2--Greek
 Albanian--1--Greek
