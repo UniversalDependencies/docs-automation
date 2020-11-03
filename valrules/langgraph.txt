@@ -12,6 +12,7 @@ Dravidian----Turkic
 Turkic----Mongolic
 Mongolic----Korean
 Korean----Japanese
+Japanese--10--Sino-Tibetan
 Mongolic--10--Sino-Tibetan
 Sino-Tibetan----Tai-Kadai
 Austro-Asiatic----Sino-Tibetan
