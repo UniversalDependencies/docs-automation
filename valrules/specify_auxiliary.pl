@@ -643,26 +643,49 @@ sub print_all_auxiliaries
     # Then display languages from the same family and genus.
     # Then languages from the same family but different genera.
     # Then all remaining languages.
-    my $myfamilygenus = $languages->{$lname_by_code{$config{lcode}}}{familygenus};
-    my $myfamily = $languages->{$lname_by_code{$config{lcode}}}{family};
-    my $mygenus = $languages->{$lname_by_code{$config{lcode}}}{genus};
+    # Hash families and genera for language codes.
+    my %family;
+    my %genus;
+    my %familygenus;
+    my %genera;
+    my %families;
+    foreach my $lcode (keys(%{$data}))
+    {
+        my $lhash = $languages->{$lname_by_code{$lcode}};
+        $family{$lcode} = $lhash->{family};
+        $genus{$lcode} = $lhash->{genus};
+        $familygenus{$lcode} = $lhash->{familygenus};
+        $families{$family{$lcode}}++;
+        $genera{$genus{$lcode}}++;
+    }
+    my $myfamilygenus = $familygenus{$config{lcode}};
+    my $myfamily = $family{$config{lcode}};
+    my $mygenus = $genus{$config{lcode}};
+    my @lcodes_in_my_genus = grep {$familygenus{$_} eq $myfamilygenus} (keys(%{$data}));
     my $langgraph = read_language_graph();
-    my $rank = rank_languages_by_proximity_to($config{lcode}, $langgraph, grep {$languages->{$lname_by_code{$_}}{familygenus} eq $myfamilygenus} (keys(%{$data})));
+    my $rank = rank_languages_by_proximity_to($config{lcode}, $langgraph, @lcodes_in_my_genus);
+    my $grank = rank_languages_by_proximity_to($mygenus, $langgraph, keys(%genera));
+    my $frank = rank_languages_by_proximity_to($myfamily, $langgraph, keys(%families));
     my @lcodes = sort
     {
-        my $r = $languages->{$lname_by_code{$a}}{family} cmp $languages->{$lname_by_code{$b}}{family};
+        my $r = $frank->{$family{$a}} <=> $frank->{$family{$b}};
         unless($r)
         {
-            $r = $languages->{$lname_by_code{$a}}{genus} cmp $languages->{$lname_by_code{$b}}{genus};
+            $r = $family{$a} cmp $family{$b};
             unless($r)
             {
-                if(exists($rank->{$a}) && exists($rank->{$b}))
+                $r = $grank->{$genus{$a}} <=> $grank->{$genus{$b}};
+                unless($r)
                 {
-                    $r = $rank->{$a} <=> $rank->{$b};
-                }
-                else
-                {
-                    $r = $lname_by_code{$a} cmp $lname_by_code{$b};
+                    $r = $genus{$a} cmp $genus{$b};
+                    unless($r)
+                    {
+                        $r = $rank->{$a} <=> $rank->{$b};
+                        unless($r)
+                        {
+                            $r = $lname_by_code{$a} cmp $lname_by_code{$b};
+                        }
+                    }
                 }
             }
         }
