@@ -100,3 +100,20 @@ Finnic--2--Mordvin
 Finnic--2--Permic
 Mordvin----Permic
 Permic--10--Ugric
+Semitic----Cushitic
+Semitic----Egyptian
+Egyptian--10--Biu-Mandara
+Biu-Mandara----West Chadic
+Semitic--1000--Romance
+Semitic--1000--Southwestern
+ar----ajp
+ar----mt
+ajp----mt
+mt--1000--it
+ar--1000--tr
+ar--2--he
+he--2--aii
+ar--2--aii
+aii----akk
+ar--10--cop
+cop--50--ha
