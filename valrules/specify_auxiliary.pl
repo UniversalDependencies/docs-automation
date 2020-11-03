@@ -646,7 +646,8 @@ sub print_all_auxiliaries
     my $myfamilygenus = $languages->{$lname_by_code{$config{lcode}}}{familygenus};
     my $myfamily = $languages->{$lname_by_code{$config{lcode}}}{family};
     my $mygenus = $languages->{$lname_by_code{$config{lcode}}}{genus};
-    my $rank = rank_languages_by_proximity_to($config{lcode}, grep {$languages->{$lname_by_code{$_}}{familygenus} eq $myfamilygenus} (keys(%{$data})));
+    my $langgraph = read_language_graph();
+    my $rank = rank_languages_by_proximity_to($config{lcode}, $langgraph, grep {$languages->{$lname_by_code{$_}}{familygenus} eq $myfamilygenus} (keys(%{$data})));
     my @lcodes = sort
     {
         my $r = $languages->{$lname_by_code{$a}}{family} cmp $languages->{$lname_by_code{$b}}{family};
@@ -704,23 +705,12 @@ sub print_all_auxiliaries
 
 
 #------------------------------------------------------------------------------
-# Experimental sorting of languages by proximity to language X.
+# Reads the graph of "neighboring" (geographically or genealogically)
+# languages, genera, and families. Returns a reference to the graph (hash).
+# Reads from a hardwired path.
 #------------------------------------------------------------------------------
-sub rank_languages_by_proximity_to
+sub read_language_graph
 {
-    my $reflcode = shift; # language X
-    my @lcodes = @_; # all language codes to sort
-    # Sorting rules:
-    # - first language X
-    # - then other languages of the same genus
-    # - then other languages of the same family
-    # - then languages from other families
-    # - within the same genus, proximity of languages can be controlled by
-    #   a graph that we load from an external file
-    # - similarly we can control proximity of genera within the same family
-    # - similarly we can control proximity of families
-    # - if two languages (genera, families) are at the same distance following
-    #   the graph, they will be ordered alphabetically
     my %graph;
     open(GRAPH, 'langgraph.txt');
     while(<GRAPH>)
@@ -753,6 +743,36 @@ sub rank_languages_by_proximity_to
         }
     }
     close(GRAPH);
+    return \%graph;
+}
+
+
+
+#------------------------------------------------------------------------------
+# Experimental sorting of languages by proximity to language X. We follow
+# weighted edges in an adjacency graph read from an external file. The weights
+# may ensure that all languages of the same genus are visited before switching
+# to another genus, or the graph may only cover intra-genus relationships and
+# the ranking provided by this function may be used as one of sorting criteria,
+# the other being genus and family membership. The graph may also express
+# relations among genera and families.
+#------------------------------------------------------------------------------
+sub rank_languages_by_proximity_to
+{
+    my $reflcode = shift; # language X
+    my $graph = shift;
+    my @lcodes = @_; # all language codes to sort (we need them only because some of them may not be reachable via the graph)
+    # Sorting rules:
+    # - first language X
+    # - then other languages of the same genus
+    # - then other languages of the same family
+    # - then languages from other families
+    # - within the same genus, proximity of languages can be controlled by
+    #   a graph that we load from an external file
+    # - similarly we can control proximity of genera within the same family
+    # - similarly we can control proximity of families
+    # - if two languages (genera, families) are at the same distance following
+    #   the graph, they will be ordered alphabetically
     # Compute order of other languages when traversing from X
     # (roughly deep-first search, but observing distance from X and from the previous node at the same time).
     # The algorithm will not work well if the edge values do not satisfy the
@@ -774,15 +794,15 @@ sub rank_languages_by_proximity_to
         }
         delete($qscore{$current});
         $rank{$current} = ++$lastrank;
-        if(exists($graph{$current}))
+        if(exists($graph->{$current}))
         {
-            my @neighbors = grep {!$done{$_}} (keys(%{$graph{$current}}));
+            my @neighbors = grep {!$done{$_}} (keys(%{$graph->{$current}}));
             # Add the neighbors to the queue if they are not already there.
             # Update there queue scores.
             foreach my $n (@neighbors)
             {
                 push(@queue, $n) unless(scalar(grep {$_ eq $n} (@queue)));
-                $qscore{$n} = $graph{$current}{$n};
+                $qscore{$n} = $graph->{$current}{$n};
             }
             # Reorder the queue by the new scores.
             @queue = sort
@@ -798,6 +818,16 @@ sub rank_languages_by_proximity_to
             #print STDERR ("LANGGRAPH DEBUG: $current --> ", join(', ', map {"$_:$qscore{$_}"} (@queue)), "\n");
         }
         $done{$current}++;
+    }
+    # Some languages may be unreachable via the graph. Make sure that they have
+    # a defined rank too, and that their rank is higher than the rank of any
+    # reachable language.
+    foreach my $lcode (@lcodes)
+    {
+        if(!defined($rank{$lcode}))
+        {
+            $rank{$lcode} = $lastrank+1;
+        }
     }
     return \%rank;
 }
