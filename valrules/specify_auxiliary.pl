@@ -1015,9 +1015,9 @@ sub get_parameters
         $config{example} =~ s/^\s+//;
         $config{example} =~ s/\s+$//;
         $config{example} =~ s/\s+/ /sg;
-        if($config{example} !~ m/^[\pL\pM\pP ]+$/)
+        if($config{example} !~ m/^[\pL\pM\pN\pP ]+$/)
         {
-            die "Example '$config{example}' contains characters other than letters, punctuation and space";
+            die "Example '$config{example}' contains characters other than letters, numbers, punctuation and space";
         }
         elsif($config{example} =~ m/[<>&"]/) # "
         {
@@ -1048,9 +1048,9 @@ sub get_parameters
         $config{exampleen} =~ s/^\s+//;
         $config{exampleen} =~ s/\s+$//;
         $config{exampleen} =~ s/\s+/ /sg;
-        if($config{exampleen} !~ m/^[\pL\pM\pP ]+$/)
+        if($config{exampleen} !~ m/^[\pL\pM\pN\pP ]+$/)
         {
-            die "Example translation '$config{exampleen}' contains characters other than letters, punctuation and space";
+            die "Example translation '$config{exampleen}' contains characters other than letters, numbers, punctuation and space";
         }
         elsif($config{exampleen} =~ m/[<>&"]/) # "
         {
@@ -1076,9 +1076,9 @@ sub get_parameters
         $config{comment} =~ s/^\s+//;
         $config{comment} =~ s/\s+$//;
         $config{comment} =~ s/\s+/ /sg;
-        if($config{comment} !~ m/^[\pL\pM\pP ]+$/)
+        if($config{comment} !~ m/^[\pL\pM\pN\pP ]+$/)
         {
-            die "Comment '$config{comment}' contains characters other than letters, punctuation and space";
+            die "Comment '$config{comment}' contains characters other than letters, numbers, punctuation and space";
         }
         elsif($config{comment} =~ m/[<>&"]/) # "
         {
