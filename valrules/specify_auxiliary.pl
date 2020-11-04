@@ -203,6 +203,28 @@ sub print_undocumented_auxiliaries
             my $href = "<a href=\"specify_auxiliary.pl?ghu=$config{ghu}&amp;lcode=$config{lcode}&amp;lemma=$lemma\">$lemma</a>$alert";
             push(@hrefs, $href);
         }
+        # Already documented auxiliaries should stay available for editing while
+        # the rest is being documented (e.g. the user may want to return to a
+        # copula and explain its deficient paradigm if they find they have forgotten it).
+        # The only thing we will hide until all auxiliaries are documented is the Add new button.
+        my @documented = sort(grep {$auxiliaries{$_}{status} eq 'documented'} (keys(%auxiliaries)));
+        if(scalar(@documented) > 0)
+        {
+            push(@hrefs, '| Already documented:');
+            foreach my $lemma0 (@documented)
+            {
+                # For a safe URL we assume that the lemma contains only letters. That should not be a problem normally.
+                my $lemma = $lemma0;
+                $lemma =~ s/[^\pL\pM]//g;
+                my $alert = '';
+                if($lemma ne $lemma0)
+                {
+                    $alert = " <span style='color:red'>ERROR: Lemma must consist only of letters but stripping non-letters from '".htmlescape($lemma0)."' yields '$lemma'!</span>";
+                }
+                my $href = "<a href=\"specify_auxiliary.pl?ghu=$config{ghu}&amp;lcode=$config{lcode}&amp;lemma=$lemma\">$lemma</a>$alert";
+                push(@hrefs, $href);
+            }
+        }
         print("  <h2 style='color:red'>You have $n undocumented auxiliaries!</h2>\n");
         print("  <p>Please edit each undocumented auxiliary and supply the missing information.</p>\n");
         print("  <p>".join(' ', @hrefs)."</p>\n");
