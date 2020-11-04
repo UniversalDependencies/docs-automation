@@ -605,7 +605,7 @@
 {"lcode": "myv", "lemma": "оль", "function": "", "rule": "", "deficient": "", "example": "", "exampleen": "", "comment": "", "status": "undocumented", "lastchanged": "", "lastchanger": ""},
 {"lcode": "myv", "lemma": "савкшномс", "function": "", "rule": "", "deficient": "", "example": "", "exampleen": "", "comment": "", "status": "undocumented", "lastchanged": "", "lastchanger": ""},
 {"lcode": "myv", "lemma": "савомс", "function": "", "rule": "", "deficient": "", "example": "", "exampleen": "", "comment": "", "status": "undocumented", "lastchanged": "", "lastchanger": ""},
-{"lcode": "myv", "lemma": "улемс", "function": "", "rule": "", "deficient": "", "example": "", "exampleen": "", "comment": "", "status": "undocumented", "lastchanged": "", "lastchanger": ""},
+{"lcode": "myv", "lemma": "улемс", "function": "Copula", "rule": "copula future and emphatic present", "deficient": "used in future and emphatic present only", "example": "Мелезэяк [ули] налксемс, ды ней ...", "exampleen": "He would like to play, but now ...", "comment": "BryzhinskijMixail_Kirdazht_manu", "status": "documented", "lastchanged": "2020-11-04-16-18-23", "lastchanger": "rueter"},
 {"lcode": "myv", "lemma": "ульнемс", "function": "", "rule": "", "deficient": "", "example": "", "exampleen": "", "comment": "", "status": "undocumented", "lastchanged": "", "lastchanger": ""},
 {"lcode": "myv", "lemma": "штоли", "function": "", "rule": "", "deficient": "", "example": "", "exampleen": "", "comment": "", "status": "undocumented", "lastchanged": "", "lastchanger": ""},
 {"lcode": "myv", "lemma": "эзь", "function": "", "rule": "", "deficient": "", "example": "", "exampleen": "", "comment": "", "status": "undocumented", "lastchanged": "", "lastchanger": ""},
