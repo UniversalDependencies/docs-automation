@@ -6,6 +6,7 @@ Indo-European--10--Basque
 Kartvelian--100--Basque
 Kartvelian----Northwest Caucasian
 Kartvelian----Nakh-Daghestanian
+Kartvelian--100--Turkic
 Turkic----Uralic
 Dravidian----Uralic
 Dravidian----Turkic
@@ -144,3 +145,4 @@ ar--2--aii
 aii----akk
 ar--10--cop
 cop--50--ha
+tr--1000--lzz
