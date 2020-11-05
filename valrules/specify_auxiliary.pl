@@ -865,7 +865,7 @@ sub rank_languages_by_proximity_to
                 $r
             }
             (@queue);
-            print STDERR ("LANGGRAPH DEBUG: $current --> ", join(', ', map {"$_:$qscore{$_}"} (@queue)), "\n");
+            #print STDERR ("LANGGRAPH DEBUG: $current --> ", join(', ', map {"$_:$qscore{$_}"} (@queue)), "\n");
         }
         $done{$current}++;
     }

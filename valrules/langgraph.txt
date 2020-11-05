@@ -49,7 +49,6 @@ Slavic--2--Greek
 Albanian--1--Greek
 Greek--2--Anatolian
 Anatolian--2--Armenian
-Anatolian--100--Kartvelian
 Armenian--2--Iranian
 Iranian--2--Indic
 cs----sk
