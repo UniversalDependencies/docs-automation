@@ -671,7 +671,11 @@ sub print_all_auxiliaries
     my %familygenus;
     my %genera;
     my %families;
-    foreach my $lcode (keys(%{$data}))
+    # We need a list of language codes that includes the current language.
+    # But the current language may not yet be in the data!
+    my @lcodes = keys(%{$data});
+    push(@lcodes, $config{lcode}) if(!exists($data->{$config{lcode}}));
+    foreach my $lcode (@lcodes)
     {
         my $lhash = $languages->{$lname_by_code{$lcode}};
         $family{$lcode} = $lhash->{family};
@@ -683,12 +687,12 @@ sub print_all_auxiliaries
     my $myfamilygenus = $familygenus{$config{lcode}};
     my $myfamily = $family{$config{lcode}};
     my $mygenus = $genus{$config{lcode}};
-    my @lcodes_in_my_genus = grep {$familygenus{$_} eq $myfamilygenus} (keys(%{$data}));
+    my @lcodes_in_my_genus = grep {$familygenus{$_} eq $myfamilygenus} (@lcodes);
     my $langgraph = read_language_graph();
     my $rank = rank_languages_by_proximity_to($config{lcode}, $langgraph, @lcodes_in_my_genus);
     my $grank = rank_languages_by_proximity_to($mygenus, $langgraph, keys(%genera));
     my $frank = rank_languages_by_proximity_to($myfamily, $langgraph, keys(%families));
-    my @lcodes = sort
+    @lcodes = sort
     {
         my $r = $frank->{$family{$a}} <=> $frank->{$family{$b}};
         unless($r)
@@ -713,7 +717,7 @@ sub print_all_auxiliaries
         }
         $r
     }
-    (keys(%{$data}));
+    (@lcodes);
     my @lcodes_my_genus = grep {$_ ne $config{lcode} && $languages->{$lname_by_code{$_}}{familygenus} eq $myfamilygenus} (@lcodes);
     my @lcodes_my_family = grep {$languages->{$lname_by_code{$_}}{familygenus} ne $myfamilygenus && $languages->{$lname_by_code{$_}}{family} eq $myfamily} (@lcodes);
     my @lcodes_other = grep {$languages->{$lname_by_code{$_}}{family} ne $myfamily} (@lcodes);
