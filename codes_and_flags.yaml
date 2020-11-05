@@ -348,6 +348,11 @@ Kyrgyz:
   lcode: ky
   iso3: kir
   family: Turkic, Northwestern
+Ladino:
+  flag: IL
+  lcode: lad
+  iso3: lad
+  family: IE, Romance
 Lango:
   flag: UG
   lcode: laj
@@ -538,6 +543,11 @@ Polish:
   lcode: pl
   iso3: pol
   family: IE, Slavic
+Pontic:
+  flag: TR-PONTOS
+  lcode: pnt
+  iso3: pnt
+  family: IE, Greek
 Portuguese:
   flag: PT
   lcode: pt
