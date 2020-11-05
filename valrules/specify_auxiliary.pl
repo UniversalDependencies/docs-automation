@@ -687,9 +687,8 @@ sub print_all_auxiliaries
     my $myfamilygenus = $familygenus{$config{lcode}};
     my $myfamily = $family{$config{lcode}};
     my $mygenus = $genus{$config{lcode}};
-    my @lcodes_in_my_genus = grep {$familygenus{$_} eq $myfamilygenus} (@lcodes);
     my $langgraph = read_language_graph();
-    my $rank = rank_languages_by_proximity_to($config{lcode}, $langgraph, @lcodes_in_my_genus);
+    my $rank = rank_languages_by_proximity_to($config{lcode}, $langgraph, @lcodes);
     my $grank = rank_languages_by_proximity_to($mygenus, $langgraph, keys(%genera));
     my $frank = rank_languages_by_proximity_to($myfamily, $langgraph, keys(%families));
     @lcodes = sort
