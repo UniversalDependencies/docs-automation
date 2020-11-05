@@ -146,4 +146,11 @@ ar--2--aii
 aii----akk
 ar--10--cop
 cop--50--ha
+Southwestern----Southeastern
+Southeastern----Northeastern
+Northeastern----Northwestern
+Northwestern----Southwestern
 tr--1000--lzz
+tr--100--kk
+kk--100--ug
+ug--100--otk
