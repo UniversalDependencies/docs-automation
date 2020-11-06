@@ -196,7 +196,7 @@
 {"lcode": "es", "lemma": "poder", "function": "", "rule": "", "deficient": "", "example": "", "exampleen": "", "comment": "", "status": "undocumented", "lastchanged": "", "lastchanger": ""},
 {"lcode": "es", "lemma": "querer", "function": "", "rule": "", "deficient": "", "example": "", "exampleen": "", "comment": "", "status": "undocumented", "lastchanged": "", "lastchanger": ""},
 {"lcode": "es", "lemma": "saber", "function": "", "rule": "", "deficient": "", "example": "", "exampleen": "", "comment": "", "status": "undocumented", "lastchanged": "", "lastchanger": ""},
-{"lcode": "es", "lemma": "ser", "function": "", "rule": "", "deficient": "", "example": "", "exampleen": "", "comment": "", "status": "undocumented", "lastchanged": "", "lastchanger": ""},
+{"lcode": "es", "lemma": "ser", "function": "Copula", "rule": "combination of the copula and a nonverbal predicate", "deficient": "permanent state", "example": "Y la única causa [era] el campo gravitatorio terrestre.", "exampleen": "And the only cause was the Earth's gravitational field.", "comment": "", "status": "documented", "lastchanged": "2020-11-06-17-17-22", "lastchanger": "dan-zeman"},
 {"lcode": "es", "lemma": "tener", "function": "", "rule": "", "deficient": "", "example": "", "exampleen": "", "comment": "", "status": "undocumented", "lastchanged": "", "lastchanger": ""},
 {"lcode": "et", "lemma": "ei", "function": "", "rule": "", "deficient": "", "example": "", "exampleen": "", "comment": "", "status": "undocumented", "lastchanged": "", "lastchanger": ""},
 {"lcode": "et", "lemma": "näima", "function": "", "rule": "", "deficient": "", "example": "", "exampleen": "", "comment": "", "status": "undocumented", "lastchanged": "", "lastchanger": ""},
