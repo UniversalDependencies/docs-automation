@@ -895,6 +895,10 @@ sub get_parameters
     my $lname_by_code = shift; # hash ref
     my $functions = shift; # ref to array of pairs (arrays)
     my %config; # our hash where we store the parameters
+    # Certain characters are not letters but they are used regularly between
+    # letters in certain writing systems, hence they must be permitted.
+    # ZERO WIDTH JOINER (\x{200D}) is category C (other); used in Devanagari, for instance.
+    my $zwj = "\x{200D}";
     #--------------------------------------------------------------------------
     # Language code. If not provided, we show the introductory list of
     # languages.
@@ -1040,7 +1044,7 @@ sub get_parameters
         $config{example} =~ s/^\s+//;
         $config{example} =~ s/\s+$//;
         $config{example} =~ s/\s+/ /sg;
-        if($config{example} !~ m/^[\pL\pM\pN\pP ]+$/)
+        if($config{example} !~ m/^[\pL\pM$zwj\pN\pP ]+$/)
         {
             die "Example '$config{example}' contains characters other than letters, numbers, punctuation and space";
         }
@@ -1048,7 +1052,7 @@ sub get_parameters
         {
             die "Example '$config{example}' contains less-than, greater-than, ampersand or the ASCII quote";
         }
-        elsif($config{example} !~ m/\[[\pL\pM]+\]/)
+        elsif($config{example} !~ m/\[[\pL\pM$zwj]+\]/)
         {
             die "Example '$config{example}' does not contain a sequence of letters enclosed in [square brackets]";
         }
@@ -1073,7 +1077,7 @@ sub get_parameters
         $config{exampleen} =~ s/^\s+//;
         $config{exampleen} =~ s/\s+$//;
         $config{exampleen} =~ s/\s+/ /sg;
-        if($config{exampleen} !~ m/^[\pL\pM\pN\pP ]+$/)
+        if($config{exampleen} !~ m/^[\pL\pM$zwj\pN\pP ]+$/)
         {
             die "Example translation '$config{exampleen}' contains characters other than letters, numbers, punctuation and space";
         }
@@ -1101,7 +1105,7 @@ sub get_parameters
         $config{comment} =~ s/^\s+//;
         $config{comment} =~ s/\s+$//;
         $config{comment} =~ s/\s+/ /sg;
-        if($config{comment} !~ m/^[\pL\pM\pN\pP ]+$/)
+        if($config{comment} !~ m/^[\pL\pM$zwj\pN\pP ]+$/)
         {
             die "Comment '$config{comment}' contains characters other than letters, numbers, punctuation and space";
         }
