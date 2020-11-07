@@ -305,7 +305,7 @@
 {"lcode": "hu", "lemma": "marad", "function": "", "rule": "", "deficient": "", "example": "", "exampleen": "", "comment": "", "status": "undocumented", "lastchanged": "", "lastchanger": ""},
 {"lcode": "hu", "lemma": "van", "function": "", "rule": "", "deficient": "", "example": "", "exampleen": "", "comment": "", "status": "undocumented", "lastchanged": "", "lastchanger": ""},
 {"lcode": "hu", "lemma": "volna", "function": "", "rule": "", "deficient": "", "example": "", "exampleen": "", "comment": "", "status": "undocumented", "lastchanged": "", "lastchanger": ""},
-{"lcode": "hy", "lemma": "եմ", "function": "", "rule": "", "deficient": "", "example": "", "exampleen": "", "comment": "", "status": "undocumented", "lastchanged": "", "lastchanger": ""},
+{"lcode": "hy", "lemma": "եմ", "function": "Copula", "rule": "combination of the copula and a nonverbal predicate", "deficient": "", "example": "Հակառակ դեպքում լավ խաղացող [չես]։", "exampleen": "Otherwise you are not a good player.", "comment": "", "status": "documented", "lastchanged": "2020-11-07-21-26-18", "lastchanger": "dan-zeman"},
 {"lcode": "hy", "lemma": "լինել", "function": "", "rule": "", "deficient": "", "example": "", "exampleen": "", "comment": "", "status": "undocumented", "lastchanged": "", "lastchanger": ""},
 {"lcode": "hy", "lemma": "կամ", "function": "", "rule": "", "deficient": "", "example": "", "exampleen": "", "comment": "", "status": "undocumented", "lastchanged": "", "lastchanger": ""},
 {"lcode": "hy", "lemma": "ունեմ", "function": "", "rule": "", "deficient": "", "example": "", "exampleen": "", "comment": "", "status": "undocumented", "lastchanged": "", "lastchanger": ""},
