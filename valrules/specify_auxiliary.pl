@@ -190,20 +190,7 @@ sub print_undocumented_auxiliaries
     my $n = scalar(@undocumented);
     if($n > 0)
     {
-        my @hrefs;
-        foreach my $lemma0 (@undocumented)
-        {
-            # For a safe URL we assume that the lemma contains only letters. That should not be a problem normally.
-            my $lemma = $lemma0;
-            $lemma =~ s/[^\pL\pM]//g;
-            my $alert = '';
-            if($lemma ne $lemma0)
-            {
-                $alert = " <span style='color:red'>ERROR: Lemma must consist only of letters but stripping non-letters from '".htmlescape($lemma0)."' yields '$lemma'!</span>";
-            }
-            my $href = "<a href=\"specify_auxiliary.pl?ghu=$config{ghu}&amp;lcode=$config{lcode}&amp;lemma=$lemma\">$lemma</a>$alert";
-            push(@hrefs, $href);
-        }
+        my $hrefs = get_lemma_links_to_edit(@undocumented);
         # Already documented auxiliaries should stay available for editing while
         # the rest is being documented (e.g. the user may want to return to a
         # copula and explain its deficient paradigm if they find they have forgotten it).
@@ -211,24 +198,11 @@ sub print_undocumented_auxiliaries
         my @documented = sort(grep {$auxiliaries{$_}{status} eq 'documented'} (keys(%auxiliaries)));
         if(scalar(@documented) > 0)
         {
-            push(@hrefs, '| Already documented:');
-            foreach my $lemma0 (@documented)
-            {
-                # For a safe URL we assume that the lemma contains only letters. That should not be a problem normally.
-                my $lemma = $lemma0;
-                $lemma =~ s/[^\pL\pM]//g;
-                my $alert = '';
-                if($lemma ne $lemma0)
-                {
-                    $alert = " <span style='color:red'>ERROR: Lemma must consist only of letters but stripping non-letters from '".htmlescape($lemma0)."' yields '$lemma'!</span>";
-                }
-                my $href = "<a href=\"specify_auxiliary.pl?ghu=$config{ghu}&amp;lcode=$config{lcode}&amp;lemma=$lemma\">$lemma</a>$alert";
-                push(@hrefs, $href);
-            }
+            $hrefs .= ' | Already documented: '.get_lemma_links_to_edit(@documented);
         }
         print("  <h2 style='color:red'>You have $n undocumented auxiliaries!</h2>\n");
         print("  <p>Please edit each undocumented auxiliary and supply the missing information.</p>\n");
-        print("  <p>".join(' ', @hrefs)."</p>\n");
+        print("  <p>$hrefs</p>\n");
     }
 }
 
@@ -246,21 +220,8 @@ sub print_edit_add_menu
     if(exists($data->{$config{lcode}}))
     {
         my @lemmas = sort(keys(%{$data->{$config{lcode}}}));
-        my @hrefs;
-        foreach my $lemma0 (@lemmas)
-        {
-            # For a safe URL we assume that the lemma contains only letters. That should not be a problem normally.
-            my $lemma = $lemma0;
-            $lemma =~ s/[^\pL\pM]//g;
-            my $alert = '';
-            if($lemma ne $lemma0)
-            {
-                $alert = " <span style='color:red'>ERROR: Lemma must consist only of letters but stripping non-letters from '".htmlescape($lemma0)."' yields '$lemma'!</span>";
-            }
-            my $href = "<a href=\"specify_auxiliary.pl?ghu=$config{ghu}&amp;lcode=$config{lcode}&amp;lemma=$lemma\">$lemma</a>$alert";
-            push(@hrefs, $href);
-        }
-        print("  <p>".join(' ', @hrefs)."</p>\n");
+        my $hrefs = get_lemma_links_to_edit(@lemmas);
+        print("  <p>$hrefs</p>\n");
         # Do not offer adding a copula if there already is a copula without documented deficient paradigm.
         @ndcop = grep {$data->{$config{lcode}}{$_}{function} =~ m/^cop\./ && $data->{$config{lcode}}{$_}{deficient} eq ''} (@lemmas);
     }
@@ -278,6 +239,31 @@ sub print_edit_add_menu
         print("    <input name=add type=submit value=\"Add non-copula\" />\n");
     }
     print("  </form>\n");
+}
+
+
+
+#------------------------------------------------------------------------------
+# Returns a list of lemmas as HTML links to the edit form.
+#------------------------------------------------------------------------------
+sub get_lemma_links_to_edit
+{
+    my @lemmas = @_;
+    my @hrefs;
+    foreach my $lemma0 (@lemmas)
+    {
+        # For a safe URL we assume that the lemma contains only letters. That should not be a problem normally.
+        my $lemma = $lemma0;
+        $lemma =~ s/[^\pL\pM]//g;
+        my $alert = '';
+        if($lemma ne $lemma0)
+        {
+            $alert = " <span style='color:red'>ERROR: Lemma must consist only of letters but stripping non-letters from '".htmlescape($lemma0)."' yields '$lemma'!</span>";
+        }
+        my $href = "<a href=\"specify_auxiliary.pl?ghu=$config{ghu}&amp;lcode=$config{lcode}&amp;lemma=$lemma\">$lemma</a>$alert";
+        push(@hrefs, $href);
+    }
+    return join(' ', @hrefs);
 }
 
 
