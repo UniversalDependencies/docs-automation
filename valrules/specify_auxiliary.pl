@@ -54,8 +54,8 @@ my @functions =
     ['Periphrastic voice: causative', 'Voice=Cau'],
     ['Periphrastic mood: conditional', 'Mood=Cnd'],
     ['Periphrastic mood: imperative', 'Mood=Imp'],
-    ['Needed in negative clauses (like English “do”, not like “not”)', 'negative'],
-    ['Needed in interrogative clauses (like English “do”)', 'interrogative'],
+    ['Needed in negative clauses (like English “do”, not like “not”)', 'neg'],
+    ['Needed in interrogative clauses (like English “do”)', 'int'],
     ['Modal auxiliary: necessitative (“must, should”)', 'Mood=Nec'],
     ['Modal auxiliary: potential (“can, might”)', 'Mood=Pot'],
     ['Modal auxiliary: desiderative (“want”)', 'Mood=Des']
@@ -124,7 +124,7 @@ else
     }
     else
     {
-        %data = read_data_json();
+        %data = read_data_json(\@functions); ###!!! we only need \@functions a single time there
     }
     # Check whether there are any undocumented auxiliaries. Documenting them
     # has higher priority than any other action the user may want to do.
@@ -380,11 +380,11 @@ EOF
             # Otherwise it is not available because we must use 'addcop', see above.
             next if($f->[0] eq 'Copula' && $record->{status} ne 'undocumented');
             my $selected = '';
-            if($f->[0] eq $record->{function})
+            if($f->[1] eq $record->{function})
             {
                 $selected = ' selected';
             }
-            print("          <option$selected>".htmlescape($f->[0])."</option>\n");
+            print("          <option value=\"$f->[1]\"$selected>".htmlescape($f->[0])."</option>\n");
         }
         print("        </select>\n");
         print("      </td>\n");
@@ -982,7 +982,18 @@ sub get_parameters
             $config{function} = $1;
         }
         # Verify that the function is one of the functions we defined.
-        if(!scalar(grep {$_ eq $config{function}} (map {$_->[0]} (@{$functions}))))
+        my @found = map {$_->[1]} (grep {$_->[0] eq $config{function}} (@{$functions}));
+        my $n = scalar(@found);
+        if($n > 0)
+        {
+            if($n > 1)
+            {
+                print STDERR ("Something is wrong. Multiple functions listed in the source code equal to '$config{function}'.\n");
+            }
+            # Replace the long (and potentially less stable) description of the function with its short label.
+            $config{function} = $found[0];
+        }
+        else
         {
             die "Unrecognized function '$config{function}'";
         }
@@ -1250,6 +1261,7 @@ sub read_auxiliaries_from_python
 #------------------------------------------------------------------------------
 sub read_data_json
 {
+    my $functions = shift; ###!!!
     my %data;
     my $datafile = "$path/data.json";
     my $json = json_file_to_perl($datafile);
@@ -1265,13 +1277,28 @@ sub read_data_json
             {
                 die("Unknown language code '$lcode' in the JSON file");
             }
+            ###!!! One-time operation: Translate long descriptions of functions to their labels. Next time they will be already saved that way.
+            my @found = map {$_->[1]} (grep {$_->[0] eq $record->{function}} (@{$functions}));
+            my $n = scalar(@found);
+            if($n > 0)
+            {
+                if($n > 1)
+                {
+                    print STDERR ("Something is wrong. Multiple functions listed in the source code equal to '$config{function}'.\n");
+                }
+                # Replace the long (and potentially less stable) description of the function with its short label.
+                $record->{function} = $found[0];
+            }
+            else
+            {
+                die "Unrecognized function '$record->{function}' read from the JSON file for language '$record->{lcode}'";
+            }
+            ###!!! End of one-time operation.
             # We do not have to copy the data item by item to a new record.
             # We can simply copy the reference to the record (possibly after
             # erasing the language code inside).
             delete($record->{lcode});
             delete($record->{lemma});
-            ###!!! Temporarily we need to define the value of deficient here because we added that field late.
-            $record->{deficient} = '' if(!defined($record->{deficient}));
             $data{$lcode}{$lemma} = $record;
         }
     }
