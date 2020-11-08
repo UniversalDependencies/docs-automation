@@ -262,7 +262,7 @@ sub print_edit_add_menu
         }
         print("  <p>".join(' ', @hrefs)."</p>\n");
         # Do not offer adding a copula if there already is a copula without documented deficient paradigm.
-        @ndcop = grep {$data->{$config{lcode}}{$_}{function} eq 'cop' && $data->{$config{lcode}}{$_}{deficient} eq ''} (@lemmas);
+        @ndcop = grep {$data->{$config{lcode}}{$_}{function} =~ m/^cop\./ && $data->{$config{lcode}}{$_}{deficient} eq ''} (@lemmas);
     }
     print("  <form action=\"specify_auxiliary.pl\" method=\"post\" enctype=\"multipart/form-data\">\n");
     print("    <input name=lcode type=hidden value=\"$config{lcode}\" />\n");
@@ -339,7 +339,7 @@ EOF
     # If we are adding or editing a copula, add a field where multiple copulas can be justified.
     # This field should also be available if we are documenting a previously undocumented
     # auxiliary, which could be a copula.
-    if($config{addcop} || $record->{function} eq 'cop' || $record->{status} eq 'undocumented')
+    if($config{addcop} || $record->{function} =~ m/^cop\./ || $record->{status} eq 'undocumented')
     {
         print("      <td>Deficient paradigm</td>\n");
     }
@@ -364,10 +364,23 @@ EOF
         print("<input name=lemma type=text size=10 />");
     }
     print("</td>\n");
-    # If we are adding or editing a copula, the function is fixed.
-    if($config{addcop} || $record->{function} eq 'cop')
+    # If we are adding or editing a copula, the function is restricted.
+    if($config{addcop} || $record->{function} =~ m/^cop\./)
     {
-        print("      <td>Copula<input name=function type=hidden value=\"cop\" /></td>\n");
+        print("      <td>\n");
+        print("        <select name=function>\n");
+        foreach my $f (@functions)
+        {
+            next if($f->[1] !~ m/^cop\./);
+            my $selected = '';
+            if($f->[1] eq $record->{function})
+            {
+                $selected = ' selected';
+            }
+            print("          <option value=\"$f->[1]\"$selected>".htmlescape($f->[0])."</option>\n");
+        }
+        print("        </select>\n");
+        print("      </td>\n");
         print("      <td>combination of the copula and a nonverbal predicate<input name=rule type=hidden value=\"combination of the copula and a nonverbal predicate\" /></td>\n");
     }
     else
@@ -377,9 +390,9 @@ EOF
         print("          <option>-----</option>\n");
         foreach my $f (@functions)
         {
-            # The Copula function should be available if we are documenting an undocumented auxiliary.
+            # The Copula functions should be available if we are documenting an undocumented auxiliary.
             # Otherwise it is not available because we must use 'addcop', see above.
-            next if($f->[1] eq 'cop' && $record->{status} ne 'undocumented');
+            next if($f->[1] =~ m/^cop\./ && $record->{status} ne 'undocumented');
             my $selected = '';
             if($f->[1] eq $record->{function})
             {
@@ -391,7 +404,7 @@ EOF
         print("      </td>\n");
         print("      <td><input name=rule type=text size=30 value=\"$hrule\" /></td>\n");
     }
-    if($config{addcop} || $record->{function} eq 'cop' || $record->{status} eq 'undocumented')
+    if($config{addcop} || $record->{function} =~ m/^cop\./ || $record->{status} eq 'undocumented')
     {
         print("      <td><input name=deficient type=text size=30 value=\"$hdeficient\" /></td>\n");
     }
@@ -415,7 +428,7 @@ EOF
     }
     # Do not print the hint for the function/rule if the function/rule is fixed (copula).
     # But do print the hint for multiple copulas.
-    if($config{addcop} || $record->{function} eq 'cop')
+    if($config{addcop} || $record->{function} =~ m/^cop\./)
     {
         print("      <td></td>\n");
         print("      <td></td>\n");
@@ -425,7 +438,7 @@ EOF
         print("      <td><small>Missing function that conforms to the guidelines? Contact Dan!</small></td>\n");
         print("      <td><small>E.g. “combination of the auxiliary and a past participle of the main verb”</small></td>\n");
     }
-    if($config{addcop} || $record->{function} eq 'cop' || $record->{status} eq 'undocumented')
+    if($config{addcop} || $record->{function} =~ m/^cop\./ || $record->{status} eq 'undocumented')
     {
         print("      <td><small>If you want multiple copulas, you must justify each, e.g. “used in past tense only”</small></td>\n");
     }
@@ -534,12 +547,12 @@ sub process_form_data
     # Check whether there will be more than one copulas if we add this one to the data.
     # If there will, check that all of them (including the new one) have a distinct
     # explanation of its deficient paradigm.
-    if($config{function} eq 'cop')
+    if($config{function} =~ m/^cop\./)
     {
         my %copjust;
         foreach my $lemma (keys(%{$data->{$config{lcode}}}))
         {
-            if($data->{$config{lcode}}{$lemma}{function} eq 'cop')
+            if($data->{$config{lcode}}{$lemma}{function} =~ m/^cop\./)
             {
                 $copjust{$lemma} = $data->{$config{lcode}}{$lemma}{deficient};
             }
@@ -728,7 +741,7 @@ sub print_all_auxiliaries
         my @lemmas = sort(keys(%{$data->{$lcode}}));
         my @documented = grep {$data->{$lcode}{$_}{status} eq 'documented'} (@lemmas);
         my @undocumented = grep {$data->{$lcode}{$_}{status} ne 'documented'} (@lemmas);
-        my @copula = grep {$data->{$lcode}{$_}{function} eq 'cop'} (@documented);
+        my @copula = grep {$data->{$lcode}{$_}{function} =~ m/^cop\./} (@documented);
         my @perfect = grep {$data->{$lcode}{$_}{function} eq 'Aspect=Perf'} (@documented);
         my @future = grep {$data->{$lcode}{$_}{function} eq 'Tense=Fut'} (@documented);
         my @passive = grep {$data->{$lcode}{$_}{function} eq 'Voice=Pass'} (@documented);
@@ -736,7 +749,7 @@ sub print_all_auxiliaries
         my @necessitative = grep {$data->{$lcode}{$_}{function} eq 'Mood=Nec'} (@documented);
         my @potential = grep {$data->{$lcode}{$_}{function} eq 'Mood=Pot'} (@documented);
         my @desiderative = grep {$data->{$lcode}{$_}{function} eq 'Mood=Des'} (@documented);
-        my @other = grep {$data->{$lcode}{$_}{function} !~ m/^(cop|Aspect=Perf|Tense=Fut|Voice=Pass|Mood=(Cnd|Nec|Pot|Des))$/} (@documented);
+        my @other = grep {$data->{$lcode}{$_}{function} !~ m/^(cop\.(AUX|PRON)|Aspect=Perf|Tense=Fut|Voice=Pass|Mood=(Cnd|Nec|Pot|Des))$/} (@documented);
         my $n = scalar(@documented)+scalar(@undocumented);
         print("    <tr><td>$lname_by_code{$lcode}</td><td>$lcode</td><td>$n</td>");
         print("<td>".join(' ', @copula)."</td>");
