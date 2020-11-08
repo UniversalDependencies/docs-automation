@@ -44,7 +44,8 @@ foreach my $lname (keys(%{$languages}))
 }
 my @functions =
 (
-    ['Copula', 'cop'],
+    ['Copula (tagged AUX)', 'cop.AUX'],
+    ['Copula (tagged PRON/DET)', 'cop.PRON'],
     ['Periphrastic aspect: perfect', 'Aspect=Perf'],
     ['Periphrastic aspect: progressive', 'Aspect=Prog'],
     ['Periphrastic tense: past', 'Tense=Past'],
