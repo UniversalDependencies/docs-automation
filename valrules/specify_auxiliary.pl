@@ -982,7 +982,7 @@ sub get_parameters
             $config{function} = $1;
         }
         # Verify that the function is one of the functions we defined.
-        my @found = map {$_->[1]} (grep {$_->[0] eq $config{function}} (@{$functions}));
+        my @found = grep {$_->[1] eq $config{function}} (@{$functions});
         my $n = scalar(@found);
         if($n > 0)
         {
