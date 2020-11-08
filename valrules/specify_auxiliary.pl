@@ -1278,20 +1278,23 @@ sub read_data_json
                 die("Unknown language code '$lcode' in the JSON file");
             }
             ###!!! One-time operation: Translate long descriptions of functions to their labels. Next time they will be already saved that way.
-            my @found = map {$_->[1]} (grep {$_->[0] eq $record->{function}} (@{$functions}));
-            my $n = scalar(@found);
-            if($n > 0)
+            unless($record->{function} eq '')
             {
-                if($n > 1)
+                my @found = map {$_->[1]} (grep {$_->[0] eq $record->{function}} (@{$functions}));
+                my $n = scalar(@found);
+                if($n > 0)
                 {
-                    print STDERR ("Something is wrong. Multiple functions listed in the source code equal to '$config{function}'.\n");
+                    if($n > 1)
+                    {
+                        print STDERR ("Something is wrong. Multiple functions listed in the source code equal to '$config{function}'.\n");
+                    }
+                    # Replace the long (and potentially less stable) description of the function with its short label.
+                    $record->{function} = $found[0];
                 }
-                # Replace the long (and potentially less stable) description of the function with its short label.
-                $record->{function} = $found[0];
-            }
-            else
-            {
-                die "Unrecognized function '$record->{function}' read from the JSON file for language '$record->{lcode}'";
+                else
+                {
+                    die "Unrecognized function '$record->{function}' read from the JSON file for language '$record->{lcode}'";
+                }
             }
             ###!!! End of one-time operation.
             # We do not have to copy the data item by item to a new record.
