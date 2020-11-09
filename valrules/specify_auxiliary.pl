@@ -581,7 +581,6 @@ sub process_form_data
     if($error)
     {
         print("  <p style='color:red'><strong>WARNING:</strong> Nothing was saved because there were errors.</p>\n");
-        print("  <p>TO DO: obligatoriness of deficient</p>\n");
     }
     else
     {
