@@ -1065,7 +1065,9 @@ sub get_parameters
         {
             die "Example '$config{example}' contains less-than, greater-than, ampersand or the ASCII quote";
         }
-        elsif($config{example} !~ m/\[[\pL\pM$zwj]+\]/)
+        # All characters that are allowed in a lemma must be allowed inside the square brackets.
+        # In addition, we now also allow the ZERO WIDTH JOINER.
+        elsif($config{example} !~ m/\[[-\pL\pM$zwj']+\]/) #'
         {
             die "Example '$config{example}' does not contain a sequence of letters enclosed in [square brackets]";
         }
