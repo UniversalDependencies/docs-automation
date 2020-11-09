@@ -95,8 +95,19 @@ print <<EOF
 EOF
 ;
 #------------------------------------------------------------------------------
+# If there were low-level errors in the parameters, print the error messages
+# and exit.
+if(scalar(@{$config{errors}}) > 0)
+{
+    print("<h1>Error in parameters:</h1>\n");
+    foreach my $error (@{$config{errors}})
+    {
+        print("<p>".htmlescape($error)."</p>\n");
+    }
+}
+#------------------------------------------------------------------------------
 # No language code specified. Show the list of known languages.
-if($config{lcode} eq '')
+elsif($config{lcode} eq '')
 {
     print("  <h1>Specify auxiliaries for a language</h1>\n");
     # Print the list of known languages.
@@ -889,7 +900,12 @@ sub rank_languages_by_proximity_to
 #------------------------------------------------------------------------------
 # Reads the CGI parameters, checks their values and untaints them so that they
 # can be safely used in the code. Untainting happens when the value is run
-# through a regular expression.
+# through a regular expression. The untainted values are stored in a hash, and
+# a reference to the hash is returned. The hash also contains an array
+# reference under the key 'errors'. If a parameter contains unexpected
+# characters, an error message will be added to the array and the value of the
+# parameter will not be accepted. The caller may then decide whether or not to
+# report the error and whether or not to treat it as fatal.
 #------------------------------------------------------------------------------
 sub get_parameters
 {
@@ -897,6 +913,8 @@ sub get_parameters
     my $lname_by_code = shift; # hash ref
     my $functions = shift; # ref to array of pairs (arrays)
     my %config; # our hash where we store the parameters
+    my @errors; # we store error messages about parameters here
+    $config{errors} = \@errors;
     # Certain characters are not letters but they are used regularly between
     # letters in certain writing systems, hence they must be permitted.
     # ZERO WIDTH JOINER (\x{200D}) is category C (other); used in Devanagari, for instance.
@@ -914,12 +932,12 @@ sub get_parameters
         $config{lcode} = $1;
         if(!exists($lname_by_code->{$config{lcode}}))
         {
-            die "Unknown language code '$config{lcode}'";
+            push(@errors, "Unknown language code '$config{lcode}'");
         }
     }
     else
     {
-        die "Language code '$config{lcode}' does not consist of two or three lowercase English letters";
+        push(@errors, "Language code '$config{lcode}' does not consist of two or three lowercase English letters");
     }
     #--------------------------------------------------------------------------
     # Github user name. Some names may look like e-mail addresses.
@@ -934,7 +952,7 @@ sub get_parameters
     }
     else
     {
-        die "Unrecognized name '$config{ghu}'";
+        push(@errors, "Unrecognized name '$config{ghu}'");
     }
     #--------------------------------------------------------------------------
     # Smart question is a primitive measure against robots that find the page
@@ -950,7 +968,7 @@ sub get_parameters
     }
     else
     {
-        die "Unsatisfactory robotic response :-)";
+        push(@errors, "Unsatisfactory robotic response :-)");
     }
     #--------------------------------------------------------------------------
     # Lemma identifies the auxiliary that we are editing or going to edit.
@@ -969,7 +987,7 @@ sub get_parameters
     }
     else
     {
-        die "Lemma '$config{lemma}' contains non-letter characters";
+        push(@errors, "Lemma '$config{lemma}' contains non-letter characters");
     }
     #--------------------------------------------------------------------------
     # Function is a descriptive text (e.g. "Periphrastic aspect: perfect")
@@ -997,7 +1015,7 @@ sub get_parameters
         }
         else
         {
-            die "Unrecognized function '$config{function}'";
+            push(@errors, "Unrecognized function '$config{function}'");
         }
     }
     #--------------------------------------------------------------------------
@@ -1016,7 +1034,7 @@ sub get_parameters
     }
     else
     {
-        die "Rule '$config{rule}' contains characters other than English letters, space, period, comma, semicolon, colon, hyphen, and round brackets";
+        push(@errors, "Rule '$config{rule}' contains characters other than English letters, space, period, comma, semicolon, colon, hyphen, and round brackets");
     }
     #--------------------------------------------------------------------------
     # Deficient [paradigm] is a descriptive text that justifies a copula if
@@ -1028,7 +1046,7 @@ sub get_parameters
     }
     elsif($config{deficient} !~ m/\pL{3}/)
     {
-        die "Explanation of deficient copula paradigm '$config{deficient}' contains too few letters.";
+        push(@errors, "Explanation of deficient copula paradigm '$config{deficient}' contains too few letters.");
     }
     elsif($config{deficient} =~ m/^([-A-Za-z \.:\(,;\)]+)$/)
     {
@@ -1036,7 +1054,7 @@ sub get_parameters
     }
     else
     {
-        die "Explanation of deficient copula paradigm '$config{deficient}' contains characters other than English letters, space, period, comma, semicolon, colon, hyphen, and round brackets";
+        push(@errors, "Explanation of deficient copula paradigm '$config{deficient}' contains characters other than English letters, space, period, comma, semicolon, colon, hyphen, and round brackets");
     }
     #--------------------------------------------------------------------------
     # Example in the original language may contain letters (including Unicode
@@ -1059,17 +1077,17 @@ sub get_parameters
         $config{example} =~ s/\s+/ /sg;
         if($config{example} !~ m/^[\pL\pM$zwj\pN\pP ]+$/)
         {
-            die "Example '$config{example}' contains characters other than letters, numbers, punctuation and space";
+            push(@errors, "Example '$config{example}' contains characters other than letters, numbers, punctuation and space");
         }
         elsif($config{example} =~ m/[<>&"]/) # "
         {
-            die "Example '$config{example}' contains less-than, greater-than, ampersand or the ASCII quote";
+            push(@errors, "Example '$config{example}' contains less-than, greater-than, ampersand or the ASCII quote");
         }
         # All characters that are allowed in a lemma must be allowed inside the square brackets.
         # In addition, we now also allow the ZERO WIDTH JOINER.
         elsif($config{example} !~ m/\[[-\pL\pM$zwj']+\]/) #'
         {
-            die "Example '$config{example}' does not contain a sequence of letters enclosed in [square brackets]";
+            push(@errors, "Example '$config{example}' does not contain a sequence of letters enclosed in [square brackets]");
         }
         if($config{example} =~ m/^(.+)$/)
         {
@@ -1094,11 +1112,11 @@ sub get_parameters
         $config{exampleen} =~ s/\s+/ /sg;
         if($config{exampleen} !~ m/^[\pL\pM$zwj\pN\pP ]+$/)
         {
-            die "Example translation '$config{exampleen}' contains characters other than letters, numbers, punctuation and space";
+            push(@errors, "Example translation '$config{exampleen}' contains characters other than letters, numbers, punctuation and space");
         }
         elsif($config{exampleen} =~ m/[<>&"]/) # "
         {
-            die "Example translation '$config{exampleen}' contains less-than, greater-than, ampersand or the ASCII quote";
+            push(@errors, "Example translation '$config{exampleen}' contains less-than, greater-than, ampersand or the ASCII quote");
         }
         if($config{exampleen} =~ m/^(.+)$/)
         {
@@ -1122,11 +1140,11 @@ sub get_parameters
         $config{comment} =~ s/\s+/ /sg;
         if($config{comment} !~ m/^[\pL\pM$zwj\pN\pP ]+$/)
         {
-            die "Comment '$config{comment}' contains characters other than letters, numbers, punctuation and space";
+            push(@errors, "Comment '$config{comment}' contains characters other than letters, numbers, punctuation and space");
         }
         elsif($config{comment} =~ m/[<>&"]/) # "
         {
-            die "Comment '$config{comment}' contains less-than, greater-than, ampersand or the ASCII quote";
+            push(@errors, "Comment '$config{comment}' contains less-than, greater-than, ampersand or the ASCII quote");
         }
         if($config{comment} =~ m/^(.+)$/)
         {
@@ -1153,7 +1171,7 @@ sub get_parameters
     }
     else
     {
-        die "Unrecognized save button '$config{save}'";
+        push(@errors, "Unrecognized save button '$config{save}'");
     }
     #--------------------------------------------------------------------------
     # The parameter 'add' comes from the buttons that launch the form to add
@@ -1179,7 +1197,7 @@ sub get_parameters
     }
     else
     {
-        die "Unrecognized add button '$config{add}'";
+        push(@errors, "Unrecognized add button '$config{add}'");
     }
     return %config;
 }
