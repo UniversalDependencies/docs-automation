@@ -48,6 +48,7 @@ my @functions =
     ['Copula (tagged PRON/DET)', 'cop.PRON'],
     ['Periphrastic aspect: perfect', 'Aspect=Perf'],
     ['Periphrastic aspect: progressive', 'Aspect=Prog'],
+    ['Periphrastic aspect: iterative', 'Aspect=Iter'],
     ['Periphrastic tense: past', 'Tense=Past'],
     ['Periphrastic tense: present', 'Tense=Pres'],
     ['Periphrastic tense: future', 'Tense=Fut'],
