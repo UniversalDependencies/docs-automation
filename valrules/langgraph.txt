@@ -171,3 +171,9 @@ tr--1000--lzz
 tr--100--kk
 kk--100--ug
 ug--100--otk
+Northern Luzon----Central Philippine
+Central Philippine--10--Malayo-Sumbawan
+zh--1000--ifb
+vi--1000--ifb
+ifb--100--tl
+tl--100--id
