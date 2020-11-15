@@ -655,7 +655,10 @@ sub summarize_guidelines
     equivalents of “to become, to stay, to look like, to be called” etc. are not copulas
     in UD, even if a traditional grammar classifies them as such. In UD they
     should head an <tt><a href="https://universaldependencies.org/u/dep/xcomp.html">xcomp</a></tt>
-    relation instead. A copula is normally tagged <a href="https://universaldependencies.org/u/pos/AUX_.html">AUX</a>.
+    relation instead. Existential “to be” can be copula only if it is the same
+    verb as in equivalence (“John is a teacher”). If the language uses two different
+    verbs, then <strong>the existential one is not a copula.</strong>
+    A copula is normally tagged <a href="https://universaldependencies.org/u/pos/AUX_.html">AUX</a>.
     Exception: in some languages a personal or demonstrative pronoun /
     determiner can be used as a copula and then we keep it tagged
     <a href="https://universaldependencies.org/u/pos/PRON.html">PRON</a> or
