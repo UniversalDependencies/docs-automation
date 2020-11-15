@@ -176,4 +176,5 @@ Central Philippine--10--Malayo-Sumbawan
 zh--1000--ifb
 vi--1000--ifb
 ifb--100--tl
-tl--100--id
+tl----hil
+hil--100--id

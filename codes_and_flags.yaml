@@ -243,6 +243,11 @@ Hebrew:
   lcode: he
   iso3: heb
   family: Afro-Asiatic, Semitic
+Hiligaynon:
+  flag: PH
+  lcode: hil
+  iso3: hil
+  family: Austronesian, Central Philippine
 Hindi:
   flag: IN
   lcode: hi
