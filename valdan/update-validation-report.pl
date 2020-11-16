@@ -166,7 +166,7 @@ BEGIN
         'UD_Old_Church_Slavonic-PROIEL' => ['lang-spec-doc', 'orphan-parent'],
         'UD_Old_French-SRCMF'           => ['lang-spec-doc', 'rel-upos-advmod'],
         'UD_Old_Russian-TOROT'          => ['orphan-parent'],
-        'UD_Persian-PerDT'              => ['aux-lemma'],
+        'UD_Persian-PerDT'              => ['aux-lemma', 'cop-lemma'],
         'UD_Persian-Seraji'             => ['leaf-aux-cop', 'leaf-cc', 'leaf-fixed', 'leaf-mark-case', 'leaf-punct', 'right-to-left-appos', 'punct-causes-nonproj', 'punct-is-nonproj', 'rel-upos-advmod', 'rel-upos-aux', 'rel-upos-cc', 'rel-upos-cop', 'rel-upos-det', 'rel-upos-nummod', 'rel-upos-punct', 'too-many-subjects', 'upos-rel-punct', 'aux-lemma', 'cop-lemma'],
         'UD_Portuguese-Bosque'          => ['punct-causes-nonproj', 'punct-is-nonproj'],
         'UD_Portuguese-GSD'             => ['leaf-aux-cop', 'leaf-cc', 'leaf-mark-case', 'leaf-punct', 'right-to-left-appos', 'punct-causes-nonproj', 'punct-is-nonproj', 'rel-upos-advmod', 'rel-upos-aux', 'rel-upos-case', 'rel-upos-cc', 'rel-upos-cop', 'rel-upos-det', 'rel-upos-expl', 'rel-upos-mark', 'rel-upos-nummod', 'upos-rel-punct', 'aux-lemma', 'cop-lemma'],
