@@ -129,16 +129,8 @@ elsif($config{lcode} eq '')
 # Language code specified. We can edit auxiliaries of that language.
 else
 {
-    # Read the data file, either from the old Python list, or from JSON.
-    my %data;
-    if(0)
-    {
-        %data = read_auxiliaries_from_python();
-    }
-    else
-    {
-        %data = read_data_json(\@functions); ###!!! we only need \@functions a single time there
-    }
+    # Read the data file from JSON.
+    my %data = read_data_json(\@functions); ###!!! we only need \@functions a single time there
     # Check whether there are any undocumented auxiliaries. Documenting them
     # has higher priority than any other action the user may want to do.
     my $n_undocumented = 0;
@@ -1203,80 +1195,6 @@ sub get_parameters
         push(@errors, "Unrecognized add button '$config{add}'");
     }
     return %config;
-}
-
-
-
-#------------------------------------------------------------------------------
-# Reads the list of auxiliaries from an excerpt from the Python source code
-# of the validator. This function is needed temporarily until we move the data
-# to a separate JSON file.
-#------------------------------------------------------------------------------
-sub read_auxiliaries_from_python
-{
-    my %data;
-    my $datafile = "$path/data.txt";
-    # We need a buffer because some lists are spread across several lines.
-    my $buffer = '';
-    open(DATA, $datafile) or die("Cannot read '$datafile': $!");
-    while(<DATA>)
-    {
-        # Remove the line break.
-        s/\r?\n$//;
-        # Skip comments.
-        next if(m/^\s*\#/);
-        s/\#.*//;
-        $buffer .= $_;
-        # A data line looks like this:
-        # 'en':  ['be', 'have', 'do', 'will', 'would', 'may', 'might', 'can', 'could', 'shall', 'should', 'must', 'get', 'ought'],
-        # Spaces are not interesting and line breaks can be harmful. Remove them.
-        $buffer =~ s/\s//gs;
-        if($buffer =~ m/'([a-z]{2,3})':\[('.+?'(?:,'.+?')*)\]/)
-        {
-            my $lcode = $1;
-            my $auxlist = $2;
-            if(!exists($lname_by_code{$lcode}))
-            {
-                die "Encountered unknown language code '$lcode' when reading the auxiliary list from Python";
-            }
-            my @auxlist = ();
-            while($auxlist =~ s/^'(.+?)'//)
-            {
-                my $lemma = $1;
-                push(@auxlist, $lemma);
-                $auxlist =~ s/^\s*,\s*//;
-            }
-            # Create a record for each auxiliary. All fields that we want to
-            # fill in the future are empty now, except for the lemma.
-            my %hash;
-            foreach my $lemma (@auxlist)
-            {
-                my %record =
-                (
-                    'function'    => '',
-                    'rule'        => '',
-                    'deficient'   => '',
-                    'example'     => '',
-                    'exampleen'   => '',
-                    'comment'     => '',
-                    'status'      => 'undocumented',
-                    'lastchanged' => '',
-                    'lastchanger' => ''
-                );
-                $hash{$lemma} = \%record;
-            }
-            if(exists($data{$lcode}))
-            {
-                die("Duplicate auxiliary list for language '$lcode' in the Python source");
-            }
-            $data{$lcode} = \%hash;
-            # Empty the buffer.
-            ###!!! Ignore the possibility that a new list starts on the same line.
-            $buffer = '';
-        }
-    }
-    close(DATA);
-    return %data;
 }
 
 
