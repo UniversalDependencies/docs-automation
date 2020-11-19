@@ -1254,14 +1254,14 @@ sub write_data_json
     my @lcodes = sort(keys(%{$data}));
     foreach my $lcode (@lcodes)
     {
-        my $jsonlanguage = '"'.$lcode.'"'.": [\n";
-        my @jsonrecords = ();
+        my $jsonlanguage = '"'.$lcode.'"'.": {\n";
+        my @jsonlemmas = ();
         my @lemmas = sort(keys(%{$data->{$lcode}}));
         foreach my $lemma (@lemmas)
         {
+            my $jsonlemma = '"'.escape_json_string($lemma).'": [{';
             my @record =
             (
-                ['lemma'       => $lemma],
                 ['function'    => $data->{$lcode}{$lemma}{function}],
                 ['rule'        => $data->{$lcode}{$lemma}{rule}],
                 ['deficient'   => $data->{$lcode}{$lemma}{deficient}],
@@ -1272,10 +1272,12 @@ sub write_data_json
                 ['lastchanged' => $data->{$lcode}{$lemma}{lastchanged}],
                 ['lastchanger' => $data->{$lcode}{$lemma}{lastchanger}]
             );
-            push(@jsonrecords, encode_json(@record));
+            $jsonlemma .= encode_json(@record);
+            $jsonlemma .= '}]';
+            push(@jsonlemmas, $jsonlemma);
         }
-        $jsonlanguage .= join(",\n", @jsonrecords)."\n";
-        $jsonlanguage .= ']';
+        $jsonlanguage .= join(",\n", @jsonlemmas)."\n";
+        $jsonlanguage .= '}';
         push(@jsonlanguages, $jsonlanguage);
     }
     $json .= join(",\n", @jsonlanguages)."\n";
