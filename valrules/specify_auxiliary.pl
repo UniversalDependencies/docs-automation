@@ -1221,16 +1221,22 @@ sub read_data_json
             my @lemmas = keys(%{$json->{auxiliaries}{$lcode}});
             foreach my $lemma (@lemmas)
             {
-                # There is an array of records about individual functions of the lemma.
-                # At present we assume that the array has just one element.
-                my @functions = @{$json->{auxiliaries}{$lcode}{$lemma}};
+                # We do not have to copy the data item by item to a new record.
+                # We can simply copy the reference to the record.
+                my $record = $json->{auxiliaries}{$lcode}{$lemma};
+                ###!!! However, now we must temporarily convert the one-element
+                ###!!! array of function records to just the elements of the record.
+                my @functions = @{$record->{functions}};
                 if(scalar(@functions) != 1)
                 {
                     die("Number of functions of lemma '$lemma' in the JSON file is not 1");
                 }
-                # We do not have to copy the data item by item to a new record.
-                # We can simply copy the reference to the record.
-                $data{$lcode}{$lemma} = $functions[0];
+                foreach my $attribute (qw(function rule deficient example exampleen comment))
+                {
+                    $record->{$attribute} = $functions[0]{$attribute};
+                }
+                delete($record->{functions});
+                $data{$lcode}{$lemma} = $record;
             }
         }
     }
