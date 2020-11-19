@@ -130,7 +130,7 @@ elsif($config{lcode} eq '')
 else
 {
     # Read the data file from JSON.
-    my %data = read_data_json(\@functions); ###!!! we only need \@functions a single time there
+    my %data = read_data_json();
     # Check whether there are any undocumented auxiliaries. Documenting them
     # has higher priority than any other action the user may want to do.
     my $n_undocumented = 0;
@@ -1204,28 +1204,29 @@ sub get_parameters
 #------------------------------------------------------------------------------
 sub read_data_json
 {
-    my $functions = shift; ###!!!
     my %data;
     my $datafile = "$path/data.json";
     my $json = json_file_to_perl($datafile);
     # The $json structure should contain two items, 'WARNING' and 'auxiliaries';
-    # the latter should be a reference to an array of hashes.
-    if(exists($json->{auxiliaries}) && ref($json->{auxiliaries}) eq 'ARRAY')
+    # the latter should be a reference to an hash of arrays of hashes.
+    if(exists($json->{auxiliaries}) && ref($json->{auxiliaries}) eq 'HASH')
     {
-        foreach my $record (@{$json->{auxiliaries}})
+        my @lcodes = keys(%{$json->{auxiliaries}});
+        foreach my $lcode (@lcodes)
         {
-            my $lcode = $record->{lcode};
-            my $lemma = $record->{lemma};
             if(!exists($lname_by_code{$lcode}))
             {
                 die("Unknown language code '$lcode' in the JSON file");
             }
-            # We do not have to copy the data item by item to a new record.
-            # We can simply copy the reference to the record (possibly after
-            # erasing the language code inside).
-            delete($record->{lcode});
-            delete($record->{lemma});
-            $data{$lcode}{$lemma} = $record;
+            foreach my $record (@{$json->{auxiliaries}{$lcode}})
+            {
+                my $lemma = $record->{lemma};
+                # We do not have to copy the data item by item to a new record.
+                # We can simply copy the reference to the record (possibly after
+                # erasing the lemma inside).
+                delete($record->{lemma});
+                $data{$lcode}{$lemma} = $record;
+            }
         }
     }
     else
