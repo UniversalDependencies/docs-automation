@@ -1218,14 +1218,19 @@ sub read_data_json
             {
                 die("Unknown language code '$lcode' in the JSON file");
             }
-            foreach my $record (@{$json->{auxiliaries}{$lcode}})
+            my @lemmas = keys(%{$json->{auxiliaries}{$lcode}});
+            foreach my $lemma (@lemmas)
             {
-                my $lemma = $record->{lemma};
+                # There is an array of records about individual functions of the lemma.
+                # At present we assume that the array has just one element.
+                my @functions = @{$json->{auxiliaries}{$lcode}{$lemma}};
+                if(scalar(@functions) != 1)
+                {
+                    die("Number of functions of lemma '$lemma' in the JSON file is not 1");
+                }
                 # We do not have to copy the data item by item to a new record.
-                # We can simply copy the reference to the record (possibly after
-                # erasing the lemma inside).
-                delete($record->{lemma});
-                $data{$lcode}{$lemma} = $record;
+                # We can simply copy the reference to the record.
+                $data{$lcode}{$lemma} = $functions[0];
             }
         }
     }
