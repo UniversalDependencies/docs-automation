@@ -1274,7 +1274,7 @@ sub write_data_json
             push(@jsonrecords, encode_json(@record));
         }
         $jsonlanguage .= join(",\n", @jsonrecords)."\n";
-        $jsonlanguge .= '}';
+        $jsonlanguage .= '}';
         push(@jsonlanguages, $jsonlanguage);
     }
     $json .= join(",\n", @jsonlanguages)."\n";
