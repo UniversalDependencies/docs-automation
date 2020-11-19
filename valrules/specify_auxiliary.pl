@@ -1268,13 +1268,17 @@ sub write_data_json
             my @record =
             (
                 ['functions'   =>
+                    # List of function records starts here.
                     [
-                        ['function'    => $data->{$lcode}{$lemma}{function}],
-                        ['rule'        => $data->{$lcode}{$lemma}{rule}],
-                        ['deficient'   => $data->{$lcode}{$lemma}{deficient}],
-                        ['example'     => $data->{$lcode}{$lemma}{example}],
-                        ['exampleen'   => $data->{$lcode}{$lemma}{exampleen}],
-                        ['comment'     => $data->{$lcode}{$lemma}{comment}]
+                        # Description of the first and only function record starts here.
+                        [
+                            ['function'    => $data->{$lcode}{$lemma}{function}],
+                            ['rule'        => $data->{$lcode}{$lemma}{rule}],
+                            ['deficient'   => $data->{$lcode}{$lemma}{deficient}],
+                            ['example'     => $data->{$lcode}{$lemma}{example}],
+                            ['exampleen'   => $data->{$lcode}{$lemma}{exampleen}],
+                            ['comment'     => $data->{$lcode}{$lemma}{comment}]
+                        ]
                     ],
                     'list of structures'
                 ],
