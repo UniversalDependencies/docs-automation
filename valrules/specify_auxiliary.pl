@@ -1264,21 +1264,25 @@ sub write_data_json
         my @lemmas = sort(keys(%{$data->{$lcode}}));
         foreach my $lemma (@lemmas)
         {
-            my $jsonlemma = '"'.escape_json_string($lemma).'": [';
+            my $jsonlemma = '"'.escape_json_string($lemma).'": ';
             my @record =
             (
-                ['function'    => $data->{$lcode}{$lemma}{function}],
-                ['rule'        => $data->{$lcode}{$lemma}{rule}],
-                ['deficient'   => $data->{$lcode}{$lemma}{deficient}],
-                ['example'     => $data->{$lcode}{$lemma}{example}],
-                ['exampleen'   => $data->{$lcode}{$lemma}{exampleen}],
-                ['comment'     => $data->{$lcode}{$lemma}{comment}],
+                ['functions'   =>
+                    [
+                        ['function'    => $data->{$lcode}{$lemma}{function}],
+                        ['rule'        => $data->{$lcode}{$lemma}{rule}],
+                        ['deficient'   => $data->{$lcode}{$lemma}{deficient}],
+                        ['example'     => $data->{$lcode}{$lemma}{example}],
+                        ['exampleen'   => $data->{$lcode}{$lemma}{exampleen}],
+                        ['comment'     => $data->{$lcode}{$lemma}{comment}]
+                    ],
+                    'list of structures'
+                ],
                 ['status'      => $data->{$lcode}{$lemma}{status}],
                 ['lastchanged' => $data->{$lcode}{$lemma}{lastchanged}],
                 ['lastchanger' => $data->{$lcode}{$lemma}{lastchanger}]
             );
             $jsonlemma .= encode_json(@record);
-            $jsonlemma .= ']';
             push(@jsonlemmas, $jsonlemma);
         }
         $jsonlanguage .= join(",\n", @jsonlemmas)."\n";
