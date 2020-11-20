@@ -875,7 +875,7 @@ sub print_all_auxiliaries
     my @lcodes_my_family = grep {$languages->{$lname_by_code{$_}}{familygenus} ne $myfamilygenus && $languages->{$lname_by_code{$_}}{family} eq $myfamily} (@lcodes);
     my @lcodes_other = grep {$languages->{$lname_by_code{$_}}{family} ne $myfamily} (@lcodes);
     print("  <table>\n");
-    print("    <tr><th colspan=2>Language</th><th>Total</th><th>Copula</th><th>Perfect</th><th>Future</th><th>Passive</th><th>Conditional</th><th>Necessitative</th><th>Potential</th><th>Desiderative</th><th>Other</th><th>Undocumented</th></tr>\n");
+    print("    <tr><th colspan=2>Language</th><th>Total</th><th>Copula</th><th>Perfect</th><th>Past</th><th>Future</th><th>Passive</th><th>Conditional</th><th>Necessitative</th><th>Potential</th><th>Desiderative</th><th>Other</th><th>Undocumented</th></tr>\n");
     foreach my $lcode ($config{lcode}, @lcodes_my_genus, @lcodes_my_family, @lcodes_other)
     {
         my $ldata = $data->{$lcode};
@@ -885,6 +885,7 @@ sub print_all_auxiliaries
         # may appear in multiple columns.
         my %copula;
         my %perfect;
+        my %past;
         my %future;
         my %passive;
         my %conditional;
@@ -906,6 +907,10 @@ sub print_all_auxiliaries
                     elsif($function->{function} eq 'Aspect=Perf')
                     {
                         $perfect{$lemma}++;
+                    }
+                    elsif($function->{function} eq 'Tense=Past')
+                    {
+                        $past{$lemma}++;
                     }
                     elsif($function->{function} eq 'Tense=Fut')
                     {
@@ -945,6 +950,7 @@ sub print_all_auxiliaries
         print("    <tr><td>$lname_by_code{$lcode}</td><td>$lcode</td><td>$n</td>");
         print("<td>".join(' ', sort(keys(%copula)))."</td>");
         print("<td>".join(' ', sort(keys(%perfect)))."</td>");
+        print("<td>".join(' ', sort(keys(%past)))."</td>");
         print("<td>".join(' ', sort(keys(%future)))."</td>");
         print("<td>".join(' ', sort(keys(%passive)))."</td>");
         print("<td>".join(' ', sort(keys(%conditional)))."</td>");
