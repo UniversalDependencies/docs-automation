@@ -1197,11 +1197,11 @@ sub get_parameters
         $config{$fname} = decode('utf8', $query->param($fname));
         if(!defined($config{$fname}) || $config{$fname} =~ m/^\s*-*\s*$/)
         {
+            $config{$fname} = '';
             # If there is no function, we will store empty values for function 1.
             # If a function with rank higher than 1 is missing, we will not store
             # the empty values and we will not check for any further functions.
             last if($ifun > 1);
-            $config{$fname} = '';
         }
         else
         {
