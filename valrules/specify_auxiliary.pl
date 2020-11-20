@@ -456,7 +456,7 @@ EOF
     my $ifun = 2;
     my $current_function_exists = scalar(@{$record->{functions}}) >= $ifun;
     print("    <tr>\n");
-    print("      <td></td>\n");
+    print("      <td>function $ifun:</td>\n");
     print("      <td>\n");
     print("        <select name=function$ifun>\n");
     print("          <option>-----</option>\n");
