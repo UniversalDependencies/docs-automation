@@ -368,7 +368,7 @@ EOF
     if($config{addcop} || $functions_exist && $record->{functions}[0]{function} =~ m/^cop\./)
     {
         print("      <td>\n");
-        print("        <select name=function>\n");
+        print("        <select name=function1>\n");
         foreach my $f (@functions)
         {
             next if($f->[1] !~ m/^cop\./);
@@ -381,12 +381,12 @@ EOF
         }
         print("        </select>\n");
         print("      </td>\n");
-        print("      <td>combination of the copula and a nonverbal predicate<input name=rule type=hidden value=\"combination of the copula and a nonverbal predicate\" /></td>\n");
+        print("      <td>combination of the copula and a nonverbal predicate<input name=rule1 type=hidden value=\"combination of the copula and a nonverbal predicate\" /></td>\n");
     }
     else
     {
         print("      <td>\n");
-        print("        <select name=function>\n");
+        print("        <select name=function1>\n");
         print("          <option>-----</option>\n");
         foreach my $f (@functions)
         {
@@ -407,7 +407,7 @@ EOF
         {
             $hrule = htmlescape($record->{functions}[0]{rule});
         }
-        print("      <td><input name=rule type=text size=30 value=\"$hrule\" /></td>\n");
+        print("      <td><input name=rule1 type=text size=30 value=\"$hrule\" /></td>\n");
     }
     if($show_deficient)
     {
@@ -416,14 +416,14 @@ EOF
         {
             $hdeficient = htmlescape($record->{functions}[0]{deficient});
         }
-        print("      <td><input name=deficient type=text size=30 value=\"$hdeficient\" /></td>\n");
+        print("      <td><input name=deficient1 type=text size=30 value=\"$hdeficient\" /></td>\n");
     }
     my $hexample = '';
     if($functions_exist)
     {
         $hexample = htmlescape($record->{functions}[0]{example});
     }
-    print("      <td><input name=example type=text size=30 value=\"$hexample\" /></td>\n");
+    print("      <td><input name=example1 type=text size=30 value=\"$hexample\" /></td>\n");
     if($show_exampleen)
     {
         my $hexampleen = '';
@@ -431,14 +431,14 @@ EOF
         {
             $hexampleen = htmlescape($record->{functions}[0]{exampleen});
         }
-        print("      <td><input name=exampleen type=text size=30 value=\"$hexampleen\" /></td>\n");
+        print("      <td><input name=exampleen1 type=text size=30 value=\"$hexampleen\" /></td>\n");
     }
     my $hcomment = '';
     if($functions_exist)
     {
         $hcomment = htmlescape($record->{functions}[0]{comment});
     }
-    print("      <td><input name=comment type=text value=\"$hcomment\" /></td>\n");
+    print("      <td><input name=comment1 type=text value=\"$hcomment\" /></td>\n");
     print("    </tr>\n");
     #--------------------------------------------------------------------------
     # Buttons and hints
@@ -530,18 +530,18 @@ sub process_form_data
         print("    <li style='color:red'>ERROR: Missing lemma</li>\n");
         $error = 1;
     }
-    if($config{function} ne '')
+    if($config{function1} ne '')
     {
-        print("    <li>function = '".htmlescape($config{function})."'</li>\n");
+        print("    <li>function = '".htmlescape($config{function1})."'</li>\n");
     }
     else
     {
         print("    <li style='color:red'>ERROR: Missing function</li>\n");
         $error = 1;
     }
-    if($config{rule} ne '')
+    if($config{rule1} ne '')
     {
-        print("    <li>rule = '".htmlescape($config{rule})."'</li>\n");
+        print("    <li>rule = '".htmlescape($config{rule1})."'</li>\n");
     }
     else
     {
@@ -549,36 +549,36 @@ sub process_form_data
         $error = 1;
     }
     # We will assess the obligatoriness of the 'deficient' parameter later.
-    if($config{deficient} ne '')
+    if($config{deficient1} ne '')
     {
-        print("    <li>deficient = '".htmlescape($config{deficient})."'</li>\n");
+        print("    <li>deficient = '".htmlescape($config{deficient1})."'</li>\n");
     }
-    if($config{example} ne '')
+    if($config{example1} ne '')
     {
-        print("    <li>example = '".htmlescape($config{example})."'</li>\n");
+        print("    <li>example = '".htmlescape($config{example1})."'</li>\n");
     }
     else
     {
         print("    <li style='color:red'>ERROR: Missing example</li>\n");
         $error = 1;
     }
-    if($config{exampleen} ne '')
+    if($config{exampleen1} ne '')
     {
-        print("    <li>exampleen = '".htmlescape($config{exampleen})."'</li>\n");
+        print("    <li>exampleen = '".htmlescape($config{exampleen1})."'</li>\n");
     }
     elsif($config{lcode} ne 'en')
     {
         print("    <li style='color:red'>ERROR: Missing English translation of the example</li>\n");
         $error = 1;
     }
-    if($config{comment} ne '')
+    if($config{comment1} ne '')
     {
-        print("    <li>comment = '".htmlescape($config{comment})."'</li>\n");
+        print("    <li>comment = '".htmlescape($config{comment1})."'</li>\n");
     }
     # Check whether there will be more than one copulas if we add this one to the data.
     # If there will, check that all of them (including the new one) have a distinct
     # explanation of its deficient paradigm.
-    if($config{function} =~ m/^cop\./)
+    if($config{function1} =~ m/^cop\./)
     {
         my %copjust;
         foreach my $lemma (keys(%{$data->{$config{lcode}}}))
@@ -595,7 +595,7 @@ sub process_form_data
                 }
             }
         }
-        $copjust{$config{lemma}} = $config{deficient};
+        $copjust{$config{lemma}} = $config{deficient1};
         my $ok = 1;
         my @copulas = sort(keys(%copjust));
         my $n = scalar(@copulas);
@@ -608,9 +608,9 @@ sub process_form_data
                     print("    <li style='color:red'>ERROR: Copula '$lemma' does not have a deficient paradigm, hence there cannot be $n copulas</li>\n");
                     $error = 1;
                 }
-                if($lemma ne $config{lemma} && $copjust{$lemma} eq $config{deficient})
+                if($lemma ne $config{lemma} && $copjust{$lemma} eq $config{deficient1})
                 {
-                    print("    <li style='color:red'>ERROR: Explanation of deficient paradigm '$config{deficient}' is identical to the explanation given for '$lemma'</li>\n");
+                    print("    <li style='color:red'>ERROR: Explanation of deficient paradigm '$config{deficient1}' is identical to the explanation given for '$lemma'</li>\n");
                     $error = 1;
                 }
             }
@@ -636,12 +636,12 @@ sub process_form_data
         $record{functions} =
         [
             {
-                'function'  => $config{function},
-                'rule'      => $config{rule},
-                'deficient' => $config{deficient},
-                'example'   => $config{example},
-                'exampleen' => $config{exampleen},
-                'comment'   => $config{comment}
+                'function'  => $config{function1},
+                'rule'      => $config{rule1},
+                'deficient' => $config{deficient1},
+                'example'   => $config{example1},
+                'exampleen' => $config{exampleen1},
+                'comment'   => $config{comment1}
             }
         ];
         $record{status} = 'documented';
@@ -1083,30 +1083,30 @@ sub get_parameters
     #--------------------------------------------------------------------------
     # Function is a descriptive text (e.g. "Periphrastic aspect: perfect")
     # taken from a pre-defined list of options.
-    $config{function} = decode('utf8', $query->param('function'));
-    if(!defined($config{function}) || $config{function} =~ m/^\s*$/)
+    $config{function1} = decode('utf8', $query->param('function1'));
+    if(!defined($config{function1}) || $config{function1} =~ m/^\s*$/)
     {
-        $config{function} = '';
+        $config{function1} = '';
     }
     else
     {
-        if($config{function} =~ m/^(.+)$/)
+        if($config{function1} =~ m/^(.+)$/)
         {
-            $config{function} = $1;
+            $config{function1} = $1;
         }
         # Verify that the function is one of the functions we defined.
-        my @found = grep {$_->[1] eq $config{function}} (@{$functions});
+        my @found = grep {$_->[1] eq $config{function1}} (@{$functions});
         my $n = scalar(@found);
         if($n > 0)
         {
             if($n > 1)
             {
-                print STDERR ("Something is wrong. Multiple functions listed in the source code equal to '$config{function}'.\n");
+                print STDERR ("Something is wrong. Multiple functions listed in the source code equal to '$config{function1}'.\n");
             }
         }
         else
         {
-            push(@errors, "Unrecognized function '$config{function}'");
+            push(@errors, "Unrecognized function '$config{function1}'");
         }
     }
     #--------------------------------------------------------------------------
@@ -1114,38 +1114,38 @@ sub get_parameters
     # a participle of the main verb"). It is not restricted to a pre-defined
     # set of options but it should not need more than English letters, spaces,
     # and some basic punctuation.
-    $config{rule} = decode('utf8', $query->param('rule'));
-    if(!defined($config{rule}) || $config{rule} =~ m/^\s*$/)
+    $config{rule1} = decode('utf8', $query->param('rule1'));
+    if(!defined($config{rule1}) || $config{rule1} =~ m/^\s*$/)
     {
-        $config{rule} = '';
+        $config{rule1} = '';
     }
-    elsif($config{rule} =~ m/^([-A-Za-z \.:\(,;\)]+)$/)
+    elsif($config{rule1} =~ m/^([-A-Za-z \.:\(,;\)]+)$/)
     {
-        $config{rule} = $1;
+        $config{rule1} = $1;
     }
     else
     {
-        push(@errors, "Rule '$config{rule}' contains characters other than English letters, space, period, comma, semicolon, colon, hyphen, and round brackets");
+        push(@errors, "Rule '$config{rule1}' contains characters other than English letters, space, period, comma, semicolon, colon, hyphen, and round brackets");
     }
     #--------------------------------------------------------------------------
     # Deficient [paradigm] is a descriptive text that justifies a copula if
     # there are multiple lemmas of copula in one language.
-    $config{deficient} = decode('utf8', $query->param('deficient'));
-    if(!defined($config{deficient}) || $config{deficient} =~ m/^\s*$/)
+    $config{deficient1} = decode('utf8', $query->param('deficient1'));
+    if(!defined($config{deficient1}) || $config{deficient1} =~ m/^\s*$/)
     {
-        $config{deficient} = '';
+        $config{deficient1} = '';
     }
-    elsif($config{deficient} !~ m/\pL{3}/)
+    elsif($config{deficient1} !~ m/\pL{3}/)
     {
-        push(@errors, "Explanation of deficient copula paradigm '$config{deficient}' contains too few letters.");
+        push(@errors, "Explanation of deficient copula paradigm '$config{deficient1}' contains too few letters.");
     }
-    elsif($config{deficient} =~ m/^([-A-Za-z \.:\(,;\)]+)$/)
+    elsif($config{deficient1} =~ m/^([-A-Za-z \.:\(,;\)]+)$/)
     {
-        $config{deficient} = $1;
+        $config{deficient1} = $1;
     }
     else
     {
-        push(@errors, "Explanation of deficient copula paradigm '$config{deficient}' contains characters other than English letters, space, period, comma, semicolon, colon, hyphen, and round brackets");
+        push(@errors, "Explanation of deficient copula paradigm '$config{deficient1}' contains characters other than English letters, space, period, comma, semicolon, colon, hyphen, and round brackets");
     }
     #--------------------------------------------------------------------------
     # Example in the original language may contain letters (including Unicode
@@ -1155,34 +1155,34 @@ sub get_parameters
     # it is not necessary if we make sure to always escape them when inserting
     # them in HTML we generate). We may need the apostrophe in some languages,
     # though.
-    $config{example} = decode('utf8', $query->param('example'));
-    if(!defined($config{example}) || $config{example} =~ m/^\s*$/)
+    $config{example1} = decode('utf8', $query->param('example1'));
+    if(!defined($config{example1}) || $config{example1} =~ m/^\s*$/)
     {
-        $config{example} = '';
+        $config{example1} = '';
     }
     else
     {
         # Remove duplicate, leading and trailing spaces.
-        $config{example} =~ s/^\s+//;
-        $config{example} =~ s/\s+$//;
-        $config{example} =~ s/\s+/ /sg;
-        if($config{example} !~ m/^[\pL\pM$zwj\pN\pP ]+$/)
+        $config{example1} =~ s/^\s+//;
+        $config{example1} =~ s/\s+$//;
+        $config{example1} =~ s/\s+/ /sg;
+        if($config{example1} !~ m/^[\pL\pM$zwj\pN\pP ]+$/)
         {
-            push(@errors, "Example '$config{example}' contains characters other than letters, numbers, punctuation and space");
+            push(@errors, "Example '$config{example1}' contains characters other than letters, numbers, punctuation and space");
         }
-        elsif($config{example} =~ m/[<>&"]/) # "
+        elsif($config{example1} =~ m/[<>&"]/) # "
         {
-            push(@errors, "Example '$config{example}' contains less-than, greater-than, ampersand or the ASCII quote");
+            push(@errors, "Example '$config{example1}' contains less-than, greater-than, ampersand or the ASCII quote");
         }
         # All characters that are allowed in a lemma must be allowed inside the square brackets.
         # In addition, we now also allow the ZERO WIDTH JOINER.
-        elsif($config{example} !~ m/\[[-\pL\pM$zwj']+\]/) #'
+        elsif($config{example1} !~ m/\[[-\pL\pM$zwj']+\]/) #'
         {
-            push(@errors, "Example '$config{example}' does not contain a sequence of letters enclosed in [square brackets]");
+            push(@errors, "Example '$config{example1}' does not contain a sequence of letters enclosed in [square brackets]");
         }
-        if($config{example} =~ m/^(.+)$/)
+        if($config{example1} =~ m/^(.+)$/)
         {
-            $config{example} = $1;
+            $config{example1} = $1;
         }
     }
     #--------------------------------------------------------------------------
@@ -1190,56 +1190,56 @@ sub get_parameters
     # not English. We can probably allow the same regular expressions as for
     # the original example, although we typically do not need non-English
     # letters in the English translation.
-    $config{exampleen} = decode('utf8', $query->param('exampleen'));
-    if(!defined($config{exampleen}) || $config{exampleen} =~ m/^\s*$/)
+    $config{exampleen1} = decode('utf8', $query->param('exampleen1'));
+    if(!defined($config{exampleen1}) || $config{exampleen1} =~ m/^\s*$/)
     {
-        $config{exampleen} = '';
+        $config{exampleen1} = '';
     }
     else
     {
         # Remove duplicate, leading and trailing spaces.
-        $config{exampleen} =~ s/^\s+//;
-        $config{exampleen} =~ s/\s+$//;
-        $config{exampleen} =~ s/\s+/ /sg;
-        if($config{exampleen} !~ m/^[\pL\pM$zwj\pN\pP ]+$/)
+        $config{exampleen1} =~ s/^\s+//;
+        $config{exampleen1} =~ s/\s+$//;
+        $config{exampleen1} =~ s/\s+/ /sg;
+        if($config{exampleen1} !~ m/^[\pL\pM$zwj\pN\pP ]+$/)
         {
-            push(@errors, "Example translation '$config{exampleen}' contains characters other than letters, numbers, punctuation and space");
+            push(@errors, "Example translation '$config{exampleen1}' contains characters other than letters, numbers, punctuation and space");
         }
-        elsif($config{exampleen} =~ m/[<>&"]/) # "
+        elsif($config{exampleen1} =~ m/[<>&"]/) # "
         {
-            push(@errors, "Example translation '$config{exampleen}' contains less-than, greater-than, ampersand or the ASCII quote");
+            push(@errors, "Example translation '$config{exampleen1}' contains less-than, greater-than, ampersand or the ASCII quote");
         }
-        if($config{exampleen} =~ m/^(.+)$/)
+        if($config{exampleen1} =~ m/^(.+)$/)
         {
-            $config{exampleen} = $1;
+            $config{exampleen1} = $1;
         }
     }
     #--------------------------------------------------------------------------
     # Comment is an optional English text. Since it may contain a word from the
     # language being documented, we should allow everything that is allowed in
     # the example.
-    $config{comment} = decode('utf8', $query->param('comment'));
-    if(!defined($config{comment}) || $config{comment} =~ m/^\s*$/)
+    $config{comment1} = decode('utf8', $query->param('comment1'));
+    if(!defined($config{comment1}) || $config{comment1} =~ m/^\s*$/)
     {
-        $config{comment} = '';
+        $config{comment1} = '';
     }
     else
     {
         # Remove duplicate, leading and trailing spaces.
-        $config{comment} =~ s/^\s+//;
-        $config{comment} =~ s/\s+$//;
-        $config{comment} =~ s/\s+/ /sg;
-        if($config{comment} !~ m/^[\pL\pM$zwj\pN\pP ]+$/)
+        $config{comment1} =~ s/^\s+//;
+        $config{comment1} =~ s/\s+$//;
+        $config{comment1} =~ s/\s+/ /sg;
+        if($config{comment1} !~ m/^[\pL\pM$zwj\pN\pP ]+$/)
         {
-            push(@errors, "Comment '$config{comment}' contains characters other than letters, numbers, punctuation and space");
+            push(@errors, "Comment '$config{comment1}' contains characters other than letters, numbers, punctuation and space");
         }
-        elsif($config{comment} =~ m/[<>&"]/) # "
+        elsif($config{comment1} =~ m/[<>&"]/) # "
         {
-            push(@errors, "Comment '$config{comment}' contains less-than, greater-than, ampersand or the ASCII quote");
+            push(@errors, "Comment '$config{comment1}' contains less-than, greater-than, ampersand or the ASCII quote");
         }
-        if($config{comment} =~ m/^(.+)$/)
+        if($config{comment1} =~ m/^(.+)$/)
         {
-            $config{comment} = $1;
+            $config{comment1} = $1;
         }
     }
     #--------------------------------------------------------------------------
