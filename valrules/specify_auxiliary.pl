@@ -226,8 +226,17 @@ sub print_edit_add_menu
         my @lemmas = sort(keys(%{$data->{$config{lcode}}}));
         my $hrefs = get_lemma_links_to_edit(@lemmas);
         print("  <p>$hrefs</p>\n");
-        # Do not offer adding a copula if there already is a copula without documented deficient paradigm.
-        @ndcop = grep {$data->{$config{lcode}}{$_}{function} =~ m/^cop\./ && $data->{$config{lcode}}{$_}{deficient} eq ''} (@lemmas);
+        # Look for copulas without documented deficient paradigm. If there is
+        # one, we will not offer adding another copula.
+        foreach my $lemma (@lemmas)
+        {
+            my @functions = @{$data->{$config{lcode}}{$lemma}{functions}};
+            my @ndcop_lemma = grep {$_->{function} =~ m/^cop\./ && $_->{deficient} eq ''} (@functions);
+            if(scalar(@ndcop_lemma) > 0)
+            {
+                push(@ndcop, $lemma);
+            }
+        }
     }
     print("  <form action=\"specify_auxiliary.pl\" method=\"post\" enctype=\"multipart/form-data\">\n");
     print("    <input name=lcode type=hidden value=\"$config{lcode}\" />\n");
@@ -288,12 +297,7 @@ sub print_lemma_form
     {
         $record =
         {
-            'function'  => '',
-            'rule'      => '',
-            'deficient' => '',
-            'example'   => '',
-            'exampleen' => '',
-            'comment'   => '',
+            'functions' => [],
             'status'    => 'new'
         };
     }
@@ -305,11 +309,16 @@ sub print_lemma_form
     {
         die("Lemma '$config{lemma}' not found in language '$config{lcode}'");
     }
-    my $hrule = htmlescape($record->{rule});
-    my $hdeficient = htmlescape($record->{deficient});
-    my $hexample = htmlescape($record->{example});
-    my $hexampleen = htmlescape($record->{exampleen});
-    my $hcomment = htmlescape($record->{comment});
+    # The field Deficient serves to justify multiple copulas per language.
+    # It should be available if we are adding or editing a copula or if we are
+    # documenting a previously undocumented auxiliary, which could be a copula.
+    my $show_deficient = $config{addcop} || $record->{status} eq 'undocumented';
+    if(grep {$_->{function} =~ m/^cop\./} (@{$record->{functions}}))
+    {
+        $show_deficient = 1;
+    }
+    my $show_exampleen = $config{lcode} ne 'en';
+    my $functions_exist = scalar(@{$record->{functions}}) > 0;
     print <<EOF
   <form action="specify_auxiliary.pl" method="post" enctype="multipart/form-data">
   <input name=lcode type=hidden value="$config{lcode}" />
@@ -322,34 +331,33 @@ sub print_lemma_form
     Github, but here the actual push action will be formally done by another
     user.</small></p>
   <table>
-    <tr>
-      <td>Lemma</td>
-      <td>Function</td>
-      <td>Rule</td>
 EOF
     ;
-    # If we are adding or editing a copula, add a field where multiple copulas can be justified.
-    # This field should also be available if we are documenting a previously undocumented
-    # auxiliary, which could be a copula.
-    if($config{addcop} || $record->{function} =~ m/^cop\./ || $record->{status} eq 'undocumented')
+    #--------------------------------------------------------------------------
+    # Column headings
+    print("    <tr>\n");
+    print("      <td>Lemma</td>\n");
+    print("      <td>Function</td>\n");
+    print("      <td>Rule</td>\n");
+    if($show_deficient)
     {
         print("      <td>Deficient paradigm</td>\n");
     }
     print("      <td>Example</td>\n");
-    unless($config{lcode} eq 'en')
+    if($show_exampleen)
     {
         print("      <td>English translation of the example</td>\n");
     }
-    print <<EOF
-      <td>Comment</td>
-    </tr>
-EOF
-    ;
+    print("      <td>Comment</td>\n");
+    print("    </tr>\n");
+    #--------------------------------------------------------------------------
+    # Lemma and the first function
     print("    <tr>\n");
     print("      <td>");
     if($config{lemma} ne '')
     {
-        print("<strong>$config{lemma}</strong><input name=lemma type=hidden size=10 value=\"$config{lemma}\" />");
+        my $hlemma = htmlescape($config{lemma});
+        print("<strong>$hlemma</strong><input name=lemma type=hidden size=10 value=\"$hlemma\" />");
     }
     else
     {
@@ -357,7 +365,7 @@ EOF
     }
     print("</td>\n");
     # If we are adding or editing a copula, the function is restricted.
-    if($config{addcop} || $record->{function} =~ m/^cop\./)
+    if($config{addcop} || $functions_exist && $record->{functions}[0]{function} =~ m/^cop\./)
     {
         print("      <td>\n");
         print("        <select name=function>\n");
@@ -365,7 +373,7 @@ EOF
         {
             next if($f->[1] !~ m/^cop\./);
             my $selected = '';
-            if($f->[1] eq $record->{function})
+            if($functions_exist && $f->[1] eq $record->{functions}[0]{function})
             {
                 $selected = ' selected';
             }
@@ -386,7 +394,7 @@ EOF
             # Otherwise it is not available because we must use 'addcop', see above.
             next if($f->[1] =~ m/^cop\./ && $record->{status} ne 'undocumented');
             my $selected = '';
-            if($f->[1] eq $record->{function})
+            if($functions_exist && $f->[1] eq $record->{functions}[0]{function})
             {
                 $selected = ' selected';
             }
@@ -394,19 +402,46 @@ EOF
         }
         print("        </select>\n");
         print("      </td>\n");
+        my $hrule = '';
+        if($functions_exist)
+        {
+            $hrule = htmlescape($record->{functions}[0]{rule});
+        }
         print("      <td><input name=rule type=text size=30 value=\"$hrule\" /></td>\n");
     }
-    if($config{addcop} || $record->{function} =~ m/^cop\./ || $record->{status} eq 'undocumented')
+    if($show_deficient)
     {
+        my $hdeficient = '';
+        if($functions_exist)
+        {
+            $hdeficient = htmlescape($record->{functions}[0]{deficient});
+        }
         print("      <td><input name=deficient type=text size=30 value=\"$hdeficient\" /></td>\n");
     }
-    print("      <td><input name=example type=text size=30 value=\"$hexample\" /></td>\n");
-    unless($config{lcode} eq 'en')
+    my $hexample = '';
+    if($functions_exist)
     {
+        $hexample = htmlescape($record->{functions}[0]{example});
+    }
+    print("      <td><input name=example type=text size=30 value=\"$hexample\" /></td>\n");
+    if($show_exampleen)
+    {
+        my $hexampleen = '';
+        if($functions_exist)
+        {
+            $hexampleen = htmlescape($record->{functions}[0]{exampleen});
+        }
         print("      <td><input name=exampleen type=text size=30 value=\"$hexampleen\" /></td>\n");
+    }
+    my $hcomment = '';
+    if($functions_exist)
+    {
+        $hcomment = htmlescape($record->{functions}[0]{comment});
     }
     print("      <td><input name=comment type=text value=\"$hcomment\" /></td>\n");
     print("    </tr>\n");
+    #--------------------------------------------------------------------------
+    # Buttons and hints
     print("    <tr>\n");
     # If we are adding a new lemma, we will have to check that it is really new.
     # Signal that with a slightly different button text, "Save new" instead of "Save".
@@ -420,7 +455,7 @@ EOF
     }
     # Do not print the hint for the function/rule if the function/rule is fixed (copula).
     # But do print the hint for multiple copulas.
-    if($config{addcop} || $record->{function} =~ m/^cop\./)
+    if($config{addcop} || $functions_exist && $record->{functions}[0]{function} =~ m/^cop\./)
     {
         print("      <td></td>\n");
         print("      <td></td>\n");
@@ -430,14 +465,18 @@ EOF
         print("      <td><small>Missing function that conforms to the guidelines? Contact Dan!</small></td>\n");
         print("      <td><small>E.g. “combination of the auxiliary and a past participle of the main verb”</small></td>\n");
     }
-    if($config{addcop} || $record->{function} =~ m/^cop\./ || $record->{status} eq 'undocumented')
+    if($show_deficient)
     {
         print("      <td><small>If you want multiple copulas, you must justify each, e.g. “used in past tense only”</small></td>\n");
     }
+    print("      <td><small>Mark the auxiliary by enclosing it in square brackets, e.g., “he [has] done it”</small></td>\n");
+    if($show_exampleen)
+    {
+        print("      <td></td>\n");
+    }
+    print("      <td></td>\n");
+    print("    </tr>\n");
     print <<EOF
-      <td><small>Mark the auxiliary by enclosing it in square brackets, e.g., “he [has] done it”</small></td>
-      <!-- empty cells under english example and comment omitted (the one under english example would have to appear only if lcode is not en -->
-    </tr>
   </table>
   </form>
 EOF
@@ -544,9 +583,16 @@ sub process_form_data
         my %copjust;
         foreach my $lemma (keys(%{$data->{$config{lcode}}}))
         {
-            if($data->{$config{lcode}}{$lemma}{function} =~ m/^cop\./)
+            foreach my $function (@{$data->{$config{lcode}}{$lemma}{functions}})
             {
-                $copjust{$lemma} = $data->{$config{lcode}}{$lemma}{deficient};
+                if($function->{function} =~ m/^cop\./)
+                {
+                    $copjust{$lemma} = $function->{deficient};
+                    # Even if a lemma has multiple functions, only one of the
+                    # functions can be copula, so we do not have to examine the
+                    # others.
+                    last;
+                }
             }
         }
         $copjust{$config{lemma}} = $config{deficient};
@@ -577,28 +623,27 @@ sub process_form_data
     }
     else
     {
-        # Create a new record. If we are adding a new auxiliary, this will be
-        # its record. If we are editing an existing auxiliary, first copy the
-        # old values from the old values, then replace the edited ones, then
-        # replace the old record with the new one.
-        ###!!! At present a deep copy is not needed because there are no nested structures.
+        # Create a new record. Even if we are editing an existing auxiliary,
+        # all previous values will be thrown away and replaced with the new
+        # ones.
         my %record;
-        if(exists($data->{$config{lcode}}{$config{lemma}}))
-        {
-            %record = %{$data->{$config{lcode}}{$config{lemma}}};
-        }
         # Do I want to use my local time or universal time in the timestamps?
         #my ($sec, $min, $hour, $mday, $mon, $year, $wday, $yday) = gmtime(time());
         my ($sec, $min, $hour, $mday, $mon, $year, $wday, $yday) = localtime(time());
         my $timestamp = sprintf("%04d-%02d-%02d-%02d-%02d-%02d", 1900+$year, 1+$mon, $mday, $hour, $min, $sec);
         $record{lastchanged} = $timestamp;
         $record{lastchanger} = $config{ghu};
-        $record{function} = $config{function};
-        $record{rule} = $config{rule};
-        $record{deficient} = $config{deficient};
-        $record{example} = $config{example};
-        $record{exampleen} = $config{exampleen};
-        $record{comment} = $config{comment};
+        $record{functions} =
+        [
+            {
+                'function'  => $config{function},
+                'rule'      => $config{rule},
+                'deficient' => $config{deficient},
+                'example'   => $config{example},
+                'exampleen' => $config{exampleen},
+                'comment'   => $config{comment}
+            }
+        ];
         $record{status} = 'documented';
         $data->{$config{lcode}}{$config{lemma}} = \%record;
         write_data_json($data, "$path/data.json");
@@ -732,30 +777,81 @@ sub print_all_auxiliaries
     print("    <tr><th colspan=2>Language</th><th>Total</th><th>Copula</th><th>Perfect</th><th>Future</th><th>Passive</th><th>Conditional</th><th>Necessitative</th><th>Potential</th><th>Desiderative</th><th>Other</th><th>Undocumented</th></tr>\n");
     foreach my $lcode ($config{lcode}, @lcodes_my_genus, @lcodes_my_family, @lcodes_other)
     {
-        my @lemmas = sort(keys(%{$data->{$lcode}}));
-        my @documented = grep {$data->{$lcode}{$_}{status} eq 'documented'} (@lemmas);
-        my @undocumented = grep {$data->{$lcode}{$_}{status} ne 'documented'} (@lemmas);
-        my @copula = grep {$data->{$lcode}{$_}{function} =~ m/^cop\./} (@documented);
-        my @perfect = grep {$data->{$lcode}{$_}{function} eq 'Aspect=Perf'} (@documented);
-        my @future = grep {$data->{$lcode}{$_}{function} eq 'Tense=Fut'} (@documented);
-        my @passive = grep {$data->{$lcode}{$_}{function} eq 'Voice=Pass'} (@documented);
-        my @conditional = grep {$data->{$lcode}{$_}{function} eq 'Mood=Cnd'} (@documented);
-        my @necessitative = grep {$data->{$lcode}{$_}{function} eq 'Mood=Nec'} (@documented);
-        my @potential = grep {$data->{$lcode}{$_}{function} eq 'Mood=Pot'} (@documented);
-        my @desiderative = grep {$data->{$lcode}{$_}{function} eq 'Mood=Des'} (@documented);
-        my @other = grep {$data->{$lcode}{$_}{function} !~ m/^(cop\.(AUX|PRON)|Aspect=Perf|Tense=Fut|Voice=Pass|Mood=(Cnd|Nec|Pot|Des))$/} (@documented);
-        my $n = scalar(@documented)+scalar(@undocumented);
+        my $ldata = $data->{$lcode};
+        my @lemmas = sort(keys(%{$ldata}));
+        my $n = scalar(@lemmas);
+        # Collect lemmas that shall appear in individual columns. Some lemmas
+        # may appear in multiple columns.
+        my %copula;
+        my %perfect;
+        my %future;
+        my %passive;
+        my %conditional;
+        my %necessitative;
+        my %potential;
+        my %desiderative;
+        my %other;
+        my %undocumented;
+        foreach my $lemma (@lemmas)
+        {
+            if($ldata->{$lemma}{status} eq 'documented')
+            {
+                foreach my $function (@{$ldata->{$lemma}{functions}})
+                {
+                    if($function->{function} =~ m/^cop\./)
+                    {
+                        $copula{$lemma}++;
+                    }
+                    elsif($function->{function} eq 'Aspect=Perf')
+                    {
+                        $perfect{$lemma}++;
+                    }
+                    elsif($function->{function} eq 'Tense=Fut')
+                    {
+                        $future{$lemma}++;
+                    }
+                    elsif($function->{function} eq 'Voice=Pass')
+                    {
+                        $passive{$lemma}++;
+                    }
+                    elsif($function->{function} eq 'Mood=Cnd')
+                    {
+                        $conditional{$lemma}++;
+                    }
+                    elsif($function->{function} eq 'Mood=Nec')
+                    {
+                        $necessitative{$lemma}++;
+                    }
+                    elsif($function->{function} eq 'Mood=Pot')
+                    {
+                        $potential{$lemma}++;
+                    }
+                    elsif($function->{function} eq 'Mood=Des')
+                    {
+                        $desiderative{$lemma}++;
+                    }
+                    else
+                    {
+                        $other{$lemma}++;
+                    }
+                }
+            }
+            else
+            {
+                $undocumented{$lemma}++;
+            }
+        }
         print("    <tr><td>$lname_by_code{$lcode}</td><td>$lcode</td><td>$n</td>");
-        print("<td>".join(' ', @copula)."</td>");
-        print("<td>".join(' ', @perfect)."</td>");
-        print("<td>".join(' ', @future)."</td>");
-        print("<td>".join(' ', @passive)."</td>");
-        print("<td>".join(' ', @conditional)."</td>");
-        print("<td>".join(' ', @necessitative)."</td>");
-        print("<td>".join(' ', @potential)."</td>");
-        print("<td>".join(' ', @desiderative)."</td>");
-        print("<td>".join(' ', @other)."</td>");
-        print("<td>".join(' ', @undocumented)."</td></tr>\n");
+        print("<td>".join(' ', sort(keys(%copula)))."</td>");
+        print("<td>".join(' ', sort(keys(%perfect)))."</td>");
+        print("<td>".join(' ', sort(keys(%future)))."</td>");
+        print("<td>".join(' ', sort(keys(%passive)))."</td>");
+        print("<td>".join(' ', sort(keys(%conditional)))."</td>");
+        print("<td>".join(' ', sort(keys(%necessitative)))."</td>");
+        print("<td>".join(' ', sort(keys(%potential)))."</td>");
+        print("<td>".join(' ', sort(keys(%desiderative)))."</td>");
+        print("<td>".join(' ', sort(keys(%other)))."</td>");
+        print("<td>".join(' ', sort(keys(%undocumented)))."</td></tr>\n");
     }
     print("  </table>\n");
 }
@@ -1223,20 +1319,7 @@ sub read_data_json
             {
                 # We do not have to copy the data item by item to a new record.
                 # We can simply copy the reference to the record.
-                my $record = $json->{auxiliaries}{$lcode}{$lemma};
-                ###!!! However, now we must temporarily convert the one-element
-                ###!!! array of function records to just the elements of the record.
-                my @functions = @{$record->{functions}};
-                if(scalar(@functions) != 1)
-                {
-                    die("Number of functions of lemma '$lemma' in the JSON file is not 1");
-                }
-                foreach my $attribute (qw(function rule deficient example exampleen comment))
-                {
-                    $record->{$attribute} = $functions[0]{$attribute};
-                }
-                delete($record->{functions});
-                $data{$lcode}{$lemma} = $record;
+                $data{$lcode}{$lemma} = $json->{auxiliaries}{$lcode}{$lemma};
             }
         }
     }
@@ -1271,23 +1354,24 @@ sub write_data_json
         foreach my $lemma (@lemmas)
         {
             my $jsonlemma = '"'.escape_json_string($lemma).'": ';
+            my @functions = sort {$a->{function} cmp $b->{function}} (@{$data->{$lcode}{$lemma}{functions}});
+            my @frecords;
+            foreach my $function (@functions)
+            {
+                my @frecord =
+                (
+                    ['function'  => $function->{function}],
+                    ['rule'      => $function->{rule}],
+                    ['deficient' => $function->{deficient}],
+                    ['example'   => $function->{example}],
+                    ['exampleen' => $function->{exampleen}],
+                    ['comment'   => $function->{comment}]
+                );
+                push(@frecords, \@frecord);
+            }
             my @record =
             (
-                ['functions'   =>
-                    # List of function records starts here.
-                    [
-                        # Description of the first and only function record starts here.
-                        [
-                            ['function'    => $data->{$lcode}{$lemma}{function}],
-                            ['rule'        => $data->{$lcode}{$lemma}{rule}],
-                            ['deficient'   => $data->{$lcode}{$lemma}{deficient}],
-                            ['example'     => $data->{$lcode}{$lemma}{example}],
-                            ['exampleen'   => $data->{$lcode}{$lemma}{exampleen}],
-                            ['comment'     => $data->{$lcode}{$lemma}{comment}]
-                        ]
-                    ],
-                    'list of structures'
-                ],
+                ['functions'   => \@frecords, 'list of structures'],
                 ['status'      => $data->{$lcode}{$lemma}{status}],
                 ['lastchanged' => $data->{$lcode}{$lemma}{lastchanged}],
                 ['lastchanger' => $data->{$lcode}{$lemma}{lastchanger}]
