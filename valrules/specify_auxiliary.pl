@@ -453,59 +453,61 @@ EOF
     print("    </tr>\n");
     #--------------------------------------------------------------------------
     # An additional function
-    my $ifun = 2;
-    my $current_function_exists = scalar(@{$record->{functions}}) >= $ifun;
-    print("    <tr>\n");
-    print("      <td>Function&nbsp;$ifun:</td>\n");
-    print("      <td>\n");
-    print("        <select name=function$ifun>\n");
-    print("          <option>-----</option>\n");
-    foreach my $f (@functions)
+    for(my $ifun = 2; $ifun <= 3; $ifun++)
     {
-        # Copula can be the first function but not an additional function.
-        next if($f->[1] =~ m/^cop\./);
-        my $selected = '';
-        if($current_function_exists && $f->[1] eq $record->{functions}[$ifun-1]{function})
+        my $current_function_exists = scalar(@{$record->{functions}}) >= $ifun;
+        print("    <tr>\n");
+        print("      <td>Function&nbsp;$ifun:</td>\n");
+        print("      <td>\n");
+        print("        <select name=function$ifun>\n");
+        print("          <option>-----</option>\n");
+        foreach my $f (@functions)
         {
-            $selected = ' selected';
+            # Copula can be the first function but not an additional function.
+            next if($f->[1] =~ m/^cop\./);
+            my $selected = '';
+            if($current_function_exists && $f->[1] eq $record->{functions}[$ifun-1]{function})
+            {
+                $selected = ' selected';
+            }
+            print("          <option value=\"$f->[1]\"$selected>".htmlescape($f->[0])."</option>\n");
         }
-        print("          <option value=\"$f->[1]\"$selected>".htmlescape($f->[0])."</option>\n");
-    }
-    print("        </select>\n");
-    print("      </td>\n");
-    my $hrule = '';
-    if($current_function_exists)
-    {
-        $hrule = htmlescape($record->{functions}[$ifun-1]{rule});
-    }
-    print("      <td><input name=rule$ifun type=text size=30 value=\"$hrule\" /></td>\n");
-    if($show_deficient)
-    {
-        # The additional function cannot be a copula, so we will not provide a field for the deficient paradigm explanation.
-        print("      <td></td>\n");
-    }
-    my $hexample = '';
-    if($current_function_exists)
-    {
-        $hexample = htmlescape($record->{functions}[$ifun-1]{example});
-    }
-    print("      <td><input name=example$ifun type=text size=30 value=\"$hexample\" /></td>\n");
-    if($show_exampleen)
-    {
-        my $hexampleen = '';
+        print("        </select>\n");
+        print("      </td>\n");
+        my $hrule = '';
         if($current_function_exists)
         {
-            $hexampleen = htmlescape($record->{functions}[$ifun-1]{exampleen});
+            $hrule = htmlescape($record->{functions}[$ifun-1]{rule});
         }
-        print("      <td><input name=exampleen$ifun type=text size=30 value=\"$hexampleen\" /></td>\n");
+        print("      <td><input name=rule$ifun type=text size=30 value=\"$hrule\" /></td>\n");
+        if($show_deficient)
+        {
+            # The additional function cannot be a copula, so we will not provide a field for the deficient paradigm explanation.
+            print("      <td></td>\n");
+        }
+        my $hexample = '';
+        if($current_function_exists)
+        {
+            $hexample = htmlescape($record->{functions}[$ifun-1]{example});
+        }
+        print("      <td><input name=example$ifun type=text size=30 value=\"$hexample\" /></td>\n");
+        if($show_exampleen)
+        {
+            my $hexampleen = '';
+            if($current_function_exists)
+            {
+                $hexampleen = htmlescape($record->{functions}[$ifun-1]{exampleen});
+            }
+            print("      <td><input name=exampleen$ifun type=text size=30 value=\"$hexampleen\" /></td>\n");
+        }
+        my $hcomment = '';
+        if($current_function_exists)
+        {
+            $hcomment = htmlescape($record->{functions}[$ifun-1]{comment});
+        }
+        print("      <td><input name=comment$ifun type=text value=\"$hcomment\" /></td>\n");
+        print("    </tr>\n");
     }
-    my $hcomment = '';
-    if($current_function_exists)
-    {
-        $hcomment = htmlescape($record->{functions}[$ifun-1]{comment});
-    }
-    print("      <td><input name=comment$ifun type=text value=\"$hcomment\" /></td>\n");
-    print("    </tr>\n");
     #--------------------------------------------------------------------------
     # Buttons and hints
     print("    <tr>\n");
