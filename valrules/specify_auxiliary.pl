@@ -1195,7 +1195,7 @@ sub get_parameters
         # taken from a pre-defined list of options.
         my $fname = "function$ifun";
         $config{$fname} = decode('utf8', $query->param($fname));
-        if(!defined($config{$fname}) || $config{$fname} =~ m/^\s*$/)
+        if(!defined($config{$fname}) || $config{$fname} =~ m/^\s*-*\s*$/)
         {
             # If there is no function, we will store empty values for function 1.
             # If a function with rank higher than 1 is missing, we will not store
