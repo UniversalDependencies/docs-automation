@@ -453,13 +453,13 @@ EOF
     print("    </tr>\n");
     #--------------------------------------------------------------------------
     # An additional function
+    my $ifun = 2;
+    my $current_function_exists = scalar(@{$record->{functions}}) >= $ifun;
     print("    <tr>\n");
     print("      <td></td>\n");
     print("      <td>\n");
     print("        <select name=function$ifun>\n");
     print("          <option>-----</option>\n");
-    my $ifun = 2;
-    my $current_function_exists = scalar(@{$record->{functions}}) >= $ifun;
     foreach my $f (@functions)
     {
         # Copula can be the first function but not an additional function.
