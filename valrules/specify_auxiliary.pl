@@ -521,7 +521,9 @@ EOF
     }
     # Do not print the hint for the function/rule if the function/rule is fixed (copula).
     # But do print the hint for multiple copulas.
-    if($config{addcop} || $functions_exist && $record->{functions}[0]{function} =~ m/^cop\./)
+    ###!!! We now print it always because there might be additional, non-copula functions.
+    if(0)
+    #$config{addcop} || $functions_exist && $record->{functions}[0]{function} =~ m/^cop\./)
     {
         print("      <td></td>\n");
         print("      <td></td>\n");
