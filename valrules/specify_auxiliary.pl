@@ -602,7 +602,7 @@ sub process_form_data
     my %unique_functions;
     my $copula_among_functions = 0;
     my $deficient = '';
-    for(my $ifun = 1; exists($config{"function$ifun"}); $ifun++)
+    for(my $ifun = 1; exists($config{"function$ifun"}) && defined($config{"function$ifun"}) && $config{"function$ifun"} ne ''; $ifun++)
     {
         my $fname = "function$ifun";
         if($config{$fname} ne '')
