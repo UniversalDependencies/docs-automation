@@ -453,7 +453,7 @@ EOF
     print("    </tr>\n");
     #--------------------------------------------------------------------------
     # An additional function
-    for(my $ifun = 2; $ifun <= 3; $ifun++)
+    for(my $ifun = 2; $ifun <= 5; $ifun++)
     {
         my $current_function_exists = scalar(@{$record->{functions}}) >= $ifun;
         print("    <tr>\n");
