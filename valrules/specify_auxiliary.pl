@@ -319,6 +319,17 @@ sub print_lemma_form
     }
     my $show_exampleen = $config{lcode} ne 'en';
     my $functions_exist = scalar(@{$record->{functions}}) > 0;
+    # Sort the existing functions following the global list of known functions.
+    # We especially need the copula, if present, to appear first.
+    if($functions_exist)
+    {
+        my %sortval;
+        for(my $i = 0; $i <= $#functions; $i++)
+        {
+            $sortval{$functions[$i][1]} = $i;
+        }
+        @{$record->{functions}} = sort {$sortval{$a->{function}} <=> $sortval{$b->{function}}} (@{$record->{functions}});
+    }
     print <<EOF
   <form action="specify_auxiliary.pl" method="post" enctype="multipart/form-data">
   <input name=lcode type=hidden value="$config{lcode}" />
@@ -441,6 +452,61 @@ EOF
     print("      <td><input name=comment1 type=text value=\"$hcomment\" /></td>\n");
     print("    </tr>\n");
     #--------------------------------------------------------------------------
+    # An additional function
+    print("    <tr>\n");
+    print("      <td></td>\n");
+    print("      <td>\n");
+    print("        <select name=function$ifun>\n");
+    print("          <option>-----</option>\n");
+    my $ifun = 2;
+    my $current_function_exists = scalar(@{$record->{functions}}) >= $ifun;
+    foreach my $f (@functions)
+    {
+        # Copula can be the first function but not an additional function.
+        next if($f->[1] =~ m/^cop\./);
+        my $selected = '';
+        if($current_function_exists && $f->[1] eq $record->{functions}[$ifun-1]{function})
+        {
+            $selected = ' selected';
+        }
+        print("          <option value=\"$f->[1]\"$selected>".htmlescape($f->[0])."</option>\n");
+    }
+    print("        </select>\n");
+    print("      </td>\n");
+    my $hrule = '';
+    if($current_function_exists)
+    {
+        $hrule = htmlescape($record->{functions}[$ifun]{rule});
+    }
+    print("      <td><input name=rule$ifun type=text size=30 value=\"$hrule\" /></td>\n");
+    if($show_deficient)
+    {
+        # The additional function cannot be a copula, so we will not provide a field for the deficient paradigm explanation.
+        print("      <td></td>\n");
+    }
+    my $hexample = '';
+    if($current_function_exists)
+    {
+        $hexample = htmlescape($record->{functions}[$ifun]{example});
+    }
+    print("      <td><input name=example$ifun type=text size=30 value=\"$hexample\" /></td>\n");
+    if($show_exampleen)
+    {
+        my $hexampleen = '';
+        if($current_function_exists)
+        {
+            $hexampleen = htmlescape($record->{functions}[$ifun]{exampleen});
+        }
+        print("      <td><input name=exampleen$ifun type=text size=30 value=\"$hexampleen\" /></td>\n");
+    }
+    my $hcomment = '';
+    if($current_function_exists)
+    {
+        $hcomment = htmlescape($record->{functions}[$ifun]{comment});
+    }
+    print("      <td><input name=comment$ifun type=text value=\"$hcomment\" /></td>\n");
+    print("    </tr>\n");
+    #--------------------------------------------------------------------------
     # Buttons and hints
     print("    <tr>\n");
     # If we are adding a new lemma, we will have to check that it is really new.
@@ -530,55 +596,81 @@ sub process_form_data
         print("    <li style='color:red'>ERROR: Missing lemma</li>\n");
         $error = 1;
     }
-    if($config{function1} ne '')
+    # There may be multiple functions and each will have its own set of numbered attributes.
+    my %unique_functions;
+    my $copula_among_functions = 0;
+    my $deficient = '';
+    for(my $ifun = 1; exists($config{"function$ifun"}); $ifun++)
     {
-        print("    <li>function = '".htmlescape($config{function1})."'</li>\n");
-    }
-    else
-    {
-        print("    <li style='color:red'>ERROR: Missing function</li>\n");
-        $error = 1;
-    }
-    if($config{rule1} ne '')
-    {
-        print("    <li>rule = '".htmlescape($config{rule1})."'</li>\n");
-    }
-    else
-    {
-        print("    <li style='color:red'>ERROR: Missing rule</li>\n");
-        $error = 1;
-    }
-    # We will assess the obligatoriness of the 'deficient' parameter later.
-    if($config{deficient1} ne '')
-    {
-        print("    <li>deficient = '".htmlescape($config{deficient1})."'</li>\n");
-    }
-    if($config{example1} ne '')
-    {
-        print("    <li>example = '".htmlescape($config{example1})."'</li>\n");
-    }
-    else
-    {
-        print("    <li style='color:red'>ERROR: Missing example</li>\n");
-        $error = 1;
-    }
-    if($config{exampleen1} ne '')
-    {
-        print("    <li>exampleen = '".htmlescape($config{exampleen1})."'</li>\n");
-    }
-    elsif($config{lcode} ne 'en')
-    {
-        print("    <li style='color:red'>ERROR: Missing English translation of the example</li>\n");
-        $error = 1;
-    }
-    if($config{comment1} ne '')
-    {
-        print("    <li>comment = '".htmlescape($config{comment1})."'</li>\n");
-    }
+        my $fname = "function$ifun";
+        if($config{$fname} ne '')
+        {
+            print("    <li>function $ifun = '".htmlescape($config{$fname})."'</li>\n");
+            my $uf = $config{$fname};
+            $uf =~ s/^cop\..+$/cop/;
+            if(exists($unique_functions{$uf}))
+            {
+                print("    <li style='color:red'>ERROR: Repeated function '$uf'</li>\n");
+                $error = 1;
+            }
+            $unique_functions{$uf}++;
+        }
+        else
+        {
+            print("    <li style='color:red'>ERROR: Missing function</li>\n");
+            $error = 1;
+        }
+        my $rname = "rule$ifun";
+        if($config{$rname} ne '')
+        {
+            print("    <li>rule $ifun = '".htmlescape($config{$rname})."'</li>\n");
+        }
+        else
+        {
+            print("    <li style='color:red'>ERROR: Missing rule</li>\n");
+            $error = 1;
+        }
+        # We will assess the obligatoriness of the 'deficient' parameter later.
+        my $dname = "deficient$ifun";
+        if($config{$dname} ne '')
+        {
+            print("    <li>deficient $ifun = '".htmlescape($config{$dname})."'</li>\n");
+        }
+        if($config{$fname} =~ m/^cop\./)
+        {
+            $copula_among_functions = 1;
+            $deficient = $config{$dname};
+        }
+        my $ename = "example$ifun";
+        if($config{$ename} ne '')
+        {
+            print("    <li>example $ifun = '".htmlescape($config{$ename})."'</li>\n");
+        }
+        else
+        {
+            print("    <li style='color:red'>ERROR: Missing example</li>\n");
+            $error = 1;
+        }
+        $ename = "exampleen$ifun";
+        if($config{$ename} ne '')
+        {
+            print("    <li>exampleen $ifun = '".htmlescape($config{$ename})."'</li>\n");
+        }
+        elsif($config{lcode} ne 'en')
+        {
+            print("    <li style='color:red'>ERROR: Missing English translation of the example</li>\n");
+            $error = 1;
+        }
+        my $cname = "comment$ifun";
+        if($config{$cname} ne '')
+        {
+            print("    <li>comment $ifun = '".htmlescape($config{$cname})."'</li>\n");
+        }
+    } # loop over multiple functions
     # Check whether there will be more than one copulas if we add this one to the data.
     # If there will, check that all of them (including the new one) have a distinct
     # explanation of its deficient paradigm.
-    if($config{function1} =~ m/^cop\./)
+    if($copula_among_functions)
     {
         my %copjust;
         foreach my $lemma (keys(%{$data->{$config{lcode}}}))
@@ -595,7 +687,7 @@ sub process_form_data
                 }
             }
         }
-        $copjust{$config{lemma}} = $config{deficient1};
+        $copjust{$config{lemma}} = $deficient;
         my $ok = 1;
         my @copulas = sort(keys(%copjust));
         my $n = scalar(@copulas);
@@ -608,9 +700,9 @@ sub process_form_data
                     print("    <li style='color:red'>ERROR: Copula '$lemma' does not have a deficient paradigm, hence there cannot be $n copulas</li>\n");
                     $error = 1;
                 }
-                if($lemma ne $config{lemma} && $copjust{$lemma} eq $config{deficient1})
+                if($lemma ne $config{lemma} && $copjust{$lemma} eq $deficient)
                 {
-                    print("    <li style='color:red'>ERROR: Explanation of deficient paradigm '$config{deficient1}' is identical to the explanation given for '$lemma'</li>\n");
+                    print("    <li style='color:red'>ERROR: Explanation of deficient paradigm '$deficient' is identical to the explanation given for '$lemma'</li>\n");
                     $error = 1;
                 }
             }
@@ -633,17 +725,20 @@ sub process_form_data
         my $timestamp = sprintf("%04d-%02d-%02d-%02d-%02d-%02d", 1900+$year, 1+$mon, $mday, $hour, $min, $sec);
         $record{lastchanged} = $timestamp;
         $record{lastchanger} = $config{ghu};
-        $record{functions} =
-        [
-            {
-                'function'  => $config{function1},
-                'rule'      => $config{rule1},
-                'deficient' => $config{deficient1},
-                'example'   => $config{example1},
-                'exampleen' => $config{exampleen1},
-                'comment'   => $config{comment1}
-            }
-        ];
+        $record{functions} = [];
+        for(my $ifun = 1; exists($config{"function$ifun"}); $ifun++)
+        {
+            my %frecord =
+            (
+                'function'  => $config{"function$ifun"},
+                'rule'      => $config{"rule$ifun"},
+                'deficient' => $config{"deficient$ifun"},
+                'example'   => $config{"example$ifun"},
+                'exampleen' => $config{"exampleen$ifun"},
+                'comment'   => $config{"comment$ifun"}
+            );
+            push(@{$record{functions}}, \%frecord);
+        }
         $record{status} = 'documented';
         $data->{$config{lcode}}{$config{lemma}} = \%record;
         write_data_json($data, "$path/data.json");
@@ -1080,168 +1175,182 @@ sub get_parameters
     {
         push(@errors, "Lemma '$config{lemma}' contains non-letter characters");
     }
-    #--------------------------------------------------------------------------
-    # Function is a descriptive text (e.g. "Periphrastic aspect: perfect")
-    # taken from a pre-defined list of options.
-    $config{function1} = decode('utf8', $query->param('function1'));
-    if(!defined($config{function1}) || $config{function1} =~ m/^\s*$/)
+    # There may be multiple functions and each will have its own set of numbered attributes.
+    for(my $ifun = 1; ; $ifun++)
     {
-        $config{function1} = '';
-    }
-    else
-    {
-        if($config{function1} =~ m/^(.+)$/)
+        #--------------------------------------------------------------------------
+        # Function is a descriptive text (e.g. "Periphrastic aspect: perfect")
+        # taken from a pre-defined list of options.
+        my $fname = "function$ifun";
+        $config{$fname} = decode('utf8', $query->param($fname));
+        if(!defined($config{$fname}) || $config{$fname} =~ m/^\s*$/)
         {
-            $config{function1} = $1;
-        }
-        # Verify that the function is one of the functions we defined.
-        my @found = grep {$_->[1] eq $config{function1}} (@{$functions});
-        my $n = scalar(@found);
-        if($n > 0)
-        {
-            if($n > 1)
-            {
-                print STDERR ("Something is wrong. Multiple functions listed in the source code equal to '$config{function1}'.\n");
-            }
+            # If there is no function, we will store empty values for function 1.
+            # If a function with rank higher than 1 is missing, we will not store
+            # the empty values and we will not check for any further functions.
+            last if($ifun > 1);
+            $config{$fname} = '';
         }
         else
         {
-            push(@errors, "Unrecognized function '$config{function1}'");
+            if($config{$fname} =~ m/^(.+)$/)
+            {
+                $config{$fname} = $1;
+            }
+            # Verify that the function is one of the functions we defined.
+            my @found = grep {$_->[1] eq $config{$fname}} (@{$functions});
+            my $n = scalar(@found);
+            if($n > 0)
+            {
+                if($n > 1)
+                {
+                    print STDERR ("Something is wrong. Multiple functions listed in the source code equal to '$config{$fname}'.\n");
+                }
+            }
+            else
+            {
+                push(@errors, "Unrecognized function '$config{$fname}'");
+            }
         }
-    }
-    #--------------------------------------------------------------------------
-    # Rule is a descriptive text (e.g. "combination of the auxiliary with
-    # a participle of the main verb"). It is not restricted to a pre-defined
-    # set of options but it should not need more than English letters, spaces,
-    # and some basic punctuation.
-    $config{rule1} = decode('utf8', $query->param('rule1'));
-    if(!defined($config{rule1}) || $config{rule1} =~ m/^\s*$/)
-    {
-        $config{rule1} = '';
-    }
-    elsif($config{rule1} =~ m/^([-A-Za-z \.:\(,;\)]+)$/)
-    {
-        $config{rule1} = $1;
-    }
-    else
-    {
-        push(@errors, "Rule '$config{rule1}' contains characters other than English letters, space, period, comma, semicolon, colon, hyphen, and round brackets");
-    }
-    #--------------------------------------------------------------------------
-    # Deficient [paradigm] is a descriptive text that justifies a copula if
-    # there are multiple lemmas of copula in one language.
-    $config{deficient1} = decode('utf8', $query->param('deficient1'));
-    if(!defined($config{deficient1}) || $config{deficient1} =~ m/^\s*$/)
-    {
-        $config{deficient1} = '';
-    }
-    elsif($config{deficient1} !~ m/\pL{3}/)
-    {
-        push(@errors, "Explanation of deficient copula paradigm '$config{deficient1}' contains too few letters.");
-    }
-    elsif($config{deficient1} =~ m/^([-A-Za-z \.:\(,;\)]+)$/)
-    {
-        $config{deficient1} = $1;
-    }
-    else
-    {
-        push(@errors, "Explanation of deficient copula paradigm '$config{deficient1}' contains characters other than English letters, space, period, comma, semicolon, colon, hyphen, and round brackets");
-    }
-    #--------------------------------------------------------------------------
-    # Example in the original language may contain letters (including Unicode
-    # letters), spaces, punctuation (including Unicode punctuation). Square
-    # brackets have a special meaning, they mark the word we focus on. We
-    # probably do not need < > & "" and we could ban them for safety (but
-    # it is not necessary if we make sure to always escape them when inserting
-    # them in HTML we generate). We may need the apostrophe in some languages,
-    # though.
-    $config{example1} = decode('utf8', $query->param('example1'));
-    if(!defined($config{example1}) || $config{example1} =~ m/^\s*$/)
-    {
-        $config{example1} = '';
-    }
-    else
-    {
-        # Remove duplicate, leading and trailing spaces.
-        $config{example1} =~ s/^\s+//;
-        $config{example1} =~ s/\s+$//;
-        $config{example1} =~ s/\s+/ /sg;
-        if($config{example1} !~ m/^[\pL\pM$zwj\pN\pP ]+$/)
+        #--------------------------------------------------------------------------
+        # Rule is a descriptive text (e.g. "combination of the auxiliary with
+        # a participle of the main verb"). It is not restricted to a pre-defined
+        # set of options but it should not need more than English letters, spaces,
+        # and some basic punctuation.
+        my $rname = "rule$ifun";
+        $config{$rname} = decode('utf8', $query->param($rname));
+        if(!defined($config{$rname}) || $config{$rname} =~ m/^\s*$/)
         {
-            push(@errors, "Example '$config{example1}' contains characters other than letters, numbers, punctuation and space");
+            $config{$rname} = '';
         }
-        elsif($config{example1} =~ m/[<>&"]/) # "
+        elsif($config{$rname} =~ m/^([-A-Za-z \.:\(,;\)]+)$/)
         {
-            push(@errors, "Example '$config{example1}' contains less-than, greater-than, ampersand or the ASCII quote");
+            $config{$rname} = $1;
         }
-        # All characters that are allowed in a lemma must be allowed inside the square brackets.
-        # In addition, we now also allow the ZERO WIDTH JOINER.
-        elsif($config{example1} !~ m/\[[-\pL\pM$zwj']+\]/) #'
+        else
         {
-            push(@errors, "Example '$config{example1}' does not contain a sequence of letters enclosed in [square brackets]");
+            push(@errors, "Rule '$config{$rname}' contains characters other than English letters, space, period, comma, semicolon, colon, hyphen, and round brackets");
         }
-        if($config{example1} =~ m/^(.+)$/)
+        #--------------------------------------------------------------------------
+        # Deficient [paradigm] is a descriptive text that justifies a copula if
+        # there are multiple lemmas of copula in one language.
+        my $dname = "deficient$ifun";
+        $config{$dname} = decode('utf8', $query->param($dname));
+        if(!defined($config{$dname}) || $config{$dname} =~ m/^\s*$/)
         {
-            $config{example1} = $1;
+            $config{$dname} = '';
         }
-    }
-    #--------------------------------------------------------------------------
-    # English translation of the example is provided if the current language is
-    # not English. We can probably allow the same regular expressions as for
-    # the original example, although we typically do not need non-English
-    # letters in the English translation.
-    $config{exampleen1} = decode('utf8', $query->param('exampleen1'));
-    if(!defined($config{exampleen1}) || $config{exampleen1} =~ m/^\s*$/)
-    {
-        $config{exampleen1} = '';
-    }
-    else
-    {
-        # Remove duplicate, leading and trailing spaces.
-        $config{exampleen1} =~ s/^\s+//;
-        $config{exampleen1} =~ s/\s+$//;
-        $config{exampleen1} =~ s/\s+/ /sg;
-        if($config{exampleen1} !~ m/^[\pL\pM$zwj\pN\pP ]+$/)
+        elsif($config{$dname} !~ m/\pL{3}/)
         {
-            push(@errors, "Example translation '$config{exampleen1}' contains characters other than letters, numbers, punctuation and space");
+            push(@errors, "Explanation of deficient copula paradigm '$config{$dname}' contains too few letters.");
         }
-        elsif($config{exampleen1} =~ m/[<>&"]/) # "
+        elsif($config{$dname} =~ m/^([-A-Za-z \.:\(,;\)]+)$/)
         {
-            push(@errors, "Example translation '$config{exampleen1}' contains less-than, greater-than, ampersand or the ASCII quote");
+            $config{$dname} = $1;
         }
-        if($config{exampleen1} =~ m/^(.+)$/)
+        else
         {
-            $config{exampleen1} = $1;
+            push(@errors, "Explanation of deficient copula paradigm '$config{$dname}' contains characters other than English letters, space, period, comma, semicolon, colon, hyphen, and round brackets");
         }
-    }
-    #--------------------------------------------------------------------------
-    # Comment is an optional English text. Since it may contain a word from the
-    # language being documented, we should allow everything that is allowed in
-    # the example.
-    $config{comment1} = decode('utf8', $query->param('comment1'));
-    if(!defined($config{comment1}) || $config{comment1} =~ m/^\s*$/)
-    {
-        $config{comment1} = '';
-    }
-    else
-    {
-        # Remove duplicate, leading and trailing spaces.
-        $config{comment1} =~ s/^\s+//;
-        $config{comment1} =~ s/\s+$//;
-        $config{comment1} =~ s/\s+/ /sg;
-        if($config{comment1} !~ m/^[\pL\pM$zwj\pN\pP ]+$/)
+        #--------------------------------------------------------------------------
+        # Example in the original language may contain letters (including Unicode
+        # letters), spaces, punctuation (including Unicode punctuation). Square
+        # brackets have a special meaning, they mark the word we focus on. We
+        # probably do not need < > & "" and we could ban them for safety (but
+        # it is not necessary if we make sure to always escape them when inserting
+        # them in HTML we generate). We may need the apostrophe in some languages,
+        # though.
+        my $ename = "example$ifun";
+        $config{$ename} = decode('utf8', $query->param($ename));
+        if(!defined($config{$ename}) || $config{$ename} =~ m/^\s*$/)
         {
-            push(@errors, "Comment '$config{comment1}' contains characters other than letters, numbers, punctuation and space");
+            $config{$ename} = '';
         }
-        elsif($config{comment1} =~ m/[<>&"]/) # "
+        else
         {
-            push(@errors, "Comment '$config{comment1}' contains less-than, greater-than, ampersand or the ASCII quote");
+            # Remove duplicate, leading and trailing spaces.
+            $config{$ename} =~ s/^\s+//;
+            $config{$ename} =~ s/\s+$//;
+            $config{$ename} =~ s/\s+/ /sg;
+            if($config{$ename} !~ m/^[\pL\pM$zwj\pN\pP ]+$/)
+            {
+                push(@errors, "Example '$config{$ename}' contains characters other than letters, numbers, punctuation and space");
+            }
+            elsif($config{$ename} =~ m/[<>&"]/) # "
+            {
+                push(@errors, "Example '$config{$ename}' contains less-than, greater-than, ampersand or the ASCII quote");
+            }
+            # All characters that are allowed in a lemma must be allowed inside the square brackets.
+            # In addition, we now also allow the ZERO WIDTH JOINER.
+            elsif($config{$ename} !~ m/\[[-\pL\pM$zwj']+\]/) #'
+            {
+                push(@errors, "Example '$config{$ename}' does not contain a sequence of letters enclosed in [square brackets]");
+            }
+            if($config{$ename} =~ m/^(.+)$/)
+            {
+                $config{$ename} = $1;
+            }
         }
-        if($config{comment1} =~ m/^(.+)$/)
+        #--------------------------------------------------------------------------
+        # English translation of the example is provided if the current language is
+        # not English. We can probably allow the same regular expressions as for
+        # the original example, although we typically do not need non-English
+        # letters in the English translation.
+        $ename = "exampleen$ifun";
+        $config{$ename} = decode('utf8', $query->param($ename));
+        if(!defined($config{$ename}) || $config{$ename} =~ m/^\s*$/)
         {
-            $config{comment1} = $1;
+            $config{$ename} = '';
         }
-    }
+        else
+        {
+            # Remove duplicate, leading and trailing spaces.
+            $config{$ename} =~ s/^\s+//;
+            $config{$ename} =~ s/\s+$//;
+            $config{$ename} =~ s/\s+/ /sg;
+            if($config{$ename} !~ m/^[\pL\pM$zwj\pN\pP ]+$/)
+            {
+                push(@errors, "Example translation '$config{$ename}' contains characters other than letters, numbers, punctuation and space");
+            }
+            elsif($config{$ename} =~ m/[<>&"]/) # "
+            {
+                push(@errors, "Example translation '$config{$ename}' contains less-than, greater-than, ampersand or the ASCII quote");
+            }
+            if($config{$ename} =~ m/^(.+)$/)
+            {
+                $config{$ename} = $1;
+            }
+        }
+        #--------------------------------------------------------------------------
+        # Comment is an optional English text. Since it may contain a word from the
+        # language being documented, we should allow everything that is allowed in
+        # the example.
+        my $cname = "comment$ifun";
+        $config{$cname} = decode('utf8', $query->param($cname));
+        if(!defined($config{$cname}) || $config{$cname} =~ m/^\s*$/)
+        {
+            $config{$cname} = '';
+        }
+        else
+        {
+            # Remove duplicate, leading and trailing spaces.
+            $config{$cname} =~ s/^\s+//;
+            $config{$cname} =~ s/\s+$//;
+            $config{$cname} =~ s/\s+/ /sg;
+            if($config{$cname} !~ m/^[\pL\pM$zwj\pN\pP ]+$/)
+            {
+                push(@errors, "Comment '$config{$cname}' contains characters other than letters, numbers, punctuation and space");
+            }
+            elsif($config{$cname} =~ m/[<>&"]/) # "
+            {
+                push(@errors, "Comment '$config{$cname}' contains less-than, greater-than, ampersand or the ASCII quote");
+            }
+            if($config{$cname} =~ m/^(.+)$/)
+            {
+                $config{$cname} = $1;
+            }
+        }
+    } # loop over multiple functions
     #--------------------------------------------------------------------------
     # The parameter 'save' comes from the Save button which submitted the form.
     $config{save} = decode('utf8', $query->param('save'));
