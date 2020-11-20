@@ -476,7 +476,7 @@ EOF
     my $hrule = '';
     if($current_function_exists)
     {
-        $hrule = htmlescape($record->{functions}[$ifun]{rule});
+        $hrule = htmlescape($record->{functions}[$ifun-1]{rule});
     }
     print("      <td><input name=rule$ifun type=text size=30 value=\"$hrule\" /></td>\n");
     if($show_deficient)
@@ -487,7 +487,7 @@ EOF
     my $hexample = '';
     if($current_function_exists)
     {
-        $hexample = htmlescape($record->{functions}[$ifun]{example});
+        $hexample = htmlescape($record->{functions}[$ifun-1]{example});
     }
     print("      <td><input name=example$ifun type=text size=30 value=\"$hexample\" /></td>\n");
     if($show_exampleen)
@@ -495,14 +495,14 @@ EOF
         my $hexampleen = '';
         if($current_function_exists)
         {
-            $hexampleen = htmlescape($record->{functions}[$ifun]{exampleen});
+            $hexampleen = htmlescape($record->{functions}[$ifun-1]{exampleen});
         }
         print("      <td><input name=exampleen$ifun type=text size=30 value=\"$hexampleen\" /></td>\n");
     }
     my $hcomment = '';
     if($current_function_exists)
     {
-        $hcomment = htmlescape($record->{functions}[$ifun]{comment});
+        $hcomment = htmlescape($record->{functions}[$ifun-1]{comment});
     }
     print("      <td><input name=comment$ifun type=text value=\"$hcomment\" /></td>\n");
     print("    </tr>\n");
