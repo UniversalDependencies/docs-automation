@@ -1467,9 +1467,15 @@ sub write_data_json
         foreach my $lemma (@lemmas)
         {
             my $jsonlemma = '"'.escape_json_string($lemma).'": ';
-            my @functions = sort {$a->{function} cmp $b->{function}} (@{$data->{$lcode}{$lemma}{functions}});
+            # Sort the existing functions following the global list of known functions.
+            my %sortval;
+            for(my $i = 0; $i <= $#functions; $i++)
+            {
+                $sortval{$functions[$i][1]} = $i;
+            }
+            my @lemmafunctions = sort {$sortval{$a->{function}} <=> $sortval{$b->{function}}} (@{$data->{$lcode}{$lemma}{functions}});
             my @frecords;
-            foreach my $function (@functions)
+            foreach my $function (@lemmafunctions)
             {
                 my @frecord =
                 (
