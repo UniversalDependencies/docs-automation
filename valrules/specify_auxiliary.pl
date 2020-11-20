@@ -619,7 +619,7 @@ sub process_form_data
         }
         else
         {
-            print("    <li style='color:red'>ERROR: Missing function</li>\n");
+            print("    <li style='color:red'>ERROR: Missing function $ifun</li>\n");
             $error = 1;
         }
         my $rname = "rule$ifun";
@@ -629,7 +629,7 @@ sub process_form_data
         }
         else
         {
-            print("    <li style='color:red'>ERROR: Missing rule</li>\n");
+            print("    <li style='color:red'>ERROR: Missing rule $ifun</li>\n");
             $error = 1;
         }
         # We will assess the obligatoriness of the 'deficient' parameter later.
@@ -650,7 +650,7 @@ sub process_form_data
         }
         else
         {
-            print("    <li style='color:red'>ERROR: Missing example</li>\n");
+            print("    <li style='color:red'>ERROR: Missing example $ifun</li>\n");
             $error = 1;
         }
         $ename = "exampleen$ifun";
@@ -660,7 +660,7 @@ sub process_form_data
         }
         elsif($config{lcode} ne 'en')
         {
-            print("    <li style='color:red'>ERROR: Missing English translation of the example</li>\n");
+            print("    <li style='color:red'>ERROR: Missing English translation of the example $ifun</li>\n");
             $error = 1;
         }
         my $cname = "comment$ifun";
