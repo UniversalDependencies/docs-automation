@@ -602,8 +602,10 @@ sub process_form_data
     my %unique_functions;
     my $copula_among_functions = 0;
     my $deficient = '';
+    my $maxifun = 1;
     for(my $ifun = 1; exists($config{"function$ifun"}) && defined($config{"function$ifun"}) && $config{"function$ifun"} ne ''; $ifun++)
     {
+        $maxifun = $ifun;
         my $fname = "function$ifun";
         if($config{$fname} ne '')
         {
@@ -728,7 +730,7 @@ sub process_form_data
         $record{lastchanged} = $timestamp;
         $record{lastchanger} = $config{ghu};
         $record{functions} = [];
-        for(my $ifun = 1; exists($config{"function$ifun"}); $ifun++)
+        for(my $ifun = 1; $ifun <= $maxifun; $ifun++)
         {
             my %frecord =
             (
