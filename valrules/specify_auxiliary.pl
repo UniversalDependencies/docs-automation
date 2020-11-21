@@ -97,7 +97,7 @@ print <<EOF
           var table = document.getElementById("inputtable");
           var rows = table.rows;
           var n_rows = rows.length;
-          var n_functions = n_rows - 1;
+          var n_functions = n_rows - 2; // without header and footer
           alert("The form currently accepts up to " + n_functions + " functions.");
       }
       function addFields() {
