@@ -504,6 +504,7 @@ EOF
             var ifun = n_functions + 1; // number of the new function that we are adding
             //alert("The form currently accepts up to " + n_functions + " functions.");
             var row = table.insertRow(n_rows-1);
+            row.id = "inputrow" + ifun
 EOF
     ;
     print("            var cell1 = row.insertCell(-1);\n");
