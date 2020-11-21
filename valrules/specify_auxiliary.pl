@@ -91,6 +91,37 @@ print <<EOF
       height: 1em;
     }
   </style>
+  <script type='text/javascript'>
+      function checkTable() {
+          // Figure out the currently highest number X in tablew row ids ("inputrowX").
+          var table = document.getElementById("inputtable");
+          var rows = table.rows;
+          var n_rows = rows.length;
+          var n_functions = n_rows - 1;
+          alert("The form currently accepts up to " + n_functions + " functions.");
+      }
+      function addFields() {
+          // Number of inputs to create
+          var number = document.getElementById("member").value;
+          // Container <div> where dynamic content will be placed
+          var container = document.getElementById("container");
+          // Clear previous contents of the container
+          while (container.hasChildNodes()) {
+              container.removeChild(container.lastChild);
+          }
+          for (i=0;i<number;i++){
+              // Append a node with a random text
+              container.appendChild(document.createTextNode("Member " + (i+1)));
+              // Create an <input> element, set its type and name attributes
+              var input = document.createElement("input");
+              input.type = "text";
+              input.name = "member" + i;
+              container.appendChild(input);
+              // Append a line break
+              container.appendChild(document.createElement("br"));
+          }
+      }
+  </script>
 </head>
 <body>
 EOF
@@ -341,12 +372,12 @@ sub print_lemma_form
     issues to be discussed. This is not a problem when you edit directly on
     Github, but here the actual push action will be formally done by another
     user.</small></p>
-  <table>
+  <table id="inputtable">
 EOF
     ;
     #--------------------------------------------------------------------------
     # Column headings
-    print("    <tr>\n");
+    print("    <tr id=\"inputheader\">\n");
     print("      <td>Lemma</td>\n");
     print("      <td>Function</td>\n");
     print("      <td>Rule</td>\n");
@@ -363,7 +394,7 @@ EOF
     print("    </tr>\n");
     #--------------------------------------------------------------------------
     # Lemma and the first function
-    print("    <tr>\n");
+    print("    <tr id=\"inputrow1\">\n");
     print("      <td>");
     if($config{lemma} ne '')
     {
@@ -456,7 +487,7 @@ EOF
     for(my $ifun = 2; $ifun <= 5; $ifun++)
     {
         my $current_function_exists = scalar(@{$record->{functions}}) >= $ifun;
-        print("    <tr>\n");
+        print("    <tr id=\"inputrow$ifun\">\n");
         print("      <td>Function&nbsp;$ifun:</td>\n");
         print("      <td>\n");
         print("        <select name=function$ifun>\n");
@@ -510,7 +541,7 @@ EOF
     }
     #--------------------------------------------------------------------------
     # Buttons and hints
-    print("    <tr>\n");
+    print("    <tr id=\"inputfooter\">\n");
     # If we are adding a new lemma, we will have to check that it is really new.
     # Signal that with a slightly different button text, "Save new" instead of "Save".
     if($config{add})
@@ -544,7 +575,7 @@ EOF
     {
         print("      <td></td>\n");
     }
-    print("      <td></td>\n");
+    print("      <td><!-- Experiments with JavaScript. --><input type=submit value=\"Do not click here\" onclick=\"checkTable()\" /></td>\n");
     print("    </tr>\n");
     print <<EOF
   </table>
