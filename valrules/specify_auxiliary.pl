@@ -467,7 +467,7 @@ EOF
             var n_rows = rows.length;
             var n_functions = n_rows - 2; // without header and footer
             var ifun = n_functions + 1; // number of the new function that we are adding
-            alert("The form currently accepts up to " + n_functions + " functions.");
+            //alert("The form currently accepts up to " + n_functions + " functions.");
             var row = table.insertRow(n_rows-1);
             var cell1 = row.insertCell(0);
             cell1.innerHTML = "Function " + ifun + ":";
