@@ -471,11 +471,13 @@ EOF
             var row = table.insertRow(n_rows-1);
             var cell1 = row.insertCell(0);
             cell1.innerHTML = "Function " + ifun + ":";
-            var cell2 = row.insertCell(1);
 EOF
         ;
+        print("            var cell2 = row.insertCell(1);\n");
         my $html = '';
-        $html .= "        <select name=function$ifun>\\n"; # double-escape newline because this HTML is used as a string in JavaScript
+        # Double-escape newlines and quotes because this HTML is used as a string in JavaScript.
+        # Single-escaped quote will break the JavaScript string so that a JavaScript variable can be inserted.
+        $html .= "        <select name=function\" + ifun + \">\\n";
         $html .= "          <option>-----</option>\\n";
         foreach my $f (@functions)
         {
