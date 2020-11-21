@@ -543,7 +543,7 @@ EOF
     #--------------------------------------------------------------------------
     # Buttons and hints
     print("    <tr id=\"inputfooter\">\n");
-    print("      <td><input type=button value=\"Add function\" title=\"Add fields for another function of this auxiliary\" onclick=\"addFunction()\" /></td>\n");
+    print("      <td><input type=button value=\"More\" title=\"Add fields for another function of this auxiliary\" onclick=\"addFunction()\" /></td>\n");
     # Do not print the hint for the function/rule if the function/rule is fixed (copula).
     # But do print the hint for multiple copulas.
     ###!!! We now print it always because there might be additional, non-copula functions.
