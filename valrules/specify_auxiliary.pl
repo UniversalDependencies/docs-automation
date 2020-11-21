@@ -469,11 +469,11 @@ EOF
             var ifun = n_functions + 1; // number of the new function that we are adding
             //alert("The form currently accepts up to " + n_functions + " functions.");
             var row = table.insertRow(n_rows-1);
-            var cell1 = row.insertCell(0);
+            var cell1 = row.insertCell(-1);
             cell1.innerHTML = "Function&nbsp;" + ifun + ":";
 EOF
         ;
-        print("            var cell2 = row.insertCell(1);\n");
+        print("            var cell2 = row.insertCell(-1);\n");
         my $html = '';
         # Double-escape newlines and quotes because this HTML is used as a string in JavaScript.
         # Single-escaped quote will break the JavaScript string so that a JavaScript variable can be inserted.
@@ -487,28 +487,23 @@ EOF
         }
         $html .= "        </select>\\n";
         print("            cell2.innerHTML = \"$html\";\n");
-        print <<EOF
+        print("            var cell3 = row.insertCell(-1);\n");
+        print("            cell3.innerHTML = \"<input name=rule\" + ifun + \" type=text size=30 />\"\n");
+        if($show_deficient)
+        {
+            # The additional function cannot be a copula, so we will not provide a field for the deficient paradigm explanation.
+            print("            var cell4 = row.insertCell(-1);\n");
         }
-        function addFields() {
-            // Number of inputs to create
-            var number = document.getElementById("member").value;
-            // Container <div> where dynamic content will be placed
-            var container = document.getElementById("container");
-            // Clear previous contents of the container
-            while (container.hasChildNodes()) {
-                container.removeChild(container.lastChild);
-            }
-            for (i=0;i<number;i++){
-                // Append a node with a random text
-                container.appendChild(document.createTextNode("Member " + (i+1)));
-                // Create an <input> element, set its type and name attributes
-                var input = document.createElement("input");
-                input.type = "text";
-                input.name = "member" + i;
-                container.appendChild(input);
-                // Append a line break
-                container.appendChild(document.createElement("br"));
-            }
+        print("            var cell5 = row.insertCell(-1);\n");
+        print("            cell5.innerHTML = \"<input name=example\" + ifun + \" type=text size=30 />\"\n");
+        if($show_exampleen)
+        {
+            print("            var cell6 = row.insertCell(-1);\n");
+            print("            cell6.innerHTML = \"<input name=exampleen\" + ifun + \" type=text size=30 />\"\n");
+        }
+        print("            var cell7 = row.insertCell(-1);\n");
+        print("            cell7.innerHTML = \"<input name=comment\" + ifun + \" type=text />\"\n");
+        print <<EOF
         }
     </script>
 EOF
