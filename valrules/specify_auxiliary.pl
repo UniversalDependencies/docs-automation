@@ -91,37 +91,6 @@ print <<EOF
       height: 1em;
     }
   </style>
-  <script type='text/javascript'>
-      function checkTable() {
-          // Figure out the currently highest number X in tablew row ids ("inputrowX").
-          var table = document.getElementById("inputtable");
-          var rows = table.rows;
-          var n_rows = rows.length;
-          var n_functions = n_rows - 2; // without header and footer
-          alert("The form currently accepts up to " + n_functions + " functions.");
-      }
-      function addFields() {
-          // Number of inputs to create
-          var number = document.getElementById("member").value;
-          // Container <div> where dynamic content will be placed
-          var container = document.getElementById("container");
-          // Clear previous contents of the container
-          while (container.hasChildNodes()) {
-              container.removeChild(container.lastChild);
-          }
-          for (i=0;i<number;i++){
-              // Append a node with a random text
-              container.appendChild(document.createTextNode("Member " + (i+1)));
-              // Create an <input> element, set its type and name attributes
-              var input = document.createElement("input");
-              input.type = "text";
-              input.name = "member" + i;
-              container.appendChild(input);
-              // Append a line break
-              container.appendChild(document.createElement("br"));
-          }
-      }
-  </script>
 </head>
 <body>
 EOF
@@ -484,60 +453,122 @@ EOF
     print("    </tr>\n");
     #--------------------------------------------------------------------------
     # An additional function
-    for(my $ifun = 2; $ifun <= 5; $ifun++)
+    # We can either add a fixed number of functions on the server side (static)
+    # or add a row dynamically on demand using JavaScript.
+    my $dynamic = 1;
+    if($dynamic)
     {
-        my $current_function_exists = scalar(@{$record->{functions}}) >= $ifun;
-        print("    <tr id=\"inputrow$ifun\">\n");
-        print("      <td>Function&nbsp;$ifun:</td>\n");
-        print("      <td>\n");
-        print("        <select name=function$ifun>\n");
-        print("          <option>-----</option>\n");
+        print <<EOF
+    <script type='text/javascript'>
+        function checkTable() {
+            // Figure out the currently highest number X in tablew row ids ("inputrowX").
+            var table = document.getElementById("inputtable");
+            var rows = table.rows;
+            var n_rows = rows.length;
+            var n_functions = n_rows - 2; // without header and footer
+            var ifun = n_functions + 1; // number of the new function that we are adding
+            alert("The form currently accepts up to " + n_functions + " functions.");
+            var row = table.insertRow(n_rows-1);
+            var cell1 = row.insertCell(0);
+            cell1.innerHTML = "Function " + ifun + ":";
+            var cell2 = row.insertCell(1);
+EOF
+        ;
+        my $html = '';
+        $html .= "        <select name=function$ifun>\\n"; # double-escape newline because this HTML is used as a string in JavaScript
+        $html .= "          <option>-----</option>\\n";
         foreach my $f (@functions)
         {
             # Copula can be the first function but not an additional function.
             next if($f->[1] =~ m/^cop\./);
-            my $selected = '';
-            if($current_function_exists && $f->[1] eq $record->{functions}[$ifun-1]{function})
-            {
-                $selected = ' selected';
+            $html .= "          <option value=\\\"$f->[1]\\\">".htmlescape($f->[0])."</option>\\n";
+        }
+        $html .= "        </select>\\n";
+        print("            cell2.innerHTML = \"$html\";\n");
+        print <<EOF
+        }
+        function addFields() {
+            // Number of inputs to create
+            var number = document.getElementById("member").value;
+            // Container <div> where dynamic content will be placed
+            var container = document.getElementById("container");
+            // Clear previous contents of the container
+            while (container.hasChildNodes()) {
+                container.removeChild(container.lastChild);
             }
-            print("          <option value=\"$f->[1]\"$selected>".htmlescape($f->[0])."</option>\n");
+            for (i=0;i<number;i++){
+                // Append a node with a random text
+                container.appendChild(document.createTextNode("Member " + (i+1)));
+                // Create an <input> element, set its type and name attributes
+                var input = document.createElement("input");
+                input.type = "text";
+                input.name = "member" + i;
+                container.appendChild(input);
+                // Append a line break
+                container.appendChild(document.createElement("br"));
+            }
         }
-        print("        </select>\n");
-        print("      </td>\n");
-        my $hrule = '';
-        if($current_function_exists)
+    </script>
+EOF
+        ;
+    }
+    else # static number of additional functions
+    {
+        for(my $ifun = 2; $ifun <= 5; $ifun++)
         {
-            $hrule = htmlescape($record->{functions}[$ifun-1]{rule});
-        }
-        print("      <td><input name=rule$ifun type=text size=30 value=\"$hrule\" /></td>\n");
-        if($show_deficient)
-        {
-            # The additional function cannot be a copula, so we will not provide a field for the deficient paradigm explanation.
-            print("      <td></td>\n");
-        }
-        my $hexample = '';
-        if($current_function_exists)
-        {
-            $hexample = htmlescape($record->{functions}[$ifun-1]{example});
-        }
-        print("      <td><input name=example$ifun type=text size=30 value=\"$hexample\" /></td>\n");
-        if($show_exampleen)
-        {
-            my $hexampleen = '';
+            my $current_function_exists = scalar(@{$record->{functions}}) >= $ifun;
+            print("    <tr id=\"inputrow$ifun\">\n");
+            print("      <td>Function&nbsp;$ifun:</td>\n");
+            print("      <td>\n");
+            print("        <select name=function$ifun>\n");
+            print("          <option>-----</option>\n");
+            foreach my $f (@functions)
+            {
+                # Copula can be the first function but not an additional function.
+                next if($f->[1] =~ m/^cop\./);
+                my $selected = '';
+                if($current_function_exists && $f->[1] eq $record->{functions}[$ifun-1]{function})
+                {
+                    $selected = ' selected';
+                }
+                print("          <option value=\"$f->[1]\"$selected>".htmlescape($f->[0])."</option>\n");
+            }
+            print("        </select>\n");
+            print("      </td>\n");
+            my $hrule = '';
             if($current_function_exists)
             {
-                $hexampleen = htmlescape($record->{functions}[$ifun-1]{exampleen});
+                $hrule = htmlescape($record->{functions}[$ifun-1]{rule});
             }
-            print("      <td><input name=exampleen$ifun type=text size=30 value=\"$hexampleen\" /></td>\n");
+            print("      <td><input name=rule$ifun type=text size=30 value=\"$hrule\" /></td>\n");
+            if($show_deficient)
+            {
+                # The additional function cannot be a copula, so we will not provide a field for the deficient paradigm explanation.
+                print("      <td></td>\n");
+            }
+            my $hexample = '';
+            if($current_function_exists)
+            {
+                $hexample = htmlescape($record->{functions}[$ifun-1]{example});
+            }
+            print("      <td><input name=example$ifun type=text size=30 value=\"$hexample\" /></td>\n");
+            if($show_exampleen)
+            {
+                my $hexampleen = '';
+                if($current_function_exists)
+                {
+                    $hexampleen = htmlescape($record->{functions}[$ifun-1]{exampleen});
+                }
+                print("      <td><input name=exampleen$ifun type=text size=30 value=\"$hexampleen\" /></td>\n");
+            }
+            my $hcomment = '';
+            if($current_function_exists)
+            {
+                $hcomment = htmlescape($record->{functions}[$ifun-1]{comment});
+            }
+            print("      <td><input name=comment$ifun type=text value=\"$hcomment\" /></td>\n");
+            print("    </tr>\n");
         }
-        my $hcomment = '';
-        if($current_function_exists)
-        {
-            $hcomment = htmlescape($record->{functions}[$ifun-1]{comment});
-        }
-        print("      <td><input name=comment$ifun type=text value=\"$hcomment\" /></td>\n");
-        print("    </tr>\n");
     }
     #--------------------------------------------------------------------------
     # Buttons and hints
