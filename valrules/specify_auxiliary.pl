@@ -470,7 +470,7 @@ EOF
             //alert("The form currently accepts up to " + n_functions + " functions.");
             var row = table.insertRow(n_rows-1);
             var cell1 = row.insertCell(0);
-            cell1.innerHTML = "Function " + ifun + ":";
+            cell1.innerHTML = "Function&nbsp;" + ifun + ":";
 EOF
         ;
         print("            var cell2 = row.insertCell(1);\n");
@@ -608,7 +608,7 @@ EOF
     {
         print("      <td></td>\n");
     }
-    print("      <td><!-- Experiments with JavaScript. --><input type=submit value=\"Do not click here\" onclick=\"checkTable()\" /></td>\n");
+    print("      <td><!-- Experiments with JavaScript. --><input type=button value=\"Do not click here\" onclick=\"checkTable()\" /></td>\n");
     print("    </tr>\n");
     print <<EOF
   </table>
