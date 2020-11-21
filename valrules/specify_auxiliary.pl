@@ -568,7 +568,7 @@ EOF
     {
         print("      <td></td>\n");
     }
-    print("      <td><!-- Experiments with JavaScript. --><input type=button value=\"Do not click here\" onclick=\"checkTable()\" /></td>\n");
+    print("      <td></td>\n");
     print("    </tr>\n");
     print("  </table>\n");
     # If we are adding a new lemma, we will have to check that it is really new.
