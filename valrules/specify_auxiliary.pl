@@ -204,7 +204,8 @@ sub print_undocumented_auxiliaries
         {
             $hrefs .= ' | Already documented: '.get_lemma_links_to_edit(@documented);
         }
-        print("  <h2 style='color:red'>You have $n undocumented auxiliaries!</h2>\n");
+        my $suffix = $n > 1 ? 'ies' : 'y';
+        print("  <h2 style='color:red'>You have $n undocumented auxiliar$suffix!</h2>\n");
         print("  <p>Please edit each undocumented auxiliary and supply the missing information.</p>\n");
         print("  <p>$hrefs</p>\n");
     }
