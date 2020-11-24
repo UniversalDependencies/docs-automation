@@ -508,6 +508,11 @@ Old Church Slavonic:
   lcode: cu
   iso3: chu
   family: IE, Slavic
+Old East Slavic:
+  flag: RU-IVAN
+  lcode: orv
+  iso3: orv
+  family: IE, Slavic
 Old French:
   flag: FR-ROYAL
   lcode: fro
@@ -518,11 +523,6 @@ Old Irish:
   lcode: sga
   iso3: sga
   family: IE, Celtic
-Old Russian:
-  flag: RU-IVAN
-  lcode: orv
-  iso3: orv
-  family: IE, Slavic
 Old Saxon:
   flag: DE-HRR
   lcode: osx
