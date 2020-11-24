@@ -64,7 +64,18 @@ if(defined($result))
         system("echo Hook on $result->{repository}{name} >>$valilog");
         # Now we must update our copy of that repository and update validation status.
         my $folder = $result->{repository}{name};
-        system("perl update-validation-report.pl $folder >>$valilog 2>&1");
+        # If this is a new repository, we do not have its clone yet.
+        if(-d $folder)
+        {
+            system("perl update-validation-report.pl $folder >>$valilog 2>&1");
+        }
+        else
+        {
+            system("echo This is a new repository. We have to clone it first. >>$valilog");
+            system("echo The following command must be run manually because user www-data cannot write to the top folder. >>$valilog");
+            system("echo docs-automation/valdan/clone_one.sh $folder >>$valilog");
+            #system("docs-automation/valdan/clone_one.sh $folder >>$valilog 2>&1");
+        }
     }
     # Change in master branch of repository tools may mean changed validation algorithm.
     # Ignore changes in other branches.
