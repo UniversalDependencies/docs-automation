@@ -7,6 +7,7 @@
   * value `Inan`: inanimate
   * value `Hum`: human
   * value `Nhum`: non-human
+  * <span style="color:red">ERROR: No examples found under value 'Anim'.</span>
   * <span style="color:red">ERROR: No examples found under value 'Inan'.</span>
   * <span style="color:red">ERROR: No examples found under value 'Hum'.</span>
   * <span style="color:red">ERROR: No examples found under value 'Nhum'.</span>
@@ -17,7 +18,7 @@
   * value `Prog`: progressive aspect
   * value `Hab`: habitual aspect
   * value `Iter`: iterative / frequentative aspect
-  * <span style="color:red">ERROR: No examples found under value 'Iter'.</span>
+  * <span style="color:red">ERROR: No examples found under value 'Hab'.</span>
 * Case
   * value `Nom`: nominative / direct
   * value `Acc`: accusative / oblique
@@ -53,11 +54,11 @@
   * value `Cns`: considerative
   * value `Cmp`: comparative
   * value `Equ`: equative
+  * <span style="color:red">ERROR: No examples found under value 'Nom'.</span>
   * <span style="color:red">ERROR: No examples found under value 'Acc'.</span>
   * <span style="color:red">ERROR: No examples found under value 'Abs'.</span>
   * <span style="color:red">ERROR: No examples found under value 'Erg'.</span>
-  * <span style="color:red">ERROR: No examples found under value 'Dat'.</span>
-  * <span style="color:red">ERROR: No examples found under value 'Equ'.</span>
+  * <span style="color:red">ERROR: No examples found under value 'Cmp'.</span>
 * Clusivity
   * value `In`: inclusive
   * value `Ex`: exclusive
@@ -67,7 +68,7 @@
   * value `Def`: definite
   * value `Cons`: construct state / reduced definiteness
   * value `Com`: complex
-  * <span style="color:red">ERROR: No examples found under value 'Def'.</span>
+  * <span style="color:red">ERROR: No examples found under value 'Spec'.</span>
 * Degree
   * value `Pos`: positive, first degree
   * value `Equ`: equative
@@ -85,6 +86,7 @@
   * value `Fem`: feminine gender
   * value `Neut`: neuter gender
   * value `Com`: common gender
+  * <span style="color:red">ERROR: No examples found under value 'Com'.</span>
 * Mood
   * value `Ind`: indicative
   * value `Imp`: imperative
@@ -98,9 +100,10 @@
   * value `Des`: desiderative
   * value `Nec`: necessitative
   * value `Adm`: admirative
+  * <span style="color:red">ERROR: No examples found under value 'Prp'.</span>
   * <span style="color:red">ERROR: No examples found under value 'Qot'.</span>
-  * <span style="color:red">ERROR: No examples found under value 'Opt'.</span>
-  * <span style="color:red">ERROR: No examples found under value 'Nec'.</span>
+  * <span style="color:red">ERROR: No examples found under value 'Des'.</span>
+  * <span style="color:red">ERROR: No examples found under value 'Adm'.</span>
 * NounClass
   * value `Bantu1`: singular, persons
   * value `Bantu2`: plural, persons
@@ -145,10 +148,10 @@
   * value `Inv`: inverse number
   * value `Ptan`: plurale tantum
   * value `Coll`: collective / mass / singulare tantum
+  * <span style="color:red">ERROR: No examples found under value 'Tri'.</span>
   * <span style="color:red">ERROR: No examples found under value 'Pauc'.</span>
   * <span style="color:red">ERROR: No examples found under value 'Grpa'.</span>
   * <span style="color:red">ERROR: No examples found under value 'Grpl'.</span>
-  * <span style="color:red">ERROR: No examples found under value 'Inv'.</span>
   * <span style="color:red">ERROR: Unrecognized level 3 heading '### <a name="Count">`Count`</a> count plural'.</span>
   * <span style="color:red">ERROR: Unrecognized level 3 heading '### References'.</span>
 * Person
@@ -157,8 +160,9 @@
   * value `2`: second person
   * value `3`: third person
   * value `4`: fourth person
-  * <span style="color:red">ERROR: No examples found under value '1'.</span>
+  * <span style="color:red">ERROR: No examples found under value '0'.</span>
   * <span style="color:red">ERROR: Unrecognized level 3 heading '### References'.</span>
+  * <span style="color:red">ERROR: No examples found under value '4'.</span>
 * Polarity
   * value `Pos`: positive, affirmative
   * value `Neg`: negative
@@ -167,8 +171,9 @@
   * value `Form`: formal register
   * value `Elev`: referent elevating
   * value `Humb`: speaker humbling
-  * <span style="color:red">ERROR: No examples found under value 'Humb'.</span>
+  * <span style="color:red">ERROR: No examples found under value 'Elev'.</span>
   * <span style="color:red">ERROR: Unrecognized level 3 heading '### References'.</span>
+  * <span style="color:red">ERROR: No examples found under value 'Humb'.</span>
 * Poss
   * value `Yes`: it is possessive
 * PronType
@@ -203,8 +208,8 @@
   * value `Gdv`: gerundive
   * value `Ger`: gerund
   * value `Vnoun`: verbal noun, masdar
-  * <span style="color:red">ERROR: No examples found under value 'Part'.</span>
-  * <span style="color:red">ERROR: No examples found under value 'Ger'.</span>
+  * <span style="color:red">ERROR: No examples found under value 'Sup'.</span>
+  * <span style="color:red">ERROR: No examples found under value 'Gdv'.</span>
   * <span style="color:red">ERROR: Unrecognized level 3 heading '### References'.</span>
 * Voice
   * value `Act`: active or actor-focus voice
@@ -501,7 +506,7 @@ The following 25 languages seem to contain at least some documentation of featur
   * value `Dem`: demonstratives
   * value `Emp`: emphatic serie of personal pronouns
   * value `Refl`: reflexive pronoun
-  * <span style="color:red">ERROR: No examples found under value 'Refl'.</span>
+  * <span style="color:red">ERROR: No examples found under value 'Emp'.</span>
 * Tense
   * value `Past`: past
   * value `Fut`: future
@@ -522,8 +527,10 @@ The following 25 languages seem to contain at least some documentation of featur
 * Animacy
   * value `Anim`: animate
   * value `Inan`: inanimate
-  * <span style="color:red">ERROR: No examples found under value 'Inan'.</span>
+  * <span style="color:red">ERROR: No examples found under value 'Anim'.</span>
   * <span style="color:red">ERROR: Unrecognized examples 'PDT examples of masculine animate nouns:'.</span>
+  * <span style="color:red">ERROR: No examples found under value 'Inan'.</span>
+  * <span style="color:red">ERROR: Unrecognized examples 'PDT examples of masculine inanimate nouns:'.</span>
 * Aspect
   * value `Imp`: imperfect aspect
   * value `Perf`: perfect aspect
@@ -536,8 +543,8 @@ The following 25 languages seem to contain at least some documentation of featur
   * value `Voc`: vocative
   * value `Loc`: locative
   * value `Ins`: instrumental
-  * <span style="color:red">ERROR: No examples found under value 'Gen'.</span>
-  * <span style="color:red">ERROR: No examples found under value 'Voc'.</span>
+  * <span style="color:red">ERROR: No examples found under value 'Nom'.</span>
+  * <span style="color:red">ERROR: No examples found under value 'Acc'.</span>
 * ConjType
   * <span style="color:red">ERROR: Unrecognized level 3 heading '### `Oper`: mathematical operator'.</span>
   * <span style="color:red">ERROR: No feature values found.</span>
@@ -572,7 +579,8 @@ The following 25 languages seem to contain at least some documentation of featur
   * value `Pro`: product
   * value `Oth`: other
   * <span style="color:red">ERROR: Unrecognized level 3 heading '### Conversion from the Prague Dependency Treebank'.</span>
-  * <span style="color:red">ERROR: No examples found under value 'Giv'.</span>
+  * <span style="color:red">ERROR: No examples found under value 'Prs'.</span>
+  * <span style="color:red">ERROR: No examples found under value 'Com'.</span>
   * <span style="color:red">ERROR: No examples found under value 'Pro'.</span>
   * <span style="color:red">ERROR: No examples found under value 'Oth'.</span>
 * NumForm
@@ -585,13 +593,14 @@ The following 25 languages seem to contain at least some documentation of featur
   * value `Mult`: multiplicative numeral or corresponding interrogative / relative / indefinite / demonstrative word
   * value `Frac`: fraction
   * value `Sets`: number of sets of things; collective numeral
-  * <span style="color:red">ERROR: No examples found under value 'Mult'.</span>
+  * <span style="color:red">ERROR: No examples found under value 'Ord'.</span>
   * <span style="color:red">ERROR: Unrecognized examples '#### Adjectival examples'.</span>
   * <span style="color:red">ERROR: Unrecognized examples '#### Adverbial examples'.</span>
 * NumValue
   * value `1`: numeric value 1
   * value `2`: numeric value 2
   * value `3`: numeric value 3 or 4
+  * <span style="color:red">ERROR: No examples found under value '1'.</span>
   * <span style="color:red">ERROR: No examples found under value '2'.</span>
   * <span style="color:red">ERROR: No examples found under value '3'.</span>
 * Number
@@ -636,11 +645,12 @@ The following 25 languages seem to contain at least some documentation of featur
   * value `Slng`: slang
   * value `Expr`: expressive, emotional
   * value `Vulg`: vulgar
-  * <span style="color:red">ERROR: No examples found under value 'Coll'.</span>
+  * <span style="color:red">ERROR: No examples found under value 'Rare'.</span>
+  * <span style="color:red">ERROR: No examples found under value 'Vrnc'.</span>
   * <span style="color:red">ERROR: No examples found under value 'Slng'.</span>
   * <span style="color:red">ERROR: No examples found under value 'Expr'.</span>
-  * <span style="color:red">ERROR: No examples found under value 'Vulg'.</span>
   * <span style="color:red">ERROR: Unrecognized examples 'Typical examples of expressive words in the Czech data are diminutives:'.</span>
+  * <span style="color:red">ERROR: No examples found under value 'Vulg'.</span>
 * Tense
   * value `Past`: past tense
   * value `Pres`: present tense
@@ -1201,6 +1211,7 @@ The following 25 languages seem to contain at least some documentation of featur
 * Animacy
   * value `Hum`: human
   * value `Nhum`: non-human
+  * <span style="color:red">ERROR: No examples found under value 'Hum'.</span>
   * <span style="color:red">ERROR: No examples found under value 'Nhum'.</span>
 * Aspect
   * value `Imp`: imperfect aspect
@@ -1216,8 +1227,8 @@ The following 25 languages seem to contain at least some documentation of featur
   * value `Abl`: ablative
   * value `Ins`: instrumental
   * value `Loc`: locative
+  * <span style="color:red">ERROR: No examples found under value 'Nom'.</span>
   * <span style="color:red">ERROR: No examples found under value 'Gen'.</span>
-  * <span style="color:red">ERROR: No examples found under value 'Dat'.</span>
 * ConjType
   * <span style="color:red">ERROR: Unrecognized level 3 heading '### `Comp`: comparing conjunction'.</span>
   * <span style="color:red">ERROR: Unrecognized level 3 heading '### `Oper`: mathematical operator'.</span>
@@ -1240,6 +1251,7 @@ The following 25 languages seem to contain at least some documentation of featur
 * Echo
   * value `Rdp`: reduplicative
   * value `Ech`: echo
+  * <span style="color:red">ERROR: No examples found under value 'Ech'.</span>
 * Foreign
   * value `Yes`: it is foreign
 * Hyph
@@ -1258,7 +1270,7 @@ The following 25 languages seem to contain at least some documentation of featur
   * value `Com`: company, organization, institution
   * value `Pro`: product
   * value `Oth`: other
-  * <span style="color:red">ERROR: No examples found under value 'Giv'.</span>
+  * <span style="color:red">ERROR: No examples found under value 'Prs'.</span>
 * NumForm
   * value `Word`: number expressed as a word
   * value `Digit`: number expressed using digits
@@ -1308,7 +1320,7 @@ The following 25 languages seem to contain at least some documentation of featur
   * value `Tot`: total (collective) pronoun or determiner
   * value `Neg`: negative pronoun or determiner
   * value `Ind`: indefinite pronoun, determiner or adverb
-  * <span style="color:red">ERROR: No examples found under value 'Exc'.</span>
+  * <span style="color:red">ERROR: No examples found under value 'Rel'.</span>
 * Reflex
   * <span style="color:red">ERROR: Unrecognized level 3 heading '### `Yes`: it is reflexive'.</span>
   * <span style="color:red">ERROR: No feature values found.</span>
@@ -1320,11 +1332,12 @@ The following 25 languages seem to contain at least some documentation of featur
   * value `Slng`: slang
   * value `Expr`: expressive, emotional
   * value `Vulg`: vulgar
-  * <span style="color:red">ERROR: No examples found under value 'Coll'.</span>
+  * <span style="color:red">ERROR: No examples found under value 'Rare'.</span>
+  * <span style="color:red">ERROR: No examples found under value 'Vrnc'.</span>
   * <span style="color:red">ERROR: No examples found under value 'Slng'.</span>
   * <span style="color:red">ERROR: No examples found under value 'Expr'.</span>
-  * <span style="color:red">ERROR: No examples found under value 'Vulg'.</span>
   * <span style="color:red">ERROR: Unrecognized examples 'Typical examples of expressive words in the Armenian data are diminutives:'.</span>
+  * <span style="color:red">ERROR: No examples found under value 'Vulg'.</span>
 * Subcat
   * value `Intr`: intransitive verb
   * value `Tran`: transitive verb
@@ -1622,6 +1635,7 @@ The following 25 languages seem to contain at least some documentation of featur
 * Polarity
   * value `Neg`: negative
   * value `Pos`: positive
+  * <span style="color:red">ERROR: No examples found under value 'Pos'.</span>
 * Poss
   * value `Yes`: it is possessive
 * PronType
@@ -1631,6 +1645,7 @@ The following 25 languages seem to contain at least some documentation of featur
   * value `Int`: interrogative pronoun, determiner or adverb
   * value `Prs`: personal pronouns
   * value `Rcp`: reciprocal pronoun
+  * <span style="color:red">ERROR: No examples found under value 'Rcp'.</span>
 * Tense
   * value `Past`: past
   * value `Pres`: present

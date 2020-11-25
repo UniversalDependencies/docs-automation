@@ -157,7 +157,7 @@ sub read_feature_doc
             my $short_description = $2;
             if(defined($current_value) && $valdoc{$current_value}{examples} == 0)
             {
-                push(@{$feathash->{errors}}, "No examples found under value '$value'.", @unrecognized_example_lines);
+                push(@{$feathash->{errors}}, "No examples found under value '$current_value'.", @unrecognized_example_lines);
             }
             if(exists($valdoc{$value}))
             {
@@ -194,6 +194,10 @@ sub read_feature_doc
         }
     }
     close(FILE);
+    if(defined($current_value) && $valdoc{$current_value}{examples} == 0)
+    {
+        push(@{$feathash->{errors}}, "No examples found under value '$current_value'.", @unrecognized_example_lines);
+    }
     if($udver != 2)
     {
         push(@{$feathash->{errors}}, "Documentation does not belong to UD v2 guidelines.");
