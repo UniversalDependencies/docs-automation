@@ -75,7 +75,7 @@ my @features = sort(keys(%hash));
 print("# Universal features\n\n");
 foreach my $feature (grep {$hash{$_}{type} eq 'universal'} (@features))
 {
-    print("* $feature\n");
+    print("* [$feature](https://universaldependencies.org/u/feat/$feature.html)\n");
     foreach my $value (@{$hash{$feature}{values}})
     {
         print('  * value `'.$value.'`: '.$hash{$feature}{valdoc}{$value}{shortdesc}."\n");
@@ -89,7 +89,7 @@ print("\n");
 print("# Globally documented non-universal features\n\n");
 foreach my $feature (grep {$hash{$_}{type} eq 'global'} (@features))
 {
-    print("* $feature\n");
+    print("* [$feature](https://universaldependencies.org/u/feat/$feature.html)\n");
     foreach my $value (@{$hash{$feature}{values}})
     {
         print('  * value `'.$value.'`: '.$hash{$feature}{valdoc}{$value}{shortdesc}."\n");
@@ -111,7 +111,7 @@ foreach my $lcode (@lcodes)
     my @features = sort(keys(%{$lhash{$lcode}}));
     foreach my $feature (@features)
     {
-        print("* $feature\n");
+        print("* [$feature](https://universaldependencies.org/$lcode/feat/$feature.html)\n");
         foreach my $value (@{$lhash{$lcode}{$feature}{values}})
         {
             print('  * value `'.$value.'`: '.$lhash{$lcode}{$feature}{valdoc}{$value}{shortdesc}."\n");
@@ -138,7 +138,7 @@ sub read_feature_doc
     my %valdoc;
     my $current_value;
     my @unrecognized_example_lines;
-    print STDERR ("Reading $filepath\n");
+    #print STDERR ("Reading $filepath\n");
     open(FILE, $filepath) or die("Cannot read file '$filepath': $!");
     while(<FILE>)
     {
@@ -175,7 +175,7 @@ sub read_feature_doc
                 push(@{$feathash->{errors}}, "Feature value '$value' does not have the prescribed form.");
             }
         }
-        elsif(m/^\#\#\#[^\#]/)
+        elsif(m/^\#\#\#[^\#]/ && !m/^\#\#\#\s*References$/)
         {
             push(@{$feathash->{errors}}, "Unrecognized level 3 heading '$_'.");
         }
