@@ -221,78 +221,57 @@
   * <span style="color:red">ERROR: Documentation does not belong to UD v2 guidelines.</span>
   * <span style="color:red">ERROR: No feature values found.</span>
 * [AdpType](https://universaldependencies.org/u/feat/AdpType.html)
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### Prep: preposition'.</span>
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### Post: postposition'.</span>
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### Circ: circumposition'.</span>
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### Voc: vocalized preposition'.</span>
-  * <span style="color:red">ERROR: Documentation does not belong to UD v2 guidelines.</span>
-  * <span style="color:red">ERROR: No feature values found.</span>
+  * value `Prep`: preposition
+  * value `Post`: postposition
+  * value `Circ`: circumposition
+  * value `Voc`: vocalized preposition
 * [AdvType](https://universaldependencies.org/u/feat/AdvType.html)
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### Man: adverb of manner ("how")'.</span>
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### Loc: adverb of location ("where, where to, where from")'.</span>
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### Tim: adverb of time ("when, since when, till when")'.</span>
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### Deg: adverb of quantity or degree ("how much")'.</span>
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### Cau: adverb of cause ("why")'.</span>
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### Mod: adverb of modal nature'.</span>
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### Sta: adverb of state'.</span>
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### Ex: existential "there" in English'.</span>
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### Adadj: ad-adjective in Finnish'.</span>
-  * <span style="color:red">ERROR: Documentation does not belong to UD v2 guidelines.</span>
-  * <span style="color:red">ERROR: No feature values found.</span>
+  * value `Man`: adverb of manner ("how")
+  * value `Loc`: adverb of location ("where, where to, where from")
+  * value `Tim`: adverb of time ("when, since when, till when")
+  * value `Deg`: adverb of quantity or degree ("how much")
+  * value `Cau`: adverb of cause ("why")
+  * value `Mod`: adverb of modal nature
+  * value `Sta`: adverb of state
 * [ConjType](https://universaldependencies.org/u/feat/ConjType.html)
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### Comp: comparing conjunction'.</span>
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### Oper: mathematical operator'.</span>
-  * <span style="color:red">ERROR: Documentation does not belong to UD v2 guidelines.</span>
-  * <span style="color:red">ERROR: No feature values found.</span>
+  * value `Comp`: comparing conjunction
+  * value `Oper`: mathematical operator
 * [Echo](https://universaldependencies.org/u/feat/Echo.html)
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### Rdp: reduplicative'.</span>
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### Ech: echo'.</span>
-  * <span style="color:red">ERROR: Documentation does not belong to UD v2 guidelines.</span>
-  * <span style="color:red">ERROR: No feature values found.</span>
+  * value `Rdp`: reduplicative
+  * value `Ech`: echo
 * [ErgDatGender](https://universaldependencies.org/u/feat/ErgDatGender.html)
   * <span style="color:red">ERROR: Unrecognized level 3 heading '### Masc: masculine gender'.</span>
   * <span style="color:red">ERROR: Unrecognized level 3 heading '### Fem: feminine gender'.</span>
   * <span style="color:red">ERROR: Documentation does not belong to UD v2 guidelines.</span>
   * <span style="color:red">ERROR: No feature values found.</span>
 * [Hyph](https://universaldependencies.org/u/feat/Hyph.html)
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### Yes: it is part of hyphenated compound'.</span>
-  * <span style="color:red">ERROR: Documentation does not belong to UD v2 guidelines.</span>
-  * <span style="color:red">ERROR: No feature values found.</span>
+  * value `Yes`: it is part of hyphenated compound
 * [NameType](https://universaldependencies.org/u/feat/NameType.html)
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### `Geo`: geographical name'.</span>
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### `Prs`: name of person'.</span>
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### `Giv`: given name of person'.</span>
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### `Sur`: surname / family name of person'.</span>
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### `Nat`: nationality'.</span>
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### `Com`: company, organization'.</span>
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### `Pro`: product'.</span>
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### `Oth`: other'.</span>
-  * <span style="color:red">ERROR: Documentation does not belong to UD v2 guidelines.</span>
-  * <span style="color:red">ERROR: No feature values found.</span>
+  * value `Geo`: geographical name
+  * value `Prs`: name of person
+  * value `Giv`: given name of person
+  * value `Sur`: surname / family name of person
+  * value `Nat`: nationality
+  * value `Com`: company, organization
+  * value `Pro`: product
+  * value `Oth`: other
 * [NounType](https://universaldependencies.org/u/feat/NounType.html)
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### Class: classifier'.</span>
-  * <span style="color:red">ERROR: Documentation does not belong to UD v2 guidelines.</span>
-  * <span style="color:red">ERROR: No feature values found.</span>
+  * value `Class`: classifier
 * [NumForm](https://universaldependencies.org/u/feat/NumForm.html)
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### Word: number expressed as word'.</span>
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### Digit: number expressed using digits'.</span>
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### Roman: roman numeral'.</span>
-  * <span style="color:red">ERROR: Documentation does not belong to UD v2 guidelines.</span>
-  * <span style="color:red">ERROR: No feature values found.</span>
+  * value `Word`: number expressed as word
+  * value `Digit`: number expressed using digits
+  * value `Roman`: roman numeral
 * [NumValue](https://universaldependencies.org/u/feat/NumValue.html)
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### 1: numeric value 1'.</span>
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### 2: numeric value 2'.</span>
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### 3: numeric value 3 or 4'.</span>
-  * <span style="color:red">ERROR: Documentation does not belong to UD v2 guidelines.</span>
-  * <span style="color:red">ERROR: No feature values found.</span>
+  * value `1`: numeric value 1
+  * value `2`: numeric value 2
+  * value `3`: numeric value 3 or 4
 * [PartType](https://universaldependencies.org/u/feat/PartType.html)
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### Mod: modal particle'.</span>
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### Emp: particle of emphasis'.</span>
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### Res: particle of response'.</span>
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### Inf: infinitive marker'.</span>
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### Vbp: separated verb prefix in German'.</span>
-  * <span style="color:red">ERROR: Documentation does not belong to UD v2 guidelines.</span>
-  * <span style="color:red">ERROR: No feature values found.</span>
+  * value `Mod`: modal particle
+  * value `Emp`: particle of emphasis
+  * value `Res`: particle of response
+  * value `Inf`: infinitive marker
+  * value `Int`: question particle
+  * value `Vbp`: separated verb prefix in German
 * [PossGender](https://universaldependencies.org/u/feat/PossGender.html)
   * <span style="color:red">ERROR: Unrecognized level 3 heading '### Masc: masculine possessor'.</span>
   * <span style="color:red">ERROR: Unrecognized level 3 heading '### Fem: feminine possessor'.</span>
@@ -314,75 +293,56 @@
   * <span style="color:red">ERROR: Unrecognized level 3 heading '### Plur: plural possession'.</span>
   * <span style="color:red">ERROR: Documentation does not belong to UD v2 guidelines.</span>
   * <span style="color:red">ERROR: No feature values found.</span>
-* [Prefix](https://universaldependencies.org/u/feat/Prefix.html)
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### Yes: it is a prefix of a compound'.</span>
-  * <span style="color:red">ERROR: Documentation does not belong to UD v2 guidelines.</span>
-  * <span style="color:red">ERROR: No feature values found.</span>
 * [PrepCase](https://universaldependencies.org/u/feat/PrepCase.html)
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### Npr: non-prepositional case'.</span>
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### Pre: prepositional case'.</span>
-  * <span style="color:red">ERROR: Documentation does not belong to UD v2 guidelines.</span>
-  * <span style="color:red">ERROR: No feature values found.</span>
+  * value `Npr`: non-prepositional case
+  * value `Pre`: prepositional case
 * [PunctSide](https://universaldependencies.org/u/feat/PunctSide.html)
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### Ini: initial (left bracket in English texts)'.</span>
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### Fin: final (right bracket in English texts)'.</span>
-  * <span style="color:red">ERROR: Documentation does not belong to UD v2 guidelines.</span>
-  * <span style="color:red">ERROR: No feature values found.</span>
+  * value `Ini`: initial (left bracket in English texts)
+  * value `Fin`: final (right bracket in English texts)
 * [PunctType](https://universaldependencies.org/u/feat/PunctType.html)
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### Peri: period at the end of sentence; in Penn tagset, includes question and exclamation'.</span>
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### Qest: question mark'.</span>
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### Excl: exclamation mark'.</span>
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### Quot: quoation marks (various sorts in various languages)'.</span>
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### Brck: bracket'.</span>
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### Comm: comma'.</span>
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### Colo: colon; in Penn tagset, ":" is in fact tag for generic other punctuation'.</span>
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### Semi: semicolon'.</span>
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### Dash: dash, hyphen'.</span>
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### Symb: symbol'.</span>
-  * <span style="color:red">ERROR: Documentation does not belong to UD v2 guidelines.</span>
-  * <span style="color:red">ERROR: No feature values found.</span>
+  * value `Peri`: period at the end of sentence
+  * value `Qest`: question mark
+  * value `Excl`: exclamation mark
+  * value `Quot`: quotation marks (various sorts in various languages)
+  * value `Brck`: bracket
+  * value `Comm`: comma
+  * value `Colo`: colon
+  * value `Semi`: semicolon
+  * value `Dash`: dash, hyphen
 * [Style](https://universaldependencies.org/u/feat/Style.html)
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### Arch: archaic, obsolete'.</span>
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### Rare: rare'.</span>
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### Form: formal, literary'.</span>
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### Poet: poetic'.</span>
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### Norm: normal, neutral'.</span>
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### Coll: colloquial'.</span>
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### Vrnc: vernacular'.</span>
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### Slng: slang'.</span>
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### Expr: expressive, emotional'.</span>
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### Derg: derogative'.</span>
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### Vulg: vulgar'.</span>
-  * <span style="color:red">ERROR: Documentation does not belong to UD v2 guidelines.</span>
-  * <span style="color:red">ERROR: No feature values found.</span>
+  * value `Arch`: archaic, obsolete
+  * value `Rare`: rare
+  * value `Form`: formal, literary
+  * value `Coll`: colloquial
+  * value `Vrnc`: vernacular
+  * value `Slng`: slang
+  * value `Expr`: expressive, emotional
+  * value `Vulg`: vulgar
 * [Subcat](https://universaldependencies.org/u/feat/Subcat.html)
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### Intr: intransitive verb'.</span>
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### Tran: transitive verb'.</span>
-  * <span style="color:red">ERROR: Documentation does not belong to UD v2 guidelines.</span>
-  * <span style="color:red">ERROR: No feature values found.</span>
+  * value `Intr`: intransitive verb
+  * value `Tran`: transitive verb
 * [VerbType](https://universaldependencies.org/u/feat/VerbType.html)
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### Aux: auxiliary verb'.</span>
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### Cop: copula verb'.</span>
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### Mod: modal verb'.</span>
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### Light: light (support) verb'.</span>
-  * <span style="color:red">ERROR: Documentation does not belong to UD v2 guidelines.</span>
-  * <span style="color:red">ERROR: No feature values found.</span>
+  * value `Aux`: auxiliary verb
+  * value `Cop`: copula verb
+  * value `Mod`: modal verb
+  * value `Light`: light (support) verb
 
 # Locally documented language-specific features
 
-The following 25 languages seem to contain at least some documentation of features: bg (17) bm (10) cs (29) dar (1) en (17) et (9) eu (2) fi (23) fr (17) ga (20) grc (6) hu (17) hy (32) it (18) koi (1) kpv (15) myv (22) pcm (15) pt (12) ru (17) sl (22) sv (15) tr (20) uk (16) urj (15)
+The following 25 languages seem to have at least some documentation of features: bg (17) bm (10) cs (29) dar (1) en (17) et (9) eu (2) fi (23) fr (17) ga (20) grc (6) hu (17) hy (32) it (18) koi (1) kpv (15) myv (22) pcm (15) pt (12) ru (17) sl (22) sv (15) tr (20) uk (16) urj (15)
 
 ## bg
 
 * [Animacy](https://universaldependencies.org/bg/feat/Animacy.html)
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### Anim: animate'.</span>
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### Nhum: animate but non-human'.</span>
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### Inan: inanimate'.</span>
-  * <span style="color:red">ERROR: No feature values found.</span>
+  * value `Anim`: animate
+  * value `Nhum`: animate but non-human
+  * value `Inan`: inanimate
+  * <span style="color:red">ERROR: No examples found under value 'Anim'.</span>
+  * <span style="color:red">ERROR: No examples found under value 'Nhum'.</span>
+  * <span style="color:red">ERROR: No examples found under value 'Inan'.</span>
 * [Aspect](https://universaldependencies.org/bg/feat/Aspect.html)
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### `Imp`: imperfect aspect'.</span>
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### `Perf`: perfect aspect'.</span>
-  * <span style="color:red">ERROR: No feature values found.</span>
+  * value `Imp`: imperfect aspect
+  * value `Perf`: perfect aspect
 * [Case](https://universaldependencies.org/bg/feat/Case.html)
   * <span style="color:red">ERROR: Unrecognized level 3 heading '### Examples'.</span>
   * <span style="color:red">ERROR: Unrecognized level 3 heading '### Examples'.</span>
@@ -390,76 +350,63 @@ The following 25 languages seem to contain at least some documentation of featur
   * <span style="color:red">ERROR: Unrecognized level 3 heading '### Examples'.</span>
   * <span style="color:red">ERROR: No feature values found.</span>
 * [Definite](https://universaldependencies.org/bg/feat/Definite.html)
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### `Ind`: indefinite'.</span>
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### `Def`: definite'.</span>
-  * <span style="color:red">ERROR: No feature values found.</span>
+  * value `Ind`: indefinite
+  * value `Def`: definite
 * [Degree](https://universaldependencies.org/bg/feat/Degree.html)
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### `Pos`: positive, first degree'.</span>
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### `Cmp`: comparative, second degree'.</span>
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### `Sup`: superlative, third degree'.</span>
-  * <span style="color:red">ERROR: No feature values found.</span>
+  * value `Pos`: positive, first degree
+  * value `Cmp`: comparative, second degree
+  * value `Sup`: superlative, third degree
 * [Gender](https://universaldependencies.org/bg/feat/Gender.html)
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### Masc: masculine gender'.</span>
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### Fem: feminine gender'.</span>
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### Neut: neuter gender'.</span>
-  * <span style="color:red">ERROR: No feature values found.</span>
+  * value `Masc`: masculine gender
+  * value `Fem`: feminine gender
+  * value `Neut`: neuter gender
 * [Mood](https://universaldependencies.org/bg/feat/Mood.html)
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### `Ind`: indicative'.</span>
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### `Imp`: imperative'.</span>
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### `Cnd`: conditional'.</span>
-  * <span style="color:red">ERROR: No feature values found.</span>
+  * value `Ind`: indicative
+  * value `Imp`: imperative
+  * value `Cnd`: conditional
 * [NumType](https://universaldependencies.org/bg/feat/NumType.html)
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### `Card`: cardinal number or corresponding interrogative / relative / indefinite / demonstrative word'.</span>
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### `Ord`: ordinal number or corresponding interrogative / relative / indefinite / demonstrative word'.</span>
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### `Mult`: multiplicative numeral or corresponding interrogative / relative / indefinite / demonstrative word'.</span>
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### `Frac`: fraction'.</span>
-  * <span style="color:red">ERROR: No feature values found.</span>
+  * value `Card`: cardinal number or corresponding interrogative / relative / indefinite / demonstrative word
+  * value `Ord`: ordinal number or corresponding interrogative / relative / indefinite / demonstrative word
+  * value `Mult`: multiplicative numeral or corresponding interrogative / relative / indefinite / demonstrative word
+  * value `Frac`: fraction
 * [Number](https://universaldependencies.org/bg/feat/Number.html)
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### Sing: singular number'.</span>
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### Plur: plural number'.</span>
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### Count: count plural form'.</span>
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### Ptan: plurale tantum'.</span>
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### Coll: collective / mass / singulare tantum'.</span>
-  * <span style="color:red">ERROR: No feature values found.</span>
+  * value `Sing`: singular number
+  * value `Plur`: plural number
+  * value `Count`: count plural form
+  * value `Ptan`: plurale tantum
+  * value `Coll`: collective / mass / singulare tantum
 * [Person](https://universaldependencies.org/bg/feat/Person.html)
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### `1`: first person'.</span>
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### `2`: second person'.</span>
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### `3`: third person'.</span>
-  * <span style="color:red">ERROR: No feature values found.</span>
+  * value `1`: first person
+  * value `2`: second person
+  * value `3`: third person
 * [Polarity](https://universaldependencies.org/bg/feat/Polarity.html)
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### `Pos`: positive, affirmative'.</span>
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### Neg: negative'.</span>
-  * <span style="color:red">ERROR: No feature values found.</span>
+  * value `Pos`: positive, affirmative
+  * value `Neg`: negative
 * [Poss](https://universaldependencies.org/bg/feat/Poss.html)
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### `Yes`: it is possessive'.</span>
-  * <span style="color:red">ERROR: No feature values found.</span>
+  * value `Yes`: it is possessive
 * [PronType](https://universaldependencies.org/bg/feat/PronType.html)
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### `Prs`: personal or possessive personal pronoun or determiner'.</span>
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### `Rcp`: reciprocal pronoun'.</span>
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### `Int`: interrogative pronoun, determiner, numeral or adverb'.</span>
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### `Rel`: relative pronoun, determiner, numeral or adverb'.</span>
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### `Dem`: demonstrative pronoun, determiner, numeral or adverb'.</span>
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### `Tot`: total (collective) pronoun, determiner or adverb'.</span>
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### `Neg`: negative pronoun, determiner or adverb'.</span>
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### `Ind`: indefinite pronoun, determiner, numeral or adverb'.</span>
-  * <span style="color:red">ERROR: No feature values found.</span>
+  * value `Prs`: personal or possessive personal pronoun or determiner
+  * value `Rcp`: reciprocal pronoun
+  * value `Int`: interrogative pronoun, determiner, numeral or adverb
+  * value `Rel`: relative pronoun, determiner, numeral or adverb
+  * value `Dem`: demonstrative pronoun, determiner, numeral or adverb
+  * value `Tot`: total (collective) pronoun, determiner or adverb
+  * value `Neg`: negative pronoun, determiner or adverb
+  * value `Ind`: indefinite pronoun, determiner, numeral or adverb
 * [Reflex](https://universaldependencies.org/bg/feat/Reflex.html)
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### `Yes`: it is reflexive'.</span>
-  * <span style="color:red">ERROR: No feature values found.</span>
+  * value `Yes`: it is reflexive
 * [Tense](https://universaldependencies.org/bg/feat/Tense.html)
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### `Past`: past tense / preterite / aorist'.</span>
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### `Pres`: present tense'.</span>
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### `Imp`: imperfect'.</span>
-  * <span style="color:red">ERROR: No feature values found.</span>
+  * value `Past`: past tense / preterite / aorist
+  * value `Pres`: present tense
+  * value `Imp`: imperfect
+  * <span style="color:red">ERROR: No examples found under value 'Imp'.</span>
 * [VerbForm](https://universaldependencies.org/bg/feat/VerbForm.html)
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### `Fin`: finite verb'.</span>
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### `Part`: participle'.</span>
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### `Conv`: converb'.</span>
-  * <span style="color:red">ERROR: No feature values found.</span>
+  * value `Fin`: finite verb
+  * value `Part`: participle
+  * value `Conv`: converb
 * [Voice](https://universaldependencies.org/bg/feat/Voice.html)
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### `Act`: active voice'.</span>
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### `Pass`: passive voice'.</span>
-  * <span style="color:red">ERROR: No feature values found.</span>
+  * value `Act`: active voice
+  * value `Pass`: passive voice
 
 ## bm
 
@@ -513,7 +460,6 @@ The following 25 languages seem to contain at least some documentation of featur
 * [Aspect](https://universaldependencies.org/cs/feat/Aspect.html)
   * value `Imp`: imperfect aspect
   * value `Perf`: perfect aspect
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### Prague Dependency Treebank'.</span>
 * [Case](https://universaldependencies.org/cs/feat/Case.html)
   * value `Nom`: nominative
   * value `Gen`: genitive
@@ -525,15 +471,13 @@ The following 25 languages seem to contain at least some documentation of featur
   * <span style="color:red">ERROR: No examples found under value 'Nom'.</span>
   * <span style="color:red">ERROR: No examples found under value 'Acc'.</span>
 * [ConjType](https://universaldependencies.org/cs/feat/ConjType.html)
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### `Oper`: mathematical operator'.</span>
-  * <span style="color:red">ERROR: No feature values found.</span>
+  * value `Oper`: mathematical operator
 * [Degree](https://universaldependencies.org/cs/feat/Degree.html)
   * value `Pos`: positive, first degree
   * value `Cmp`: comparative, second degree
   * value `Sup`: superlative, third degree
 * [Foreign](https://universaldependencies.org/cs/feat/Foreign.html)
   * value `Yes`: it is foreign
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### Prague Dependency Treebank'.</span>
 * [Gender](https://universaldependencies.org/cs/feat/Gender.html)
   * value `Masc`: masculine gender
   * value `Fem`: feminine gender
@@ -588,7 +532,6 @@ The following 25 languages seem to contain at least some documentation of featur
   * value `Dual`: dual number
   * value `Ptan`: plurale tantum
   * value `Coll`: collective / mass / singulare tantum
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### Prague Dependency Treebank'.</span>
 * [Number-psor](https://universaldependencies.org/cs/feat/Number-psor.html)
   * value `Sing`: singular possessor
   * value `Plur`: plural possessor
@@ -624,19 +567,12 @@ The following 25 languages seem to contain at least some documentation of featur
   * value `Slng`: slang
   * value `Expr`: expressive, emotional
   * value `Vulg`: vulgar
-  * <span style="color:red">ERROR: No examples found under value 'Rare'.</span>
-  * <span style="color:red">ERROR: No examples found under value 'Vrnc'.</span>
-  * <span style="color:red">ERROR: No examples found under value 'Slng'.</span>
-  * <span style="color:red">ERROR: No examples found under value 'Expr'.</span>
-  * <span style="color:red">ERROR: Unrecognized examples 'Typical examples of expressive words in the Czech data are diminutives:'.</span>
-  * <span style="color:red">ERROR: No examples found under value 'Vulg'.</span>
 * [Tense](https://universaldependencies.org/cs/feat/Tense.html)
   * value `Past`: past tense
   * value `Pres`: present tense
   * value `Fut`: future tense
 * [Variant](https://universaldependencies.org/cs/feat/Variant.html)
-  * value `Short`: short form of adjectives
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### `Short`: short (clitic) form of personal pronouns'.</span>
+  * value `Short`: short form of adjectives or personal pronouns
 * [VerbForm](https://universaldependencies.org/cs/feat/VerbForm.html)
   * value `Fin`: finite verb
   * value `Inf`: infinitive
@@ -649,8 +585,7 @@ The following 25 languages seem to contain at least some documentation of featur
 ## dar
 
 * [Evident](https://universaldependencies.org/dar/feat/Evident.html)
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### <a name="Nfh">`Nfh`: non-first hand'.</span>
-  * <span style="color:red">ERROR: No feature values found.</span>
+  * value `Nfh`: non-first hand
 
 ## en
 
@@ -661,85 +596,87 @@ The following 25 languages seem to contain at least some documentation of featur
   * <span style="color:red">ERROR: Documentation does not belong to UD v2 guidelines.</span>
   * <span style="color:red">ERROR: No feature values found.</span>
 * [Case](https://universaldependencies.org/en/feat/Case.html)
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### `Nom`: direct'.</span>
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### `Acc`: oblique'.</span>
+  * value `Nom`: direct
+  * value `Acc`: oblique
+  * <span style="color:red">ERROR: No examples found under value 'Nom'.</span>
+  * <span style="color:red">ERROR: No examples found under value 'Acc'.</span>
   * <span style="color:red">ERROR: Documentation does not belong to UD v2 guidelines.</span>
-  * <span style="color:red">ERROR: No feature values found.</span>
 * [Definite](https://universaldependencies.org/en/feat/Definite.html)
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### `Ind`: indefinite'.</span>
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### `Def`: definite'.</span>
+  * value `Ind`: indefinite
+  * value `Def`: definite
+  * <span style="color:red">ERROR: No examples found under value 'Ind'.</span>
+  * <span style="color:red">ERROR: No examples found under value 'Def'.</span>
   * <span style="color:red">ERROR: Documentation does not belong to UD v2 guidelines.</span>
-  * <span style="color:red">ERROR: No feature values found.</span>
 * [Degree](https://universaldependencies.org/en/feat/Degree.html)
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### `Pos`: positive, first degree'.</span>
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### `Cmp`: comparative, second degree'.</span>
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### `Sup`: superlative, third degree'.</span>
+  * value `Pos`: positive, first degree
+  * value `Cmp`: comparative, second degree
+  * value `Sup`: superlative, third degree
   * <span style="color:red">ERROR: Documentation does not belong to UD v2 guidelines.</span>
-  * <span style="color:red">ERROR: No feature values found.</span>
 * [Gender](https://universaldependencies.org/en/feat/Gender.html)
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### `Masc`: masculine gender'.</span>
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### `Fem`: feminine gender'.</span>
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### `Neut`: neuter gender'.</span>
+  * value `Masc`: masculine gender
+  * value `Fem`: feminine gender
+  * value `Neut`: neuter gender
+  * <span style="color:red">ERROR: No examples found under value 'Masc'.</span>
+  * <span style="color:red">ERROR: No examples found under value 'Fem'.</span>
+  * <span style="color:red">ERROR: No examples found under value 'Neut'.</span>
   * <span style="color:red">ERROR: Documentation does not belong to UD v2 guidelines.</span>
-  * <span style="color:red">ERROR: No feature values found.</span>
 * [Mood](https://universaldependencies.org/en/feat/Mood.html)
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### `Ind`: indicative'.</span>
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### `Imp`: imperative'.</span>
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### `Sub`: subjunctive'.</span>
+  * value `Ind`: indicative
+  * value `Imp`: imperative
+  * value `Sub`: subjunctive
+  * <span style="color:red">ERROR: No examples found under value 'Sub'.</span>
   * <span style="color:red">ERROR: Documentation does not belong to UD v2 guidelines.</span>
-  * <span style="color:red">ERROR: No feature values found.</span>
 * [NumType](https://universaldependencies.org/en/feat/NumType.html)
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### `Card`: cardinal number'.</span>
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### `Ord`: ordinal number'.</span>
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### `Mult`: multiplicative numbers'.</span>
+  * value `Card`: cardinal number
+  * value `Ord`: ordinal number
+  * value `Mult`: multiplicative numbers
+  * <span style="color:red">ERROR: No examples found under value 'Mult'.</span>
   * <span style="color:red">ERROR: Documentation does not belong to UD v2 guidelines.</span>
-  * <span style="color:red">ERROR: No feature values found.</span>
 * [Number](https://universaldependencies.org/en/feat/Number.html)
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### `Sing`: singular'.</span>
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### `Plur`: plural'.</span>
+  * value `Sing`: singular
+  * value `Plur`: plural
   * <span style="color:red">ERROR: Documentation does not belong to UD v2 guidelines.</span>
-  * <span style="color:red">ERROR: No feature values found.</span>
 * [Person](https://universaldependencies.org/en/feat/Person.html)
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### `1`: first person'.</span>
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### `2`: second person'.</span>
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### `3`: third person'.</span>
+  * value `1`: first person
+  * value `2`: second person
+  * value `3`: third person
+  * <span style="color:red">ERROR: No examples found under value '1'.</span>
+  * <span style="color:red">ERROR: No examples found under value '2'.</span>
   * <span style="color:red">ERROR: Documentation does not belong to UD v2 guidelines.</span>
-  * <span style="color:red">ERROR: No feature values found.</span>
 * [Polarity](https://universaldependencies.org/en/feat/Polarity.html)
   * <span style="color:red">ERROR: Documentation does not belong to UD v2 guidelines.</span>
   * <span style="color:red">ERROR: No feature values found.</span>
 * [Poss](https://universaldependencies.org/en/feat/Poss.html)
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### `Yes`: it is possesive'.</span>
+  * value `Yes`: it is possesive
+  * <span style="color:red">ERROR: No examples found under value 'Yes'.</span>
   * <span style="color:red">ERROR: Documentation does not belong to UD v2 guidelines.</span>
-  * <span style="color:red">ERROR: No feature values found.</span>
 * [PronType](https://universaldependencies.org/en/feat/PronType.html)
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### `Prs`: personal or possessive personal pronoun or determiner'.</span>
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### `Art`: article'.</span>
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### `Int`: interrogative pronoun, determiner or adverb'.</span>
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### `Rel`: relative pronoun or determiner'.</span>
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### `Dem`: demonstrative determiner or adverb'.</span>
+  * value `Prs`: personal or possessive personal pronoun or determiner
+  * value `Art`: article
+  * value `Int`: interrogative pronoun, determiner or adverb
+  * value `Rel`: relative pronoun or determiner
+  * value `Dem`: demonstrative determiner or adverb
+  * <span style="color:red">ERROR: No examples found under value 'Prs'.</span>
+  * <span style="color:red">ERROR: No examples found under value 'Art'.</span>
+  * <span style="color:red">ERROR: No examples found under value 'Dem'.</span>
   * <span style="color:red">ERROR: Documentation does not belong to UD v2 guidelines.</span>
-  * <span style="color:red">ERROR: No feature values found.</span>
 * [Reflex](https://universaldependencies.org/en/feat/Reflex.html)
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### `Yes`: it is reflexive'.</span>
+  * value `Yes`: it is reflexive
+  * <span style="color:red">ERROR: No examples found under value 'Yes'.</span>
   * <span style="color:red">ERROR: Documentation does not belong to UD v2 guidelines.</span>
-  * <span style="color:red">ERROR: No feature values found.</span>
 * [Tense](https://universaldependencies.org/en/feat/Tense.html)
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### `Pres`: present tense'.</span>
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### `Past`: past tense'.</span>
+  * value `Pres`: present tense
+  * value `Past`: past tense
   * <span style="color:red">ERROR: Documentation does not belong to UD v2 guidelines.</span>
-  * <span style="color:red">ERROR: No feature values found.</span>
 * [VerbForm](https://universaldependencies.org/en/feat/VerbForm.html)
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### `Fin`: finite verb'.</span>
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### `Inf`: infinitive'.</span>
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### `Part`: participle'.</span>
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### Ger: gerund'.</span>
+  * value `Fin`: finite verb
+  * value `Inf`: infinitive
+  * value `Part`: participle
+  * value `Ger`: gerund
   * <span style="color:red">ERROR: Documentation does not belong to UD v2 guidelines.</span>
-  * <span style="color:red">ERROR: No feature values found.</span>
 * [Voice](https://universaldependencies.org/en/feat/Voice.html)
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### `Pass`: passsive'.</span>
+  * value `Pass`: passsive
   * <span style="color:red">ERROR: Documentation does not belong to UD v2 guidelines.</span>
-  * <span style="color:red">ERROR: No feature values found.</span>
 
 ## et
 
@@ -783,29 +720,28 @@ The following 25 languages seem to contain at least some documentation of featur
 ## fi
 
 * [Abbr](https://universaldependencies.org/fi/feat/Abbr.html)
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### `Yes`: word is abbreviation'.</span>
+  * value `Yes`: word is abbreviation
   * <span style="color:red">ERROR: Documentation does not belong to UD v2 guidelines.</span>
-  * <span style="color:red">ERROR: No feature values found.</span>
 * [Case](https://universaldependencies.org/fi/feat/Case.html)
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### `Nom`: nominative'.</span>
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### `Acc`: accusative'.</span>
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### `Gen`: genitive'.</span>
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### `Ins`: instructive'.</span>
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### `Par`: partitive'.</span>
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### `Ess`: essive'.</span>
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### `Tra`: translative'.</span>
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### `Com`: comitative / associative'.</span>
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### `Abe`: abessive'.</span>
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### `Ine`: inessive'.</span>
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### `Ill`: illative'.</span>
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### `Ela`: elative'.</span>
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### `Ade`: adessive'.</span>
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### `All`: allative'.</span>
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### `Abl`: ablative'.</span>
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### Notes: distributive'.</span>
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### Notes: lative'.</span>
+  * value `Nom`: nominative
+  * value `Acc`: accusative
+  * value `Gen`: genitive
+  * value `Ins`: instructive
+  * value `Par`: partitive
+  * value `Ess`: essive
+  * value `Tra`: translative
+  * value `Com`: comitative / associative
+  * value `Abe`: abessive
+  * value `Ine`: inessive
+  * value `Ill`: illative
+  * value `Ela`: elative
+  * value `Ade`: adessive
+  * value `All`: allative
+  * value `Abl`: ablative
+  * value `Notes`: distributive
+  * <span style="color:red">ERROR: No examples found under value 'Par'.</span>
+  * <span style="color:red">ERROR: Multiple definition of value 'Notes'.</span>
   * <span style="color:red">ERROR: Documentation does not belong to UD v2 guidelines.</span>
-  * <span style="color:red">ERROR: No feature values found.</span>
 * [Clitic](https://universaldependencies.org/fi/feat/Clitic.html)
   * <span style="color:red">ERROR: Unrecognized level 3 heading '### `Kin`'.</span>
   * <span style="color:red">ERROR: Unrecognized level 3 heading '### `Kaan`'.</span>
@@ -817,87 +753,75 @@ The following 25 languages seem to contain at least some documentation of featur
   * <span style="color:red">ERROR: Documentation does not belong to UD v2 guidelines.</span>
   * <span style="color:red">ERROR: No feature values found.</span>
 * [Connegative](https://universaldependencies.org/fi/feat/Connegative.html)
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### Yes: word is connegative'.</span>
+  * value `Yes`: word is connegative
   * <span style="color:red">ERROR: Documentation does not belong to UD v2 guidelines.</span>
-  * <span style="color:red">ERROR: No feature values found.</span>
 * [Degree](https://universaldependencies.org/fi/feat/Degree.html)
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### `Pos`: positive, first degree'.</span>
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### `Cmp`: comparative, second degree'.</span>
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### `Sup`: superlative, third degree'.</span>
+  * value `Pos`: positive, first degree
+  * value `Cmp`: comparative, second degree
+  * value `Sup`: superlative, third degree
   * <span style="color:red">ERROR: Unrecognized level 3 heading '### Diff'.</span>
   * <span style="color:red">ERROR: Documentation does not belong to UD v2 guidelines.</span>
-  * <span style="color:red">ERROR: No feature values found.</span>
 * [Derivation](https://universaldependencies.org/fi/feat/Derivation.html)
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### `Minen`: derivation with suffix -minen'.</span>
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### `Sti`: derivation with suffix -sti'.</span>
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### `Inen`: derivation with suffix -inen'.</span>
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### `Lainen`: derivation with suffix -lainen'.</span>
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### `Ja`: derivation with suffix -ja'.</span>
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### `Ton`: derivation with suffix -ton'.</span>
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### `Vs`: derivation with suffix -vs'.</span>
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### `Llinen`: derivation with suffix -llinen'.</span>
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### `Ttain`: derivation with suffix -ttain'.</span>
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### `U`: derivation with suffix -u'.</span>
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### `Ttaa`: derivation with suffix -ttaa'.</span>
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### `Tar`: derivation with suffix -tar'.</span>
+  * value `Minen`: derivation with suffix -minen
+  * value `Sti`: derivation with suffix -sti
+  * value `Inen`: derivation with suffix -inen
+  * value `Lainen`: derivation with suffix -lainen
+  * value `Ja`: derivation with suffix -ja
+  * value `Ton`: derivation with suffix -ton
+  * value `Vs`: derivation with suffix -vs
+  * value `Llinen`: derivation with suffix -llinen
+  * value `Ttain`: derivation with suffix -ttain
+  * value `U`: derivation with suffix -u
+  * value `Ttaa`: derivation with suffix -ttaa
+  * value `Tar`: derivation with suffix -tar
   * <span style="color:red">ERROR: Unrecognized level 3 heading '### Diffs'.</span>
   * <span style="color:red">ERROR: Documentation does not belong to UD v2 guidelines.</span>
-  * <span style="color:red">ERROR: No feature values found.</span>
 * [Foreign](https://universaldependencies.org/fi/feat/Foreign.html)
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### `Foreign`: it is foreign'.</span>
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### `Fscript`: it is foreign and written in a foreign script'.</span>
+  * value `Foreign`: it is foreign
+  * value `Fscript`: it is foreign and written in a foreign script
   * <span style="color:red">ERROR: Documentation does not belong to UD v2 guidelines.</span>
-  * <span style="color:red">ERROR: No feature values found.</span>
 * [InfForm](https://universaldependencies.org/fi/feat/InfForm.html)
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### `1`: first infinitive'.</span>
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### `2`: second infinitive'.</span>
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### `3`: third infinitive'.</span>
+  * value `1`: first infinitive
+  * value `2`: second infinitive
+  * value `3`: third infinitive
   * <span style="color:red">ERROR: Documentation does not belong to UD v2 guidelines.</span>
-  * <span style="color:red">ERROR: No feature values found.</span>
 * [Mood](https://universaldependencies.org/fi/feat/Mood.html)
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### `Ind`: indicative'.</span>
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### `Imp`: imperative'.</span>
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### Cnd: conditional'.</span>
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### Pot: potential'.</span>
+  * value `Ind`: indicative
+  * value `Imp`: imperative
+  * value `Cnd`: conditional
+  * value `Pot`: potential
   * <span style="color:red">ERROR: Documentation does not belong to UD v2 guidelines.</span>
-  * <span style="color:red">ERROR: No feature values found.</span>
 * [NumType](https://universaldependencies.org/fi/feat/NumType.html)
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### `Card`: cardinal number or corresponding interrogative / relative / indefinite / demonstrative word'.</span>
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### `Ord`: ordinal number or corresponding interrogative / relative / indefinite / demonstrative word'.</span>
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### `Mult`: multiplicative numeral or corresponding interrogative / relative / indefinite / demonstrative word'.</span>
+  * value `Card`: cardinal number or corresponding interrogative / relative / indefinite / demonstrative word
+  * value `Ord`: ordinal number or corresponding interrogative / relative / indefinite / demonstrative word
+  * value `Mult`: multiplicative numeral or corresponding interrogative / relative / indefinite / demonstrative word
   * <span style="color:red">ERROR: Documentation does not belong to UD v2 guidelines.</span>
-  * <span style="color:red">ERROR: No feature values found.</span>
 * [Number](https://universaldependencies.org/fi/feat/Number.html)
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### `Sing`: singular number'.</span>
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### `Plur`: plural number'.</span>
+  * value `Sing`: singular number
+  * value `Plur`: plural number
   * <span style="color:red">ERROR: Documentation does not belong to UD v2 guidelines.</span>
-  * <span style="color:red">ERROR: No feature values found.</span>
 * [Number-psor](https://universaldependencies.org/fi/feat/Number-psor.html)
+  * value `Sing`: singular
+  * value `Plur`: plural
   * <span style="color:red">ERROR: Feature name 'Number-psor' does not have the prescribed form.</span>
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### `Sing`: singular'.</span>
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### `Plur`: plural'.</span>
   * <span style="color:red">ERROR: Documentation does not belong to UD v2 guidelines.</span>
-  * <span style="color:red">ERROR: No feature values found.</span>
 * [PartForm](https://universaldependencies.org/fi/feat/PartForm.html)
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### `Pres`: present participle'.</span>
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### `Past`: past participle'.</span>
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### `Agt`: agent participle'.</span>
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### `Neg`: negative participle'.</span>
+  * value `Pres`: present participle
+  * value `Past`: past participle
+  * value `Agt`: agent participle
+  * value `Neg`: negative participle
   * <span style="color:red">ERROR: Documentation does not belong to UD v2 guidelines.</span>
-  * <span style="color:red">ERROR: No feature values found.</span>
 * [Person](https://universaldependencies.org/fi/feat/Person.html)
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### `1`: first person'.</span>
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### `2`: second person'.</span>
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### `3`: third person'.</span>
+  * value `1`: first person
+  * value `2`: second person
+  * value `3`: third person
   * <span style="color:red">ERROR: Documentation does not belong to UD v2 guidelines.</span>
-  * <span style="color:red">ERROR: No feature values found.</span>
 * [Person-psor](https://universaldependencies.org/fi/feat/Person-psor.html)
+  * value `1`: first person
+  * value `2`: second person
+  * value `3`: third person
   * <span style="color:red">ERROR: Feature name 'Person-psor' does not have the prescribed form.</span>
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### `1`: first person'.</span>
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### `2`: second person'.</span>
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### `3`: third person'.</span>
   * <span style="color:red">ERROR: Documentation does not belong to UD v2 guidelines.</span>
-  * <span style="color:red">ERROR: No feature values found.</span>
 * [Polarity](https://universaldependencies.org/fi/feat/Polarity.html)
   * <span style="color:red">ERROR: Documentation does not belong to UD v2 guidelines.</span>
   * <span style="color:red">ERROR: No feature values found.</span>
@@ -905,43 +829,40 @@ The following 25 languages seem to contain at least some documentation of featur
   * <span style="color:red">ERROR: Documentation does not belong to UD v2 guidelines.</span>
   * <span style="color:red">ERROR: No feature values found.</span>
 * [PronType](https://universaldependencies.org/fi/feat/PronType.html)
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### `Prs`: personal'.</span>
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### `Rcp`: reciprocal'.</span>
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### `Int`: interrogative'.</span>
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### `Rel`: relative'.</span>
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### `Dem`: demonstrative'.</span>
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### `Ind`: indefinite'.</span>
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### Notes: indefinite vs. quantifier pronouns'.</span>
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### Notes: negative pronouns'.</span>
+  * value `Prs`: personal
+  * value `Rcp`: reciprocal
+  * value `Int`: interrogative
+  * value `Rel`: relative
+  * value `Dem`: demonstrative
+  * value `Ind`: indefinite
+  * value `Notes`: indefinite vs. quantifier pronouns
+  * <span style="color:red">ERROR: No examples found under value 'Ind'.</span>
+  * <span style="color:red">ERROR: No examples found under value 'Notes'.</span>
+  * <span style="color:red">ERROR: Multiple definition of value 'Notes'.</span>
+  * <span style="color:red">ERROR: No examples found under value 'Notes'.</span>
   * <span style="color:red">ERROR: Documentation does not belong to UD v2 guidelines.</span>
-  * <span style="color:red">ERROR: No feature values found.</span>
 * [Style](https://universaldependencies.org/fi/feat/Style.html)
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### `Coll`: word is colloquial'.</span>
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### `Arch`: archaic, obsolete'.</span>
+  * value `Coll`: word is colloquial
+  * value `Arch`: archaic, obsolete
   * <span style="color:red">ERROR: Unrecognized level 3 heading '### Turku Dependency Treebank'.</span>
   * <span style="color:red">ERROR: Documentation does not belong to UD v2 guidelines.</span>
-  * <span style="color:red">ERROR: No feature values found.</span>
 * [Tense](https://universaldependencies.org/fi/feat/Tense.html)
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### `Pres`: present tense'.</span>
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### `Past`: past tense / preterite'.</span>
+  * value `Pres`: present tense
+  * value `Past`: past tense / preterite
   * <span style="color:red">ERROR: Documentation does not belong to UD v2 guidelines.</span>
-  * <span style="color:red">ERROR: No feature values found.</span>
 * [Typo](https://universaldependencies.org/fi/feat/Typo.html)
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### Yes: word has typo'.</span>
+  * value `Yes`: word has typo
   * <span style="color:red">ERROR: Unrecognized level 3 heading '### Diffs'.</span>
   * <span style="color:red">ERROR: Documentation does not belong to UD v2 guidelines.</span>
-  * <span style="color:red">ERROR: No feature values found.</span>
 * [VerbForm](https://universaldependencies.org/fi/feat/VerbForm.html)
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### `Fin`: finite verb'.</span>
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### `Inf`: infinitive'.</span>
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### `Part`: participle'.</span>
+  * value `Fin`: finite verb
+  * value `Inf`: infinitive
+  * value `Part`: participle
   * <span style="color:red">ERROR: Documentation does not belong to UD v2 guidelines.</span>
-  * <span style="color:red">ERROR: No feature values found.</span>
 * [Voice](https://universaldependencies.org/fi/feat/Voice.html)
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### `Act`: active voice'.</span>
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### `Pass`: passive voice'.</span>
+  * value `Act`: active voice
+  * value `Pass`: passive voice
   * <span style="color:red">ERROR: Documentation does not belong to UD v2 guidelines.</span>
-  * <span style="color:red">ERROR: No feature values found.</span>
 
 ## fr
 
@@ -1030,9 +951,8 @@ The following 25 languages seem to contain at least some documentation of featur
   * <span style="color:red">ERROR: Unrecognized level 3 heading '### `Ord` : ordinal numbers'.</span>
   * <span style="color:red">ERROR: No feature values found.</span>
 * [Number](https://universaldependencies.org/ga/feat/Number.html)
+  * value `Plur`: plural
   * <span style="color:red">ERROR: Unrecognized level 3 heading '### `Sing` : singular'.</span>
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### `Plur`: plural'.</span>
-  * <span style="color:red">ERROR: No feature values found.</span>
 * [PartType](https://universaldependencies.org/ga/feat/PartType.html)
   * <span style="color:red">ERROR: Unrecognized level 3 heading '### `Ad` : adverbial'.</span>
   * <span style="color:red">ERROR: Unrecognized level 3 heading '### `Cmpl` : complementizer'.</span>
@@ -1094,30 +1014,34 @@ The following 25 languages seem to contain at least some documentation of featur
   * <span style="color:red">ERROR: Documentation does not belong to UD v2 guidelines.</span>
   * <span style="color:red">ERROR: No feature values found.</span>
 * [Case](https://universaldependencies.org/grc/feat/Case.html)
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### `Nom`: nominative'.</span>
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### `Gen`: genitive'.</span>
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### `Dat`: dative'.</span>
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### `Acc`: accusative'.</span>
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### `Voc`: vocative'.</span>
+  * value `Nom`: nominative
+  * value `Gen`: genitive
+  * value `Dat`: dative
+  * value `Acc`: accusative
+  * value `Voc`: vocative
+  * <span style="color:red">ERROR: No examples found under value 'Nom'.</span>
+  * <span style="color:red">ERROR: No examples found under value 'Gen'.</span>
+  * <span style="color:red">ERROR: No examples found under value 'Dat'.</span>
+  * <span style="color:red">ERROR: No examples found under value 'Acc'.</span>
+  * <span style="color:red">ERROR: No examples found under value 'Voc'.</span>
   * <span style="color:red">ERROR: Documentation does not belong to UD v2 guidelines.</span>
-  * <span style="color:red">ERROR: No feature values found.</span>
 * [Definite](https://universaldependencies.org/grc/feat/Definite.html)
   * <span style="color:red">ERROR: Documentation does not belong to UD v2 guidelines.</span>
   * <span style="color:red">ERROR: No feature values found.</span>
 * [Degree](https://universaldependencies.org/grc/feat/Degree.html)
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### `Pos`: positive, first degree'.</span>
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### `Cmp`: comparative, second degree'.</span>
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### `Sup`: superlative, third degree'.</span>
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### `Abs`: absolute superlative'.</span>
+  * value `Pos`: positive, first degree
+  * value `Cmp`: comparative, second degree
+  * value `Sup`: superlative, third degree
+  * value `Abs`: absolute superlative
+  * <span style="color:red">ERROR: No examples found under value 'Pos'.</span>
   * <span style="color:red">ERROR: Documentation does not belong to UD v2 guidelines.</span>
-  * <span style="color:red">ERROR: No feature values found.</span>
 * [Gender](https://universaldependencies.org/grc/feat/Gender.html)
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### `Masc`: masculine gender'.</span>
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### `Fem`: feminine gender'.</span>
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### `Neut`: neuter gender'.</span>
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### `Com`: common gender'.</span>
+  * value `Masc`: masculine gender
+  * value `Fem`: feminine gender
+  * value `Neut`: neuter gender
+  * value `Com`: common gender
+  * <span style="color:red">ERROR: No examples found under value 'Com'.</span>
   * <span style="color:red">ERROR: Documentation does not belong to UD v2 guidelines.</span>
-  * <span style="color:red">ERROR: No feature values found.</span>
 
 ## hu
 
@@ -1204,12 +1128,10 @@ The following 25 languages seem to contain at least some documentation of featur
   * <span style="color:red">ERROR: No examples found under value 'Nom'.</span>
   * <span style="color:red">ERROR: No examples found under value 'Gen'.</span>
 * [ConjType](https://universaldependencies.org/hy/feat/ConjType.html)
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### `Comp`: comparing conjunction'.</span>
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### `Oper`: mathematical operator'.</span>
-  * <span style="color:red">ERROR: No feature values found.</span>
+  * value `Comp`: comparing conjunction
+  * value `Oper`: mathematical operator
 * [Connegative](https://universaldependencies.org/hy/feat/Connegative.html)
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### Yes: word is connegative'.</span>
-  * <span style="color:red">ERROR: No feature values found.</span>
+  * value `Yes`: word is connegative
 * [Definite](https://universaldependencies.org/hy/feat/Definite.html)
   * value `Ind`: indefinite
   * value `Def`: definite
@@ -1296,8 +1218,7 @@ The following 25 languages seem to contain at least some documentation of featur
   * value `Ind`: indefinite pronoun, determiner or adverb
   * <span style="color:red">ERROR: No examples found under value 'Rel'.</span>
 * [Reflex](https://universaldependencies.org/hy/feat/Reflex.html)
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### `Yes`: it is reflexive'.</span>
-  * <span style="color:red">ERROR: No feature values found.</span>
+  * value `Yes`: it is reflexive
 * [Style](https://universaldependencies.org/hy/feat/Style.html)
   * value `Arch`: archaic, obsolete
   * value `Rare`: rare
@@ -1320,8 +1241,7 @@ The following 25 languages seem to contain at least some documentation of featur
   * value `Imp`: imperfect
   * value `Pres`: present tense
 * [Typo](https://universaldependencies.org/hy/feat/Typo.html)
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### Yes: it is typo'.</span>
-  * <span style="color:red">ERROR: No feature values found.</span>
+  * value `Yes`: it is typo
 * [VerbForm](https://universaldependencies.org/hy/feat/VerbForm.html)
   * value `Fin`: finite verb
   * value `Inf`: infinitive
@@ -1347,105 +1267,120 @@ The following 25 languages seem to contain at least some documentation of featur
   * <span style="color:red">ERROR: Documentation does not belong to UD v2 guidelines.</span>
   * <span style="color:red">ERROR: No feature values found.</span>
 * [Clitic](https://universaldependencies.org/it/feat/Clitic.html)
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### `Yes`: it is clitic'.</span>
-  * <span style="color:red">ERROR: No feature values found.</span>
+  * value `Yes`: it is clitic
 * [Definite](https://universaldependencies.org/it/feat/Definite.html)
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### `Ind`: indefinite'.</span>
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### `Def`: definite'.</span>
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### `Red`: reduced'.</span>
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### `Com`: complex'.</span>
-  * <span style="color:red">ERROR: No feature values found.</span>
+  * value `Ind`: indefinite
+  * value `Def`: definite
+  * value `Red`: reduced
+  * value `Com`: complex
+  * <span style="color:red">ERROR: No examples found under value 'Red'.</span>
+  * <span style="color:red">ERROR: No examples found under value 'Com'.</span>
 * [Degree](https://universaldependencies.org/it/feat/Degree.html)
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### `Pos`: positive, first degree'.</span>
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### `Cmp`: comparative, second degree'.</span>
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### `Sup`: superlative, third degree'.</span>
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### `Abs`: absolute superlative'.</span>
-  * <span style="color:red">ERROR: No feature values found.</span>
+  * value `Pos`: positive, first degree
+  * value `Cmp`: comparative, second degree
+  * value `Sup`: superlative, third degree
+  * value `Abs`: absolute superlative
+  * <span style="color:red">ERROR: No examples found under value 'Pos'.</span>
+  * <span style="color:red">ERROR: No examples found under value 'Sup'.</span>
 * [Gender](https://universaldependencies.org/it/feat/Gender.html)
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### `Masc`: masculine gender'.</span>
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### `Fem`: feminine gender'.</span>
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### `Neut`: neuter gender'.</span>
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### `Com`: common gender'.</span>
-  * <span style="color:red">ERROR: No feature values found.</span>
+  * value `Masc`: masculine gender
+  * value `Fem`: feminine gender
+  * value `Neut`: neuter gender
+  * value `Com`: common gender
+  * <span style="color:red">ERROR: No examples found under value 'Neut'.</span>
+  * <span style="color:red">ERROR: No examples found under value 'Com'.</span>
 * [Mood](https://universaldependencies.org/it/feat/Mood.html)
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### `Ind`: indicative'.</span>
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### `Imp`: imperative'.</span>
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### `Cnd`: conditional'.</span>
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### `Pot`: potential'.</span>
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### `Sub`: subjunctive / conjunctive'.</span>
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### `Jus`: jussive'.</span>
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### `Qot`: quotative'.</span>
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### `Opt`: optative'.</span>
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### `Des`: desiderative'.</span>
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### `Nec`: necessitative'.</span>
-  * <span style="color:red">ERROR: No feature values found.</span>
+  * value `Ind`: indicative
+  * value `Imp`: imperative
+  * value `Cnd`: conditional
+  * value `Pot`: potential
+  * value `Sub`: subjunctive / conjunctive
+  * value `Jus`: jussive
+  * value `Qot`: quotative
+  * value `Opt`: optative
+  * value `Des`: desiderative
+  * value `Nec`: necessitative
+  * <span style="color:red">ERROR: No examples found under value 'Pot'.</span>
+  * <span style="color:red">ERROR: No examples found under value 'Jus'.</span>
+  * <span style="color:red">ERROR: No examples found under value 'Qot'.</span>
+  * <span style="color:red">ERROR: No examples found under value 'Opt'.</span>
+  * <span style="color:red">ERROR: No examples found under value 'Des'.</span>
+  * <span style="color:red">ERROR: No examples found under value 'Nec'.</span>
 * [NumType](https://universaldependencies.org/it/feat/NumType.html)
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### `Card`: cardinal number or corresponding word'.</span>
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### `Ord`: ordinal number or corresponding word'.</span>
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### `Mult`: multiplicative numeral or corresponding word'.</span>
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### `Frac`: fraction'.</span>
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### `Sets`: number of sets of things'.</span>
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### `Dist`: distributive numeral'.</span>
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### `Range`: range of values'.</span>
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### `Gen`: generic numeral, i.e. a numeral that is neither of the above'.</span>
+  * value `Card`: cardinal number or corresponding word
+  * value `Ord`: ordinal number or corresponding word
+  * value `Mult`: multiplicative numeral or corresponding word
+  * value `Frac`: fraction
+  * value `Sets`: number of sets of things
+  * value `Dist`: distributive numeral
+  * value `Range`: range of values
+  * value `Gen`: generic numeral, i.e. a numeral that is neither of the above
+  * <span style="color:red">ERROR: No examples found under value 'Mult'.</span>
+  * <span style="color:red">ERROR: No examples found under value 'Frac'.</span>
+  * <span style="color:red">ERROR: No examples found under value 'Sets'.</span>
+  * <span style="color:red">ERROR: No examples found under value 'Dist'.</span>
+  * <span style="color:red">ERROR: No examples found under value 'Range'.</span>
+  * <span style="color:red">ERROR: No examples found under value 'Gen'.</span>
   * <span style="color:red">ERROR: Documentation does not belong to UD v2 guidelines.</span>
-  * <span style="color:red">ERROR: No feature values found.</span>
 * [Number](https://universaldependencies.org/it/feat/Number.html)
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### `Sing`: singular number'.</span>
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### `Plur`: plural number'.</span>
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### `Dual`: dual number'.</span>
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### `Ptan`: plurale tantum'.</span>
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### `Coll`: collective / mass / singulare tantum'.</span>
-  * <span style="color:red">ERROR: No feature values found.</span>
+  * value `Sing`: singular number
+  * value `Plur`: plural number
+  * value `Dual`: dual number
+  * value `Ptan`: plurale tantum
+  * value `Coll`: collective / mass / singulare tantum
+  * <span style="color:red">ERROR: No examples found under value 'Ptan'.</span>
+  * <span style="color:red">ERROR: No examples found under value 'Coll'.</span>
 * [Person](https://universaldependencies.org/it/feat/Person.html)
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### `Sing`: singular number'.</span>
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### `Plur`: plural number'.</span>
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### `Dual`: dual number'.</span>
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### `Ptan`: plurale tantum'.</span>
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### `Coll`: collective / mass / singulare tantum'.</span>
+  * value `Sing`: singular number
+  * value `Plur`: plural number
+  * value `Dual`: dual number
+  * value `Ptan`: plurale tantum
+  * value `Coll`: collective / mass / singulare tantum
+  * <span style="color:red">ERROR: No examples found under value 'Ptan'.</span>
+  * <span style="color:red">ERROR: No examples found under value 'Coll'.</span>
   * <span style="color:red">ERROR: Documentation does not belong to UD v2 guidelines.</span>
-  * <span style="color:red">ERROR: No feature values found.</span>
 * [Polarity](https://universaldependencies.org/it/feat/Polarity.html)
   * <span style="color:red">ERROR: Documentation does not belong to UD v2 guidelines.</span>
   * <span style="color:red">ERROR: No feature values found.</span>
 * [Poss](https://universaldependencies.org/it/feat/Poss.html)
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### `Yes`: it is possessive'.</span>
+  * value `Yes`: it is possessive
   * <span style="color:red">ERROR: Documentation does not belong to UD v2 guidelines.</span>
-  * <span style="color:red">ERROR: No feature values found.</span>
 * [PronType](https://universaldependencies.org/it/feat/PronType.html)
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### `Prs`: personal or possessive personal pronoun or determiner'.</span>
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### `Rcp`: reciprocal pronoun'.</span>
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### `Art`: article'.</span>
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### `Int`: interrogative pronoun, determiner, numeral or adverb'.</span>
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### `Rel`: relative pronoun, determiner, numeral or adverb'.</span>
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### `Dem`: demonstrative pronoun, determiner, numeral or adverb'.</span>
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### `Tot`: total (collective) pronoun, determiner or adverb'.</span>
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### `Neg`: negative pronoun, determiner or adverb'.</span>
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### `Ind`: indefinite pronoun, determiner, numeral or adverb'.</span>
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### `Exc`: exclamative determiners. This value is language specific.'.</span>
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### `Clit`: clitic pronouns. This value is language specific.'.</span>
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### `Predet`: predeterminer. This value is language specific.'.</span>
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### `Ord`: ordinal pronouns. This value is language specific.'.</span>
-  * <span style="color:red">ERROR: No feature values found.</span>
+  * value `Prs`: personal or possessive personal pronoun or determiner
+  * value `Rcp`: reciprocal pronoun
+  * value `Art`: article
+  * value `Int`: interrogative pronoun, determiner, numeral or adverb
+  * value `Rel`: relative pronoun, determiner, numeral or adverb
+  * value `Dem`: demonstrative pronoun, determiner, numeral or adverb
+  * value `Tot`: total (collective) pronoun, determiner or adverb
+  * value `Neg`: negative pronoun, determiner or adverb
+  * value `Ind`: indefinite pronoun, determiner, numeral or adverb
+  * value `Exc`: exclamative determiners. This value is language specific.
+  * value `Clit`: clitic pronouns. This value is language specific.
+  * value `Predet`: predeterminer. This value is language specific.
+  * value `Ord`: ordinal pronouns. This value is language specific.
+  * <span style="color:red">ERROR: No examples found under value 'Rcp'.</span>
 * [Reflex](https://universaldependencies.org/it/feat/Reflex.html)
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### `Yes`: it is reflexive'.</span>
-  * <span style="color:red">ERROR: No feature values found.</span>
+  * value `Yes`: it is reflexive
 * [Tense](https://universaldependencies.org/it/feat/Tense.html)
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### `Past`: past tense'.</span>
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### `Pres`: present tense'.</span>
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### `Fut`: future tense'.</span>
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### `Imp`: imperfect'.</span>
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### `Nar`: narrative'.</span>
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### `Pqp`: pluperfect'.</span>
-  * <span style="color:red">ERROR: No feature values found.</span>
+  * value `Past`: past tense
+  * value `Pres`: present tense
+  * value `Fut`: future tense
+  * value `Imp`: imperfect
+  * value `Nar`: narrative
+  * value `Pqp`: pluperfect
+  * <span style="color:red">ERROR: No examples found under value 'Imp'.</span>
+  * <span style="color:red">ERROR: No examples found under value 'Nar'.</span>
+  * <span style="color:red">ERROR: No examples found under value 'Pqp'.</span>
 * [VerbForm](https://universaldependencies.org/it/feat/VerbForm.html)
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### `Fin`: finite verb'.</span>
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### `Inf`: infinitive'.</span>
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### `Sup`: supine'.</span>
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### `Part`: participle'.</span>
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### `Trans`: transgressive'.</span>
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### `Ger`: gerund'.</span>
-  * <span style="color:red">ERROR: No feature values found.</span>
+  * value `Fin`: finite verb
+  * value `Inf`: infinitive
+  * value `Sup`: supine
+  * value `Part`: participle
+  * value `Trans`: transgressive
+  * value `Ger`: gerund
+  * <span style="color:red">ERROR: No examples found under value 'Sup'.</span>
+  * <span style="color:red">ERROR: No examples found under value 'Trans'.</span>
 * [Voice](https://universaldependencies.org/it/feat/Voice.html)
   * <span style="color:red">ERROR: Documentation does not belong to UD v2 guidelines.</span>
   * <span style="color:red">ERROR: No feature values found.</span>
@@ -1453,14 +1388,13 @@ The following 25 languages seem to contain at least some documentation of featur
 ## koi
 
 * [NumType](https://universaldependencies.org/koi/feat/NumType.html)
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### `Card`: cardinal number or corresponding interrogative / relative / indefinite / demonstrative word'.</span>
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### `Dist`: distributive number is produced by adding what otherwise would be the instrumental case.'.</span>
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### `Ord`: ordinal number or corresponding interrogative / relative / indefinite / demonstrative word. There are two different endings: -ӧт, -ӧдз.'.</span>
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### `Mult`: multiplicative numeral or corresponding interrogative / relative / indefinite / demonstrative word'.</span>
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### `OrdMult`: ordinal multiplicative numeral or corresponding interrogative / relative / indefinite / demonstrative word'.</span>
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### `MultDist`: multiplicative distributive numeral or corresponding interrogative / relative / indefinite word'.</span>
+  * value `Card`: cardinal number or corresponding interrogative / relative / indefinite / demonstrative word
+  * value `Dist`: distributive number is produced by adding what otherwise would be the instrumental case.
+  * value `Ord`: ordinal number or corresponding interrogative / relative / indefinite / demonstrative word. There are two different endings: -ӧт, -ӧдз.
+  * value `Mult`: multiplicative numeral or corresponding interrogative / relative / indefinite / demonstrative word
+  * value `OrdMult`: ordinal multiplicative numeral or corresponding interrogative / relative / indefinite / demonstrative word
+  * value `MultDist`: multiplicative distributive numeral or corresponding interrogative / relative / indefinite word
   * <span style="color:red">ERROR: Documentation does not belong to UD v2 guidelines.</span>
-  * <span style="color:red">ERROR: No feature values found.</span>
 
 ## kpv
 
@@ -1508,21 +1442,18 @@ The following 25 languages seem to contain at least some documentation of featur
 * [Animacy](https://universaldependencies.org/myv/feat/Animacy.html)
   * <span style="color:red">ERROR: No feature values found.</span>
 * [Case](https://universaldependencies.org/myv/feat/Case.html)
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### `Nom`: nominative'.</span>
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### `Gen`: genitive'.</span>
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### `Abl`: ablative'.</span>
-  * <span style="color:red">ERROR: No feature values found.</span>
+  * value `Nom`: nominative
+  * value `Gen`: genitive
+  * value `Abl`: ablative
 * [Clitic](https://universaldependencies.org/myv/feat/Clitic.html)
   * <span style="color:red">ERROR: Documentation does not belong to UD v2 guidelines.</span>
   * <span style="color:red">ERROR: No feature values found.</span>
 * [Connegative](https://universaldependencies.org/myv/feat/Connegative.html)
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### Yes: word is connegative'.</span>
+  * value `Yes`: word is connegative
   * <span style="color:red">ERROR: Documentation does not belong to UD v2 guidelines.</span>
-  * <span style="color:red">ERROR: No feature values found.</span>
 * [Definite](https://universaldependencies.org/myv/feat/Definite.html)
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### `Def`: definite'.</span>
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### `Ind`: indefinite'.</span>
-  * <span style="color:red">ERROR: No feature values found.</span>
+  * value `Def`: definite
+  * value `Ind`: indefinite
 * [Degree](https://universaldependencies.org/myv/feat/Degree.html)
   * <span style="color:red">ERROR: No feature values found.</span>
 * [Derivation](https://universaldependencies.org/myv/feat/Derivation.html)
@@ -1531,29 +1462,26 @@ The following 25 languages seem to contain at least some documentation of featur
 * [Gender](https://universaldependencies.org/myv/feat/Gender.html)
   * <span style="color:red">ERROR: No feature values found.</span>
 * [Mood](https://universaldependencies.org/myv/feat/Mood.html)
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### `Ind`: indicative'.</span>
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### `Imp`: imperative'.</span>
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### `Cnj`: conjunctive'.</span>
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### `Cnd`: conditional'.</span>
+  * value `Ind`: indicative
+  * value `Imp`: imperative
+  * value `Cnj`: conjunctive
+  * value `Cnd`: conditional
   * <span style="color:red">ERROR: Unrecognized level 3 heading '### `CndCnj` conditional-conjunctive'.</span>
   * <span style="color:red">ERROR: Unrecognized level 3 heading '### `Des` desiderative'.</span>
   * <span style="color:red">ERROR: Unrecognized level 3 heading '### `Opt` optative'.</span>
-  * <span style="color:red">ERROR: No feature values found.</span>
 * [NameType](https://universaldependencies.org/myv/feat/NameType.html)
   * <span style="color:red">ERROR: No feature values found.</span>
 * [NumType](https://universaldependencies.org/myv/feat/NumType.html)
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### `Card`: cardinal number or corresponding interrogative / relative / indefinite / demonstrative word'.</span>
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### `Dist`: distributive number is made through reduplication of the number in the indefinite genitive for all but the number 'one'. Alternatively, the second element may appear in the nominative singular, in which case there is an implication the everything has been distributed.'.</span>
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### `Ord`: ordinal number or corresponding interrogative / relative / indefinite / demonstrative word'.</span>
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### `Mult`: multiplicative numeral or corresponding interrogative / relative / indefinite / demonstrative word'.</span>
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### `Set`: set numeral or corresponding interrogative / relative / indefinite  word'.</span>
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### `OrdMult`: ordinal multiplicative numeral or corresponding interrogative / relative / indefinite / demonstrative word'.</span>
+  * value `Card`: cardinal number or corresponding interrogative / relative / indefinite / demonstrative word
+  * value `Dist`: distributive number is made through reduplication of the number in the indefinite genitive for all but the number 'one'. Alternatively, the second element may appear in the nominative singular, in which case there is an implication the everything has been distributed.
+  * value `Ord`: ordinal number or corresponding interrogative / relative / indefinite / demonstrative word
+  * value `Mult`: multiplicative numeral or corresponding interrogative / relative / indefinite / demonstrative word
+  * value `Set`: set numeral or corresponding interrogative / relative / indefinite  word
+  * value `OrdMult`: ordinal multiplicative numeral or corresponding interrogative / relative / indefinite / demonstrative word
   * <span style="color:red">ERROR: Documentation does not belong to UD v2 guidelines.</span>
-  * <span style="color:red">ERROR: No feature values found.</span>
 * [Number](https://universaldependencies.org/myv/feat/Number.html)
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### `Sing`: singular number'.</span>
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### `Plur`: plural number'.</span>
-  * <span style="color:red">ERROR: No feature values found.</span>
+  * value `Sing`: singular number
+  * value `Plur`: plural number
 * [Person](https://universaldependencies.org/myv/feat/Person.html)
   * <span style="color:red">ERROR: No feature values found.</span>
 * [Polarity](https://universaldependencies.org/myv/feat/Polarity.html)
@@ -1642,42 +1570,37 @@ The following 25 languages seem to contain at least some documentation of featur
   * <span style="color:red">ERROR: Documentation does not belong to UD v2 guidelines.</span>
   * <span style="color:red">ERROR: No feature values found.</span>
 * [Definite](https://universaldependencies.org/pt/feat/Definite.html)
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### `Ind`: indefinite'.</span>
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### `Def`: definite'.</span>
+  * value `Ind`: indefinite
+  * value `Def`: definite
   * <span style="color:red">ERROR: Documentation does not belong to UD v2 guidelines.</span>
-  * <span style="color:red">ERROR: No feature values found.</span>
 * [Degree](https://universaldependencies.org/pt/feat/Degree.html)
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### `Pos`: positive, first degree'.</span>
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### `Cmp`: comparative, second degree'.</span>
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### `Sup`: superlative, third degree'.</span>
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### `Abs`: absolute superlative'.</span>
+  * value `Pos`: positive, first degree
+  * value `Cmp`: comparative, second degree
+  * value `Sup`: superlative, third degree
+  * value `Abs`: absolute superlative
   * <span style="color:red">ERROR: Documentation does not belong to UD v2 guidelines.</span>
-  * <span style="color:red">ERROR: No feature values found.</span>
 * [Gender](https://universaldependencies.org/pt/feat/Gender.html)
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### `Masc`: masculine gender'.</span>
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### `Fem`: feminine gender'.</span>
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### `Unsp`: unspecified'.</span>
+  * value `Masc`: masculine gender
+  * value `Fem`: feminine gender
+  * value `Unsp`: unspecified
   * <span style="color:red">ERROR: Documentation does not belong to UD v2 guidelines.</span>
-  * <span style="color:red">ERROR: No feature values found.</span>
 * [Hyph](https://universaldependencies.org/pt/feat/Hyph.html)
   * <span style="color:red">ERROR: Documentation does not belong to UD v2 guidelines.</span>
   * <span style="color:red">ERROR: No feature values found.</span>
 * [Number](https://universaldependencies.org/pt/feat/Number.html)
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### `Sing`: singular number'.</span>
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### `Plur`: plural number'.</span>
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### `Unsp`: unspecified'.</span>
+  * value `Sing`: singular number
+  * value `Plur`: plural number
+  * value `Unsp`: unspecified
   * <span style="color:red">ERROR: Documentation does not belong to UD v2 guidelines.</span>
-  * <span style="color:red">ERROR: No feature values found.</span>
 * [Number-psor](https://universaldependencies.org/pt/feat/Number-psor.html)
   * <span style="color:red">ERROR: Feature name 'Number-psor' does not have the prescribed form.</span>
   * <span style="color:red">ERROR: Documentation does not belong to UD v2 guidelines.</span>
   * <span style="color:red">ERROR: No feature values found.</span>
 * [Person](https://universaldependencies.org/pt/feat/Person.html)
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### `1`: first person'.</span>
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### `2`: second person'.</span>
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### `3`: third person'.</span>
+  * value `1`: first person
+  * value `2`: second person
+  * value `3`: third person
   * <span style="color:red">ERROR: Documentation does not belong to UD v2 guidelines.</span>
-  * <span style="color:red">ERROR: No feature values found.</span>
 * [PrepCase](https://universaldependencies.org/pt/feat/PrepCase.html)
   * <span style="color:red">ERROR: Documentation does not belong to UD v2 guidelines.</span>
   * <span style="color:red">ERROR: No feature values found.</span>
@@ -1688,331 +1611,302 @@ The following 25 languages seem to contain at least some documentation of featur
 ## ru
 
 * [Animacy](https://universaldependencies.org/ru/feat/Animacy.html)
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### `Anim`: animate'.</span>
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### `Inan`: inanimate'.</span>
+  * value `Anim`: animate
+  * value `Inan`: inanimate
+  * <span style="color:red">ERROR: No examples found under value 'Anim'.</span>
+  * <span style="color:red">ERROR: Unrecognized examples 'PDT examples of masculine animate nouns:'.</span>
+  * <span style="color:red">ERROR: No examples found under value 'Inan'.</span>
+  * <span style="color:red">ERROR: Unrecognized examples 'RNC (Russian National Corpus) examples of masculine inanimate nouns:'.</span>
   * <span style="color:red">ERROR: Documentation does not belong to UD v2 guidelines.</span>
-  * <span style="color:red">ERROR: No feature values found.</span>
 * [Aspect](https://universaldependencies.org/ru/feat/Aspect.html)
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### `Imp`: imperfect aspect'.</span>
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### `Perf`: perfect aspect'.</span>
+  * value `Imp`: imperfect aspect
+  * value `Perf`: perfect aspect
   * <span style="color:red">ERROR: Documentation does not belong to UD v2 guidelines.</span>
-  * <span style="color:red">ERROR: No feature values found.</span>
 * [Case](https://universaldependencies.org/ru/feat/Case.html)
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### `Nom`: nominative'.</span>
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### `Gen`: genitive'.</span>
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### `Dat`: dative'.</span>
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### `Acc`: accusative'.</span>
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### `Loc`: locative'.</span>
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### `Ins`: instrumental'.</span>
+  * value `Nom`: nominative
+  * value `Gen`: genitive
+  * value `Dat`: dative
+  * value `Acc`: accusative
+  * value `Loc`: locative
+  * value `Ins`: instrumental
+  * <span style="color:red">ERROR: No examples found under value 'Nom'.</span>
+  * <span style="color:red">ERROR: No examples found under value 'Acc'.</span>
   * <span style="color:red">ERROR: Documentation does not belong to UD v2 guidelines.</span>
-  * <span style="color:red">ERROR: No feature values found.</span>
 * [Degree](https://universaldependencies.org/ru/feat/Degree.html)
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### `Pos`: positive, first degree'.</span>
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### `Cmp`: comparative, second degree'.</span>
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### `Sup`: superlative, third degree'.</span>
+  * value `Pos`: positive, first degree
+  * value `Cmp`: comparative, second degree
+  * value `Sup`: superlative, third degree
   * <span style="color:red">ERROR: Documentation does not belong to UD v2 guidelines.</span>
-  * <span style="color:red">ERROR: No feature values found.</span>
 * [Gender](https://universaldependencies.org/ru/feat/Gender.html)
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### `Masc`: masculine gender'.</span>
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### `Fem`: feminine gender'.</span>
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### `Neut`: neuter gender'.</span>
+  * value `Masc`: masculine gender
+  * value `Fem`: feminine gender
+  * value `Neut`: neuter gender
   * <span style="color:red">ERROR: Documentation does not belong to UD v2 guidelines.</span>
-  * <span style="color:red">ERROR: No feature values found.</span>
 * [Mood](https://universaldependencies.org/ru/feat/Mood.html)
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### `Ind`: indicative'.</span>
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### `Imp`: imperative'.</span>
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### `Cnd`: conditional'.</span>
+  * value `Ind`: indicative
+  * value `Imp`: imperative
+  * value `Cnd`: conditional
   * <span style="color:red">ERROR: Documentation does not belong to UD v2 guidelines.</span>
-  * <span style="color:red">ERROR: No feature values found.</span>
 * [NameType](https://universaldependencies.org/ru/feat/NameType.html)
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### `Geo`: geographical name'.</span>
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### `Prs`: name of person'.</span>
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### `Giv`: given name of person'.</span>
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### `Sur`: surname / family name of person'.</span>
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### `Com`: company, organization'.</span>
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### `Pro`: product'.</span>
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### `Oth`: other'.</span>
+  * value `Geo`: geographical name
+  * value `Prs`: name of person
+  * value `Giv`: given name of person
+  * value `Sur`: surname / family name of person
+  * value `Com`: company, organization
+  * value `Pro`: product
+  * value `Oth`: other
+  * <span style="color:red">ERROR: No examples found under value 'Prs'.</span>
+  * <span style="color:red">ERROR: No examples found under value 'Com'.</span>
+  * <span style="color:red">ERROR: No examples found under value 'Pro'.</span>
+  * <span style="color:red">ERROR: No examples found under value 'Oth'.</span>
   * <span style="color:red">ERROR: Documentation does not belong to UD v2 guidelines.</span>
-  * <span style="color:red">ERROR: No feature values found.</span>
 * [Number](https://universaldependencies.org/ru/feat/Number.html)
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### `Sing`: singular number'.</span>
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### `Plur`: plural number'.</span>
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### `Ptan`: plurale tantum'.</span>
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### `Coll`: collective / mass / singulare tantum'.</span>
+  * value `Sing`: singular number
+  * value `Plur`: plural number
+  * value `Ptan`: plurale tantum
+  * value `Coll`: collective / mass / singulare tantum
   * <span style="color:red">ERROR: Unrecognized level 3 heading '### Russian National Corpus'.</span>
   * <span style="color:red">ERROR: Documentation does not belong to UD v2 guidelines.</span>
-  * <span style="color:red">ERROR: No feature values found.</span>
 * [Person](https://universaldependencies.org/ru/feat/Person.html)
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### `1`: first person'.</span>
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### `2`: second person'.</span>
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### `3`: third person'.</span>
+  * value `1`: first person
+  * value `2`: second person
+  * value `3`: third person
   * <span style="color:red">ERROR: Documentation does not belong to UD v2 guidelines.</span>
-  * <span style="color:red">ERROR: No feature values found.</span>
 * [Polarity](https://universaldependencies.org/ru/feat/Polarity.html)
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### `Pos`: positive, affirmative'.</span>
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### `Neg`: negative'.</span>
+  * value `Pos`: positive, affirmative
+  * value `Neg`: negative
   * <span style="color:red">ERROR: Documentation does not belong to UD v2 guidelines.</span>
-  * <span style="color:red">ERROR: No feature values found.</span>
 * [Poss](https://universaldependencies.org/ru/feat/Poss.html)
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### `Yes`: it is possessive'.</span>
+  * value `Yes`: it is possessive
   * <span style="color:red">ERROR: Documentation does not belong to UD v2 guidelines.</span>
-  * <span style="color:red">ERROR: No feature values found.</span>
 * [PronType](https://universaldependencies.org/ru/feat/PronType.html)
   * <span style="color:red">ERROR: Documentation does not belong to UD v2 guidelines.</span>
   * <span style="color:red">ERROR: No feature values found.</span>
 * [Reflex](https://universaldependencies.org/ru/feat/Reflex.html)
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### `Yes`: it is reflexive'.</span>
+  * value `Yes`: it is reflexive
   * <span style="color:red">ERROR: Documentation does not belong to UD v2 guidelines.</span>
-  * <span style="color:red">ERROR: No feature values found.</span>
 * [Tense](https://universaldependencies.org/ru/feat/Tense.html)
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### `Past`: past tense'.</span>
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### `Pres`: present tense'.</span>
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### `Fut`: future tense'.</span>
+  * value `Past`: past tense
+  * value `Pres`: present tense
+  * value `Fut`: future tense
   * <span style="color:red">ERROR: Documentation does not belong to UD v2 guidelines.</span>
-  * <span style="color:red">ERROR: No feature values found.</span>
 * [Variant](https://universaldependencies.org/ru/feat/Variant.html)
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### `Short`: short form of adjectives'.</span>
-  * <span style="color:red">ERROR: No feature values found.</span>
+  * value `Short`: short form of adjectives
 * [VerbForm](https://universaldependencies.org/ru/feat/VerbForm.html)
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### `Fin`: finite verb'.</span>
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### `Inf`: infinitive'.</span>
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### `Part`: participle'.</span>
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### `Trans`: transgressive'.</span>
+  * value `Fin`: finite verb
+  * value `Inf`: infinitive
+  * value `Part`: participle
+  * value `Trans`: transgressive
   * <span style="color:red">ERROR: Documentation does not belong to UD v2 guidelines.</span>
-  * <span style="color:red">ERROR: No feature values found.</span>
 * [Voice](https://universaldependencies.org/ru/feat/Voice.html)
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### `Act`: active voice'.</span>
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### `Pass`: passive voice'.</span>
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### `Mid`: middle voice'.</span>
+  * value `Act`: active voice
+  * value `Pass`: passive voice
+  * value `Mid`: middle voice
   * <span style="color:red">ERROR: Documentation does not belong to UD v2 guidelines.</span>
-  * <span style="color:red">ERROR: No feature values found.</span>
 
 ## sl
 
 * [Abbreviation](https://universaldependencies.org/sl/feat/Abbreviation.html)
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### Yes: it is abbreviation'.</span>
+  * value `Yes`: it is abbreviation
   * <span style="color:red">ERROR: Unrecognized level 3 heading '### Conversion from JOS'.</span>
+  * <span style="color:red">ERROR: No examples found under value 'Yes'.</span>
   * <span style="color:red">ERROR: Documentation does not belong to UD v2 guidelines.</span>
-  * <span style="color:red">ERROR: No feature values found.</span>
 * [Animacy](https://universaldependencies.org/sl/feat/Animacy.html)
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### `Anim`: animate'.</span>
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### `Inan`: inanimate'.</span>
+  * value `Anim`: animate
+  * value `Inan`: inanimate
+  * <span style="color:red">ERROR: No examples found under value 'Anim'.</span>
   * <span style="color:red">ERROR: Unrecognized level 3 heading '### Conversion from JOS'.</span>
+  * <span style="color:red">ERROR: No examples found under value 'Inan'.</span>
   * <span style="color:red">ERROR: Documentation does not belong to UD v2 guidelines.</span>
-  * <span style="color:red">ERROR: No feature values found.</span>
 * [Aspect](https://universaldependencies.org/sl/feat/Aspect.html)
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### `Imp`: imperfect aspect'.</span>
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### `Perf`: perfect aspect'.</span>
+  * value `Imp`: imperfect aspect
+  * value `Perf`: perfect aspect
+  * <span style="color:red">ERROR: No examples found under value 'Imp'.</span>
   * <span style="color:red">ERROR: Unrecognized level 3 heading '### Verbs without `Aspect`'.</span>
   * <span style="color:red">ERROR: Unrecognized level 3 heading '### Conversion from JOS'.</span>
+  * <span style="color:red">ERROR: No examples found under value 'Perf'.</span>
   * <span style="color:red">ERROR: Documentation does not belong to UD v2 guidelines.</span>
-  * <span style="color:red">ERROR: No feature values found.</span>
 * [Case](https://universaldependencies.org/sl/feat/Case.html)
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### `Nom`: nominative'.</span>
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### `Gen`: genitive'.</span>
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### `Dat`: dative'.</span>
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### `Acc`: accusative'.</span>
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### `Loc`: locative'.</span>
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### `Ins`: instrumental'.</span>
+  * value `Nom`: nominative
+  * value `Gen`: genitive
+  * value `Dat`: dative
+  * value `Acc`: accusative
+  * value `Loc`: locative
+  * value `Ins`: instrumental
+  * <span style="color:red">ERROR: No examples found under value 'Nom'.</span>
+  * <span style="color:red">ERROR: No examples found under value 'Gen'.</span>
+  * <span style="color:red">ERROR: No examples found under value 'Dat'.</span>
+  * <span style="color:red">ERROR: No examples found under value 'Acc'.</span>
+  * <span style="color:red">ERROR: No examples found under value 'Loc'.</span>
   * <span style="color:red">ERROR: Unrecognized level 3 heading '### Conversion from JOS'.</span>
+  * <span style="color:red">ERROR: No examples found under value 'Ins'.</span>
   * <span style="color:red">ERROR: Documentation does not belong to UD v2 guidelines.</span>
-  * <span style="color:red">ERROR: No feature values found.</span>
 * [Definite](https://universaldependencies.org/sl/feat/Definite.html)
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### `Ind`: indefinite'.</span>
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### `Def`: definite'.</span>
+  * value `Ind`: indefinite
+  * value `Def`: definite
   * <span style="color:red">ERROR: Unrecognized level 3 heading '### Conversion from JOS'.</span>
   * <span style="color:red">ERROR: Documentation does not belong to UD v2 guidelines.</span>
-  * <span style="color:red">ERROR: No feature values found.</span>
 * [Degree](https://universaldependencies.org/sl/feat/Degree.html)
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### `Pos`: positive, first degree'.</span>
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### `Cmp`: comparative, second degree'.</span>
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### `Sup`: superlative, third degree'.</span>
+  * value `Pos`: positive, first degree
+  * value `Cmp`: comparative, second degree
+  * value `Sup`: superlative, third degree
   * <span style="color:red">ERROR: Unrecognized level 3 heading '### Conversion from JOS'.</span>
   * <span style="color:red">ERROR: Documentation does not belong to UD v2 guidelines.</span>
-  * <span style="color:red">ERROR: No feature values found.</span>
 * [Foreign](https://universaldependencies.org/sl/feat/Foreign.html)
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### Foreign: it is foreign'.</span>
+  * value `Foreign`: it is foreign
   * <span style="color:red">ERROR: Unrecognized level 3 heading '### Conversion from JOS'.</span>
   * <span style="color:red">ERROR: Documentation does not belong to UD v2 guidelines.</span>
-  * <span style="color:red">ERROR: No feature values found.</span>
 * [Gender](https://universaldependencies.org/sl/feat/Gender.html)
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### `Masc`: masculine gender'.</span>
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### `Fem`: feminine gender'.</span>
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### `Neut`: neuter gender'.</span>
+  * value `Masc`: masculine gender
+  * value `Fem`: feminine gender
+  * value `Neut`: neuter gender
   * <span style="color:red">ERROR: Unrecognized level 3 heading '### Conversion from JOS'.</span>
   * <span style="color:red">ERROR: Documentation does not belong to UD v2 guidelines.</span>
-  * <span style="color:red">ERROR: No feature values found.</span>
 * [Gender-psor](https://universaldependencies.org/sl/feat/Gender-psor.html)
+  * value `Masc`: masculine possessor
+  * value `Fem`: feminine possessor
+  * value `Neut`: neuter possessor
   * <span style="color:red">ERROR: Feature name 'Gender-psor' does not have the prescribed form.</span>
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### `Masc`: masculine possessor'.</span>
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### `Fem`: feminine possessor'.</span>
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### `Neut`: neuter possessor'.</span>
   * <span style="color:red">ERROR: Unrecognized level 3 heading '### Conversion from JOS'.</span>
   * <span style="color:red">ERROR: Documentation does not belong to UD v2 guidelines.</span>
-  * <span style="color:red">ERROR: No feature values found.</span>
 * [Mood](https://universaldependencies.org/sl/feat/Mood.html)
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### `Ind`: indicative'.</span>
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### `Imp`: imperative'.</span>
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### `Cnd`: conditional'.</span>
+  * value `Ind`: indicative
+  * value `Imp`: imperative
+  * value `Cnd`: conditional
   * <span style="color:red">ERROR: Unrecognized level 3 heading '### Conversion from JOS'.</span>
   * <span style="color:red">ERROR: Documentation does not belong to UD v2 guidelines.</span>
-  * <span style="color:red">ERROR: No feature values found.</span>
 * [NumForm](https://universaldependencies.org/sl/feat/NumForm.html)
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### Word: number expressed as word'.</span>
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### Digit: number expressed using digits'.</span>
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### Roman: roman numeral'.</span>
+  * value `Word`: number expressed as word
+  * value `Digit`: number expressed using digits
+  * value `Roman`: roman numeral
   * <span style="color:red">ERROR: Unrecognized level 3 heading '### Conversion from JOS'.</span>
   * <span style="color:red">ERROR: Documentation does not belong to UD v2 guidelines.</span>
-  * <span style="color:red">ERROR: No feature values found.</span>
 * [NumType](https://universaldependencies.org/sl/feat/NumType.html)
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### `Card`: cardinal number'.</span>
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### `Ord`: ordinal number'.</span>
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### `Sets`: number of sets of things'.</span>
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### `Gen`: generic numeral, i.e. a numeral that is neither of the above'.</span>
+  * value `Card`: cardinal number
+  * value `Ord`: ordinal number
+  * value `Sets`: number of sets of things
+  * value `Gen`: generic numeral, i.e. a numeral that is neither of the above
   * <span style="color:red">ERROR: Unrecognized level 3 heading '### Conversion from JOS'.</span>
   * <span style="color:red">ERROR: Documentation does not belong to UD v2 guidelines.</span>
-  * <span style="color:red">ERROR: No feature values found.</span>
 * [Number](https://universaldependencies.org/sl/feat/Number.html)
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### `Sing`: singular number'.</span>
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### `Dual`: dual number'.</span>
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### `Plur`: plural number'.</span>
+  * value `Sing`: singular number
+  * value `Dual`: dual number
+  * value `Plur`: plural number
   * <span style="color:red">ERROR: Unrecognized level 3 heading '### Conversion from JOS'.</span>
   * <span style="color:red">ERROR: Documentation does not belong to UD v2 guidelines.</span>
-  * <span style="color:red">ERROR: No feature values found.</span>
 * [Number-psor](https://universaldependencies.org/sl/feat/Number-psor.html)
+  * value `Sing`: singular possessor
+  * value `Dual`: dual possessor
+  * value `Plur`: plura possessor
   * <span style="color:red">ERROR: Feature name 'Number-psor' does not have the prescribed form.</span>
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### `Sing`: singular possessor'.</span>
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### `Dual`: dual possessor'.</span>
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### `Plur`: plura possessor'.</span>
   * <span style="color:red">ERROR: Unrecognized level 3 heading '### Conversion from JOS'.</span>
   * <span style="color:red">ERROR: Documentation does not belong to UD v2 guidelines.</span>
-  * <span style="color:red">ERROR: No feature values found.</span>
 * [Person](https://universaldependencies.org/sl/feat/Person.html)
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### `1`: first person'.</span>
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### `2`: second person'.</span>
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### `3`: third person'.</span>
+  * value `1`: first person
+  * value `2`: second person
+  * value `3`: third person
   * <span style="color:red">ERROR: Unrecognized level 3 heading '### Conversion from JOS'.</span>
   * <span style="color:red">ERROR: Documentation does not belong to UD v2 guidelines.</span>
-  * <span style="color:red">ERROR: No feature values found.</span>
 * [Polarity](https://universaldependencies.org/sl/feat/Polarity.html)
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### `Neg`: negative'.</span>
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### `Pos`: positive, affirmative'.</span>
+  * value `Neg`: negative
+  * value `Pos`: positive, affirmative
   * <span style="color:red">ERROR: Unrecognized level 3 heading '### Conversion from JOS'.</span>
   * <span style="color:red">ERROR: Documentation does not belong to UD v2 guidelines.</span>
-  * <span style="color:red">ERROR: No feature values found.</span>
 * [Poss](https://universaldependencies.org/sl/feat/Poss.html)
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### `Yes`: it is possessive'.</span>
+  * value `Yes`: it is possessive
   * <span style="color:red">ERROR: Unrecognized level 3 heading '### Conversion from JOS'.</span>
   * <span style="color:red">ERROR: Documentation does not belong to UD v2 guidelines.</span>
-  * <span style="color:red">ERROR: No feature values found.</span>
 * [PronType](https://universaldependencies.org/sl/feat/PronType.html)
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### `Prs`: personal pronoun or determiner'.</span>
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### `Int`: interrogative pronoun or determiner'.</span>
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### `Rel`: relative pronoun or determiner'.</span>
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### `Dem`: demonstrative pronoun or determiner'.</span>
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### `Tot`: total (collective) pronoun or determiner'.</span>
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### `Neg`: negative pronoun, determiner or adverb'.</span>
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### `Ind`: indefinite pronoun, determiner, numeral or adverb'.</span>
+  * value `Prs`: personal pronoun or determiner
+  * value `Int`: interrogative pronoun or determiner
+  * value `Rel`: relative pronoun or determiner
+  * value `Dem`: demonstrative pronoun or determiner
+  * value `Tot`: total (collective) pronoun or determiner
+  * value `Neg`: negative pronoun, determiner or adverb
+  * value `Ind`: indefinite pronoun, determiner, numeral or adverb
   * <span style="color:red">ERROR: Unrecognized level 3 heading '### Conversion from JOS'.</span>
   * <span style="color:red">ERROR: Documentation does not belong to UD v2 guidelines.</span>
-  * <span style="color:red">ERROR: No feature values found.</span>
 * [Reflex](https://universaldependencies.org/sl/feat/Reflex.html)
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### `Yes`: it is reflexive'.</span>
+  * value `Yes`: it is reflexive
   * <span style="color:red">ERROR: Unrecognized level 3 heading '### Conversion to JOS'.</span>
   * <span style="color:red">ERROR: Documentation does not belong to UD v2 guidelines.</span>
-  * <span style="color:red">ERROR: No feature values found.</span>
 * [Tense](https://universaldependencies.org/sl/feat/Tense.html)
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### `Pres`: present tense'.</span>
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### `Fut`: future tense'.</span>
+  * value `Pres`: present tense
+  * value `Fut`: future tense
   * <span style="color:red">ERROR: Unrecognized level 3 heading '### Conversion from JOS'.</span>
   * <span style="color:red">ERROR: Documentation does not belong to UD v2 guidelines.</span>
-  * <span style="color:red">ERROR: No feature values found.</span>
 * [Variant](https://universaldependencies.org/sl/feat/Variant.html)
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### `Bound`: bound form'.</span>
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### `Short`: clitic form'.</span>
+  * value `Bound`: bound form
+  * value `Short`: clitic form
   * <span style="color:red">ERROR: Documentation does not belong to UD v2 guidelines.</span>
-  * <span style="color:red">ERROR: No feature values found.</span>
 * [VerbForm](https://universaldependencies.org/sl/feat/VerbForm.html)
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### `Fin`: finite verb'.</span>
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### `Inf`: infinitive'.</span>
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### `Part`: participle'.</span>
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### `Trans`: transgressive'.</span>
+  * value `Fin`: finite verb
+  * value `Inf`: infinitive
+  * value `Part`: participle
+  * value `Trans`: transgressive
   * <span style="color:red">ERROR: Unrecognized level 3 heading '### Conversion from JOS'.</span>
   * <span style="color:red">ERROR: Documentation does not belong to UD v2 guidelines.</span>
-  * <span style="color:red">ERROR: No feature values found.</span>
 
 ## sv
 
 * [Abbr](https://universaldependencies.org/sv/feat/Abbr.html)
   * value `Yes`: it is abbreviation
 * [Case](https://universaldependencies.org/sv/feat/Case.html)
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### `Nom`: nominative'.</span>
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### `Acc`: accusative'.</span>
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### `Gen`: genitive'.</span>
+  * value `Nom`: nominative
+  * value `Acc`: accusative
+  * value `Gen`: genitive
   * <span style="color:red">ERROR: Documentation does not belong to UD v2 guidelines.</span>
-  * <span style="color:red">ERROR: No feature values found.</span>
 * [Definite](https://universaldependencies.org/sv/feat/Definite.html)
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### `Ind`: indefinite'.</span>
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### `Def`: definite'.</span>
+  * value `Ind`: indefinite
+  * value `Def`: definite
   * <span style="color:red">ERROR: Documentation does not belong to UD v2 guidelines.</span>
-  * <span style="color:red">ERROR: No feature values found.</span>
 * [Degree](https://universaldependencies.org/sv/feat/Degree.html)
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### `Pos`: positive, first degree'.</span>
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### `Cmp`: comparative, second degree'.</span>
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### `Sup`: superlative, third degree'.</span>
+  * value `Pos`: positive, first degree
+  * value `Cmp`: comparative, second degree
+  * value `Sup`: superlative, third degree
   * <span style="color:red">ERROR: Documentation does not belong to UD v2 guidelines.</span>
-  * <span style="color:red">ERROR: No feature values found.</span>
 * [Foreign](https://universaldependencies.org/sv/feat/Foreign.html)
   * value `Yes`: it is foreign
 * [Gender](https://universaldependencies.org/sv/feat/Gender.html)
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### `Com`: common gender'.</span>
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### `Neut`: neuter gender'.</span>
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### `Masc`: masculine gender'.</span>
+  * value `Com`: common gender
+  * value `Neut`: neuter gender
+  * value `Masc`: masculine gender
   * <span style="color:red">ERROR: Documentation does not belong to UD v2 guidelines.</span>
-  * <span style="color:red">ERROR: No feature values found.</span>
 * [Mood](https://universaldependencies.org/sv/feat/Mood.html)
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### `Ind`: indicative'.</span>
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### `Imp`: imperative'.</span>
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### `Sub`: subjunctive / conjunctive'.</span>
+  * value `Ind`: indicative
+  * value `Imp`: imperative
+  * value `Sub`: subjunctive / conjunctive
   * <span style="color:red">ERROR: Documentation does not belong to UD v2 guidelines.</span>
-  * <span style="color:red">ERROR: No feature values found.</span>
 * [Number](https://universaldependencies.org/sv/feat/Number.html)
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### `Sing`: singular number'.</span>
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### `Plur`: plural number'.</span>
+  * value `Sing`: singular number
+  * value `Plur`: plural number
   * <span style="color:red">ERROR: Documentation does not belong to UD v2 guidelines.</span>
-  * <span style="color:red">ERROR: No feature values found.</span>
 * [Person](https://universaldependencies.org/sv/feat/Person.html)
   * <span style="color:red">ERROR: Documentation does not belong to UD v2 guidelines.</span>
   * <span style="color:red">ERROR: No feature values found.</span>
 * [Polarity](https://universaldependencies.org/sv/feat/Polarity.html)
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### `Neg`: negative'.</span>
-  * <span style="color:red">ERROR: No feature values found.</span>
+  * value `Neg`: negative
 * [Poss](https://universaldependencies.org/sv/feat/Poss.html)
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### `Yes`: it is possessive'.</span>
+  * value `Yes`: it is possessive
   * <span style="color:red">ERROR: Documentation does not belong to UD v2 guidelines.</span>
-  * <span style="color:red">ERROR: No feature values found.</span>
 * [PronType](https://universaldependencies.org/sv/feat/PronType.html)
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### `Int`: interrogative pronoun, determiner, or adverb'.</span>
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### `Rel`: relative pronoun, determiner, or adverb'.</span>
+  * value `Int`: interrogative pronoun, determiner, or adverb
+  * value `Rel`: relative pronoun, determiner, or adverb
   * <span style="color:red">ERROR: Documentation does not belong to UD v2 guidelines.</span>
-  * <span style="color:red">ERROR: No feature values found.</span>
 * [Tense](https://universaldependencies.org/sv/feat/Tense.html)
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### `Pres`: present tense'.</span>
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### `Past`: preterite'.</span>
+  * value `Pres`: present tense
+  * value `Past`: preterite
   * <span style="color:red">ERROR: Documentation does not belong to UD v2 guidelines.</span>
-  * <span style="color:red">ERROR: No feature values found.</span>
 * [VerbForm](https://universaldependencies.org/sv/feat/VerbForm.html)
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### `Fin`: finite verb'.</span>
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### `Inf`: infinitive'.</span>
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### `Part`: participle'.</span>
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### `Sup`: supine'.</span>
+  * value `Fin`: finite verb
+  * value `Inf`: infinitive
+  * value `Part`: participle
+  * value `Sup`: supine
   * <span style="color:red">ERROR: Documentation does not belong to UD v2 guidelines.</span>
-  * <span style="color:red">ERROR: No feature values found.</span>
 * [Voice](https://universaldependencies.org/sv/feat/Voice.html)
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### `Act`: active voice'.</span>
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### `Pass`: passive voice'.</span>
+  * value `Act`: active voice
+  * value `Pass`: passive voice
   * <span style="color:red">ERROR: Documentation does not belong to UD v2 guidelines.</span>
-  * <span style="color:red">ERROR: No feature values found.</span>
 
 ## tr
 
@@ -2020,228 +1914,203 @@ The following 25 languages seem to contain at least some documentation of featur
   * <span style="color:red">ERROR: Documentation does not belong to UD v2 guidelines.</span>
   * <span style="color:red">ERROR: No feature values found.</span>
 * [Aspect](https://universaldependencies.org/tr/feat/Aspect.html)
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### `Perf`: perfect aspect'.</span>
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### `Prog`: progressive aspect'.</span>
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### `Hab`: habitual aspect (**new proposal**)'.</span>
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### `Rapid`: rapid sudden action (**new proposal**)'.</span>
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### `Dur`: durative aspect (**new proposal**)'.</span>
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### `Pro`: prospective aspect'.</span>
+  * value `Perf`: perfect aspect
+  * value `Prog`: progressive aspect
+  * value `Hab`: habitual aspect (**new proposal**)
+  * value `Rapid`: rapid sudden action (**new proposal**)
+  * value `Dur`: durative aspect (**new proposal**)
+  * value `Pro`: prospective aspect
   * <span style="color:red">ERROR: Documentation does not belong to UD v2 guidelines.</span>
-  * <span style="color:red">ERROR: No feature values found.</span>
 * [Case](https://universaldependencies.org/tr/feat/Case.html)
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### `Nom`: nominative / direct'.</span>
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### `Acc`: accusative'.</span>
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### `Dat`: dative'.</span>
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### `Gen`: genitive'.</span>
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### `Loc`: locative'.</span>
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### `Ins`: instrumental'.</span>
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### `Com`: comitative / associative'.</span>
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### `Abl`: ablative'.</span>
+  * value `Nom`: nominative / direct
+  * value `Acc`: accusative
+  * value `Dat`: dative
+  * value `Gen`: genitive
+  * value `Loc`: locative
+  * value `Ins`: instrumental
+  * value `Com`: comitative / associative
+  * value `Abl`: ablative
+  * <span style="color:red">ERROR: No examples found under value 'Nom'.</span>
+  * <span style="color:red">ERROR: No examples found under value 'Com'.</span>
   * <span style="color:red">ERROR: Documentation does not belong to UD v2 guidelines.</span>
-  * <span style="color:red">ERROR: No feature values found.</span>
 * [Definite](https://universaldependencies.org/tr/feat/Definite.html)
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### `Ind`: indefinite'.</span>
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### `Def`: definite'.</span>
+  * value `Ind`: indefinite
+  * value `Def`: definite
   * <span style="color:red">ERROR: Documentation does not belong to UD v2 guidelines.</span>
-  * <span style="color:red">ERROR: No feature values found.</span>
 * [Degree](https://universaldependencies.org/tr/feat/Degree.html)
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### `Cmp`: comparative, second degree'.</span>
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### `Sup`: superlative, third degree'.</span>
+  * value `Cmp`: comparative, second degree
+  * value `Sup`: superlative, third degree
   * <span style="color:red">ERROR: Documentation does not belong to UD v2 guidelines.</span>
-  * <span style="color:red">ERROR: No feature values found.</span>
 * [Evidential](https://universaldependencies.org/tr/feat/Evidential.html)
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### `Fh`: first hand'.</span>
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### `Nfh`: non-first hand'.</span>
+  * value `Fh`: first hand
+  * value `Nfh`: non-first hand
   * <span style="color:red">ERROR: Documentation does not belong to UD v2 guidelines.</span>
-  * <span style="color:red">ERROR: No feature values found.</span>
 * [Gender](https://universaldependencies.org/tr/feat/Gender.html)
   * <span style="color:red">ERROR: Documentation does not belong to UD v2 guidelines.</span>
   * <span style="color:red">ERROR: No feature values found.</span>
 * [Mood](https://universaldependencies.org/tr/feat/Mood.html)
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### `Ind`: indicative'.</span>
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### `Imp`: imperative'.</span>
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### `Prs`: persuasive (**new, not in UD**)'.</span>
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### `Cnd`: conditional'.</span>
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### `Des`: desiderative'.</span>
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### `Opt`: optative'.</span>
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### `Nec`: necessitative'.</span>
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### `Gen`: generalized modality (**new proposal, not in UD**)'.</span>
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### `Abil`: abilitative or potentiality (**new proposal, not in UD**)'.</span>
+  * value `Ind`: indicative
+  * value `Imp`: imperative
+  * value `Prs`: persuasive (**new, not in UD**)
+  * value `Cnd`: conditional
+  * value `Des`: desiderative
+  * value `Opt`: optative
+  * value `Nec`: necessitative
+  * value `Gen`: generalized modality (**new proposal, not in UD**)
+  * value `Abil`: abilitative or potentiality (**new proposal, not in UD**)
   * <span style="color:red">ERROR: Documentation does not belong to UD v2 guidelines.</span>
-  * <span style="color:red">ERROR: No feature values found.</span>
 * [NumType](https://universaldependencies.org/tr/feat/NumType.html)
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### `Card`: cardinal number or corresponding interrogative'.</span>
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### `Ord`: ordinal number or corresponding interrogative'.</span>
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### `Dist`: distributive numeral'.</span>
+  * value `Card`: cardinal number or corresponding interrogative
+  * value `Ord`: ordinal number or corresponding interrogative
+  * value `Dist`: distributive numeral
   * <span style="color:red">ERROR: Documentation does not belong to UD v2 guidelines.</span>
-  * <span style="color:red">ERROR: No feature values found.</span>
 * [Number](https://universaldependencies.org/tr/feat/Number.html)
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### `Sing`: singular number'.</span>
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### `Plur`: plural number'.</span>
+  * value `Sing`: singular number
+  * value `Plur`: plural number
   * <span style="color:red">ERROR: Documentation does not belong to UD v2 guidelines.</span>
-  * <span style="color:red">ERROR: No feature values found.</span>
 * [Number-psor](https://universaldependencies.org/tr/feat/Number-psor.html)
+  * value `Sing`: singular possessor
+  * value `Plur`: plural possessor
   * <span style="color:red">ERROR: Feature name 'Number-psor' does not have the prescribed form.</span>
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### `Sing`: singular possessor'.</span>
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### `Plur`: plural possessor'.</span>
   * <span style="color:red">ERROR: Documentation does not belong to UD v2 guidelines.</span>
-  * <span style="color:red">ERROR: No feature values found.</span>
 * [Person](https://universaldependencies.org/tr/feat/Person.html)
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### `1`: first person'.</span>
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### `2`: second person'.</span>
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### `3`: third person'.</span>
+  * value `1`: first person
+  * value `2`: second person
+  * value `3`: third person
   * <span style="color:red">ERROR: Documentation does not belong to UD v2 guidelines.</span>
-  * <span style="color:red">ERROR: No feature values found.</span>
 * [Person-psor](https://universaldependencies.org/tr/feat/Person-psor.html)
+  * value `1`: first person
+  * value `2`: second person
+  * value `3`: third person
   * <span style="color:red">ERROR: Feature name 'Person-psor' does not have the prescribed form.</span>
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### `1`: first person'.</span>
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### `2`: second person'.</span>
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### `3`: third person'.</span>
   * <span style="color:red">ERROR: Documentation does not belong to UD v2 guidelines.</span>
-  * <span style="color:red">ERROR: No feature values found.</span>
 * [Polarity](https://universaldependencies.org/tr/feat/Polarity.html)
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### `Pos`: positive, affirmative'.</span>
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### `Neg`: negative'.</span>
+  * value `Pos`: positive, affirmative
+  * value `Neg`: negative
   * <span style="color:red">ERROR: Documentation does not belong to UD v2 guidelines.</span>
-  * <span style="color:red">ERROR: No feature values found.</span>
 * [Poss](https://universaldependencies.org/tr/feat/Poss.html)
   * <span style="color:red">ERROR: Documentation does not belong to UD v2 guidelines.</span>
   * <span style="color:red">ERROR: No feature values found.</span>
 * [PronType](https://universaldependencies.org/tr/feat/PronType.html)
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### `Prs`: personal'.</span>
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### `Rcp`: reciprocal pronoun'.</span>
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### `Int`: interrogative pronoun, determiner, numeral or adverb'.</span>
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### `Dem`: demonstrative pronoun'.</span>
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### `Loc`: locative pronoun'.</span>
+  * value `Prs`: personal
+  * value `Rcp`: reciprocal pronoun
+  * value `Int`: interrogative pronoun, determiner, numeral or adverb
+  * value `Dem`: demonstrative pronoun
+  * value `Loc`: locative pronoun
   * <span style="color:red">ERROR: Documentation does not belong to UD v2 guidelines.</span>
-  * <span style="color:red">ERROR: No feature values found.</span>
 * [Reflex](https://universaldependencies.org/tr/feat/Reflex.html)
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### `Yes`: it is reflexive'.</span>
+  * value `Yes`: it is reflexive
   * <span style="color:red">ERROR: Documentation does not belong to UD v2 guidelines.</span>
-  * <span style="color:red">ERROR: No feature values found.</span>
 * [Tense](https://universaldependencies.org/tr/feat/Tense.html)
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### `Past`: paste tense'.</span>
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### `Fut`: future tense'.</span>
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### `Pres`: present tense'.</span>
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### `Pqp`: pluperfect'.</span>
+  * value `Past`: paste tense
+  * value `Fut`: future tense
+  * value `Pres`: present tense
+  * value `Pqp`: pluperfect
   * <span style="color:red">ERROR: Documentation does not belong to UD v2 guidelines.</span>
-  * <span style="color:red">ERROR: No feature values found.</span>
 * [VerbForm](https://universaldependencies.org/tr/feat/VerbForm.html)
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### `Part`: participle'.</span>
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### `Trans`: transgressive'.</span>
+  * value `Part`: participle
+  * value `Trans`: transgressive
+  * <span style="color:red">ERROR: No examples found under value 'Trans'.</span>
   * <span style="color:red">ERROR: Documentation does not belong to UD v2 guidelines.</span>
-  * <span style="color:red">ERROR: No feature values found.</span>
 * [Voice](https://universaldependencies.org/tr/feat/Voice.html)
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### `Pass`: passive voice'.</span>
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### `Rcp`: reciprocal voice'.</span>
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### `Cau`: causative voice'.</span>
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### `Rfl`: reflexive voice'.</span>
+  * value `Pass`: passive voice
+  * value `Rcp`: reciprocal voice
+  * value `Cau`: causative voice
+  * value `Rfl`: reflexive voice
   * <span style="color:red">ERROR: Documentation does not belong to UD v2 guidelines.</span>
-  * <span style="color:red">ERROR: No feature values found.</span>
 
 ## uk
 
 * [Animacy](https://universaldependencies.org/uk/feat/Animacy.html)
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### `Anim`: animate'.</span>
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### `Inan`: inanimate'.</span>
+  * value `Anim`: animate
+  * value `Inan`: inanimate
   * <span style="color:red">ERROR: Documentation does not belong to UD v2 guidelines.</span>
-  * <span style="color:red">ERROR: No feature values found.</span>
 * [Aspect](https://universaldependencies.org/uk/feat/Aspect.html)
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### `Imp`: imperfect aspect'.</span>
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### `Perf`: perfect aspect'.</span>
+  * value `Imp`: imperfect aspect
+  * value `Perf`: perfect aspect
   * <span style="color:red">ERROR: Documentation does not belong to UD v2 guidelines.</span>
-  * <span style="color:red">ERROR: No feature values found.</span>
 * [Case](https://universaldependencies.org/uk/feat/Case.html)
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### `Nom`: nominative'.</span>
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### `Gen`: genitive'.</span>
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### `Dat`: dative'.</span>
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### `Acc`: accusative'.</span>
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### `Ins`: instrumental'.</span>
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### `Loc`: locative'.</span>
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### `Voc`: vocative'.</span>
+  * value `Nom`: nominative
+  * value `Gen`: genitive
+  * value `Dat`: dative
+  * value `Acc`: accusative
+  * value `Ins`: instrumental
+  * value `Loc`: locative
+  * value `Voc`: vocative
+  * <span style="color:red">ERROR: No examples found under value 'Nom'.</span>
+  * <span style="color:red">ERROR: No examples found under value 'Acc'.</span>
   * <span style="color:red">ERROR: Documentation does not belong to UD v2 guidelines.</span>
-  * <span style="color:red">ERROR: No feature values found.</span>
 * [Degree](https://universaldependencies.org/uk/feat/Degree.html)
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### `Pos`: positive, first degree'.</span>
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### `Cmp`: comparative, second degree'.</span>
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### `Sup`: superlative, third degree'.</span>
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### `Abs`: absolute superlative'.</span>
+  * value `Pos`: positive, first degree
+  * value `Cmp`: comparative, second degree
+  * value `Sup`: superlative, third degree
+  * value `Abs`: absolute superlative
   * <span style="color:red">ERROR: Documentation does not belong to UD v2 guidelines.</span>
-  * <span style="color:red">ERROR: No feature values found.</span>
 * [Gender](https://universaldependencies.org/uk/feat/Gender.html)
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### `Masc`: masculine gender'.</span>
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### `Fem`: feminine gender'.</span>
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### `Neut`: neuter gender'.</span>
+  * value `Masc`: masculine gender
+  * value `Fem`: feminine gender
+  * value `Neut`: neuter gender
   * <span style="color:red">ERROR: Documentation does not belong to UD v2 guidelines.</span>
-  * <span style="color:red">ERROR: No feature values found.</span>
 * [Mood](https://universaldependencies.org/uk/feat/Mood.html)
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### `Ind`: indicative'.</span>
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### `Imp`: imperative'.</span>
+  * value `Ind`: indicative
+  * value `Imp`: imperative
   * <span style="color:red">ERROR: Documentation does not belong to UD v2 guidelines.</span>
-  * <span style="color:red">ERROR: No feature values found.</span>
 * [NumType](https://universaldependencies.org/uk/feat/NumType.html)
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### `Card`: cardinal number or corresponding interrogative / relative / indefinite / demonstrative word'.</span>
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### `Ord`: ordinal number'.</span>
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### `Mult`: multiplicative numeral'.</span>
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### `Frac`: fraction'.</span>
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### `Sets`: number of sets of things'.</span>
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### `Gen`: generic numeral'.</span>
+  * value `Card`: cardinal number or corresponding interrogative / relative / indefinite / demonstrative word
+  * value `Ord`: ordinal number
+  * value `Mult`: multiplicative numeral
+  * value `Frac`: fraction
+  * value `Sets`: number of sets of things
+  * value `Gen`: generic numeral
+  * <span style="color:red">ERROR: No examples found under value 'Ord'.</span>
+  * <span style="color:red">ERROR: Unrecognized examples '#### Adjectival examples'.</span>
+  * <span style="color:red">ERROR: Unrecognized examples '#### Adverbial examples'.</span>
   * <span style="color:red">ERROR: Documentation does not belong to UD v2 guidelines.</span>
-  * <span style="color:red">ERROR: No feature values found.</span>
 * [Number](https://universaldependencies.org/uk/feat/Number.html)
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### `Sing`: singular number'.</span>
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### `Plur`: plural number'.</span>
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### `Ptan`: plurale tantum'.</span>
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### `Coll`: collective / mass / singulare tantum'.</span>
+  * value `Sing`: singular number
+  * value `Plur`: plural number
+  * value `Ptan`: plurale tantum
+  * value `Coll`: collective / mass / singulare tantum
   * <span style="color:red">ERROR: Unrecognized level 3 heading '### Ukrainian Dependency Treebank'.</span>
   * <span style="color:red">ERROR: Documentation does not belong to UD v2 guidelines.</span>
-  * <span style="color:red">ERROR: No feature values found.</span>
 * [Person](https://universaldependencies.org/uk/feat/Person.html)
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### `1`: first person'.</span>
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### `2`: second person'.</span>
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### `3`: third person'.</span>
+  * value `1`: first person
+  * value `2`: second person
+  * value `3`: third person
   * <span style="color:red">ERROR: Documentation does not belong to UD v2 guidelines.</span>
-  * <span style="color:red">ERROR: No feature values found.</span>
 * [Polarity](https://universaldependencies.org/uk/feat/Polarity.html)
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### Neg: negative'.</span>
+  * value `Neg`: negative
   * <span style="color:red">ERROR: Documentation does not belong to UD v2 guidelines.</span>
-  * <span style="color:red">ERROR: No feature values found.</span>
 * [Poss](https://universaldependencies.org/uk/feat/Poss.html)
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### `Yes`: it is possessive'.</span>
+  * value `Yes`: it is possessive
   * <span style="color:red">ERROR: Documentation does not belong to UD v2 guidelines.</span>
-  * <span style="color:red">ERROR: No feature values found.</span>
 * [PronType](https://universaldependencies.org/uk/feat/PronType.html)
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### `Prs`: personal or possessive personal pronoun or determiner'.</span>
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### `Int`: interrogative pronoun, determiner, numeral or adverb'.</span>
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### `Rel`: relative pronoun, determiner, numeral or adverb'.</span>
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### `Dem`: demonstrative pronoun, determiner, numeral or adverb'.</span>
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### `Tot`: total (collective) pronoun, determiner or adverb'.</span>
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### `Neg`: negative pronoun, determiner or adverb'.</span>
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### `Ind`: indefinite pronoun, determiner, numeral or adverb'.</span>
+  * value `Prs`: personal or possessive personal pronoun or determiner
+  * value `Int`: interrogative pronoun, determiner, numeral or adverb
+  * value `Rel`: relative pronoun, determiner, numeral or adverb
+  * value `Dem`: demonstrative pronoun, determiner, numeral or adverb
+  * value `Tot`: total (collective) pronoun, determiner or adverb
+  * value `Neg`: negative pronoun, determiner or adverb
+  * value `Ind`: indefinite pronoun, determiner, numeral or adverb
   * <span style="color:red">ERROR: Documentation does not belong to UD v2 guidelines.</span>
-  * <span style="color:red">ERROR: No feature values found.</span>
 * [Reflex](https://universaldependencies.org/uk/feat/Reflex.html)
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### `Yes`: it is reflexive'.</span>
+  * value `Yes`: it is reflexive
   * <span style="color:red">ERROR: Documentation does not belong to UD v2 guidelines.</span>
-  * <span style="color:red">ERROR: No feature values found.</span>
 * [Tense](https://universaldependencies.org/uk/feat/Tense.html)
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### `Past`: past tense'.</span>
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### `Pres`: present tense'.</span>
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### `Fut`: future tense'.</span>
+  * value `Past`: past tense
+  * value `Pres`: present tense
+  * value `Fut`: future tense
   * <span style="color:red">ERROR: Documentation does not belong to UD v2 guidelines.</span>
-  * <span style="color:red">ERROR: No feature values found.</span>
 * [VerbForm](https://universaldependencies.org/uk/feat/VerbForm.html)
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### `Fin`: finite verb'.</span>
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### `Inf`: infinitive'.</span>
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### `Imps`: impersonal'.</span>
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### `Part`: participle'.</span>
+  * value `Fin`: finite verb
+  * value `Inf`: infinitive
+  * value `Imps`: impersonal
+  * value `Part`: participle
   * <span style="color:red">ERROR: Documentation does not belong to UD v2 guidelines.</span>
-  * <span style="color:red">ERROR: No feature values found.</span>
 * [Voice](https://universaldependencies.org/uk/feat/Voice.html)
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### `Act`: active voice'.</span>
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### `Pass`: passive voice'.</span>
+  * value `Act`: active voice
+  * value `Pass`: passive voice
   * <span style="color:red">ERROR: Documentation does not belong to UD v2 guidelines.</span>
-  * <span style="color:red">ERROR: No feature values found.</span>
 
 ## urj
 

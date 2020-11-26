@@ -103,7 +103,7 @@ print("\n");
 print("# Locally documented language-specific features\n\n");
 my @lcodes = sort(keys(%lhash));
 my $n = scalar(@lcodes);
-print("The following $n languages seem to contain at least some documentation of features: ".join(' ', map {"$_ (".scalar(keys(%{$lhash{$_}})).")"} (@lcodes))."\n");
+print("The following $n languages seem to have at least some documentation of features: ".join(' ', map {"$_ (".scalar(keys(%{$lhash{$_}})).")"} (@lcodes))."\n");
 print("\n");
 foreach my $lcode (@lcodes)
 {
@@ -175,7 +175,10 @@ sub read_feature_doc
                 push(@{$feathash->{errors}}, "Feature value '$value' does not have the prescribed form.");
             }
         }
-        elsif(m/^\#\#\#[^\#]/ && !m/^\#\#\#\s*References$/)
+        # Warn about unrecognized level 3 headings.
+        # Note that there are some examples of legitimate level 3 headings that are not feature values.
+        # References is one such case. The "Prague Dependency Treebank" exception is needed if there is a Diff section (level 2) with treebanks that currently differ from the overall guidelines.
+        elsif(m/^\#\#\#[^\#]/ && !m/^\#\#\#\s*(References|Prague Dependency Treebank)$/)
         {
             push(@{$feathash->{errors}}, "Unrecognized level 3 heading '$_'.");
         }
