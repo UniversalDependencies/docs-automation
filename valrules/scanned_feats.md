@@ -204,22 +204,6 @@
 
 # Globally documented non-universal features
 
-* [AbsErgDatNumber](https://universaldependencies.org/u/feat/AbsErgDatNumber.html)
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### Sing: singular'.</span>
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### Plur: plural'.</span>
-  * <span style="color:red">ERROR: Documentation does not belong to UD v2 guidelines.</span>
-  * <span style="color:red">ERROR: No feature values found.</span>
-* [AbsErgDatPerson](https://universaldependencies.org/u/feat/AbsErgDatPerson.html)
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### 1: first person'.</span>
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### 2: second person'.</span>
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### 3: third person'.</span>
-  * <span style="color:red">ERROR: Documentation does not belong to UD v2 guidelines.</span>
-  * <span style="color:red">ERROR: No feature values found.</span>
-* [AbsErgDatPolite](https://universaldependencies.org/u/feat/AbsErgDatPolite.html)
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### Inf: informal'.</span>
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### Pol: polite, formal'.</span>
-  * <span style="color:red">ERROR: Documentation does not belong to UD v2 guidelines.</span>
-  * <span style="color:red">ERROR: No feature values found.</span>
 * [AdpType](https://universaldependencies.org/u/feat/AdpType.html)
   * value `Prep`: preposition
   * value `Post`: postposition
@@ -239,11 +223,15 @@
 * [Echo](https://universaldependencies.org/u/feat/Echo.html)
   * value `Rdp`: reduplicative
   * value `Ech`: echo
-* [ErgDatGender](https://universaldependencies.org/u/feat/ErgDatGender.html)
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### Masc: masculine gender'.</span>
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### Fem: feminine gender'.</span>
-  * <span style="color:red">ERROR: Documentation does not belong to UD v2 guidelines.</span>
-  * <span style="color:red">ERROR: No feature values found.</span>
+* [Gender[obj]](https://universaldependencies.org/u/feat/Gender-obj.html)
+  * value `Masc`: masculine object
+  * value `Fem`: feminine object
+* [Gender[psor]](https://universaldependencies.org/u/feat/Gender-psor.html)
+  * value `Masc`: masculine possessor
+  * value `Fem`: feminine possessor
+* [Gender[subj]](https://universaldependencies.org/u/feat/Gender-subj.html)
+  * value `Masc`: masculine subject
+  * value `Fem`: feminine subject
 * [Hyph](https://universaldependencies.org/u/feat/Hyph.html)
   * value `Yes`: it is part of hyphenated compound
 * [NameType](https://universaldependencies.org/u/feat/NameType.html)
@@ -265,6 +253,18 @@
   * value `1`: numeric value 1
   * value `2`: numeric value 2
   * value `3`: numeric value 3 or 4
+* [Number[obj]](https://universaldependencies.org/u/feat/Number-obj.html)
+  * value `Sing`: singular object
+  * value `Plur`: plural object
+* [Number[psed]](https://universaldependencies.org/u/feat/Number-psed.html)
+  * value `Sing`: singular possession
+  * value `Plur`: plural possession
+* [Number[psor]](https://universaldependencies.org/u/feat/Number-psor.html)
+  * value `Sing`: singular possessor
+  * value `Plur`: plural possessor
+* [Number[subj]](https://universaldependencies.org/u/feat/Number-subj.html)
+  * value `Sing`: singular subject
+  * value `Plur`: plural subject
 * [PartType](https://universaldependencies.org/u/feat/PartType.html)
   * value `Mod`: modal particle
   * value `Emp`: particle of emphasis
@@ -272,27 +272,21 @@
   * value `Inf`: infinitive marker
   * value `Int`: question particle
   * value `Vbp`: separated verb prefix in German
-* [PossGender](https://universaldependencies.org/u/feat/PossGender.html)
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### Masc: masculine possessor'.</span>
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### Fem: feminine possessor'.</span>
-  * <span style="color:red">ERROR: Documentation does not belong to UD v2 guidelines.</span>
-  * <span style="color:red">ERROR: No feature values found.</span>
-* [PossNumber](https://universaldependencies.org/u/feat/PossNumber.html)
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### Sing: singular possessor'.</span>
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### Plur: plural possessor'.</span>
-  * <span style="color:red">ERROR: Documentation does not belong to UD v2 guidelines.</span>
-  * <span style="color:red">ERROR: No feature values found.</span>
-* [PossPerson](https://universaldependencies.org/u/feat/PossPerson.html)
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### 1: first person possessor'.</span>
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### 2: second person possessor'.</span>
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### 3: third person possessor'.</span>
-  * <span style="color:red">ERROR: Documentation does not belong to UD v2 guidelines.</span>
-  * <span style="color:red">ERROR: No feature values found.</span>
-* [PossedNumber](https://universaldependencies.org/u/feat/PossedNumber.html)
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### Sing: singular possession'.</span>
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### Plur: plural possession'.</span>
-  * <span style="color:red">ERROR: Documentation does not belong to UD v2 guidelines.</span>
-  * <span style="color:red">ERROR: No feature values found.</span>
+* [Person[obj]](https://universaldependencies.org/u/feat/Person-obj.html)
+  * value `1`: first person object
+  * value `2`: second person object
+  * value `3`: third person object
+* [Person[psor]](https://universaldependencies.org/u/feat/Person-psor.html)
+  * value `1`: first person possessor
+  * value `2`: second person possessor
+  * value `3`: third person possessor
+* [Person[subj]](https://universaldependencies.org/u/feat/Person-subj.html)
+  * value `1`: first person subject
+  * value `2`: second person subject
+  * value `3`: third person subject
+* [Polite[abs]](https://universaldependencies.org/u/feat/Polite-abs.html)
+  * value `Infm`: informal absolutive argument
+  * value `Form`: polite, formal absolutive argument
 * [PrepCase](https://universaldependencies.org/u/feat/PrepCase.html)
   * value `Npr`: non-prepositional case
   * value `Pre`: prepositional case

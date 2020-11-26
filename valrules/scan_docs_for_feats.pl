@@ -75,62 +75,7 @@ foreach my $langfolder (@langfolders)
     }
 }
 # Print an overview of the features we found.
-my @features = sort(keys(%hash));
-print("# Universal features\n\n");
-foreach my $feature (grep {$hash{$_}{type} eq 'universal'} (@features))
-{
-    print("* [$feature](https://universaldependencies.org/u/feat/$feature.html)\n");
-    foreach my $value (@{$hash{$feature}{values}})
-    {
-        print('  * value `'.$value.'`: '.$hash{$feature}{valdoc}{$value}{shortdesc}."\n");
-    }
-    foreach my $error (@{$hash{$feature}{errors}})
-    {
-        print('  * <span style="color:red">ERROR: '.$error.'</span>'."\n");
-    }
-}
-print("\n");
-print("# Globally documented non-universal features\n\n");
-foreach my $feature (grep {$hash{$_}{type} eq 'global'} (@features))
-{
-    my $file = $feature;
-    $file =~ s/^([A-Za-z0-9]+)\[([a-z]+)\]$/$1-$2/;
-    print("* [$feature](https://universaldependencies.org/u/feat/$file.html)\n");
-    foreach my $value (@{$hash{$feature}{values}})
-    {
-        print('  * value `'.$value.'`: '.$hash{$feature}{valdoc}{$value}{shortdesc}."\n");
-    }
-    foreach my $error (@{$hash{$feature}{errors}})
-    {
-        print('  * <span style="color:red">ERROR: '.$error.'</span>'."\n");
-    }
-}
-print("\n");
-print("# Locally documented language-specific features\n\n");
-my @lcodes = sort(keys(%lhash));
-my $n = scalar(@lcodes);
-print("The following $n languages seem to have at least some documentation of features: ".join(' ', map {"$_ (".scalar(keys(%{$lhash{$_}})).")"} (@lcodes))."\n");
-print("\n");
-foreach my $lcode (@lcodes)
-{
-    print("## $lcode\n\n");
-    my @features = sort(keys(%{$lhash{$lcode}}));
-    foreach my $feature (@features)
-    {
-        my $file = $feature;
-        $file =~ s/^([A-Za-z0-9]+)\[([a-z]+)\]$/$1-$2/;
-        print("* [$feature](https://universaldependencies.org/$lcode/feat/$file.html)\n");
-        foreach my $value (@{$lhash{$lcode}{$feature}{values}})
-        {
-            print('  * value `'.$value.'`: '.$lhash{$lcode}{$feature}{valdoc}{$value}{shortdesc}."\n");
-        }
-        foreach my $error (@{$lhash{$lcode}{$feature}{errors}})
-        {
-            print('  * <span style="color:red">ERROR: '.$error.'</span>'."\n");
-        }
-    }
-    print("\n");
-}
+print_markdown_overview(\%hash, \%lhash);
 
 
 
@@ -219,4 +164,72 @@ sub read_feature_doc
     }
     $feathash->{values} = \@values;
     $feathash->{valdoc} = \%valdoc;
+}
+
+
+
+#------------------------------------------------------------------------------
+# Prints an overview of all documented features (as well as errors in the
+# format of documentation), formatted using MarkDown syntax.
+#------------------------------------------------------------------------------
+sub print_markdown_overview
+{
+    my $ghash = shift; # ref to hash with global features
+    my $lhash = shift; # ref to hash with local features
+    my @features = sort(keys(%{$ghash}));
+    print("# Universal features\n\n");
+    foreach my $feature (grep {$ghash->{$_}{type} eq 'universal'} (@features))
+    {
+        print("* [$feature](https://universaldependencies.org/u/feat/$feature.html)\n");
+        foreach my $value (@{$ghash->{$feature}{values}})
+        {
+            print('  * value `'.$value.'`: '.$ghash->{$feature}{valdoc}{$value}{shortdesc}."\n");
+        }
+        foreach my $error (@{$ghash->{$feature}{errors}})
+        {
+            print('  * <span style="color:red">ERROR: '.$error.'</span>'."\n");
+        }
+    }
+    print("\n");
+    print("# Globally documented non-universal features\n\n");
+    foreach my $feature (grep {$ghash->{$_}{type} eq 'global'} (@features))
+    {
+        my $file = $feature;
+        $file =~ s/^([A-Za-z0-9]+)\[([a-z]+)\]$/$1-$2/;
+        print("* [$feature](https://universaldependencies.org/u/feat/$file.html)\n");
+        foreach my $value (@{$ghash->{$feature}{values}})
+        {
+            print('  * value `'.$value.'`: '.$ghash->{$feature}{valdoc}{$value}{shortdesc}."\n");
+        }
+        foreach my $error (@{$ghash->{$feature}{errors}})
+        {
+            print('  * <span style="color:red">ERROR: '.$error.'</span>'."\n");
+        }
+    }
+    print("\n");
+    print("# Locally documented language-specific features\n\n");
+    my @lcodes = sort(keys(%{$lhash}));
+    my $n = scalar(@lcodes);
+    print("The following $n languages seem to have at least some documentation of features: ".join(' ', map {"$_ (".scalar(keys(%{$lhash->{$_}})).")"} (@lcodes))."\n");
+    print("\n");
+    foreach my $lcode (@lcodes)
+    {
+        print("## $lcode\n\n");
+        my @features = sort(keys(%{$lhash->{$lcode}}));
+        foreach my $feature (@features)
+        {
+            my $file = $feature;
+            $file =~ s/^([A-Za-z0-9]+)\[([a-z]+)\]$/$1-$2/;
+            print("* [$feature](https://universaldependencies.org/$lcode/feat/$file.html)\n");
+            foreach my $value (@{$lhash->{$lcode}{$feature}{values}})
+            {
+                print('  * value `'.$value.'`: '.$lhash->{$lcode}{$feature}{valdoc}{$value}{shortdesc}."\n");
+            }
+            foreach my $error (@{$lhash->{$lcode}{$feature}{errors}})
+            {
+                print('  * <span style="color:red">ERROR: '.$error.'</span>'."\n");
+            }
+        }
+        print("\n");
+    }
 }
