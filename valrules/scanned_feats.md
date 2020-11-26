@@ -453,10 +453,6 @@ The following 25 languages seem to have at least some documentation of features:
 * [Animacy](https://universaldependencies.org/cs/feat/Animacy.html)
   * value `Anim`: animate
   * value `Inan`: inanimate
-  * <span style="color:red">ERROR: No examples found under value 'Anim'.</span>
-  * <span style="color:red">ERROR: Unrecognized examples 'PDT examples of masculine animate nouns:'.</span>
-  * <span style="color:red">ERROR: No examples found under value 'Inan'.</span>
-  * <span style="color:red">ERROR: Unrecognized examples 'PDT examples of masculine inanimate nouns:'.</span>
 * [Aspect](https://universaldependencies.org/cs/feat/Aspect.html)
   * value `Imp`: imperfect aspect
   * value `Perf`: perfect aspect
@@ -468,8 +464,6 @@ The following 25 languages seem to have at least some documentation of features:
   * value `Voc`: vocative
   * value `Loc`: locative
   * value `Ins`: instrumental
-  * <span style="color:red">ERROR: No examples found under value 'Nom'.</span>
-  * <span style="color:red">ERROR: No examples found under value 'Acc'.</span>
 * [ConjType](https://universaldependencies.org/cs/feat/ConjType.html)
   * value `Oper`: mathematical operator
 * [Degree](https://universaldependencies.org/cs/feat/Degree.html)
@@ -482,10 +476,9 @@ The following 25 languages seem to have at least some documentation of features:
   * value `Masc`: masculine gender
   * value `Fem`: feminine gender
   * value `Neut`: neuter gender
-* [Gender-psor](https://universaldependencies.org/cs/feat/Gender-psor.html)
+* [Gender[psor]](https://universaldependencies.org/cs/feat/Gender-psor.html)
   * value `Masc`: masculine possessor
   * value `Fem`: feminine possessor
-  * <span style="color:red">ERROR: Feature name 'Gender-psor' does not have the prescribed form.</span>
 * [Hyph](https://universaldependencies.org/cs/feat/Hyph.html)
   * value `Yes`: it is part of hyphenated compound
 * [Mood](https://universaldependencies.org/cs/feat/Mood.html)
@@ -494,18 +487,12 @@ The following 25 languages seem to have at least some documentation of features:
   * value `Cnd`: conditional
 * [NameType](https://universaldependencies.org/cs/feat/NameType.html)
   * value `Geo`: geographical name
-  * value `Prs`: name of person
   * value `Giv`: given name of person
   * value `Sur`: surname / family name of person
   * value `Nat`: nationality
   * value `Com`: company, organization
   * value `Pro`: product
   * value `Oth`: other
-  * <span style="color:red">ERROR: Unrecognized level 3 heading '### Conversion from the Prague Dependency Treebank'.</span>
-  * <span style="color:red">ERROR: No examples found under value 'Prs'.</span>
-  * <span style="color:red">ERROR: No examples found under value 'Com'.</span>
-  * <span style="color:red">ERROR: No examples found under value 'Pro'.</span>
-  * <span style="color:red">ERROR: No examples found under value 'Oth'.</span>
 * [NumForm](https://universaldependencies.org/cs/feat/NumForm.html)
   * value `Word`: number expressed as word
   * value `Digit`: number expressed using digits
@@ -516,26 +503,19 @@ The following 25 languages seem to have at least some documentation of features:
   * value `Mult`: multiplicative numeral or corresponding interrogative / relative / indefinite / demonstrative word
   * value `Frac`: fraction
   * value `Sets`: number of sets of things; collective numeral
-  * <span style="color:red">ERROR: No examples found under value 'Ord'.</span>
-  * <span style="color:red">ERROR: Unrecognized examples '#### Adjectival examples'.</span>
-  * <span style="color:red">ERROR: Unrecognized examples '#### Adverbial examples'.</span>
 * [NumValue](https://universaldependencies.org/cs/feat/NumValue.html)
   * value `1`: numeric value 1
   * value `2`: numeric value 2
   * value `3`: numeric value 3 or 4
-  * <span style="color:red">ERROR: No examples found under value '1'.</span>
-  * <span style="color:red">ERROR: No examples found under value '2'.</span>
-  * <span style="color:red">ERROR: No examples found under value '3'.</span>
 * [Number](https://universaldependencies.org/cs/feat/Number.html)
   * value `Sing`: singular number
   * value `Plur`: plural number
   * value `Dual`: dual number
   * value `Ptan`: plurale tantum
   * value `Coll`: collective / mass / singulare tantum
-* [Number-psor](https://universaldependencies.org/cs/feat/Number-psor.html)
+* [Number[psor]](https://universaldependencies.org/cs/feat/Number-psor.html)
   * value `Sing`: singular possessor
   * value `Plur`: plural possessor
-  * <span style="color:red">ERROR: Feature name 'Number-psor' does not have the prescribed form.</span>
 * [Person](https://universaldependencies.org/cs/feat/Person.html)
   * value `1`: first person
   * value `2`: second person
@@ -800,10 +780,9 @@ The following 25 languages seem to have at least some documentation of features:
   * value `Sing`: singular number
   * value `Plur`: plural number
   * <span style="color:red">ERROR: Documentation does not belong to UD v2 guidelines.</span>
-* [Number-psor](https://universaldependencies.org/fi/feat/Number-psor.html)
+* [Number[psor]](https://universaldependencies.org/fi/feat/Number-psor.html)
   * value `Sing`: singular
   * value `Plur`: plural
-  * <span style="color:red">ERROR: Feature name 'Number-psor' does not have the prescribed form.</span>
   * <span style="color:red">ERROR: Documentation does not belong to UD v2 guidelines.</span>
 * [PartForm](https://universaldependencies.org/fi/feat/PartForm.html)
   * value `Pres`: present participle
@@ -816,11 +795,10 @@ The following 25 languages seem to have at least some documentation of features:
   * value `2`: second person
   * value `3`: third person
   * <span style="color:red">ERROR: Documentation does not belong to UD v2 guidelines.</span>
-* [Person-psor](https://universaldependencies.org/fi/feat/Person-psor.html)
+* [Person[psor]](https://universaldependencies.org/fi/feat/Person-psor.html)
   * value `1`: first person
   * value `2`: second person
   * value `3`: third person
-  * <span style="color:red">ERROR: Feature name 'Person-psor' does not have the prescribed form.</span>
   * <span style="color:red">ERROR: Documentation does not belong to UD v2 guidelines.</span>
 * [Polarity](https://universaldependencies.org/fi/feat/Polarity.html)
   * <span style="color:red">ERROR: Documentation does not belong to UD v2 guidelines.</span>
@@ -1183,19 +1161,17 @@ The following 25 languages seem to have at least some documentation of features:
   * value `Plur`: plural number
   * value `Assoc`: associative plural
   * value `Coll`: collective / mass / singulare tantum
-* [Number-psor](https://universaldependencies.org/hy/feat/Number-psor.html)
+* [Number[psor]](https://universaldependencies.org/hy/feat/Number-psor.html)
   * value `Sing`: singular possessor
   * value `Plur`: plural possessor
-  * <span style="color:red">ERROR: Feature name 'Number-psor' does not have the prescribed form.</span>
 * [Person](https://universaldependencies.org/hy/feat/Person.html)
   * value `1`: first person
   * value `2`: second person
   * value `3`: third person
-* [Person-psor](https://universaldependencies.org/hy/feat/Person-psor.html)
+* [Person[psor]](https://universaldependencies.org/hy/feat/Person-psor.html)
   * value `1`: first person possessor
   * value `2`: second person possessor
   * value `3`: third person possessor
-  * <span style="color:red">ERROR: Feature name 'Person-psor' does not have the prescribed form.</span>
 * [Polarity](https://universaldependencies.org/hy/feat/Polarity.html)
   * value `Pos`: positive, affirmative
   * value `Neg`: negative
@@ -1592,8 +1568,7 @@ The following 25 languages seem to have at least some documentation of features:
   * value `Plur`: plural number
   * value `Unsp`: unspecified
   * <span style="color:red">ERROR: Documentation does not belong to UD v2 guidelines.</span>
-* [Number-psor](https://universaldependencies.org/pt/feat/Number-psor.html)
-  * <span style="color:red">ERROR: Feature name 'Number-psor' does not have the prescribed form.</span>
+* [Number[psor]](https://universaldependencies.org/pt/feat/Number-psor.html)
   * <span style="color:red">ERROR: Documentation does not belong to UD v2 guidelines.</span>
   * <span style="color:red">ERROR: No feature values found.</span>
 * [Person](https://universaldependencies.org/pt/feat/Person.html)
@@ -1762,11 +1737,10 @@ The following 25 languages seem to have at least some documentation of features:
   * value `Neut`: neuter gender
   * <span style="color:red">ERROR: Unrecognized level 3 heading '### Conversion from JOS'.</span>
   * <span style="color:red">ERROR: Documentation does not belong to UD v2 guidelines.</span>
-* [Gender-psor](https://universaldependencies.org/sl/feat/Gender-psor.html)
+* [Gender[psor]](https://universaldependencies.org/sl/feat/Gender-psor.html)
   * value `Masc`: masculine possessor
   * value `Fem`: feminine possessor
   * value `Neut`: neuter possessor
-  * <span style="color:red">ERROR: Feature name 'Gender-psor' does not have the prescribed form.</span>
   * <span style="color:red">ERROR: Unrecognized level 3 heading '### Conversion from JOS'.</span>
   * <span style="color:red">ERROR: Documentation does not belong to UD v2 guidelines.</span>
 * [Mood](https://universaldependencies.org/sl/feat/Mood.html)
@@ -1794,11 +1768,10 @@ The following 25 languages seem to have at least some documentation of features:
   * value `Plur`: plural number
   * <span style="color:red">ERROR: Unrecognized level 3 heading '### Conversion from JOS'.</span>
   * <span style="color:red">ERROR: Documentation does not belong to UD v2 guidelines.</span>
-* [Number-psor](https://universaldependencies.org/sl/feat/Number-psor.html)
+* [Number[psor]](https://universaldependencies.org/sl/feat/Number-psor.html)
   * value `Sing`: singular possessor
   * value `Dual`: dual possessor
   * value `Plur`: plura possessor
-  * <span style="color:red">ERROR: Feature name 'Number-psor' does not have the prescribed form.</span>
   * <span style="color:red">ERROR: Unrecognized level 3 heading '### Conversion from JOS'.</span>
   * <span style="color:red">ERROR: Documentation does not belong to UD v2 guidelines.</span>
 * [Person](https://universaldependencies.org/sl/feat/Person.html)
@@ -1968,21 +1941,19 @@ The following 25 languages seem to have at least some documentation of features:
   * value `Sing`: singular number
   * value `Plur`: plural number
   * <span style="color:red">ERROR: Documentation does not belong to UD v2 guidelines.</span>
-* [Number-psor](https://universaldependencies.org/tr/feat/Number-psor.html)
+* [Number[psor]](https://universaldependencies.org/tr/feat/Number-psor.html)
   * value `Sing`: singular possessor
   * value `Plur`: plural possessor
-  * <span style="color:red">ERROR: Feature name 'Number-psor' does not have the prescribed form.</span>
   * <span style="color:red">ERROR: Documentation does not belong to UD v2 guidelines.</span>
 * [Person](https://universaldependencies.org/tr/feat/Person.html)
   * value `1`: first person
   * value `2`: second person
   * value `3`: third person
   * <span style="color:red">ERROR: Documentation does not belong to UD v2 guidelines.</span>
-* [Person-psor](https://universaldependencies.org/tr/feat/Person-psor.html)
+* [Person[psor]](https://universaldependencies.org/tr/feat/Person-psor.html)
   * value `1`: first person
   * value `2`: second person
   * value `3`: third person
-  * <span style="color:red">ERROR: Feature name 'Person-psor' does not have the prescribed form.</span>
   * <span style="color:red">ERROR: Documentation does not belong to UD v2 guidelines.</span>
 * [Polarity](https://universaldependencies.org/tr/feat/Polarity.html)
   * value `Pos`: positive, affirmative

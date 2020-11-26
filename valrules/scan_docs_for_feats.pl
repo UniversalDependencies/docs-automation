@@ -25,6 +25,8 @@ foreach my $file (@gdfiles)
 {
     my $feature = $file;
     $feature =~ s/\.md$//;
+    # Layered features have [brackets] in the name but the file name uses a hyphen and no brackets.
+    $feature =~ s/^([A-Za-z0-9]+)-([a-z]+)$/$1\[$2\]/;
     if(grep {$_ eq $feature} (@ufeats))
     {
         $hash{$feature}{type} = 'universal';
@@ -33,7 +35,7 @@ foreach my $file (@gdfiles)
     {
         $hash{$feature}{type} = 'global';
     }
-    if($feature !~ m/^[A-Z][A-Za-z0-9]*$/)
+    if($feature !~ m/^[A-Z][A-Za-z0-9]*(\[[a-z]+\])?$/)
     {
         push(@{$hash{$feature}{errors}}, "Feature name '$feature' does not have the prescribed form.");
     }
@@ -55,6 +57,8 @@ foreach my $langfolder (@langfolders)
     {
         my $feature = $file;
         $feature =~ s/\.md$//;
+        # Layered features have [brackets] in the name but the file name uses a hyphen and no brackets.
+        $feature =~ s/^([A-Za-z0-9]+)-([a-z]+)$/$1\[$2\]/;
         if(grep {$_ eq $feature} (@ufeats))
         {
             $lhash{$lcode}{$feature}{type} = 'universal';
@@ -63,7 +67,7 @@ foreach my $langfolder (@langfolders)
         {
             $lhash{$lcode}{$feature}{type} = 'local';
         }
-        if($feature !~ m/^[A-Z][A-Za-z0-9]*$/)
+        if($feature !~ m/^[A-Z][A-Za-z0-9]*(\[[a-z]+\])?$/)
         {
             push(@{$lhash{$lcode}{$feature}{errors}}, "Feature name '$feature' does not have the prescribed form.");
         }
@@ -89,7 +93,9 @@ print("\n");
 print("# Globally documented non-universal features\n\n");
 foreach my $feature (grep {$hash{$_}{type} eq 'global'} (@features))
 {
-    print("* [$feature](https://universaldependencies.org/u/feat/$feature.html)\n");
+    my $file = $feature;
+    $file =~ s/^([A-Za-z0-9]+)\[([a-z]+)\]$/$1-$2/;
+    print("* [$feature](https://universaldependencies.org/u/feat/$file.html)\n");
     foreach my $value (@{$hash{$feature}{values}})
     {
         print('  * value `'.$value.'`: '.$hash{$feature}{valdoc}{$value}{shortdesc}."\n");
@@ -111,7 +117,9 @@ foreach my $lcode (@lcodes)
     my @features = sort(keys(%{$lhash{$lcode}}));
     foreach my $feature (@features)
     {
-        print("* [$feature](https://universaldependencies.org/$lcode/feat/$feature.html)\n");
+        my $file = $feature;
+        $file =~ s/^([A-Za-z0-9]+)\[([a-z]+)\]$/$1-$2/;
+        print("* [$feature](https://universaldependencies.org/$lcode/feat/$file.html)\n");
         foreach my $value (@{$lhash{$lcode}{$feature}{values}})
         {
             print('  * value `'.$value.'`: '.$lhash{$lcode}{$feature}{valdoc}{$value}{shortdesc}."\n");
