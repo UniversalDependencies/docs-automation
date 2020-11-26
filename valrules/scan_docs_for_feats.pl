@@ -256,6 +256,7 @@ sub print_json
     }
     my @lcodes = sort(map {$languages->{$_}{lcode}} (keys(%{$languages})));
     print("{\n");
+    my @jsonlines = ();
     foreach my $lcode (@lcodes)
     {
         my @fvpairs = ();
@@ -289,8 +290,9 @@ sub print_json
                 }
             }
         }
-        print('"'.escape_json_string($lcode).'": ['.join(', ', map {'"'.escape_json_string($_).'"'} (@fvpairs)).'],'."\n");
+        push(@jsonlines, '"'.escape_json_string($lcode).'": ['.join(', ', map {'"'.escape_json_string($_).'"'} (@fvpairs)).']');
     }
+    print(join(",\n", @jsonlines)."\n");
     print("}\n");
 }
 
