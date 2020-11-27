@@ -161,8 +161,6 @@ if(defined($result))
         my $olddf = json_file_to_perl('docs-automation/valrules/documented_features.json');
         system("perl docs-automation/valrules/scan_docs_for_feats.pl > docs-automation/valrules/documented_features.json 2>>$valilog");
         my $newdf = json_file_to_perl('docs-automation/valrules/documented_features.json');
-        # Commit the changes to the repositories and push them to Github.
-        system("/home/zeman/bin/git-push-docs-automation.sh 'dan-zeman' 'all' > /dev/null");
         # Find languages whose list of documented features has changed.
         my %changed;
         foreach my $lcode (keys(%{$olddf}))
@@ -188,10 +186,32 @@ if(defined($result))
                 $changed{$lcode}++;
             }
         }
+        my $changed = 'none';
         if(scalar(keys(%changed))==0)
         {
             system("echo No changes here. >>$valilog");
         }
+        else
+        {
+            $changed = join(',', sort(keys(%changed)));
+            if(length($changed) > 20)
+            {
+                $changed = substr($changed, 0, 20).'...';
+            }
+            ###!!! Just a hack now:
+            # While I want the commit message to list the languages affected,
+            # I do not want this script to later pick up (on hook on tools)
+            # and re-validate the languages because I will validate them right
+            # now here. So I am prefixing the list of languages with something
+            # that will make the regex for commit message fail even if there
+            # is just one language on the list.
+            $changed = 'features: '.$changed;
+        }
+        # Commit the changes to the repositories and push them to Github.
+        # We must do it even if we did not observe a real change. In case any
+        # formal aspect changed and the file is different, we need to make sure
+        # that the repository is clean and in sync, otherwise future git pulls would fail.
+        system("/home/zeman/bin/git-push-docs-automation.sh 'dan-zeman' '$changed' > /dev/null");
         # We must figure out what files have changed.
         # At present we are only interested in index files of language-specific documentation.
         foreach my $commit (@{$result->{commits}})
