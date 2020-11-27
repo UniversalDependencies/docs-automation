@@ -122,7 +122,8 @@ if(defined($result))
         if($revalidate_all)
         {
             print LOG ("changed = validate.py\n");
-            system("perl validate_all.pl >>$valilog 2>&1");
+            # Call the script through the docs-automation repo so that it can find the YAML file with the list of languages.
+            system("perl docs-automation/valdan/validate_all.pl >>$valilog 2>&1");
         }
         elsif(scalar(@changed) > 0)
         {
@@ -131,7 +132,8 @@ if(defined($result))
             print LOG ("changed = $changed\n");
             # The validation must be performed in a child process. It may take a long
             # time and the web server will kill this process if we exceed the timeout.
-            system("perl validate_all.pl $changed >>$valilog 2>&1");
+            # Call the script through the docs-automation repo so that it can find the YAML file with the list of languages.
+            system("perl docs-automation/valdan/validate_all.pl $changed >>$valilog 2>&1");
         }
         if($reevaluate_all)
         {
@@ -229,7 +231,8 @@ if(defined($result))
             print LOG ("changed = $changed\n");
             # The validation must be performed in a child process. It may take a long
             # time and the web server will kill this process if we exceed the timeout.
-            system("perl validate_all.pl $changed >>$valilog 2>&1");
+            # Call the script through the docs-automation repo so that it can find the YAML file with the list of languages.
+            system("perl docs-automation/valdan/validate_all.pl $changed >>$valilog 2>&1");
         }
     }
     # Change in master branch of repository docs-automation may mean new languages were added or the validation infrastructure modified.
