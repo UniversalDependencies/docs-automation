@@ -188,6 +188,10 @@ if(defined($result))
                 $changed{$lcode}++;
             }
         }
+        if(scalar(keys(%changed))==0)
+        {
+            system("echo No changes here. >>$valilog");
+        }
         # We must figure out what files have changed.
         # At present we are only interested in index files of language-specific documentation.
         foreach my $commit (@{$result->{commits}})
