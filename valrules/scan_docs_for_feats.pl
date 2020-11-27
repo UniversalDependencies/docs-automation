@@ -8,10 +8,25 @@ use open ':utf8';
 binmode(STDIN, ':utf8');
 binmode(STDOUT, ':utf8');
 binmode(STDERR, ':utf8');
+use Cwd; # getcwd()
 use YAML qw(LoadFile);
 
-# At present, the path to the local copy of docs is hardwired.
-my $docs = 'C:/Users/Dan/Documents/Lingvistika/Projekty/universal-dependencies/docs';
+# The docs repository should be locatable relatively to this script:
+# this script = .../docs-automation/valrules/scan_docs_for_feats.pl
+# docs        = .../docs
+# Temporarily go to the folder of the script (if we are not already there).
+my $currentpath = getcwd();
+my $scriptpath = $0;
+if($scriptpath =~ m:/:)
+{
+    $scriptpath =~ s:/[^/]*$:/:;
+    chdir($scriptpath) or die("Cannot go to folder '$scriptpath': $!");
+}
+# Go to docs relatively to the script position.
+chdir('../../docs') or die("Cannot go from ".getcwd()." to folder '../../docs': $!");
+my $docs = getcwd();
+chdir($currentpath);
+# We are back in the original folder and we have the absolute path to docs.
 my %hash;
 my %lhash;
 # Scan globally documented features.
