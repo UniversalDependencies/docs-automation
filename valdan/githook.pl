@@ -150,6 +150,15 @@ if(defined($result))
         system("date >>$valilog");
         system("echo Hook on $result->{repository}{name} >>$valilog");
         system("(cd docs ; git pull --no-edit ; cd ..) >>$valilog 2>&1");
+        # Regardless of the below we will scan the docs repository for documentation of feature values.
+        # We have to do it if any file in docs/_u-feat changes, or if for any language xxx any file in
+        # docs/_xxx/feat changes. However, the scanning is relatively fast, so we will do it every time
+        # anything in docs changes.
+        system("echo ---------------------------------------------------------------------- >>$valilog");
+        system("echo docs '=>' scan documentation of features >>$valilog");
+        system("perl docs-automation/valrules/scan_docs_for_feats.pl > docs-automation/valrules/documented_features.json 2>>$valilog");
+        # Commit the changes to the repository and push them to Github.
+        system("/home/zeman/bin/git-push-docs-automation.sh 'dan-zeman' 'all' > /dev/null");
         # We must figure out what files have changed.
         # At present we are only interested in index files of language-specific documentation.
         my %changed;
@@ -174,6 +183,8 @@ if(defined($result))
                 my $record = get_ud_files_and_codes($folder);
                 if(exists($changed{$record->{lcode}}))
                 {
+                    system("echo ---------------------------------------------------------------------- >>$valilog");
+                    system("echo docs '=>' validate $folder >>$valilog");
                     system("perl update-validation-report.pl $folder >>$valilog 2>&1");
                 }
             }
