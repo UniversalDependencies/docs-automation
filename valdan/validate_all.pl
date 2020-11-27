@@ -1,7 +1,9 @@
 #!/usr/bin/env perl
-# Validates CoNLL-U files in all UD repositories.
-# Creates new validation-report.txt, and new log/UD_*.log for every treebank (this is used in the web report, too).
-# Copyright © 2018 Dan Zeman <zeman@ufal.mff.cuni.cz>
+# Validates CoNLL-U files in all UD repositories. If a list of language codes
+# is supplied as arguments, validates only repositories of the given languages.
+# Updates validation-report.txt and creates a new log/UD_*.log for every
+# treebank (this file is used in the web report, too).
+# Copyright © 2018, 2020 Dan Zeman <zeman@ufal.mff.cuni.cz>
 # License: GNU GPL
 
 use utf8;
@@ -9,29 +11,61 @@ use open ':utf8';
 binmode(STDIN, ':utf8');
 binmode(STDOUT, ':utf8');
 binmode(STDERR, ':utf8');
+use Cwd; # getcwd()
+use YAML qw(LoadFile);
 
 my @folders = list_ud_folders();
-###!!! We may want to erase the entire report first, if some treebanks were
-###!!! renamed or removed, this will ensure they no longer appear in the report.
-###!!! However, normally it is not necessary, and we do not have to wait for
-###!!! everything to complete until we see all treebanks again.
-if(0)
+my $nlang = scalar(@ARGV);
+if($nlang > 0)
 {
-    system("cp validation-report.txt old-validation-report.txt");
-    system("echo -n '' > validation-report.txt");
+    print('Languages: '.join(' ', @ARGV)."\n");
+    print("Validating treebanks of $nlang languages.\n");
+    my %lcodes_to_validate;
+    foreach my $lcode (@ARGV)
+    {
+        $lcodes_to_validate{$lcode}++;
+    }
+    # Read the database of languages (we need a mapping between codes and names).
+    # Temporarily go to the folder of the script (if we are not already there).
+    my $currentpath = getcwd();
+    my $scriptpath = $0;
+    if($scriptpath =~ m:/:)
+    {
+        $scriptpath =~ s:/[^/]*$:/:;
+        chdir($scriptpath) or die("Cannot go to folder '$scriptpath': $!");
+    }
+    my $languages_by_name = LoadFile('../codes_and_flags.yaml');
+    chdir($currentpath);
+    # Filter the UD folders. Keep only treebanks of required languages.
+    my @filtered;
+    foreach my $folder (@folders)
+    {
+        my $lname = $folder;
+        $lname =~ s/^UD_//;
+        $lname =~ s/-.*//;
+        $lname =~ s/_/ /g;
+        my $lcode = $languages_by_name->{$lname}{lcode};
+        if($lcodes_to_validate{$lcode})
+        {
+            push(@filtered, $folder);
+        }
+    }
+    my $ntotal = scalar(@folders);
+    my $nfiltered = scalar(@filtered);
+    print("$nfiltered out of $ntotal treebanks will be validated.\n");
+    @folders = @filtered;
 }
-foreach my $folder (@folders)
+else
 {
-    print("$folder\n");
+    print("Validating treebanks of all languages.\n");
+}
+my $n = scalar(@folders);
+for(my $i = 1; $i <= $n; $i++)
+{
+    my $folder = $folders[$i-1];
+    print("$folder ($i/$n)\n");
     system("perl update-validation-report.pl $folder");
 }
-
-
-
-#==============================================================================
-# The following functions are available in tools/udlib.pm. However, udlib uses
-# JSON::Parse, which is not installed on quest, so we cannot use it here.
-#==============================================================================
 
 
 
