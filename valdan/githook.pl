@@ -8,6 +8,7 @@ use open ':utf8';
 binmode(STDIN, ':utf8');
 binmode(STDOUT, ':utf8');
 binmode(STDERR, ':utf8');
+use JSON::Parse qw(json_file_to_perl);
 # Uvést cestu k Danovým sdíleným knihovnám. Uživatel, pod kterým běží CGI skript, ji nezná.
 use lib '/home/zeman/lib';
 use dzsys;
@@ -156,12 +157,39 @@ if(defined($result))
         # anything in docs changes.
         system("echo ---------------------------------------------------------------------- >>$valilog");
         system("echo docs '=>' scan documentation of features >>$valilog");
+        # Read the current list of documented features so that we can assess the changes.
+        my $olddf = json_file_to_perl('docs-automation/valrules/documented_features.json');
         system("perl docs-automation/valrules/scan_docs_for_feats.pl > docs-automation/valrules/documented_features.json 2>>$valilog");
-        # Commit the changes to the repository and push them to Github.
+        my $newdf = json_file_to_perl('docs-automation/valrules/documented_features.json');
+        # Commit the changes to the repositories and push them to Github.
         system("/home/zeman/bin/git-push-docs-automation.sh 'dan-zeman' 'all' > /dev/null");
+        # Find languages whose list of documented features has changed.
+        my %changed;
+        foreach my $lcode (keys(%{$olddf}))
+        {
+            if(!exists($newdf->{$lcode}))
+            {
+                $changed{$lcode}++;
+            }
+            else
+            {
+                my $oldlist = join(',', sort(@{$olddf->{$lcode}}));
+                my $newlist = join(',', sort(@{$newdf->{$lcode}}));
+                if($newlist ne $oldlist)
+                {
+                    $changed{$lcode}++;
+                }
+            }
+        }
+        foreach my $lcode (keys(%{$newdf}))
+        {
+            if(!exists($olddf->{$lcode}))
+            {
+                $changed{$lcode}++;
+            }
+        }
         # We must figure out what files have changed.
         # At present we are only interested in index files of language-specific documentation.
-        my %changed;
         foreach my $commit (@{$result->{commits}})
         {
             foreach my $file (@{$commit->{added}}, @{$commit->{modified}}, @{$commit->{removed}})
