@@ -156,30 +156,30 @@ if(defined($result))
         system("echo ---------------------------------------------------------------------- >>$valilog");
         system("echo docs '=>' scan documentation of features >>$valilog");
         # Read the current list of documented features so that we can assess the changes.
-        my $olddf = json_file_to_perl('docs-automation/valrules/documented_features.json');
-        system("perl docs-automation/valrules/scan_docs_for_feats.pl > docs-automation/valrules/documented_features.json 2>>$valilog");
-        my $newdf = json_file_to_perl('docs-automation/valrules/documented_features.json');
+        my $olddf = json_file_to_perl('docs-automation/valrules/docfeats.json');
+        system("perl docs-automation/valrules/scan_docs_for_feats.pl > docs-automation/valrules/docfeats.json 2>>$valilog");
+        my $newdf = json_file_to_perl('docs-automation/valrules/docfeats.json');
         # Find languages whose list of documented features has changed.
         my %changed;
-        foreach my $lcode (keys(%{$olddf}))
+        foreach my $lcode (keys(%{$olddf->{lists}}))
         {
-            if(!exists($newdf->{$lcode}))
+            if(!exists($newdf->{lists}{$lcode}))
             {
                 $changed{$lcode}++;
             }
             else
             {
-                my $oldlist = join(',', sort(@{$olddf->{$lcode}}));
-                my $newlist = join(',', sort(@{$newdf->{$lcode}}));
+                my $oldlist = join(',', sort(@{$olddf->{lists}{$lcode}}));
+                my $newlist = join(',', sort(@{$newdf->{lists}{$lcode}}));
                 if($newlist ne $oldlist)
                 {
                     $changed{$lcode}++;
                 }
             }
         }
-        foreach my $lcode (keys(%{$newdf}))
+        foreach my $lcode (keys(%{$newdf-{lists}}))
         {
-            if(!exists($olddf->{$lcode}))
+            if(!exists($olddf->{lists}{$lcode}))
             {
                 $changed{$lcode}++;
             }
