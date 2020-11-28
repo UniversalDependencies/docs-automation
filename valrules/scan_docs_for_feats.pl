@@ -309,8 +309,58 @@ sub print_json
         push(@jsonlines, '"'.escape_json_string($lcode).'": ['.join(', ', map {'"'.escape_json_string($_).'"'} (@fvpairs)).']');
     }
     print(join(",\n", @jsonlines)."\n");
-    print("}\n"); # end of lists
+    print("},\n"); # end of lists
+    print("\"gdocs\": {\n");
+    my @featurelines = ();
+    foreach my $feature (sort(keys(%{$ghash})))
+    {
+        push(@featurelines, '"'.escape_json_string($feature).'": '.encode_feature_json($ghash->{$feature}));
+    }
+    print(join(",\n", @featurelines)."\n");
+    print("},\n"); # end of gdocs
+    print("\"ldocs\": {\n");
+    my @languagelines = ();
+    foreach my $lcode (sort(keys(%{$lhash})))
+    {
+        my $languageline = "\"$lcode\": {\n";
+        @featurelines = ();
+        foreach my $feature (sort(keys(%{$lhash->{$lcode}})))
+        {
+            push(@featurelines, '"'.escape_json_string($feature).'": '.encode_feature_json($lhash->{$lcode}{$feature}));
+        }
+        $languageline .= join(",\n", @featurelines)."\n";
+        $languageline .= "}\n";
+        push(@languagelines, $languageline);
+    }
+    print(join(",\n", @languagelines)."\n");
+    print("}\n"); # end of ldocs
     print("}\n");
+}
+
+
+
+#------------------------------------------------------------------------------
+# Encodes the hash of one feature in JSON.
+#------------------------------------------------------------------------------
+sub encode_feature_json
+{
+    my $feature = shift; # hash reference
+    my $json = '{';
+    # If there are errors, list the errors and hide values (they would not be allowed anyway).
+    if(scalar(@{$feature->{errors}}) > 0)
+    {
+        $json .= '"values": [], "errors": [';
+        $json .= join(', ', map {'"'.escape_json_string($_).'"'} (@{$feature->{errors}}));
+        $json .= ']';
+    }
+    else
+    {
+        $json .= '"values": [';
+        $json .= join(', ', map {'"'.escape_json_string($_).'"'} (@{$feature->{values}}));
+        $json .= '], "errors": []';
+    }
+    $json .= '}';
+    return $json;
 }
 
 
