@@ -322,15 +322,19 @@ sub print_json
     my @languagelines = ();
     foreach my $lcode (sort(keys(%{$lhash})))
     {
-        my $languageline = "\"$lcode\": {\n";
-        @featurelines = ();
-        foreach my $feature (sort(keys(%{$lhash->{$lcode}})))
+        my @features = sort(keys(%{$lhash->{$lcode}}));
+        if(scalar(@features) > 0)
         {
-            push(@featurelines, '"'.escape_json_string($feature).'": '.encode_feature_json($lhash->{$lcode}{$feature}));
+            my $languageline = "\"$lcode\": {\n";
+            @featurelines = ();
+            foreach my $feature (@features)
+            {
+                push(@featurelines, '"'.escape_json_string($feature).'": '.encode_feature_json($lhash->{$lcode}{$feature}));
+            }
+            $languageline .= join(",\n", @featurelines)."\n";
+            $languageline .= '}';
+            push(@languagelines, $languageline);
         }
-        $languageline .= join(",\n", @featurelines)."\n";
-        $languageline .= "}\n";
-        push(@languagelines, $languageline);
     }
     print(join(",\n", @languagelines)."\n");
     print("}\n"); # end of ldocs
