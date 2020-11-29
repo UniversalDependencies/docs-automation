@@ -38,7 +38,8 @@ vypsat_html_zacatek();
 my $timer = get_timer('May 1, 2021 23:59:59');
 print("<h1>Universal Dependencies Validation Report ($timer)</h1>\n");
 print(get_explanation());
-print("<p>Hover the mouse pointer over a treebank name to see validation summary. Click on the “report” link to see the full output of the validation software.</p>\n");
+#print("<p>Hover the mouse pointer over a treebank name to see validation summary. Click on the “report” link to see the full output of the validation software.</p>\n");
+print("<p>Click on the “report” link to see the full output of the validation software.</p>\n");
 print("<hr />\n");
 my $nvalid = 0;
 my $nlegacy = 0;
@@ -102,20 +103,28 @@ while(<REPORT>)
             {
                 $reportlink = " (<a href=\"validation-report.pl?$folder\">report</a>)";
             }
-            $html .= "<span class='field-tip' style='color:$color;font-weight:bold'>$_<span class='tip-content'><pre>";
-            my $log = `cat log/$folder.log`;
-            # Only show the beginning of the log here.
-            my @lines = split(/\n/, $log);
-            my $n = 20;
-            if(scalar(@lines) > $n)
+            ###!!! 2020-11-29: DZ: Turning off the field tips. They are too long now that most treebanks are red. And sometimes it is not possible to click on the "report" link because of mad field tips jumping around.
+            if(0)
             {
-                splice(@lines, $n);
-                push(@lines, '...');
-                push(@lines, 'Follow the report link to see the full validation report.');
-                $log = join("\n", @lines)."\n";
+                $html .= "<span class='field-tip' style='color:$color;font-weight:bold'>$_<span class='tip-content'><pre>";
+                my $log = `cat log/$folder.log`;
+                # Only show the beginning of the log here.
+                my @lines = split(/\n/, $log);
+                my $n = 20;
+                if(scalar(@lines) > $n)
+                {
+                    splice(@lines, $n);
+                    push(@lines, '...');
+                    push(@lines, 'Follow the report link to see the full validation report.');
+                    $log = join("\n", @lines)."\n";
+                }
+                $html .= zneskodnit_html($log);
+                $html .= "</pre></span></span>$errorlist$reportlink$unexcept<br />\n";
             }
-            $html .= zneskodnit_html($log);
-            $html .= "</pre></span></span>$errorlist$reportlink$unexcept<br />\n";
+            else # no field tips
+            {
+                $html .= "<span style='color:$color;font-weight:bold'>$_</span>$errorlist$reportlink$unexcept<br />\n";
+            }
         }
         else
         {
