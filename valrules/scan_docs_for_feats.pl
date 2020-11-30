@@ -39,6 +39,8 @@ my @deviations =
      'msg' => "Use 'Aspect=Perf' to distinguish perfect from other forms."},
     {'re'  => 'Tense=(Pra?et(er(ite?)?)?|Prt[12]?)',
      'msg' => "The correct UD label for preterit is 'Tense=Past'."},
+    {'re'  => 'Mood=Cond',
+     'msg' => "The correct UD label for conditional mood is 'Mood=Cnd'."},
     {'re'  => 'Mood=Co?nj(un(c(t(ive?)?)?)?)?',
      'msg' => "The correct UD label for conjunctive/subjunctive mood is 'Mood=Sub'."},
     {'re'  => 'Mood=Quot(at(ive?)?)?',
