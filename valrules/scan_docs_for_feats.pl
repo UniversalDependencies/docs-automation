@@ -33,6 +33,8 @@ my @deviations =
      'msg' => "Did you mean 'NumForm=Word'?"},
     {'re'  => '(Gender|Animacy|NounClass)(\[[a-z]+\])?=Nonhum',
      'msg' => "The correct UD label for non-human animacy/gender is 'Nhum'."},
+    {'re'  => 'Number=Adnum',
+     'msg' => "The correct UD label for the special form of noun after numeral is 'Number=Count'."},
     {'re'  => 'Case=Obl(ique)?',
      'msg' => "The correct UD label for oblique case is 'Case=Acc'."},
     {'re'  => '(Aspect=Perfect|Tense=Perf(ect)?)',
