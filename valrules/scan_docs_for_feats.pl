@@ -11,6 +11,24 @@ binmode(STDERR, ':utf8');
 use Cwd; # getcwd()
 use YAML qw(LoadFile);
 
+# Describe banned features. People sometimes define a language-specific feature
+# value for something that is already defined in the guidelines but with a
+# different label! This goes against the spirit of UD and it should be suppressed.
+# The regular expressions below describe the entire "Feature=Value" pair. They
+# will be matched with ^ and $ at the ends, case-insensitively. Do not forget
+# that some features may appear with "[layer]".
+my @deviations =
+(
+    ['re'  => '(Gender|Animacy|NounClass)(\[[a-z]+\])?=Nonhum',
+     'msg' => "The correct UD label for non-human animacy/gender is 'Nhum'."],
+    ['re'  => '(Aspect=Perfect|Tense=Perf(ect)?)',
+     'msg' => "Use 'Aspect=Perf' to distinguish perfect from other forms."],
+    ['re'  => 'Tense=Pra?et(er(ite?)?)?',
+     'msg' => "The correct UD label for preterit is 'Tense=Past'."],
+    ['re'  => 'VerbForm=Finite?',
+     'msg' => "The correct UD label for finite verbs is 'VerbForm=Fin'."]
+);
+
 # The docs repository should be locatable relatively to this script:
 # this script = .../docs-automation/valrules/scan_docs_for_feats.pl
 # docs        = .../docs
@@ -55,7 +73,7 @@ foreach my $file (@gdfiles)
     {
         push(@{$hash{$feature}{errors}}, "Feature name '$feature' does not have the prescribed form.");
     }
-    read_feature_doc("$gdfeats/$file", \%{$hash{$feature}});
+    read_feature_doc($feature, "$gdfeats/$file", \%{$hash{$feature}}, \@deviations);
 }
 # Scan locally documented (language-specific) features.
 opendir(DIR, $docs) or die("Cannot read folder '$docs': $!");
@@ -87,12 +105,12 @@ foreach my $langfolder (@langfolders)
         {
             push(@{$lhash{$lcode}{$feature}{errors}}, "Feature name '$feature' does not have the prescribed form.");
         }
-        read_feature_doc("$ldfeats/$file", $lhash{$lcode}{$feature});
+        read_feature_doc($feature, "$ldfeats/$file", $lhash{$lcode}{$feature}, \@deviations);
     }
 }
 # Print an overview of the features we found.
 #print_markdown_overview(\%hash, \%lhash);
-print_json(\%hash, \%lhash, $docs);
+print_json(\%hash, \%lhash, \@deviations, $docs);
 
 
 
@@ -101,8 +119,10 @@ print_json(\%hash, \%lhash, $docs);
 #------------------------------------------------------------------------------
 sub read_feature_doc
 {
-    my $filepath = shift;
+    my $feature = shift; # the name of the feature
+    my $filepath = shift; # the name and path to the corresponding file
     my $feathash = shift; # hash reference
+    my $deviations = shift; # array reference
     my $udver = 1;
     my @values = ();
     my %valdoc;
@@ -143,6 +163,15 @@ sub read_feature_doc
             if($value !~ m/^[A-Z0-9][A-Za-z0-9]*$/)
             {
                 push(@{$feathash->{errors}}, "Feature value '$value' does not have the prescribed form.");
+            }
+            # Check for known and banned deviations from universal features.
+            my $fv = "$feature=$value";
+            foreach my $d (@{$deviations})
+            {
+                if($fv =~ m/^$d->{re}$/i)
+                {
+                    push(@{$feathash->{errors}}, "Wrong value '$value'. $d->{msg}");
+                }
             }
         }
         # Warn about unrecognized level 3 headings.
@@ -261,6 +290,7 @@ sub print_json
 {
     my $ghash = shift; # ref to hash with global features
     my $lhash = shift; # ref to hash with local features
+    my @deviations = shift;, # ref to array with banned deviations
     # We need to know the list of all UD languages first.
     my $docspath = shift;
     my $languagespath = "$docspath/../docs-automation/codes_and_flags.yaml";
@@ -337,7 +367,15 @@ sub print_json
         }
     }
     print(join(",\n", @languagelines)."\n");
-    print("}\n"); # end of ldocs
+    print("},\n"); # end of ldocs
+    print("\"deviations\": [\n");
+    my @deviationlines = ();
+    foreach my $d (@{$deviations})
+    {
+        push(@deviationlines, encode_json('re' => $d->{re}, 'msg' => $d->{msg}));
+    }
+    print(join(",\n", @deviationlines)."\n");
+    print("]\n"); # end of deviations
     print("}\n");
 }
 
