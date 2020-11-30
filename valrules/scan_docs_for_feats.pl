@@ -17,10 +17,14 @@ use YAML qw(LoadFile);
 # The regular expressions below describe the entire "Feature=Value" pair. They
 # will be matched with ^ and $ at the ends, case-insensitively. Do not forget
 # that some features may appear with "[layer]".
+# For features that are globally documented but not prescribed as universal
+# features, the message starts 'Did you mean' rather than 'The correct UD label is'.
 my @deviations =
 (
     {'re'  => 'PronType=Inter(r?og(at(ive)?)?)?',
      'msg' => "The correct UD label for interrogative pronouns is 'PronType=Int'."},
+    {'re'  => 'NumForm=Letter',
+     'msg' => "Did you mean 'NumForm=Word'?"},
     {'re'  => '(Gender|Animacy|NounClass)(\[[a-z]+\])?=Nonhum',
      'msg' => "The correct UD label for non-human animacy/gender is 'Nhum'."},
     {'re'  => '(Aspect=Perfect|Tense=Perf(ect)?)',
