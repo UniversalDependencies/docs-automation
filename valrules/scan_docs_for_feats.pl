@@ -23,6 +23,10 @@ my @deviations =
 (
     {'re'  => 'PronType=Inter(r?og(at(ive)?)?)?',
      'msg' => "The correct UD label for interrogative pronouns is 'PronType=Int'."},
+    {'re'  => 'PossPerson=.*',
+     'msg' => "The correct UD feature for possessor's person is 'Person[psor]'."},
+    {'re'  => 'PossNumber=.*',
+     'msg' => "The correct UD feature for possessor's number is 'Number[psor]'."},
     {'re'  => 'NumForm=Letter',
      'msg' => "Did you mean 'NumForm=Word'?"},
     {'re'  => '(Gender|Animacy|NounClass)(\[[a-z]+\])?=Nonhum',
