@@ -19,14 +19,14 @@ use YAML qw(LoadFile);
 # that some features may appear with "[layer]".
 my @deviations =
 (
-    ['re'  => '(Gender|Animacy|NounClass)(\[[a-z]+\])?=Nonhum',
-     'msg' => "The correct UD label for non-human animacy/gender is 'Nhum'."],
-    ['re'  => '(Aspect=Perfect|Tense=Perf(ect)?)',
-     'msg' => "Use 'Aspect=Perf' to distinguish perfect from other forms."],
-    ['re'  => 'Tense=Pra?et(er(ite?)?)?',
-     'msg' => "The correct UD label for preterit is 'Tense=Past'."],
-    ['re'  => 'VerbForm=Finite?',
-     'msg' => "The correct UD label for finite verbs is 'VerbForm=Fin'."]
+    {'re'  => '(Gender|Animacy|NounClass)(\[[a-z]+\])?=Nonhum',
+     'msg' => "The correct UD label for non-human animacy/gender is 'Nhum'."},
+    {'re'  => '(Aspect=Perfect|Tense=Perf(ect)?)',
+     'msg' => "Use 'Aspect=Perf' to distinguish perfect from other forms."},
+    {'re'  => 'Tense=Pra?et(er(ite?)?)?',
+     'msg' => "The correct UD label for preterit is 'Tense=Past'."},
+    {'re'  => 'VerbForm=Finite?',
+     'msg' => "The correct UD label for finite verbs is 'VerbForm=Fin'."}
 );
 
 # The docs repository should be locatable relatively to this script:
