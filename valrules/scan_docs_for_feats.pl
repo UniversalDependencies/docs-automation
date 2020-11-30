@@ -290,7 +290,7 @@ sub print_json
 {
     my $ghash = shift; # ref to hash with global features
     my $lhash = shift; # ref to hash with local features
-    my @deviations = shift;, # ref to array with banned deviations
+    my $deviations = shift; # ref to array with banned deviations
     # We need to know the list of all UD languages first.
     my $docspath = shift;
     my $languagespath = "$docspath/../docs-automation/codes_and_flags.yaml";
