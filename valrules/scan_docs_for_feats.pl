@@ -372,7 +372,7 @@ sub print_json
     my @deviationlines = ();
     foreach my $d (@{$deviations})
     {
-        push(@deviationlines, encode_json('re' => $d->{re}, 'msg' => $d->{msg}));
+        push(@deviationlines, encode_json(['re' => $d->{re}], ['msg' => $d->{msg}]));
     }
     print(join(",\n", @deviationlines)."\n");
     print("]\n"); # end of deviations
