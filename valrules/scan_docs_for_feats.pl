@@ -38,7 +38,9 @@ my @deviations =
     {'re'  => 'Mood=Quot(at(ive?)?)?',
      'msg' => "The correct UD label for quotative mood is 'Mood=Qot'."},
     {'re'  => 'VerbForm=Finite?',
-     'msg' => "The correct UD label for finite verbs is 'VerbForm=Fin'."}
+     'msg' => "The correct UD label for finite verbs is 'VerbForm=Fin'."},
+    {'re'  => '.*=None',
+     'msg' => "If a feature does not apply to a word, UD simply omits the feature."}
 );
 
 # The docs repository should be locatable relatively to this script:
