@@ -455,12 +455,14 @@ sub encode_feature_json
     # If there are errors, list the errors and hide values (they would not be allowed anyway).
     if(scalar(@{$feature->{errors}}) > 0)
     {
+        $json .= '"type": "'.escape_json_string($feature->{type}).'", ';
         $json .= '"values": [], "errors": [';
         $json .= join(', ', map {'"'.escape_json_string($_).'"'} (@{$feature->{errors}}));
         $json .= ']';
     }
     else
     {
+        $json .= '"type": "'.escape_json_string($feature->{type}).'", ';
         $json .= '"values": [';
         $json .= join(', ', map {'"'.escape_json_string($_).'"'} (@{$feature->{values}}));
         $json .= '], "errors": []';
