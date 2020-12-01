@@ -174,7 +174,7 @@ sub read_feature_doc
     my %global_lc = ();
     if(defined($global))
     {
-        foreach my $value (keys(%{$global->{values}}))
+        foreach my $value (@{$global->{values}})
         {
             $global_lc{lc($value)} = $value;
         }
