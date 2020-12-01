@@ -83,6 +83,9 @@ my $gdfeats = "$docs/_u-feat";
 opendir(DIR, $gdfeats) or die("Cannot read folder '$gdfeats': $!");
 my @gdfiles = grep {m/^.+\.md$/ && -f "$gdfeats/$_"} (readdir(DIR));
 closedir(DIR);
+# Remember lowercase-truecase mapping for all globally defined features.
+# We will later check that language-specific redefinitions match the case.
+my %global_lc = ();
 foreach my $file (@gdfiles)
 {
     my $feature = $file;
@@ -101,6 +104,7 @@ foreach my $file (@gdfiles)
     {
         push(@{$hash{$feature}{errors}}, "Feature name '$feature' does not have the prescribed form.");
     }
+    $global_lc{lc($feature)} = $feature;
     read_feature_doc($feature, "$gdfeats/$file", \%{$hash{$feature}}, \@deviations);
 }
 # Scan locally documented (language-specific) features.
@@ -133,7 +137,19 @@ foreach my $langfolder (@langfolders)
         {
             push(@{$lhash{$lcode}{$feature}{errors}}, "Feature name '$feature' does not have the prescribed form.");
         }
-        read_feature_doc($feature, "$ldfeats/$file", $lhash{$lcode}{$feature}, \@deviations);
+        # Language-specific feature name must either be identical to a globally defined feature,
+        # or it must differ from all globally defined features in more than just case.
+        my $lcfeature = lc($feature);
+        if(exists($global_lc{$lcfeature}) && $feature ne $global_lc{$lcfeature})
+        {
+            push(@{$lhash{$lcode}{$feature}{errors}}, "Feature name '$feature' differs from globally defined '$global_lc{$lcfeature}' in case.");
+        }
+        my $corresponding_global = undef;
+        if(exists($hash{$feature}))
+        {
+            $corresponding_global = $hash{$feature};
+        }
+        read_feature_doc($feature, "$ldfeats/$file", $lhash{$lcode}{$feature}, \@deviations, $corresponding_global);
     }
 }
 # Print an overview of the features we found.
@@ -151,6 +167,18 @@ sub read_feature_doc
     my $filepath = shift; # the name and path to the corresponding file
     my $feathash = shift; # hash reference
     my $deviations = shift; # array reference
+    my $global = shift; # hash reference to the global definition of the same feature if it exists and if this one is local
+    # We will want to check that people do not redefine global feature values
+    # by only changing capitalization, hence we need the global values in
+    # normalized case.
+    my %global_lc = ();
+    if(defined($global))
+    {
+        foreach my $value (keys(%{$global->{values}}))
+        {
+            $global_lc{lc($value)} = $value;
+        }
+    }
     my $udver = 1;
     my @values = ();
     my %valdoc;
@@ -199,6 +227,14 @@ sub read_feature_doc
                 if($fv =~ m/^$d->{re}$/i)
                 {
                     push(@{$feathash->{errors}}, "Wrong value '$value'. $d->{msg}");
+                }
+            }
+            if(defined($global))
+            {
+                my $lcvalue = lc($value);
+                if(exists($global_lc{$lcvalue}) && $value ne $global_lc{$lcvalue})
+                {
+                    push(@{$feathash->{errors}}, "Wrong value '$value'. It differs from globally defined '$global_lc{$lcvalue}' in case.");
                 }
             }
         }
