@@ -49,6 +49,8 @@ my @deviations =
      'msg' => "The correct UD label for quotative mood is 'Mood=Qot'."},
     {'re'  => 'VerbForm=Finite?',
      'msg' => "The correct UD label for finite verbs is 'VerbForm=Fin'."},
+    {'re'  => 'VerbForm=Trans',
+     'msg' => "The correct UD v2 label for transgressive/converb is 'VerbForm=Conv'."}, # this was renamed between v1 and v2 guidelines
     {'re'  => '.*=(None|Unsp(ec(ified)?)?)',
      'msg' => "If a feature does not apply to a word, UD simply omits the feature."}
 );
