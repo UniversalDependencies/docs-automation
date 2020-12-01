@@ -37,6 +37,8 @@ my @deviations =
      'msg' => "The correct UD label for the special form of noun after numeral is 'Number=Count'."},
     {'re'  => 'Case=Obl(ique)?',
      'msg' => "The correct UD label for oblique case is 'Case=Acc'."},
+    {'re'  => 'Aspect=Pro',
+     'msg' => "The correct UD v2 label for prospective aspect is 'Aspect=Prosp'."}, # this was renamed between v1 and v2 guidelines
     {'re'  => '(Aspect=Perfect|Tense=Perf(ect)?)',
      'msg' => "Use 'Aspect=Perf' to distinguish perfect from other forms."},
     {'re'  => 'Tense=(Pra?et(er(ite?)?)?|Prt[12]?)',
