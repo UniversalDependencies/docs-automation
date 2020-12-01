@@ -205,7 +205,7 @@ sub read_feature_doc
         # Warn about unrecognized level 3 headings.
         # Note that there are some examples of legitimate level 3 headings that are not feature values.
         # References is one such case. The "Prague Dependency Treebank" exception is needed if there is a Diff section (level 2) with treebanks that currently differ from the overall guidelines.
-        elsif(m/^\#\#\#[^\#]/ && !m/^\#\#\#\s*(References|Notes|Prague Dependency Treebank|Turku Dependency Treebank|Russian National Corpus|Conversion from JOS)$/)
+        elsif(m/^\#\#\#[^\#]/ && !m/^\#\#\#\s*(References|Notes|Prague Dependency Treebank|Turku Dependency Treebank|Russian National Corpus|Conversion from JOS|Ukrainian Dependency Treebank)$/)
         {
             push(@{$feathash->{errors}}, "Unrecognized level 3 heading '$_'.");
         }
