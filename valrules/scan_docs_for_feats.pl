@@ -47,6 +47,8 @@ my @deviations =
      'msg' => "The correct UD label for conditional mood is 'Mood=Cnd'."},
     {'re'  => 'Mood=Co?nj(un(c(t(ive?)?)?)?)?',
      'msg' => "The correct UD label for conjunctive/subjunctive mood is 'Mood=Sub'."},
+    {'re'  => 'Mood=Subj(un(c(t(ive?)?)?)?)?',
+     'msg' => "The correct UD label for conjunctive/subjunctive mood is 'Mood=Sub'."},
     {'re'  => 'Mood=Quot(at(ive?)?)?',
      'msg' => "The correct UD label for quotative mood is 'Mood=Qot'."},
     {'re'  => 'VerbForm=Finite?',
