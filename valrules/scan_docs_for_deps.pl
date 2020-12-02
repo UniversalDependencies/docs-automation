@@ -157,8 +157,8 @@ foreach my $langfolder (@langfolders)
     }
 }
 # Print an overview of the features we found.
-#print_markdown_overview(\%hash, \%lhash);
-print_json(\%hash, \%lhash, \@deviations, $docs);
+print_markdown_overview(\%hash, \%lhash);
+#print_json(\%hash, \%lhash, \@deviations, $docs);
 
 
 
@@ -223,7 +223,9 @@ sub print_markdown_overview
     print("# Universal relations\n\n");
     foreach my $relation (grep {$ghash->{$_}{type} eq 'universal'} (@relations))
     {
-        print("* [$relation](https://universaldependencies.org/u/dep/$relation.html)\n");
+        my $file = $relation;
+        $file = 'aux_' if($file eq 'aux');
+        print("* [$relation](https://universaldependencies.org/u/dep/$file.html)\n");
         foreach my $error (@{$ghash->{$relation}{errors}})
         {
             print('  * <span style="color:red">ERROR: '.$error.'</span>'."\n");
@@ -250,10 +252,10 @@ sub print_markdown_overview
     foreach my $lcode (@lcodes)
     {
         print("## $lcode\n\n");
-        my @features = sort(keys(%{$lhash->{$lcode}}));
-        foreach my $feature (@features)
+        my @relations = sort(keys(%{$lhash->{$lcode}}));
+        foreach my $relation (@relations)
         {
-            my $file = $feature;
+            my $file = $relation;
             $file =~ s/^([a-z]+):([a-z]+)$/$1-$2/;
             print("* [$relation](https://universaldependencies.org/$lcode/dep/$file.html)\n");
             foreach my $error (@{$lhash->{$lcode}{$relation}{errors}})
@@ -303,7 +305,7 @@ sub print_json
             }
         }
         # Add globally defined features that are not redefined locally.
-        foreach my $feature (sort(keys(%{$ghash})))
+        foreach my $relation (sort(keys(%{$ghash})))
         {
             unless(exists($lhash->{$lcode}{$relation}))
             {
