@@ -157,8 +157,8 @@ foreach my $langfolder (@langfolders)
     }
 }
 # Print an overview of the features we found.
-print_markdown_overview(\%hash, \%lhash);
-#print_json(\%hash, \%lhash, \@deviations, $docs);
+#print_markdown_overview(\%hash, \%lhash);
+print_json(\%hash, \%lhash, \@deviations, $docs);
 
 
 
