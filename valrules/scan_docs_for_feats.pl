@@ -107,7 +107,7 @@ foreach my $file (@gdfiles)
         push(@{$hash{$feature}{errors}}, "Feature name '$feature' does not have the prescribed form.");
     }
     $global_lc{lc($feature)} = $feature;
-    read_feature_doc($feature, "$gdfeats/$file", \%{$hash{$feature}}, \@deviations);
+    read_feature_doc($feature, "$gdfeats/$file", $hash{$feature}, \@deviations);
 }
 # Scan locally documented (language-specific) features.
 opendir(DIR, $docs) or die("Cannot read folder '$docs': $!");
