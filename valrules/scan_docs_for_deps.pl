@@ -146,7 +146,7 @@ foreach my $langfolder (@langfolders)
             }
             else
             {
-                $lhash{$lcode}{$relation}{type} = 'global';
+                $lhash{$lcode}{$relation}{type} = 'local';
             }
         }
         else
