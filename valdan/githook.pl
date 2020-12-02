@@ -154,8 +154,8 @@ if(defined($result))
         # docs/_xxx/feat changes. However, the scanning is relatively fast, so we will do it every time
         # anything in docs changes.
         system("echo ---------------------------------------------------------------------- >>$valilog");
-        system("echo docs '=>' scan documentation of features >>$valilog");
         # Read the current list of documented features so that we can assess the changes.
+        system("echo docs '=>' scan documentation of features >>$valilog");
         my $olddf = json_file_to_perl('docs-automation/valrules/docfeats.json');
         system("perl docs-automation/valrules/scan_docs_for_feats.pl > docs-automation/valrules/docfeats.json 2>>$valilog");
         my $newdf = json_file_to_perl('docs-automation/valrules/docfeats.json');
@@ -184,7 +184,12 @@ if(defined($result))
                 $changed{$lcode}++;
             }
         }
+        if(scalar(keys(%changed))==0)
+        {
+            system("echo No changes so far. >>$valilog");
+        }
         # Read the current list of documented relations so that we can assess the changes.
+        system("echo docs '=>' scan documentation of relations >>$valilog");
         my $olddd = json_file_to_perl('docs-automation/valrules/docdeps.json');
         system("perl docs-automation/valrules/scan_docs_for_deps.pl > docs-automation/valrules/docdeps.json 2>>$valilog");
         my $newdd = json_file_to_perl('docs-automation/valrules/docdeps.json');
@@ -216,7 +221,7 @@ if(defined($result))
         my $changed = 'none';
         if(scalar(keys(%changed))==0)
         {
-            system("echo No changes here. >>$valilog");
+            system("echo No changes so far. >>$valilog");
         }
         else
         {
