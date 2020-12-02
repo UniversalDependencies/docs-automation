@@ -52,7 +52,7 @@ my @udeps = qw(nsubj csubj obj iobj ccomp xcomp obl advmod advcl
                case mark cc conj appos compound flat fixed parataxis 30
                goeswith reparandum orphan list punct root dep);
 my $gddeps = "$docs/_u-dep";
-opendir(DIR, $gdfeats) or die("Cannot read folder '$gddeps': $!");
+opendir(DIR, $gddeps) or die("Cannot read folder '$gddeps': $!");
 my @gdfiles = grep {m/^.+\.md$/ && -f "$gddeps/$_"} (readdir(DIR));
 closedir(DIR);
 foreach my $file (@gdfiles)
