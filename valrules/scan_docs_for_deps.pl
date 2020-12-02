@@ -339,7 +339,7 @@ sub print_json
             @relationlines = ();
             foreach my $relation (@relations)
             {
-                push(@relationlines, '"'.escape_json_string($relation).'": '.encode_feature_json($lhash->{$lcode}{$relation}));
+                push(@relationlines, '"'.escape_json_string($relation).'": '.encode_relation_json($lhash->{$lcode}{$relation}));
             }
             $languageline .= join(",\n", @relationlines)."\n";
             $languageline .= '}';
