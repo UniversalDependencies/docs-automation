@@ -648,6 +648,11 @@ Sumerian:
   lcode: sux
   iso3: sux
   family: Sumerian
+Swahili:
+  flag: TZ
+  lcode: sw
+  iso3: swa
+  family: Niger-Congo, Bantoid
 Swedish:
   flag: SE
   lcode: sv
