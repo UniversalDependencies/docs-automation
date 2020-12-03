@@ -752,3 +752,8 @@ Yukulta:
   lcode: gcd
   iso3: gcd
   family: Tangkic
+Yupik:
+  flag: US-AK
+  lcode: ess
+  iso3: ess
+  family: Eskimo-Aleut
