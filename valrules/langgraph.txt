@@ -30,7 +30,8 @@ Mande----Afro-Asiatic
 Niger-Congo----Afro-Asiatic
 Khoe-Kwadi----Niger-Congo
 Chukotko-Kamchatkan--100--Mongolic
-Chukotko-Kamchatkan--100--Hokan
+Chukotko-Kamchatkan----Eskimo-Aleut
+Eskimo-Aleut--100--Hokan
 Arawakan--100--Hokan
 Arawakan----Panoan
 Arawakan----Tupian
