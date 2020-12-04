@@ -907,7 +907,7 @@ sub print_all_features
             foreach my $f (@features)
             {
                 # Repeat the language every 12 columns.
-                if($j % 12 == 0)
+                if($j != 0 && $j % 12 == 0)
                 {
                     print('<th></th>');
                 }
@@ -924,7 +924,7 @@ sub print_all_features
         foreach my $f (@features)
         {
             # Repeat the language every 12 columns.
-            if($j % 12 == 0)
+            if($j != 0 && $j % 12 == 0)
             {
                 print("<td>$lcode</td>");
             }
