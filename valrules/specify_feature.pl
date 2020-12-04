@@ -131,15 +131,6 @@ else
 {
     # Read the data file from JSON.
     my %data = read_data_json();
-    # Check whether there are any undocumented auxiliaries. Documenting them
-    # has higher priority than any other action the user may want to do.
-    my $n_undocumented = 0;
-    # It is possible that there are no auxiliaries for my language so far.
-    if(exists($data{$config{lcode}}))
-    {
-        my $auxiliaries = $data{$config{lcode}};
-        $n_undocumented = scalar(grep {$auxiliaries->{$_}{status} ne 'documented'} (keys(%{$auxiliaries})));
-    }
     # Perform an action according to the CGI parameters.
     # Saving may be needed even for documenting undocumented auxiliaries.
     if($config{save})
@@ -152,13 +143,6 @@ else
     {
         summarize_guidelines();
         print_lemma_form(\%data);
-        print_all_features(\%data);
-    }
-    # Now if there are any undocumented auxiliaries, offer documenting them as the only possible action.
-    elsif($n_undocumented > 0)
-    {
-        summarize_guidelines();
-        print_undocumented_auxiliaries(\%data);
         print_all_features(\%data);
     }
     elsif($config{add}) # addcop and addnoncop will be used inside print_lemma_form()
@@ -180,36 +164,6 @@ print <<EOF
 </html>
 EOF
 ;
-
-
-
-#------------------------------------------------------------------------------
-# Prints the list of undocumented auxiliaries.
-#------------------------------------------------------------------------------
-sub print_undocumented_auxiliaries
-{
-    my $data = shift;
-    my %auxiliaries = %{$data->{$config{lcode}}};
-    my @undocumented = sort(grep {$auxiliaries{$_}{status} ne 'documented'} (keys(%auxiliaries)));
-    my $n = scalar(@undocumented);
-    if($n > 0)
-    {
-        my $hrefs = get_lemma_links_to_edit(@undocumented);
-        # Already documented auxiliaries should stay available for editing while
-        # the rest is being documented (e.g. the user may want to return to a
-        # copula and explain its deficient paradigm if they find they have forgotten it).
-        # The only thing we will hide until all auxiliaries are documented is the Add new button.
-        my @documented = sort(grep {$auxiliaries{$_}{status} eq 'documented'} (keys(%auxiliaries)));
-        if(scalar(@documented) > 0)
-        {
-            $hrefs .= ' | Already documented: '.get_lemma_links_to_edit(@documented);
-        }
-        my $suffix = $n > 1 ? 'ies' : 'y';
-        print("  <h2 style='color:red'>You have $n undocumented auxiliar$suffix!</h2>\n");
-        print("  <p>Please edit each undocumented auxiliary and supply the missing information.</p>\n");
-        print("  <p>$hrefs</p>\n");
-    }
-}
 
 
 
