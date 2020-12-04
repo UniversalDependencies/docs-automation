@@ -182,13 +182,32 @@ sub print_features_for_language
         my @features = sort(keys(%{$ldata}));
         foreach my $f (@features)
         {
-            my @values = sort(@{$ldata->{$f}{uvalues}}, @{$ldata->{$f}{lvalues}});
+            if($ldata->{$f}{permitted})
+            {
+                my @values = sort(@{$ldata->{$f}{uvalues}}, @{$ldata->{$f}{lvalues}});
+                foreach my $v (@values)
+                {
+                    push(@fvs, "$f=$v");
+                }
+            }
+        }
+        print("  <p>".join(' ', @fvs)."</p>\n");
+        @fvs = ();
+        foreach my $f (@features)
+        {
+            # Do not look at 'permitted' now. The feature may be permitted but
+            # there might still be values that are not permitted.
+            my @values = sort(@{$ldata->{$f}{evalues}});
             foreach my $v (@values)
             {
                 push(@fvs, "$f=$v");
             }
         }
-        print("  <p>".join(' ', @fvs)."</p>\n");
+        if(scalar(@fvs) > 0)
+        {
+            print("  <h2>Feature values previously declared but undocumented</h2>\n");
+            print("  <p>".join(' ', @fvs)."</p>\n");
+        }
     }
 }
 
@@ -1520,8 +1539,38 @@ sub read_data_json
                     $data{$lcode}{$f}{permitted} = $data{$lcode}{$f}{type} eq 'universal' || scalar(@{$data{$lcode}{$f}{lvalues}}) > 0;
                 }
             }
-            ###!!! We may want to also save features that were declared in tools/data but are documented neither globally nor locally.
-            ###!!! At present we discard them.
+            # Save features that were declared in tools/data but are not documented and thus not permitted.
+            if(exists($declfeats->{$lcode}))
+            {
+                my @fvs = @{$declfeats->{$lcode}};
+                foreach my $fv (@fvs)
+                {
+                    if($fv =~ m/^(.+)=(.+)$/)
+                    {
+                        my $f = $1;
+                        my $v = $2;
+                        if(exists($data{$lcode}{$f}))
+                        {
+                            if(!grep {$_ eq $v} (@{$data{$lcode}{$f}{uvalues}}, @{$data{$lcode}{$f}{lvalues}}, @{$data{$lcode}{$f}{evalues}}))
+                            {
+                                # evalues will be list of extra values that were declared but not documented and thus not permitted
+                                push(@{$data{$lcode}{$f}{evalues}}, $v);
+                            }
+                        }
+                        else
+                        {
+                            $data{$lcode}{$f}{type} = 'lspec';
+                            $data{$lcode}{$f}{doc} = 'none';
+                            $data{$lcode}{$f}{permitted} = 0;
+                            push(@{$data{$lcode}{$f}{evalues}}, $v);
+                        }
+                    }
+                    else
+                    {
+                        die("Cannot parse declared feature-value '$fv'");
+                    }
+                }
+            }
         }
     }
     else
