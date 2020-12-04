@@ -82,7 +82,7 @@ print <<EOF
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head>
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-  <title>Specify auxiliaries in UD</title>
+  <title>Specify features in UD</title>
   <style type="text/css">
     img {border: none;}
     img.flag {
@@ -110,7 +110,7 @@ if(scalar(@{$config{errors}}) > 0)
 # No language code specified. Show the list of known languages.
 elsif($config{lcode} eq '')
 {
-    print("  <h1>Specify auxiliaries for a language</h1>\n");
+    print("  <h1>Specify features for a language</h1>\n");
     # Print the list of known languages.
     print("  <p><strong>Select a language:</strong></p>\n");
     print("  <table>\n");
