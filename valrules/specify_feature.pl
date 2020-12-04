@@ -197,10 +197,13 @@ sub print_features_for_language
         {
             # Do not look at 'permitted' now. The feature may be permitted but
             # there might still be values that are not permitted.
-            my @values = sort(@{$ldata->{$f}{evalues}});
-            foreach my $v (@values)
+            if(defined($ldata->{$f}{evalues}))
             {
-                push(@fvs, "$f=$v");
+                my @values = sort(@{$ldata->{$f}{evalues}});
+                foreach my $v (@values)
+                {
+                    push(@fvs, "$f=$v");
+                }
             }
         }
         if(scalar(@fvs) > 0)
