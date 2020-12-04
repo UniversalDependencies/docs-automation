@@ -881,10 +881,20 @@ sub print_all_features
         my @features = keys(%{$data->{$lcode}});
         foreach my $f (@features)
         {
-            $features{$f}++;
+            $features{$f} = $data->{$lcode}{$f}{type};
         }
     }
-    my @features = sort(keys(%features));
+    my @features = sort
+    {
+        # Universal features come before language-specific.
+        my $r = $features{$b} cmp $features{$a};
+        unless($r)
+        {
+            $r = $a cmp $b;
+        }
+        $r
+    }
+    (keys(%features));
     print("  <table>\n");
     print("    <tr><th colspan=2>Language</th><th>Total</th>");
     foreach my $f (@features)
@@ -909,7 +919,7 @@ sub print_all_features
                     print($nu);
                     if($nl > 0)
                     {
-                        print(" + $nl");
+                        print("+$nl");
                     }
                 }
             }
