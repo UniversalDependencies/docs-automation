@@ -211,6 +211,27 @@ sub print_features_for_language
             print("  <h2>Feature values previously declared but undocumented</h2>\n");
             print("  <p>".join(' ', @fvs)."</p>\n");
         }
+        my @errors = ();
+        foreach my $f (@features)
+        {
+            if(defined($ldata->{$f}{errors}))
+            {
+                foreach my $e (@{$ldata->{$f}{errors}})
+                {
+                    push(@errors, "ERROR in documentation of $f: $e");
+                }
+            }
+        }
+        if(scalar(@errors) > 0)
+        {
+            print("  <h2>Errors in documentation</h2>\n");
+            print("  <ul>\n");
+            foreach my $e (@errors)
+            {
+                print("    <li style='color:red'>$e</li>\n");
+            }
+            print("  </ul>\n");
+        }
     }
 }
 
@@ -1486,6 +1507,7 @@ sub read_data_json
                     if(scalar(@{$docfeats->{ldocs}{$lcode}{$f}{errors}}) > 0)
                     {
                         $data{$lcode}{$f}{doc} = 'lerror';
+                        $data{$lcode}{$f}{errors} = $docfeats->{ldocs}{$lcode}{$f}{errors};
                     }
                     else
                     {
@@ -1538,6 +1560,7 @@ sub read_data_json
                 if(scalar(@{$docfeats->{gdocs}{$f}{errors}}) > 0)
                 {
                     $data{$lcode}{$f}{doc} = 'gerror';
+                    $data{$lcode}{$f}{errors} = $docfeats->{gdocs}{$f}{errors};
                 }
                 else
                 {
