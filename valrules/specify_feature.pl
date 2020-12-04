@@ -878,18 +878,35 @@ sub print_all_features
     my @lcodes_other = grep {$languages->{$lname_by_code{$_}}{family} ne $myfamily} (@lcodes);
     print("  <table>\n");
     print("    <tr><th colspan=2>Language</th><th>Total</th><th>Documented</th><th>Error in documentation</tr>\n");
+    # Remember the universal feature-value pairs so we can quickly identify them.
+    my %universal;
+    foreach my $f (keys(%{$data->{gdocs}}))
+    {
+        if($data->{gdocs}{$f}{type} eq 'universal')
+        {
+            foreach my $v (@{$data->{gdocs}{$f}{values}})
+            {
+                $universal{"$f=$v"}++;
+            }
+        }
+    }
     foreach my $lcode ($config{lcode}, @lcodes_my_genus, @lcodes_my_family, @lcodes_other)
     {
-        # List the features that are documented locally but there are errors in the documentation.
+        # Get the feature-value pairs that are documented and thus theoretically available.
+        my @documented = sort(@{$data->{lists}{$lcode}});
+        # Split the documented feature-value pairs to universal (part of the official guidelines) and language-specific.
+        my @universal = grep {exists($universal{$_})} (@documented);
+        my @lspecific = grep {!exists($universal{$_})} (@documented);
+        # Get the features that are documented locally but there are errors in the documentation.
         my @docerror = ();
         if(exists($data->{ldocs}{$lcode}))
         {
             @docerror = grep {scalar(@{$data->{ldocs}{$lcode}{$_}{errors}}) > 0} (sort(keys(%{$data->{ldocs}{$lcode}})));
         }
         my @fvpairs = sort(@{$data->{lists}{$lcode}});
-        my $n = scalar(@fvpairs);
+        my $n = scalar(@universal);
         print("    <tr><td>$lname_by_code{$lcode}</td><td>$lcode</td><td>$n</td>");
-        print('<td>'.join(' ', @fvpairs).'</td>');
+        print('<td>'.join(' ', @universal).'</td>');
         print('<td>'.join(' ', @docerror).'</td>');
         print("</tr>\n");
     }
