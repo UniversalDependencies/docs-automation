@@ -827,10 +827,8 @@ sub print_all_features
     my %familygenus;
     my %genera;
     my %families;
-    # We need a list of language codes that includes the current language.
-    # But the current language may not yet be in the data!
-    my @lcodes = keys(%{$data->{lists}});
-    push(@lcodes, $config{lcode}) if(!exists($data->{lists}{$config{lcode}}));
+    # The data contains all languages known in UD.
+    my @lcodes = keys(%{$data});
     foreach my $lcode (@lcodes)
     {
         my $lhash = $languages->{$lname_by_code{$lcode}};
@@ -876,53 +874,47 @@ sub print_all_features
     my @lcodes_my_genus = grep {$_ ne $config{lcode} && $languages->{$lname_by_code{$_}}{familygenus} eq $myfamilygenus} (@lcodes);
     my @lcodes_my_family = grep {$languages->{$lname_by_code{$_}}{familygenus} ne $myfamilygenus && $languages->{$lname_by_code{$_}}{family} eq $myfamily} (@lcodes);
     my @lcodes_other = grep {$languages->{$lname_by_code{$_}}{family} ne $myfamily} (@lcodes);
-    print("  <table>\n");
-    print("    <tr><th colspan=2>Language</th><th>Total</th><th>Universal</th><th>Language-specific</th><th>Error in documentation</th><th>Undocumented language-specific</th></tr>\n");
-    # Remember the universal feature-value pairs so we can quickly identify them.
-    my %universal;
-    foreach my $f (keys(%{$data->{gdocs}}))
+    # Get the list of all known feature names. Every language has a different set.
+    my %features;
+    foreach my $lcode (@lcodes)
     {
-        if($data->{gdocs}{$f}{type} eq 'universal')
+        my @features = keys(%{$data->{$lcode}});
+        foreach my $f (@features)
         {
-            foreach my $v (@{$data->{gdocs}{$f}{values}})
-            {
-                $universal{"$f=$v"}++;
-            }
+            $features{$f}++;
         }
     }
+    my @features = sort(keys(%features));
+    print("  <table>\n");
+    print("    <tr><th colspan=2>Language</th><th>Total</th>");
+    foreach my $f (@features)
+    {
+        print("<th>$f</th>");
+    }
+    print("</tr>\n");
     foreach my $lcode ($config{lcode}, @lcodes_my_genus, @lcodes_my_family, @lcodes_other)
     {
-        # Get the feature-value pairs that are documented and thus theoretically available.
-        my @documented = sort(@{$data->{lists}{$lcode}});
-        my %documented;
-        foreach my $fv (@documented)
-        {
-            $documented{$fv}++;
-        }
-        # Split the documented feature-value pairs to universal (part of the official guidelines) and language-specific.
-        my @universal = grep {exists($universal{$_})} (@documented);
-        # Get the feature-value pairs that were declared in the data folder in the tools repository.
-        my @lsdeclared = ();
-        if(exists($data->{toolslspec}{$lcode}))
-        {
-            @lsdeclared = sort(@{$data->{toolslspec}{$lcode}});
-        }
-        # Out of the declared language-specific feature-value pairs, get those that are also documented.
-        my @lspecific = grep {exists($documented{$_})} (@lsdeclared);
-        my @lsundoc = grep {!exists($documented{$_})} (@lsdeclared);
-        # Get the features that are documented locally but there are errors in the documentation.
-        my @docerror = ();
-        if(exists($data->{ldocs}{$lcode}))
-        {
-            @docerror = grep {scalar(@{$data->{ldocs}{$lcode}{$_}{errors}}) > 0} (sort(keys(%{$data->{ldocs}{$lcode}})));
-        }
-        my @fvpairs = sort(@{$data->{lists}{$lcode}});
-        my $n = scalar(@universal) + scalar(@lspecific);
+        # Get the number of features permitted in this language.
+        my $n = scalar(grep {exists($data->{$lcode}{$_}) && $data->{$lcode}{$_}{permitted}} (@features));
         print("    <tr><td>$lname_by_code{$lcode}</td><td>$lcode</td><td>$n</td>");
-        print('<td>'.join(' ', @universal).'</td>');
-        print('<td>'.join(' ', @lspecific).'</td>');
-        print('<td>'.join(' ', @docerror).'</td>');
-        print('<td>'.join(' ', @lsundoc).'</td>');
+        foreach my $f (@features)
+        {
+            print('<td>');
+            if(exists($data->{$lcode}{$f}))
+            {
+                my $nu = scalar(@{$data->{$lcode}{$f}{uvalues}});
+                my $nl = scalar(@{$data->{$lcode}{$f}{lvalues}});
+                if($nu + $nl > 0)
+                {
+                    print($nu);
+                    if($nl > 0)
+                    {
+                        print(" + $nl");
+                    }
+                }
+            }
+            print('</td>');
+        }
         print("</tr>\n");
     }
     print("  </table>\n");
@@ -1386,29 +1378,146 @@ sub get_parameters
 #------------------------------------------------------------------------------
 sub read_data_json
 {
-    my $datafile = "$path/docfeats.json";
-    my $json = json_file_to_perl($datafile);
-    my $json_from_tools = json_file_to_perl("$path/datafeats.json");
-    $json->{'toolslspec'} = $json_from_tools;
-    # The $json structure should contain several items. We will return all of
-    # them but first we will check for those items that address individual
-    # languages whether we know all the languages they contain.
-    if(exists($json->{lists}) && ref($json->{lists}) eq 'HASH')
+    # Read the temporary JSON file with documented features.
+    my $docfeats = json_file_to_perl("$path/docfeats.json");
+    # Read the temporary JSON file with features declared in tools/data.
+    my $declfeats = json_file_to_perl("$path/datafeats.json");
+    # Get the universal features and values from the global documentation.
+    my %universal;
+    if(exists($docfeats->{gdocs}) && ref($docfeats->{gdocs}) eq 'HASH')
     {
-        my @lcodes = keys(%{$json->{lists}});
+        foreach my $f (keys(%{$docfeats->{gdocs}}))
+        {
+            if($docfeats->{gdocs}{$f}{type} eq 'universal')
+            {
+                foreach my $v (@{$docfeats->{gdocs}{$f}{values}})
+                {
+                    $universal{$f}{$v}++;
+                }
+            }
+        }
+    }
+    else
+    {
+        die("No globally documented features found in the JSON file");
+    }
+    # Create the combined data structure we will need in this script.
+    my %data;
+    # $docfeats->{lists} should contain all languages known in UD, so we will use its index.
+    if(exists($docfeats->{lists}) && ref($docfeats->{lists}) eq 'HASH')
+    {
+        my @lcodes = keys(%{$docfeats->{lists}});
         foreach my $lcode (@lcodes)
         {
             if(!exists($lname_by_code{$lcode}))
             {
                 die("Unknown language code '$lcode' in the JSON file");
             }
+            # If the language has any local documentation, read it first.
+            if(exists($docfeats->{ldocs}{$lcode}))
+            {
+                my @features = keys(%{$docfeats->{ldocs}{$lcode}});
+                foreach my $f (@features)
+                {
+                    # Type is 'universal' or 'lspec'. A universal feature stays universal
+                    # even if it is locally documented and some language-specific values are added.
+                    if(exists($universal{$f}))
+                    {
+                        $data{$lcode}{$f}{type} = 'universal';
+                        # Get the universally valid values of the feature.
+                        my @uvalues = ();
+                        my @lvalues = ();
+                        foreach my $v (@{$docfeats->{ldocs}{$lcode}{$f}{values}})
+                        {
+                            if(exists($universal{$f}{$v}))
+                            {
+                                push(@uvalues, $v);
+                            }
+                            else
+                            {
+                                push(@lvalues, $v);
+                            }
+                        }
+                        $data{$lcode}{$f}{uvalues} = \@uvalues;
+                        $data{$lcode}{$f}{lvalues} = \@lvalues;
+                    }
+                    else
+                    {
+                        $data{$lcode}{$f}{type} = 'lspec';
+                        $data{$lcode}{$f}{uvalues} = [];
+                        $data{$lcode}{$f}{lvalues} = $docfeats->{ldocs}{$lcode}{$f}{values};
+                    }
+                    # Documentation can be 'global', 'local', 'gerror', 'lerror'.
+                    if(scalar(@{$docfeats->{ldocs}{$lcode}{$f}{errors}}) > 0)
+                    {
+                        $data{$lcode}{$f}{doc} = 'lerror';
+                    }
+                    else
+                    {
+                        $data{$lcode}{$f}{doc} = 'local';
+                        $data{$lcode}{$f}{permitted} = 1;
+                        # In theory we should also require that the feature is universal or
+                        # if it is language-specific, that its values were declared in tools/data.
+                        # However, if the values are locally documented and the documentation is error-free,
+                        # we can assume that they are really valid for this language.
+                    }
+                }
+            }
+            # Read the global documentation and add features that were not documented locally.
+            my @features = keys(%{$docfeats->{gdocs}});
+            foreach my $f (@features)
+            {
+                # Skip globally documented features that have local documentation (even if with errors).
+                next if(exists($data{$lcode}{$f}));
+                # Type is 'universal' or 'lspec'.
+                if(exists($universal{$f}))
+                {
+                    $data{$lcode}{$f}{type} = 'universal';
+                    # This is global documentation of universal feature, thus all values are universal.
+                    $data{$lcode}{$f}{uvalues} = $docfeats->{gdocs}{$f}{values};
+                    $data{$lcode}{$f}{lvalues} = [];
+                }
+                else
+                {
+                    $data{$lcode}{$f}{type} = 'lspec';
+                    $data{$lcode}{$f}{uvalues} = [];
+                    # This is global documentation but the feature is not universal, thus we allow only
+                    # those values that were declared in tools/data (if they are mentioned in the documentation).
+                    my @lvalues = ();
+                    if(exists($declfeats->{$lcode}))
+                    {
+                        foreach my $v (@{$docfeats->{gdocs}{$f}{values}})
+                        {
+                            my $fv = "$f=$v";
+                            if(grep {$_ eq $fv} (@{$declfeats->{$lcode}}))
+                            {
+                                push(@lvalues, $v);
+                            }
+                        }
+                    }
+                    $data{$lcode}{$f}{lvalues} = \@lvalues;
+                }
+                # Documentation can be 'global', 'local', 'gerror', 'lerror'.
+                if(scalar(@{$docfeats->{gdocs}{$f}{errors}}) > 0)
+                {
+                    $data{$lcode}{$f}{doc} = 'gerror';
+                }
+                else
+                {
+                    $data{$lcode}{$f}{doc} = 'global';
+                    # The feature is permitted in this language if it is universal or at least one of its documented values was declared in tools/data.
+                    $data{$lcode}{$f}{permitted} = $data{$lcode}{$f}{type} eq 'universal' || scalar(@{$data{$lcode}{$f}{lvalues}}) > 0;
+                }
+            }
+            ###!!! We may want to also save features that were declared in tools/data but are documented neither globally nor locally.
+            ###!!! At present we discard them.
         }
     }
     else
     {
         die("No documented features found in the JSON file");
     }
-    return %{$json};
+    return %data;
 }
 
 
