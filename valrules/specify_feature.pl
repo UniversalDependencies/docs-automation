@@ -155,6 +155,7 @@ else
     {
         summarize_guidelines();
         ###!!!print_edit_add_menu(\%data);
+        print_features_for_language(\%data);
         # Show all known auxiliaries so the user can compare. This and related languages first.
         print_all_features(\%data);
     }
@@ -164,6 +165,32 @@ print <<EOF
 </html>
 EOF
 ;
+
+
+
+#------------------------------------------------------------------------------
+# Prints the list of features and values permitted in the current language.
+#------------------------------------------------------------------------------
+sub print_features_for_language
+{
+    my $data = shift;
+    print("  <h2>Permitted features and values</h2>\n");
+    if(exists($data->{$config{lcode}}))
+    {
+        my $ldata = $data->{$config{lcode}};
+        my @fvs = ();
+        my @features = sort(keys(%{$ldata}));
+        foreach my $f (@features)
+        {
+            my @values = sort(@{$ldata->{$f}{uvalues}}, @{$ldata->{$f}{lvalues}});
+            foreach my $v (@values)
+            {
+                push(@fvs, "$f=$v");
+            }
+        }
+        print("  <p>".join(' ', @fvs)."</p>\n");
+    }
+}
 
 
 
