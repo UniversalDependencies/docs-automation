@@ -903,8 +903,15 @@ sub print_all_features
         if($i % 20 == 0)
         {
             print("    <tr><th colspan=2>Language</th><th>Total</th>");
+            my $j = 0;
             foreach my $f (@features)
             {
+                # Repeat the language every 12 columns.
+                if($j % 12 == 0)
+                {
+                    print('<th></th>');
+                }
+                $j++;
                 print("<th>$f</th>");
             }
             print("</tr>\n");
@@ -913,8 +920,15 @@ sub print_all_features
         # Get the number of features permitted in this language.
         my $n = scalar(grep {exists($data->{$lcode}{$_}) && $data->{$lcode}{$_}{permitted}} (@features));
         print("    <tr><td>$lname_by_code{$lcode}</td><td>$lcode</td><td>$n</td>");
+        my $j = 0;
         foreach my $f (@features)
         {
+            # Repeat the language every 12 columns.
+            if($j % 12 == 0)
+            {
+                print("<td>$lcode</td>");
+            }
+            $j++;
             print('<td>');
             if(exists($data->{$lcode}{$f}))
             {
