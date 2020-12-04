@@ -829,8 +829,8 @@ sub print_all_features
     my %families;
     # We need a list of language codes that includes the current language.
     # But the current language may not yet be in the data!
-    my @lcodes = keys(%{$data});
-    push(@lcodes, $config{lcode}) if(!exists($data->{$config{lcode}}));
+    my @lcodes = keys(%{$data->{lists}});
+    push(@lcodes, $config{lcode}) if(!exists($data->{lists}{$config{lcode}}));
     foreach my $lcode (@lcodes)
     {
         my $lhash = $languages->{$lname_by_code{$lcode}};
@@ -880,7 +880,7 @@ sub print_all_features
     print("    <tr><th colspan=2>Language</th><th>Total</th><th>Documented</th></tr>\n");
     foreach my $lcode ($config{lcode}, @lcodes_my_genus, @lcodes_my_family, @lcodes_other)
     {
-        my $ldata = $data->{$lcode};
+        my $ldata = $data->{lists}{$lcode};
         my @fvpairs = sort(keys(%{$ldata}));
         my $n = scalar(@fvpairs);
         print("    <tr><td>$lname_by_code{$lcode}</td><td>$lcode</td><td>$n</td>");
