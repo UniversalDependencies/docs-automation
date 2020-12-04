@@ -877,13 +877,21 @@ sub print_all_features
     my @lcodes_my_family = grep {$languages->{$lname_by_code{$_}}{familygenus} ne $myfamilygenus && $languages->{$lname_by_code{$_}}{family} eq $myfamily} (@lcodes);
     my @lcodes_other = grep {$languages->{$lname_by_code{$_}}{family} ne $myfamily} (@lcodes);
     print("  <table>\n");
-    print("    <tr><th colspan=2>Language</th><th>Total</th><th>Documented</th></tr>\n");
+    print("    <tr><th colspan=2>Language</th><th>Total</th><th>Documented</th><th>Error in documentation</tr>\n");
     foreach my $lcode ($config{lcode}, @lcodes_my_genus, @lcodes_my_family, @lcodes_other)
     {
+        # List the features that are documented locally but there are errors in the documentation.
+        my @docerror = ();
+        if(exists($data->{ldocs}{$lcode}))
+        {
+            @docerror = grep {scalar(@{$data->{ldocs}{$lcode}{$_}{errors}}) > 0} (sort(keys(%{$data->{ldocs}{$lcode}})));
+        }
         my @fvpairs = sort(@{$data->{lists}{$lcode}});
         my $n = scalar(@fvpairs);
         print("    <tr><td>$lname_by_code{$lcode}</td><td>$lcode</td><td>$n</td>");
-        print("<td>".join(' ', @fvpairs)."</td></tr>\n");
+        print('<td>'.join(' ', @fvpairs).'</td>');
+        print('<td>'.join(' ', @docerror).'</td>');
+        print("</tr>\n");
     }
     print("  </table>\n");
 }
@@ -1348,6 +1356,8 @@ sub read_data_json
 {
     my $datafile = "$path/docfeats.json";
     my $json = json_file_to_perl($datafile);
+    my $json_from_tools = json_file_to_perl("$path/datafeats.json");
+    $json->{'toolslspec'} = $json_from_tools;
     # The $json structure should contain several items. We will return all of
     # them but first we will check for those items that address individual
     # languages whether we know all the languages they contain.
