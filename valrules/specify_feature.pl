@@ -154,7 +154,7 @@ else
     else
     {
         summarize_guidelines();
-        print_edit_add_menu(\%data);
+        ###!!!print_edit_add_menu(\%data);
         # Show all known auxiliaries so the user can compare. This and related languages first.
         print_all_features(\%data);
     }
