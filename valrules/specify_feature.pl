@@ -880,8 +880,7 @@ sub print_all_features
     print("    <tr><th colspan=2>Language</th><th>Total</th><th>Documented</th></tr>\n");
     foreach my $lcode ($config{lcode}, @lcodes_my_genus, @lcodes_my_family, @lcodes_other)
     {
-        my $ldata = $data->{lists}{$lcode};
-        my @fvpairs = sort(keys(%{$ldata}));
+        my @fvpairs = sort(@{$data->{lists}{$lcode}});
         my $n = scalar(@fvpairs);
         print("    <tr><td>$lname_by_code{$lcode}</td><td>$lcode</td><td>$n</td>");
         print("<td>".join(' ', @fvpairs)."</td></tr>\n");
