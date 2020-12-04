@@ -1473,12 +1473,14 @@ sub read_data_json
                         }
                         $data{$lcode}{$f}{uvalues} = \@uvalues;
                         $data{$lcode}{$f}{lvalues} = \@lvalues;
+                        $data{$lcode}{$f}{evalues} = [];
                     }
                     else
                     {
                         $data{$lcode}{$f}{type} = 'lspec';
                         $data{$lcode}{$f}{uvalues} = [];
                         $data{$lcode}{$f}{lvalues} = $docfeats->{ldocs}{$lcode}{$f}{values};
+                        $data{$lcode}{$f}{evalues} = [];
                     }
                     # Documentation can be 'global', 'local', 'gerror', 'lerror'.
                     if(scalar(@{$docfeats->{ldocs}{$lcode}{$f}{errors}}) > 0)
@@ -1509,6 +1511,7 @@ sub read_data_json
                     # This is global documentation of universal feature, thus all values are universal.
                     $data{$lcode}{$f}{uvalues} = $docfeats->{gdocs}{$f}{values};
                     $data{$lcode}{$f}{lvalues} = [];
+                    $data{$lcode}{$f}{evalues} = [];
                 }
                 else
                 {
@@ -1529,6 +1532,7 @@ sub read_data_json
                         }
                     }
                     $data{$lcode}{$f}{lvalues} = \@lvalues;
+                    $data{$lcode}{$f}{evalues} = [];
                 }
                 # Documentation can be 'global', 'local', 'gerror', 'lerror'.
                 if(scalar(@{$docfeats->{gdocs}{$f}{errors}}) > 0)
@@ -1554,10 +1558,12 @@ sub read_data_json
                         my $v = $2;
                         if(exists($data{$lcode}{$f}))
                         {
-                            if(!grep {$_ eq $v} (@{$data{$lcode}{$f}{uvalues}}, @{$data{$lcode}{$f}{lvalues}}, @{$data{$lcode}{$f}{evalues}}))
+                            my $fdata = $data{$lcode}{$f};
+                            my @known = (@{$fdata->{uvalues}}, @{$fdata->{lvalues}}, @{$fdata->{evalues}});
+                            if(!grep {$_ eq $v} (@known))
                             {
                                 # evalues will be list of extra values that were declared but not documented and thus not permitted
-                                push(@{$data{$lcode}{$f}{evalues}}, $v);
+                                push(@{$fdata->{evalues}}, $v);
                             }
                         }
                         else
@@ -1565,6 +1571,9 @@ sub read_data_json
                             $data{$lcode}{$f}{type} = 'lspec';
                             $data{$lcode}{$f}{doc} = 'none';
                             $data{$lcode}{$f}{permitted} = 0;
+                            $data{$lcode}{$f}{uvalues} = [];
+                            $data{$lcode}{$f}{lvalues} = [];
+                            $data{$lcode}{$f}{evalues} = [];
                             push(@{$data{$lcode}{$f}{evalues}}, $v);
                         }
                     }
