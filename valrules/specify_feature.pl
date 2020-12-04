@@ -894,6 +894,11 @@ sub print_all_features
     {
         # Get the feature-value pairs that are documented and thus theoretically available.
         my @documented = sort(@{$data->{lists}{$lcode}});
+        my %documented;
+        foreach my $fv (@documented)
+        {
+            $documented{$fv}++;
+        }
         # Split the documented feature-value pairs to universal (part of the official guidelines) and language-specific.
         my @universal = grep {exists($universal{$_})} (@documented);
         # Get the feature-value pairs that were declared in the data folder in the tools repository.
@@ -903,7 +908,7 @@ sub print_all_features
             @lsdeclared = sort(@{$data->{toolslspec}{$lcode}});
         }
         # Out of the declared language-specific feature-value pairs, get those that are also documented.
-        my @lspecific = grep {!exists($universal{$_})} (@lsdeclared);
+        my @lspecific = grep {exists($documented{$_})} (@lsdeclared);
         # Get the features that are documented locally but there are errors in the documentation.
         my @docerror = ();
         if(exists($data->{ldocs}{$lcode}))
