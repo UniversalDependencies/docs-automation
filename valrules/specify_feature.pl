@@ -896,14 +896,20 @@ sub print_all_features
     }
     (keys(%features));
     print("  <table>\n");
-    print("    <tr><th colspan=2>Language</th><th>Total</th>");
-    foreach my $f (@features)
-    {
-        print("<th>$f</th>");
-    }
-    print("</tr>\n");
+    my $i = 0;
     foreach my $lcode ($config{lcode}, @lcodes_my_genus, @lcodes_my_family, @lcodes_other)
     {
+        # Repeat the headers every 20 rows.
+        if($i % 20 == 0)
+        {
+            print("    <tr><th colspan=2>Language</th><th>Total</th>");
+            foreach my $f (@features)
+            {
+                print("<th>$f</th>");
+            }
+            print("</tr>\n");
+        }
+        $i++;
         # Get the number of features permitted in this language.
         my $n = scalar(grep {exists($data->{$lcode}{$_}) && $data->{$lcode}{$_}{permitted}} (@features));
         print("    <tr><td>$lname_by_code{$lcode}</td><td>$lcode</td><td>$n</td>");
