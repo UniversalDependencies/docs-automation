@@ -877,7 +877,7 @@ sub print_all_features
     my @lcodes_my_family = grep {$languages->{$lname_by_code{$_}}{familygenus} ne $myfamilygenus && $languages->{$lname_by_code{$_}}{family} eq $myfamily} (@lcodes);
     my @lcodes_other = grep {$languages->{$lname_by_code{$_}}{family} ne $myfamily} (@lcodes);
     print("  <table>\n");
-    print("    <tr><th colspan=2>Language</th><th>Total</th><th>Universal</th><th>Language-specific</th><th>Error in documentation</tr>\n");
+    print("    <tr><th colspan=2>Language</th><th>Total</th><th>Universal</th><th>Language-specific</th><th>Error in documentation</th><th>Undocumented language-specific</th></tr>\n");
     # Remember the universal feature-value pairs so we can quickly identify them.
     my %universal;
     foreach my $f (keys(%{$data->{gdocs}}))
@@ -909,6 +909,7 @@ sub print_all_features
         }
         # Out of the declared language-specific feature-value pairs, get those that are also documented.
         my @lspecific = grep {exists($documented{$_})} (@lsdeclared);
+        my @lsundoc = grep {!exists($documented{$_})} (@lsdeclared);
         # Get the features that are documented locally but there are errors in the documentation.
         my @docerror = ();
         if(exists($data->{ldocs}{$lcode}))
@@ -921,6 +922,7 @@ sub print_all_features
         print('<td>'.join(' ', @universal).'</td>');
         print('<td>'.join(' ', @lspecific).'</td>');
         print('<td>'.join(' ', @docerror).'</td>');
+        print('<td>'.join(' ', @lsundoc).'</td>');
         print("</tr>\n");
     }
     print("  </table>\n");
