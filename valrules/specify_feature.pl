@@ -1608,6 +1608,66 @@ sub read_data_json
                     }
                 }
             }
+            # Check the feature values actually used in the treebank data.
+            # Remove unused values from the permitted features.
+            # Revoke the permission of the feature if no values remain.
+            if(exists($datafeats->{$lcode}))
+            {
+                # Make the UPOS-specific statistics of features available in the combined database.
+                $data{$lcode}{byupos} = $datafeats->{$lcode};
+                # Aggregate feature-value pairs over all UPOS categories.
+                my %dfall;
+                foreach my $u (keys(%{$datafeats->{$lcode}}))
+                {
+                    foreach my $f (keys(%{$datafeats->{$lcode}{$u}}))
+                    {
+                        foreach my $v (keys(%{$datafeats->{$lcode}{$u}{$f}}))
+                        {
+                            $dfall{$f}{$v}++;
+                        }
+                    }
+                }
+                # Check the features we permitted before.
+                foreach my $f (keys(%{$data{$lcode}}))
+                {
+                    if($data{$lcode}{$f}{permitted})
+                    {
+                        my @values = @{$data{$lcode}{$f}{uvalues}};
+                        $data{$lcode}{$f}{uvalues} = [];
+                        $data{$lcode}{$f}{unused_uvalues} = [];
+                        foreach my $v (@values)
+                        {
+                            if(exists($dfall{$f}{$v}))
+                            {
+                                push(@{$data{$lcode}{$f}{uvalues}}, $v);
+                            }
+                            else
+                            {
+                                push(@{$data{$lcode}{$f}{unused_uvalues}}, $v);
+                            }
+                        }
+                        @values = @{$data{$lcode}{$f}{lvalues}};
+                        $data{$lcode}{$f}{lvalues} = [];
+                        $data{$lcode}{$f}{unused_lvalues} = [];
+                        foreach my $v (@values)
+                        {
+                            if(exists($dfall{$f}{$v}))
+                            {
+                                push(@{$data{$lcode}{$f}{lvalues}}, $v);
+                            }
+                            else
+                            {
+                                push(@{$data{$lcode}{$f}{unused_lvalues}}, $v);
+                            }
+                        }
+                        my $n = scalar(@{$data{$lcode}{$f}{uvalues}}) + scalar(@{$data{$lcode}{$f}{lvalues}});
+                        if($n==0)
+                        {
+                            $data{$lcode}{$f}{permitted} = 0;
+                        }
+                    }
+                }
+            }
         }
     }
     else
