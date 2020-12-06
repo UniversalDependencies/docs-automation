@@ -1708,8 +1708,6 @@ sub read_data_json
     {
         die("No documented features found in the JSON file");
     }
-    ###!!! Temporary: Immediately save the combined data structure as JSON file.
-    write_data_json(\%data, "$path/feats.json");
     return %data;
 }
 
