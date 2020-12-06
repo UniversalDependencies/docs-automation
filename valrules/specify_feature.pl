@@ -192,6 +192,34 @@ sub print_features_for_language
             }
         }
         print("  <p>".join(' ', @fvs)."</p>\n");
+        # The above are feature values that have been specifically permitted for this language.
+        # There may be other feature values that are well documented and could be permitted if desired.
+        @fvs = ();
+        foreach my $f (@features)
+        {
+            # Do not look at 'permitted' now. The feature may be permitted but
+            # there might still be values that are not permitted.
+            my @values = ();
+            if(defined($ldata->{$f}{unused_uvalues}))
+            {
+                push(@values, @{$ldata->{$f}{unused_uvalues}});
+            }
+            if(defined($ldata->{$f}{unused_lvalues}))
+            {
+                push(@values, @{$ldata->{$f}{unused_lvalues}});
+            }
+            @values = sort(@values);
+            foreach my $v (@values)
+            {
+                push(@fvs, "$f=$v");
+            }
+        }
+        if(scalar(@fvs) > 0)
+        {
+            print("  <h2>Currently unused feature values that could be permitted</h2>\n");
+            print("  <p>".join(' ', @fvs)."</p>\n");
+        }
+        # Warn about feature values that were declared for the language in tools/data but they are not documented.
         @fvs = ();
         foreach my $f (@features)
         {
