@@ -1743,7 +1743,7 @@ sub write_data_json
             my $nuuv = defined($data->{$lcode}{$f}{unused_uvalues}) ? scalar(@{$data->{$lcode}{$f}{unused_uvalues}}) : 0;
             my $nulv = defined($data->{$lcode}{$f}{unused_lvalues}) ? scalar(@{$data->{$lcode}{$f}{unused_lvalues}}) : 0;
             my $nev = scalar(@{$data->{$lcode}{$f}{evalues}});
-            my $nerr = scalar(@{$data->{$lcode}{$f}{errors}});
+            my $nerr = defined($data->{$lcode}{$f}{errors}) ? scalar(@{$data->{$lcode}{$f}{errors}}) : 0;
             next if($nuv+$nlv+$nuuv+$nulv+$nev+$nerr == 0);
             my $fjson = '"'.escape_json_string($f).'": {';
             $fjson .= '"type": "'.escape_json_string($data->{$lcode}{$f}{type}).'", '; # universal lspec
