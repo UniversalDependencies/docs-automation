@@ -1733,20 +1733,20 @@ sub write_data_json
     {
         my $ljson = '"'.$lcode.'"'.": {\n";
         my @fjsons = ();
-        my @features = sort(keys(%{$data{$lcode}}));
+        my @features = sort(keys(%{$data->{$lcode}}));
         foreach my $f (@features)
         {
             my $fjson = '"'.escape_json_string($f).'": {';
-            $fjson .= '"type": "'.escape_json_string($data{$lcode}{$f}{type}).'", '; # universal lspec
-            $fjson .= '"doc": "'.escape_json_string($data{$lcode}{$f}{doc}.'", '; # global gerror local lerror none
-            $fjson .= '"permitted": '.($data{$lcode}{$f}{permitted} ? 1 : 0).', '; # 1 0
+            $fjson .= '"type": "'.escape_json_string($data->{$lcode}{$f}{type}).'", '; # universal lspec
+            $fjson .= '"doc": "'.escape_json_string($data->{$lcode}{$f}{doc}).'", '; # global gerror local lerror none
+            $fjson .= '"permitted": '.($data->{$lcode}{$f}{permitted} ? 1 : 0).', '; # 1 0
             my @ajsons = ();
             foreach my $array (qw(errors uvalues lvalues unused_uvalues unused_lvalues evalues))
             {
                 my $ajson .= '"'.$array.'": [';
-                if(defined($data{$lcode}{$f}{$array}))
+                if(defined($data->{$lcode}{$f}{$array}))
                 {
-                    $ajson .= join(', ', map {'"'.escape_json_string($_).'"'} (@{$data{$lcode}{$f}{$array}}));
+                    $ajson .= join(', ', map {'"'.escape_json_string($_).'"'} (@{$data->{$lcode}{$f}{$array}}));
                 }
                 $ajson .= ']';
                 push(@ajsons, $ajson);
