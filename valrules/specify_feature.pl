@@ -1740,8 +1740,8 @@ sub write_data_json
             # nobody even attempted to make them available.
             my $nuv = scalar(@{$data->{$lcode}{$f}{uvalues}});
             my $nlv = scalar(@{$data->{$lcode}{$f}{lvalues}});
-            my $nuuv = scalar(@{$data->{$lcode}{$f}{unused_uvalues}});
-            my $nulv = scalar(@{$data->{$lcode}{$f}{unused_lvalues}});
+            my $nuuv = defined($data->{$lcode}{$f}{unused_uvalues}) ? scalar(@{$data->{$lcode}{$f}{unused_uvalues}}) : 0;
+            my $nulv = defined($data->{$lcode}{$f}{unused_lvalues}) ? scalar(@{$data->{$lcode}{$f}{unused_lvalues}}) : 0;
             my $nev = scalar(@{$data->{$lcode}{$f}{evalues}});
             my $nerr = scalar(@{$data->{$lcode}{$f}{errors}});
             next if($nuv+$nlv+$nuuv+$nulv+$nev+$nerr == 0);
