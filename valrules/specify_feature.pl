@@ -1631,6 +1631,9 @@ sub read_data_json
             # Check the features we permitted before.
             foreach my $f (keys(%{$data{$lcode}}))
             {
+                # There are boolean universal features that do not depend on the language.
+                # Always allow them even if they have not been used in the data so far.
+                next if($f =~ m/^(Abbr|Foreign|Typo)$/);
                 if($data{$lcode}{$f}{permitted})
                 {
                     my @values = @{$data{$lcode}{$f}{uvalues}};
