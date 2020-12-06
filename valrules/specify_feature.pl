@@ -1643,8 +1643,6 @@ sub read_data_json
             my %dfall;
             if(exists($datafeats->{$lcode}))
             {
-                # Make the UPOS-specific statistics of features available in the combined database.
-                $data{$lcode}{byupos} = $datafeats->{$lcode};
                 foreach my $u (keys(%{$datafeats->{$lcode}}))
                 {
                     foreach my $f (keys(%{$datafeats->{$lcode}{$u}}))
@@ -1652,6 +1650,11 @@ sub read_data_json
                         foreach my $v (keys(%{$datafeats->{$lcode}{$u}{$f}}))
                         {
                             $dfall{$f}{$v}++;
+                            # Make the UPOS-specific statistics of features available in the combined database.
+                            if(exists($data{$lcode}{$f}))
+                            {
+                                $data{$lcode}{$f}{byupos}{$u}{$v} = $datafeats->{$lcode}{$u}{$f}{$v};
+                            }
                         }
                     }
                 }
