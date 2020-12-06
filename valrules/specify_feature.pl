@@ -1760,7 +1760,28 @@ sub write_data_json
                 $ajson .= ']';
                 push(@ajsons, $ajson);
             }
-            $fjson .= join(', ', @ajsons);
+            $fjson .= join(', ', @ajsons).', ';
+            $fjson .= '"byupos": {';
+            my @ujsons = ();
+            my @upos = sort(keys(%{$data->{$lcode}{$f}{byupos}}));
+            foreach my $u (@upos)
+            {
+                my $ujson = '"'.escape_json_string($u).'": {';
+                my @vjsons = ();
+                my @values = sort(keys(%{$data->{$lcode}{$f}{byupos}{$u}}));
+                foreach my $v (@values)
+                {
+                    if($data->{$lcode}{$f}{byupos}{$u}{$v} > 0)
+                    {
+                        push(@vjsons, '"'.escape_json_string($v).'": '.$data->{$lcode}{$f}{byupos}{$u}{$v});
+                    }
+                }
+                $ujson .= join(', ', @vjsons);
+                $ujson .= '}';
+                push(@ujsons, $ujson);
+            }
+            $fjson .= join(', ', @ujsons);
+            $fjson .= '}'; # byupos
             $fjson .= '}';
             push(@fjsons, $fjson);
         }
