@@ -1736,6 +1736,15 @@ sub write_data_json
         my @features = sort(keys(%{$data->{$lcode}}));
         foreach my $f (@features)
         {
+            # Do not write features that are not available in this language and
+            # nobody even attempted to make them available.
+            my $nuv = scalar(@{$data->{$lcode}{$f}{uvalues}});
+            my $nlv = scalar(@{$data->{$lcode}{$f}{lvalues}});
+            my $nuuv = scalar(@{$data->{$lcode}{$f}{unused_uvalues}});
+            my $nulv = scalar(@{$data->{$lcode}{$f}{unused_lvalues}});
+            my $nev = scalar(@{$data->{$lcode}{$f}{evalues}});
+            my $nerr = scalar(@{$data->{$lcode}{$f}{errors}});
+            next if($nuv+$nlv+$nuuv+$nulv+$nev+$nerr == 0);
             my $fjson = '"'.escape_json_string($f).'": {';
             $fjson .= '"type": "'.escape_json_string($data->{$lcode}{$f}{type}).'", '; # universal lspec
             $fjson .= '"doc": "'.escape_json_string($data->{$lcode}{$f}{doc}).'", '; # global gerror local lerror none
