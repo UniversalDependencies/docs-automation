@@ -1435,7 +1435,9 @@ sub read_data_json
     # Read the temporary JSON file with documented features.
     my $docfeats = json_file_to_perl("$path/docfeats.json");
     # Read the temporary JSON file with features declared in tools/data.
-    my $declfeats = json_file_to_perl("$path/datafeats.json");
+    my $declfeats = json_file_to_perl("$path/declfeats.json");
+    # Read the temporary JSON file with features collected from treebank data.
+    my $datafeats = json_file_to_perl("$path/datafeats.json");
     # Get the universal features and values from the global documentation.
     my %universal;
     if(exists($docfeats->{gdocs}) && ref($docfeats->{gdocs}) eq 'HASH')
