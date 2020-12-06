@@ -954,7 +954,7 @@ sub print_all_features
             }
             $j++;
             print('<td>');
-            if(exists($data->{$lcode}{$f}))
+            if(exists($data->{$lcode}{$f}) && $data->{$lcode}{$f}{permitted})
             {
                 my $nu = scalar(@{$data->{$lcode}{$f}{uvalues}});
                 my $nl = scalar(@{$data->{$lcode}{$f}{lvalues}});
