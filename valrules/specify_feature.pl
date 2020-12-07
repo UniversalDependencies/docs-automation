@@ -34,6 +34,11 @@ BEGIN
         }
         chdir($path);
         $libpath = getcwd();
+        # Untaint $currentpath, too.
+        if($currentpath =~ m/^(.+)$/)
+        {
+            $currentpath = $1;
+        }
         chdir($currentpath);
     }
     #print STDERR ("libpath=$libpath\n");
