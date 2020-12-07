@@ -41,6 +41,11 @@ BEGIN
         }
         chdir($currentpath);
     }
+    # Untaint $libpath, too.
+    if($libpath =~ m/^(.+)$/)
+    {
+        $libpath = $1;
+    }
     #print STDERR ("libpath=$libpath\n");
 }
 use lib $libpath;
