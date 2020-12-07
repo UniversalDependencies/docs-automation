@@ -13,6 +13,7 @@ use open ':utf8';
 use Encode;
 use charnames ();
 # We need to tell Perl where to find my Perl modules relatively to the script.
+my $libpath;
 BEGIN
 {
     use Cwd;
