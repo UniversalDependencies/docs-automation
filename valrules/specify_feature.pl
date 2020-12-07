@@ -1671,7 +1671,7 @@ sub read_data_json
         die("No documented features found in the JSON file");
     }
     ###!!! Temporary!
-    write_data_json(\%data, "$path/feats.json");
+    #write_data_json(\%data, "$path/feats.json");
     return %data;
 }
 
