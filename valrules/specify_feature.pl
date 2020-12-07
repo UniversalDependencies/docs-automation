@@ -308,7 +308,7 @@ sub print_feature_details
                 foreach my $upos (@upos)
                 {
                     print("    <tr><td>$upos</td><td>");
-                    print(join(', ', sort(keys(%{$fdata->{byupos}{$upos}}));
+                    print(join(', ', sort(keys(%{$fdata->{byupos}{$upos}}))));
                     print("</td></tr>\n");
                 }
                 print("  </table>\n");
