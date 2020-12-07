@@ -131,7 +131,6 @@ else
 {
     # Read the data file from JSON.
     my %data = read_data_json();
-    print("language = $config{lcode}<br/>feature = $config{feature}\n");
     # Perform an action according to the CGI parameters.
     # Saving may be needed even for documenting undocumented auxiliaries.
     if($config{save})
@@ -1282,7 +1281,7 @@ sub get_parameters
         $config{feature} = '';
     }
     # Forms of feature names are prescribed in the UD guidelines.
-    elsif($config{feature} =~ m/^[A-Z][A-Za-z0-9]*$/)
+    elsif($config{feature} =~ m/^([A-Z][A-Za-z0-9]*)$/)
     {
         $config{feature} = $1;
     }
