@@ -17,6 +17,7 @@ use utf8;
 sub read_data_json
 {
     my $path = shift;
+    my $lname_by_code = shift; # hash ref
     # Read the temporary JSON file with documented features.
     my $docfeats = json_file_to_perl("$path/docfeats.json");
     # Read the temporary JSON file with features declared in tools/data.
@@ -50,7 +51,7 @@ sub read_data_json
         my @lcodes = keys(%{$docfeats->{lists}});
         foreach my $lcode (@lcodes)
         {
-            if(!exists($lname_by_code{$lcode}))
+            if(!exists($lname_by_code->{$lcode}))
             {
                 confess("Unknown language code '$lcode' in the JSON file");
             }
