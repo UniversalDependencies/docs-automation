@@ -137,12 +137,12 @@ else
     {
         process_form_data(\%data);
     }
-    # If we are not saving but have received a lemma, it means the lemma should be edited.
-    # This may also be needed for documenting undocumented auxiliaries.
-    elsif($config{lemma} ne '')
+    # If we are not saving but have received a feature, it means the feature should be edited.
+    elsif($config{feature} ne '')
     {
         summarize_guidelines();
-        print_lemma_form(\%data);
+        ###!!!print_lemma_form(\%data);
+        print_feature_details(\%data);
         print_all_features(\%data);
     }
     elsif($config{add}) # addcop and addnoncop will be used inside print_lemma_form()
@@ -179,7 +179,7 @@ sub print_features_for_language
         my $ldata = $data->{$config{lcode}};
         my @features = sort(keys(%{$ldata}));
         print("  <h2>Features</h2>\n");
-        print("  <p><b>Currently permitted:</b> ".join(', ', grep {$ldata->{$_}{permitted}} (@features))."</p>\n");
+        print("  <p><b>Currently permitted:</b> ".join(', ', map {"<a href=\"specify_feature.pl?lcode=$config{lcode}&amp;feature=$_\">$_</a>"} (grep {$ldata->{$_}{permitted}} (@features)))."</p>\n");
         my @fvs = ();
         foreach my $f (@features)
         {
@@ -261,6 +261,66 @@ sub print_features_for_language
                 print("    <li style='color:red'>$e</li>\n");
             }
             print("  </ul>\n");
+        }
+    }
+    else
+    {
+        die("No information about features for language '$config{lcode}'");
+    }
+}
+
+
+
+#------------------------------------------------------------------------------
+# Prints the list of values permitted for a given feature in a given language.
+#------------------------------------------------------------------------------
+sub print_feature_details
+{
+    my $data = shift;
+    if(exists($data->{$config{lcode}}))
+    {
+        print("  <h2>$config{feature}</h2>\n");
+        if(exists($data->{$config{lcode}}{$config{feature}}))
+        {
+            # Link to documentation
+            # Type: universal / lspec
+            # Errors in doc
+            # Permitted, available
+            # Values
+            my $fdata = $data->{$config{lcode}}{$config{feature}};
+            if($fdata->{permitted})
+            {
+                my ($howdoc, $here);
+                if($fdata->{doc} eq 'global')
+                {
+                    $howdoc = 'globally';
+                    $here = "<a href=\"https://universaldependencies.org/u/feat/$config{feature}.html\">here</a>";
+                }
+                else
+                {
+                    $howdoc = 'locally';
+                    $here = "<a href=\"https://universaldependencies.org/$config{lcode}/feat/$config{feature}.html\">here</a>";
+                }
+                print("  <p>This feature is currently permitted in $lname_by_code{$config{lcode}} and is $howdoc documented $here.</p>\n");
+                print("  <h3>Values permitted for individual parts of speech</h3>\n");
+                print("  <table>\n");
+                my @upos = sort(keys(%{$fdata->{byupos}}));
+                foreach my $upos (@upos)
+                {
+                    print("    <tr><td>$upos</td><td>");
+                    print(join(', ', sort(keys(%{$fdata->{byupos}{$upos}}));
+                    print("</td></tr>\n");
+                }
+                print("  </table>\n");
+            }
+            else
+            {
+                print("  <p>This feature is currently not permitted in $config{lcode}.</p>\n");
+            }
+        }
+        else
+        {
+            die("No information about feature '$config{feature}' in language '$config{lcode}'");
         }
     }
     else
@@ -1214,200 +1274,21 @@ sub get_parameters
         push(@errors, "Unsatisfactory robotic response :-)");
     }
     #--------------------------------------------------------------------------
-    # Lemma identifies the auxiliary that we are editing or going to edit.
-    $config{lemma} = decode('utf8', $query->param('lemma'));
-    if(!defined($config{lemma}) || $config{lemma} =~ m/^\s*$/)
+    # Feature is the name of the feature whose details we want to see and edit.
+    $config{feature} = decode('utf8', $query->param('feature'));
+    if(!defined($config{feature}) || $config{feature} =~ m/^\s*$/)
     {
-        $config{lemma} = '';
+        $config{feature} = '';
     }
-    # Lemma can contain letters (L) and marks (M).
-    # An example of a mark: U+94D DEVANAGARI SIGN VIRAMA.
-    # We must also allow the hyphen, needed in Skolt Sami "i-ǥõl". (Jack Rueter: It is written with a hyphen. Historically it might be traced to a combination of the AUX:NEG ij and a reduced ǥõl stem derived from what is now the verb õlggâd ʹhave toʹ. The word-initial g has been retained in the fossilized contraction as ǥ, but that same word-initial letter has been lost in the standard verb.)
-    # We must also allow the apostrophe, needed in Mbya Guarani "nda'ei" and "nda'ipoi".
-    elsif($config{lemma} =~ m/^\s*([-\pL\pM']+)\s*$/) #'
+    # Forms of feature names are prescribed in the UD guidelines.
+    elsif($config{feature} =~ m/^[A-Z][A-Za-z0-9]*$/)
     {
-        $config{lemma} = $1;
+        $config{feature} = $1;
     }
     else
     {
-        push(@errors, "Lemma '$config{lemma}' contains non-letter characters");
+        push(@errors, "Feature '$config{feature}' does not have the form prescribed by the guidelines");
     }
-    # There may be multiple functions and each will have its own set of numbered attributes.
-    for(my $ifun = 1; ; $ifun++)
-    {
-        #--------------------------------------------------------------------------
-        # Function is a descriptive text (e.g. "Periphrastic aspect: perfect")
-        # taken from a pre-defined list of options.
-        my $fname = "function$ifun";
-        $config{$fname} = decode('utf8', $query->param($fname));
-        if(!defined($config{$fname}) || $config{$fname} =~ m/^\s*-*\s*$/)
-        {
-            $config{$fname} = '';
-            # If there is no function, we will store empty values for function 1.
-            # If a function with rank higher than 1 is missing, we will not store
-            # the empty values and we will not check for any further functions.
-            last if($ifun > 1);
-        }
-        else
-        {
-            if($config{$fname} =~ m/^(.+)$/)
-            {
-                $config{$fname} = $1;
-            }
-            # Verify that the function is one of the functions we defined.
-            my @found = grep {$_->[1] eq $config{$fname}} (@{$functions});
-            my $n = scalar(@found);
-            if($n > 0)
-            {
-                if($n > 1)
-                {
-                    print STDERR ("Something is wrong. Multiple functions listed in the source code equal to '$config{$fname}'.\n");
-                }
-            }
-            else
-            {
-                push(@errors, "Unrecognized function '$config{$fname}'");
-            }
-        }
-        #--------------------------------------------------------------------------
-        # Rule is a descriptive text (e.g. "combination of the auxiliary with
-        # a participle of the main verb"). It is not restricted to a pre-defined
-        # set of options but it should not need more than English letters, spaces,
-        # and some basic punctuation.
-        my $rname = "rule$ifun";
-        $config{$rname} = decode('utf8', $query->param($rname));
-        if(!defined($config{$rname}) || $config{$rname} =~ m/^\s*$/)
-        {
-            $config{$rname} = '';
-        }
-        elsif($config{$rname} =~ m/^([-A-Za-z \.:\(,;\)]+)$/)
-        {
-            $config{$rname} = $1;
-        }
-        else
-        {
-            push(@errors, "Rule '$config{$rname}' contains characters other than English letters, space, period, comma, semicolon, colon, hyphen, and round brackets");
-        }
-        #--------------------------------------------------------------------------
-        # Deficient [paradigm] is a descriptive text that justifies a copula if
-        # there are multiple lemmas of copula in one language.
-        my $dname = "deficient$ifun";
-        $config{$dname} = decode('utf8', $query->param($dname));
-        if(!defined($config{$dname}) || $config{$dname} =~ m/^\s*$/)
-        {
-            $config{$dname} = '';
-        }
-        elsif($config{$dname} !~ m/\pL{3}/)
-        {
-            push(@errors, "Explanation of deficient copula paradigm '$config{$dname}' contains too few letters.");
-        }
-        elsif($config{$dname} =~ m/^([-A-Za-z \.:\(,;\)]+)$/)
-        {
-            $config{$dname} = $1;
-        }
-        else
-        {
-            push(@errors, "Explanation of deficient copula paradigm '$config{$dname}' contains characters other than English letters, space, period, comma, semicolon, colon, hyphen, and round brackets");
-        }
-        #--------------------------------------------------------------------------
-        # Example in the original language may contain letters (including Unicode
-        # letters), spaces, punctuation (including Unicode punctuation). Square
-        # brackets have a special meaning, they mark the word we focus on. We
-        # probably do not need < > & "" and we could ban them for safety (but
-        # it is not necessary if we make sure to always escape them when inserting
-        # them in HTML we generate). We may need the apostrophe in some languages,
-        # though.
-        my $ename = "example$ifun";
-        $config{$ename} = decode('utf8', $query->param($ename));
-        if(!defined($config{$ename}) || $config{$ename} =~ m/^\s*$/)
-        {
-            $config{$ename} = '';
-        }
-        else
-        {
-            # Remove duplicate, leading and trailing spaces.
-            $config{$ename} =~ s/^\s+//;
-            $config{$ename} =~ s/\s+$//;
-            $config{$ename} =~ s/\s+/ /sg;
-            if($config{$ename} !~ m/^[\pL\pM$zwj\pN\pP ]+$/)
-            {
-                push(@errors, "Example '$config{$ename}' contains characters other than letters, numbers, punctuation and space");
-            }
-            elsif($config{$ename} =~ m/[<>&"]/) # "
-            {
-                push(@errors, "Example '$config{$ename}' contains less-than, greater-than, ampersand or the ASCII quote");
-            }
-            # All characters that are allowed in a lemma must be allowed inside the square brackets.
-            # In addition, we now also allow the ZERO WIDTH JOINER.
-            elsif($config{$ename} !~ m/\[[-\pL\pM$zwj']+\]/) #'
-            {
-                push(@errors, "Example '$config{$ename}' does not contain a sequence of letters enclosed in [square brackets]");
-            }
-            if($config{$ename} =~ m/^(.+)$/)
-            {
-                $config{$ename} = $1;
-            }
-        }
-        #--------------------------------------------------------------------------
-        # English translation of the example is provided if the current language is
-        # not English. We can probably allow the same regular expressions as for
-        # the original example, although we typically do not need non-English
-        # letters in the English translation.
-        $ename = "exampleen$ifun";
-        $config{$ename} = decode('utf8', $query->param($ename));
-        if(!defined($config{$ename}) || $config{$ename} =~ m/^\s*$/)
-        {
-            $config{$ename} = '';
-        }
-        else
-        {
-            # Remove duplicate, leading and trailing spaces.
-            $config{$ename} =~ s/^\s+//;
-            $config{$ename} =~ s/\s+$//;
-            $config{$ename} =~ s/\s+/ /sg;
-            if($config{$ename} !~ m/^[\pL\pM$zwj\pN\pP ]+$/)
-            {
-                push(@errors, "Example translation '$config{$ename}' contains characters other than letters, numbers, punctuation and space");
-            }
-            elsif($config{$ename} =~ m/[<>&"]/) # "
-            {
-                push(@errors, "Example translation '$config{$ename}' contains less-than, greater-than, ampersand or the ASCII quote");
-            }
-            if($config{$ename} =~ m/^(.+)$/)
-            {
-                $config{$ename} = $1;
-            }
-        }
-        #--------------------------------------------------------------------------
-        # Comment is an optional English text. Since it may contain a word from the
-        # language being documented, we should allow everything that is allowed in
-        # the example.
-        my $cname = "comment$ifun";
-        $config{$cname} = decode('utf8', $query->param($cname));
-        if(!defined($config{$cname}) || $config{$cname} =~ m/^\s*$/)
-        {
-            $config{$cname} = '';
-        }
-        else
-        {
-            # Remove duplicate, leading and trailing spaces.
-            $config{$cname} =~ s/^\s+//;
-            $config{$cname} =~ s/\s+$//;
-            $config{$cname} =~ s/\s+/ /sg;
-            if($config{$cname} !~ m/^[\pL\pM$zwj\pN\pP ]+$/)
-            {
-                push(@errors, "Comment '$config{$cname}' contains characters other than letters, numbers, punctuation and space");
-            }
-            elsif($config{$cname} =~ m/[<>&"]/) # "
-            {
-                push(@errors, "Comment '$config{$cname}' contains less-than, greater-than, ampersand or the ASCII quote");
-            }
-            if($config{$cname} =~ m/^(.+)$/)
-            {
-                $config{$cname} = $1;
-            }
-        }
-    } # loop over multiple functions
     #--------------------------------------------------------------------------
     # The parameter 'save' comes from the Save button which submitted the form.
     $config{save} = decode('utf8', $query->param('save'));
