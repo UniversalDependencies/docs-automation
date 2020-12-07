@@ -143,7 +143,7 @@ else
         summarize_guidelines();
         ###!!!print_lemma_form(\%data);
         print_feature_details(\%data);
-        print_all_features(\%data);
+        print_values_in_all_languages(\%data);
     }
     elsif($config{add}) # addcop and addnoncop will be used inside print_lemma_form()
     {
@@ -1009,6 +1009,55 @@ sub print_all_features
             print('</td>');
         }
         print("</tr>\n");
+    }
+    print("  </table>\n");
+}
+
+
+
+#------------------------------------------------------------------------------
+# Prints values of one feature by UPOS of all languages, this and related
+# languages first.
+#------------------------------------------------------------------------------
+sub print_values_in_all_languages
+{
+    my $data = shift;
+    # Print the data on the web page.
+    print("  <h2>Permitted values for this and other languages</h2>\n");
+    my @lcodes = sort_lcodes_by_relatedness($languages, $config{lcode});
+    my @upos = qw(ADJ ADP ADV AUX CCONJ DET INTJ NOUN NUM PART PRON PROPN PUNCT SCONJ SYM VERB X);
+    print("  <table>\n");
+    my $i = 0;
+    foreach my $lcode (@lcodes)
+    {
+        if(exists($data->{$lcode}{$config{feature}}))
+        {
+            # Repeat the headers every 20 rows.
+            if($i % 20 == 0)
+            {
+                print("    <tr><th colspan=2>Language</th><th>Total</th>");
+                foreach my $u (@upos)
+                {
+                    print("<th>$u</th>");
+                }
+                print("</tr>\n");
+            }
+            $i++;
+            my $fdata = $data->{$lcode}{$config{feature}};
+            # Get the number of values permitted in this language.
+            my $n = scalar(@{$fdata->{uvalues}}) + scalar(@{$fdata->{lvalues}});
+            print("    <tr><td>$lname_by_code{$lcode}</td><td>$lcode</td><td>$n</td>");
+            foreach my $u (@upos)
+            {
+                print('<td>');
+                if(exists($fdata->{byupos}{$u}))
+                {
+                    print(join(' ', sort(keys(%{$fdata->{byupos}{$u}}))));
+                }
+                print('</td>');
+            }
+            print("</tr>\n");
+        }
     }
     print("  </table>\n");
 }
