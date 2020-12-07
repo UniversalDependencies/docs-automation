@@ -1052,7 +1052,12 @@ sub print_values_in_all_languages
                 print('<td>');
                 if(exists($fdata->{byupos}{$u}))
                 {
-                    print(join(' ', sort(keys(%{$fdata->{byupos}{$u}}))));
+                    #print(join(' ', sort(keys(%{$fdata->{byupos}{$u}}))));
+                    ###!!! At present the 'byupos' hash may include values that are not permitted!
+                    ###!!! The hash has been collected from treebank data and has not been pruned yet.
+                    ###!!! We thus must prune it here.
+                    my @values = sort(grep {exists($fdata->{byupos}{$u}{$_})} (@{$fdata->{uvalues}}, @{$fdata->{lvalues}}));
+                    print(join(' ', @values));
                 }
                 print('</td>');
             }
