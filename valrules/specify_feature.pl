@@ -282,12 +282,11 @@ sub print_feature_details
         print("  <h2>$config{feature}</h2>\n");
         if(exists($data->{$config{lcode}}{$config{feature}}))
         {
-            # Link to documentation
-            # Type: universal / lspec
-            # Errors in doc
-            # Permitted, available
-            # Values
+            ###!!! Errors in doc
+            ###!!! Values
             my $fdata = $data->{$config{lcode}}{$config{feature}};
+            my $type = $fdata->{type};
+            $type = 'language specific' if($type eq 'lspec');
             if($fdata->{permitted})
             {
                 my ($howdoc, $here);
@@ -303,7 +302,7 @@ sub print_feature_details
                     $howdoc = 'locally';
                     $here = "<a href=\"https://universaldependencies.org/$config{lcode}/feat/$file.html\">here</a>";
                 }
-                print("  <p>This feature is currently permitted in $lname_by_code{$config{lcode}} and is $howdoc documented $here.</p>\n");
+                print("  <p>This $type feature is currently permitted in $lname_by_code{$config{lcode}} and is $howdoc documented $here.</p>\n");
                 print("  <h3>Values permitted for individual parts of speech</h3>\n");
                 print("  <table>\n");
                 my @upos = sort(keys(%{$fdata->{byupos}}));
@@ -317,7 +316,7 @@ sub print_feature_details
             }
             else
             {
-                print("  <p>This feature is currently not permitted in $config{lcode}.</p>\n");
+                print("  <p>This $type feature is currently not permitted in $config{lcode}.</p>\n");
             }
         }
         else
