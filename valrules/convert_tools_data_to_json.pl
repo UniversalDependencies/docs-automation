@@ -25,6 +25,7 @@ my %lname_by_code; map {$lname_by_code{$languages->{$_}{lcode}} = $_} (keys(%{$l
 opendir(DIR, "$tools/data") or die("Cannot read folder '$tools/data': $!");
 my @files = grep {m/^feat_val\.[a-z]+$/ && -f "$tools/data/$_"} (readdir(DIR));
 closedir(DIR);
+print STDERR ("Found ".scalar(@files)." files: ".join(', ', @files)."\n");
 my %data;
 foreach my $file (@files)
 {
@@ -37,19 +38,25 @@ foreach my $file (@files)
     {
         die("Cannot detect language code of file '$file'");
     }
+    my $n = 0;
     open(FILE, "$tools/data/$file") or die("Cannot read file '$tools/data/$file': $!");
     while(<FILE>)
     {
         chomp();
         s/\#.*//;
         # Filter out feature-value pairs that have a wrong form.
-        if(!m/^[A-Z][A-Za-z0-9]*=[A-Z0-9][A-Za-z0-9]*$/)
+        if(!m/^[A-Z][A-Za-z0-9]*(\[[a-z]+\])?=[A-Z0-9][A-Za-z0-9]*$/)
         {
             next;
         }
         $data{$lcode}{$_}++;
+        $n++;
     }
     close(FILE);
+    if($n==0)
+    {
+        print STDERR ("WARNING: No valid feature values found in language '$lcode'\n");
+    }
 }
 # Write JSON.
 print("{\n");
