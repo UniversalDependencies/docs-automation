@@ -49,7 +49,7 @@ BEGIN
     #print STDERR ("libpath=$libpath\n");
 }
 use lib $libpath;
-use valdata qw(read_data_json write_data_json);
+use valdata;
 
 # Path to the data on the web server.
 my $path = '/home/zeman/unidep/docs-automation/valrules';
@@ -167,7 +167,7 @@ elsif($config{lcode} eq '')
 else
 {
     # Read the data file from JSON.
-    my %data = read_data_json();
+    my %data = valdata::read_data_json();
     # Perform an action according to the CGI parameters.
     # Saving may be needed even for documenting undocumented auxiliaries.
     if($config{save})
@@ -935,7 +935,7 @@ sub process_form_data
         }
         $record{status} = 'documented';
         $data->{$config{lcode}}{$config{lemma}} = \%record;
-        write_data_json($data, "$path/data.json");
+        valdata::write_data_json($data, "$path/data.json");
         # Commit the changes to the repository and push them to Github.
         system("/home/zeman/bin/git-push-docs-automation.sh '$config{ghu}' '$config{lcode}' > /dev/null");
         print <<EOF
