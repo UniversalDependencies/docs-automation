@@ -23,7 +23,15 @@ BEGIN
     $path =~ s:\\:/:g;
     if($path =~ m:/:)
     {
-        $path =~ s:/[^/]*$:/:;
+        # Untaint $path before chdir (because it comes from $0, it is unsafe).
+        if($path =~ m:^(.*/)specify_feature\.pl$:)
+        {
+            $path = $1;
+        }
+        else
+        {
+            $path = '.';
+        }
         chdir($path);
         $libpath = getcwd();
         chdir($currentpath);
