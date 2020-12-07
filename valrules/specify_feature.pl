@@ -174,12 +174,13 @@ EOF
 sub print_features_for_language
 {
     my $data = shift;
-    print("  <h2>Permitted features and values</h2>\n");
     if(exists($data->{$config{lcode}}))
     {
         my $ldata = $data->{$config{lcode}};
-        my @fvs = ();
         my @features = sort(keys(%{$ldata}));
+        print("  <h2>Features</h2>\n");
+        print("  <p><b>Currently permitted:</b> ".join(', ', grep {$ldata->{$_}{permitted}} (@features))."</p>\n");
+        my @fvs = ();
         foreach my $f (@features)
         {
             if($ldata->{$f}{permitted})
@@ -191,6 +192,7 @@ sub print_features_for_language
                 }
             }
         }
+        print("  <h2>Permitted features and values</h2>\n");
         print("  <p>".join(' ', @fvs)."</p>\n");
         # The above are feature values that have been specifically permitted for this language.
         # There may be other feature values that are well documented and could be permitted if desired.
@@ -260,6 +262,10 @@ sub print_features_for_language
             }
             print("  </ul>\n");
         }
+    }
+    else
+    {
+        die("No information about features for language '$config{lcode}'");
     }
 }
 
