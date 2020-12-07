@@ -291,15 +291,17 @@ sub print_feature_details
             if($fdata->{permitted})
             {
                 my ($howdoc, $here);
+                my $file = $config{feature};
+                $file =~ s/\[([a-z]+)\]/-$1/;
                 if($fdata->{doc} eq 'global')
                 {
                     $howdoc = 'globally';
-                    $here = "<a href=\"https://universaldependencies.org/u/feat/$config{feature}.html\">here</a>";
+                    $here = "<a href=\"https://universaldependencies.org/u/feat/$file.html\">here</a>";
                 }
                 else
                 {
                     $howdoc = 'locally';
-                    $here = "<a href=\"https://universaldependencies.org/$config{lcode}/feat/$config{feature}.html\">here</a>";
+                    $here = "<a href=\"https://universaldependencies.org/$config{lcode}/feat/$file.html\">here</a>";
                 }
                 print("  <p>This feature is currently permitted in $lname_by_code{$config{lcode}} and is $howdoc documented $here.</p>\n");
                 print("  <h3>Values permitted for individual parts of speech</h3>\n");
@@ -1281,7 +1283,7 @@ sub get_parameters
         $config{feature} = '';
     }
     # Forms of feature names are prescribed in the UD guidelines.
-    elsif($config{feature} =~ m/^([A-Z][A-Za-z0-9]*)$/)
+    elsif($config{feature} =~ m/^([A-Z][A-Za-z0-9]*(\[[a-z]+\])?)$/)
     {
         $config{feature} = $1;
     }
