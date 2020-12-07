@@ -286,7 +286,7 @@ sub print_feature_details
             ###!!! Values
             my $fdata = $data->{$config{lcode}}{$config{feature}};
             my $type = $fdata->{type};
-            $type = 'language specific' if($type eq 'lspec');
+            $type = 'language-specific' if($type eq 'lspec');
             if($fdata->{permitted})
             {
                 my ($howdoc, $here);
@@ -936,63 +936,7 @@ sub print_all_features
     my $data = shift;
     # Print the data on the web page.
     print("  <h2>Permitted features for this and other languages</h2>\n");
-    # First display the actual language.
-    # Then display languages from the same family and genus.
-    # Then languages from the same family but different genera.
-    # Then all remaining languages.
-    # Hash families and genera for language codes.
-    my %family;
-    my %genus;
-    my %familygenus;
-    my %genera;
-    my %families;
-    # The data contains all languages known in UD.
-    my @lcodes = keys(%{$data});
-    foreach my $lcode (@lcodes)
-    {
-        my $lhash = $languages->{$lname_by_code{$lcode}};
-        $family{$lcode} = $lhash->{family};
-        $genus{$lcode} = $lhash->{genus};
-        $familygenus{$lcode} = $lhash->{familygenus};
-        $families{$family{$lcode}}++;
-        $genera{$genus{$lcode}}++;
-    }
-    my $myfamilygenus = $familygenus{$config{lcode}};
-    my $myfamily = $family{$config{lcode}};
-    my $mygenus = $genus{$config{lcode}};
-    my $langgraph = read_language_graph();
-    my $rank = rank_languages_by_proximity_to($config{lcode}, $langgraph, @lcodes);
-    my $grank = rank_languages_by_proximity_to($mygenus, $langgraph, keys(%genera));
-    my $frank = rank_languages_by_proximity_to($myfamily, $langgraph, keys(%families));
-    @lcodes = sort
-    {
-        my $r = $frank->{$family{$a}} <=> $frank->{$family{$b}};
-        unless($r)
-        {
-            $r = $family{$a} cmp $family{$b};
-            unless($r)
-            {
-                $r = $grank->{$genus{$a}} <=> $grank->{$genus{$b}};
-                unless($r)
-                {
-                    $r = $genus{$a} cmp $genus{$b};
-                    unless($r)
-                    {
-                        $r = $rank->{$a} <=> $rank->{$b};
-                        unless($r)
-                        {
-                            $r = $lname_by_code{$a} cmp $lname_by_code{$b};
-                        }
-                    }
-                }
-            }
-        }
-        $r
-    }
-    (@lcodes);
-    my @lcodes_my_genus = grep {$_ ne $config{lcode} && $languages->{$lname_by_code{$_}}{familygenus} eq $myfamilygenus} (@lcodes);
-    my @lcodes_my_family = grep {$languages->{$lname_by_code{$_}}{familygenus} ne $myfamilygenus && $languages->{$lname_by_code{$_}}{family} eq $myfamily} (@lcodes);
-    my @lcodes_other = grep {$languages->{$lname_by_code{$_}}{family} ne $myfamily} (@lcodes);
+    my @lcodes = sort_lcodes_by_relatedness($languages, $config{lcode});
     # Get the list of all known feature names. Every language has a different set.
     my %features;
     foreach my $lcode (@lcodes)
@@ -1016,7 +960,7 @@ sub print_all_features
     (keys(%features));
     print("  <table>\n");
     my $i = 0;
-    foreach my $lcode ($config{lcode}, @lcodes_my_genus, @lcodes_my_family, @lcodes_other)
+    foreach my $lcode (@lcodes)
     {
         # Repeat the headers every 20 rows.
         if($i % 20 == 0)
@@ -1067,6 +1011,82 @@ sub print_all_features
         print("</tr>\n");
     }
     print("  </table>\n");
+}
+
+
+
+#------------------------------------------------------------------------------
+# Returns the list of all languages, this and related languages first.
+#------------------------------------------------------------------------------
+sub sort_lcodes_by_relatedness
+{
+    my $languages = shift; # ref to hash read from YAML, indexed by names
+    my $mylcode = shift; # from global $config{lcode}
+    my @lcodes;
+    my %lname_by_code; # this may exist as a global variable but I want to keep this function more autonomous and re-creating the index is cheap
+    foreach my $lname (keys(%{$languages}))
+    {
+        my $lcode = $languages->{$lname}{lcode};
+        push(@lcodes, $lcode);
+        $lname_by_code{$lcode} = $lname;
+    }
+    # First display the actual language.
+    # Then display languages from the same family and genus.
+    # Then languages from the same family but different genera.
+    # Then all remaining languages.
+    # Hash families and genera for language codes.
+    my %family;
+    my %genus;
+    my %familygenus;
+    my %genera;
+    my %families;
+    foreach my $lcode (@lcodes)
+    {
+        my $lhash = $languages->{$lname_by_code{$lcode}};
+        $family{$lcode} = $lhash->{family};
+        $genus{$lcode} = $lhash->{genus};
+        $familygenus{$lcode} = $lhash->{familygenus};
+        $families{$family{$lcode}}++;
+        $genera{$genus{$lcode}}++;
+    }
+    my $myfamilygenus = $familygenus{$mylcode};
+    my $myfamily = $family{$mylcode};
+    my $mygenus = $genus{$mylcode};
+    my $langgraph = read_language_graph();
+    my $rank = rank_languages_by_proximity_to($mylcode, $langgraph, @lcodes);
+    my $grank = rank_languages_by_proximity_to($mygenus, $langgraph, keys(%genera));
+    my $frank = rank_languages_by_proximity_to($myfamily, $langgraph, keys(%families));
+    @lcodes = sort
+    {
+        my $r = $frank->{$family{$a}} <=> $frank->{$family{$b}};
+        unless($r)
+        {
+            $r = $family{$a} cmp $family{$b};
+            unless($r)
+            {
+                $r = $grank->{$genus{$a}} <=> $grank->{$genus{$b}};
+                unless($r)
+                {
+                    $r = $genus{$a} cmp $genus{$b};
+                    unless($r)
+                    {
+                        $r = $rank->{$a} <=> $rank->{$b};
+                        unless($r)
+                        {
+                            $r = $lname_by_code{$a} cmp $lname_by_code{$b};
+                        }
+                    }
+                }
+            }
+        }
+        $r
+    }
+    (@lcodes);
+    my @lcodes_my_genus = grep {$_ ne $mylcode && $languages->{$lname_by_code{$_}}{familygenus} eq $myfamilygenus} (@lcodes);
+    my @lcodes_my_family = grep {$languages->{$lname_by_code{$_}}{familygenus} ne $myfamilygenus && $languages->{$lname_by_code{$_}}{family} eq $myfamily} (@lcodes);
+    my @lcodes_other = grep {$languages->{$lname_by_code{$_}}{family} ne $myfamily} (@lcodes);
+    @lcodes = ($mylcode, @lcodes_my_genus, @lcodes_my_family, @lcodes_other);
+    return @lcodes;
 }
 
 
