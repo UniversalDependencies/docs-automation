@@ -167,7 +167,7 @@ elsif($config{lcode} eq '')
 else
 {
     # Read the data file from JSON.
-    my %data = valdata::read_data_json();
+    my %data = valdata::read_data_json($path);
     # Perform an action according to the CGI parameters.
     # Saving may be needed even for documenting undocumented auxiliaries.
     if($config{save})

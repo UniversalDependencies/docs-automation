@@ -16,6 +16,7 @@ use utf8;
 #------------------------------------------------------------------------------
 sub read_data_json
 {
+    my $path = shift;
     # Read the temporary JSON file with documented features.
     my $docfeats = json_file_to_perl("$path/docfeats.json");
     # Read the temporary JSON file with features declared in tools/data.
