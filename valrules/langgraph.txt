@@ -106,6 +106,7 @@ cy----br
 ga--10--cy
 ga----mga
 mga----sga
+sga----pgl
 sr--100--sq
 sq--100--el
 mk--100--el
