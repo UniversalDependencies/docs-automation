@@ -1613,7 +1613,9 @@ sub read_data_json
                         {
                             $dfall{$f}{$v}++;
                             # Make the UPOS-specific statistics of features available in the combined database.
-                            if(exists($data{$lcode}{$f}))
+                            # $datafeats may contain feature values that are not valid according to the current rules (i.e., they are not documented).
+                            # Do not add such feature values to the 'byupos' hash. Discard them.
+                            if(exists($data{$lcode}{$f}) && grep {$_ eq $v} (@{$data{$lcode}{$f}{uvalues}}, @{$data{$lcode}{$f}{lvalues}}))
                             {
                                 $data{$lcode}{$f}{byupos}{$u}{$v} = $datafeats->{$lcode}{$u}{$f}{$v};
                             }
