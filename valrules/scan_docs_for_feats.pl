@@ -409,7 +409,7 @@ sub print_json
                 }
             }
         }
-        push(@jsonlines, '"'.escape_json_string($lcode).'": ['.join(', ', map {'"'.escape_json_string($_).'"'} (@fvpairs)).']');
+        push(@jsonlines, '"'.valdata::escape_json_string($lcode).'": ['.join(', ', map {'"'.valdata::escape_json_string($_).'"'} (@fvpairs)).']');
     }
     print(join(",\n", @jsonlines)."\n");
     print("},\n"); # end of lists
@@ -417,7 +417,7 @@ sub print_json
     my @featurelines = ();
     foreach my $feature (sort(keys(%{$ghash})))
     {
-        push(@featurelines, '"'.escape_json_string($feature).'": '.encode_feature_json($ghash->{$feature}));
+        push(@featurelines, '"'.valdata::escape_json_string($feature).'": '.encode_feature_json($ghash->{$feature}));
     }
     print(join(",\n", @featurelines)."\n");
     print("},\n"); # end of gdocs
@@ -432,7 +432,7 @@ sub print_json
             @featurelines = ();
             foreach my $feature (@features)
             {
-                push(@featurelines, '"'.escape_json_string($feature).'": '.encode_feature_json($lhash->{$lcode}{$feature}));
+                push(@featurelines, '"'.valdata::escape_json_string($feature).'": '.encode_feature_json($lhash->{$lcode}{$feature}));
             }
             $languageline .= join(",\n", @featurelines)."\n";
             $languageline .= '}';
@@ -464,43 +464,18 @@ sub encode_feature_json
     # If there are errors, list the errors and hide values (they would not be allowed anyway).
     if(scalar(@{$feature->{errors}}) > 0)
     {
-        $json .= '"type": "'.escape_json_string($feature->{type}).'", ';
+        $json .= '"type": "'.valdata::escape_json_string($feature->{type}).'", ';
         $json .= '"values": [], "errors": [';
-        $json .= join(', ', map {'"'.escape_json_string($_).'"'} (@{$feature->{errors}}));
+        $json .= join(', ', map {'"'.valdata::escape_json_string($_).'"'} (@{$feature->{errors}}));
         $json .= ']';
     }
     else
     {
-        $json .= '"type": "'.escape_json_string($feature->{type}).'", ';
+        $json .= '"type": "'.valdata::escape_json_string($feature->{type}).'", ';
         $json .= '"values": [';
-        $json .= join(', ', map {'"'.escape_json_string($_).'"'} (@{$feature->{values}}));
+        $json .= join(', ', map {'"'.valdata::escape_json_string($_).'"'} (@{$feature->{values}}));
         $json .= '], "errors": []';
     }
     $json .= '}';
     return $json;
-}
-
-
-
-#------------------------------------------------------------------------------
-# Takes a string and escapes characters that would prevent it from being used
-# in JSON. (For control characters, it throws a fatal exception instead of
-# escaping them because they should not occur in anything we export in this
-# block.)
-#------------------------------------------------------------------------------
-sub escape_json_string
-{
-    my $string = shift;
-    # https://www.ietf.org/rfc/rfc4627.txt
-    # The only characters that must be escaped in JSON are the following:
-    # \ " and control codes (anything less than U+0020)
-    # Escapes can be written as \uXXXX where XXXX is UTF-16 code.
-    # There are a few shortcuts, too: \\ \"
-    $string =~ s/\\/\\\\/g; # escape \
-    $string =~ s/"/\\"/g; # escape " # "
-    if($string =~ m/[\x{00}-\x{1F}]/)
-    {
-        log_fatal("The string must not contain control characters.");
-    }
-    return $string;
 }
