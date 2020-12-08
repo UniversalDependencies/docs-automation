@@ -10,6 +10,29 @@ binmode(STDOUT, ':utf8');
 binmode(STDERR, ':utf8');
 use Cwd; # getcwd()
 use YAML qw(LoadFile);
+# We need to tell Perl where to find my Perl modules, relative to the location
+# of the script. We will also need the path to access the data.
+my ($currentpath, $scriptpath, $docs);
+BEGIN
+{
+    $currentpath = getcwd();
+    $scriptpath = $0;
+    $scriptpath =~ s:\\:/:g;
+    if($scriptpath =~ m:/:)
+    {
+        $scriptpath =~ s:/[^/]*$:/:;
+        chdir($scriptpath) or die("Cannot go to folder '$scriptpath': $!");
+    }
+    $scriptpath = getcwd();
+    # Go to docs relatively to the script position.
+    chdir('../../docs') or die("Cannot go from $scriptpath to folder '../../docs': $!");
+    $docs = getcwd();
+    chdir($currentpath);
+}
+use lib $scriptpath;
+use valdata;
+
+
 
 # Describe banned features. People sometimes define a language-specific feature
 # value for something that is already defined in the guidelines but with a
@@ -59,22 +82,6 @@ my @deviations =
      'msg' => "If a feature does not apply to a word, UD simply omits the feature."}
 );
 
-# The docs repository should be locatable relatively to this script:
-# this script = .../docs-automation/valrules/scan_docs_for_feats.pl
-# docs        = .../docs
-# Temporarily go to the folder of the script (if we are not already there).
-my $currentpath = getcwd();
-my $scriptpath = $0;
-if($scriptpath =~ m:/:)
-{
-    $scriptpath =~ s:/[^/]*$:/:;
-    chdir($scriptpath) or die("Cannot go to folder '$scriptpath': $!");
-}
-# Go to docs relatively to the script position.
-chdir('../../docs') or die("Cannot go from ".getcwd()." to folder '../../docs': $!");
-my $docs = getcwd();
-chdir($currentpath);
-# We are back in the original folder and we have the absolute path to docs.
 my %hash;
 my %lhash;
 # Scan globally documented features.
@@ -438,7 +445,7 @@ sub print_json
     my @deviationlines = ();
     foreach my $d (@{$deviations})
     {
-        push(@deviationlines, encode_json(['re' => $d->{re}], ['msg' => $d->{msg}]));
+        push(@deviationlines, valdata::encode_json(['re' => $d->{re}], ['msg' => $d->{msg}]));
     }
     print(join(",\n", @deviationlines)."\n");
     print("]\n"); # end of deviations
@@ -470,86 +477,6 @@ sub encode_feature_json
         $json .= '], "errors": []';
     }
     $json .= '}';
-    return $json;
-}
-
-
-
-#------------------------------------------------------------------------------
-# Takes a list of pairs [name, value] and returns the corresponding JSON
-# structure {"name1": "value1", "name2": "value2"}. The pair is an arrayref;
-# if there is a third element in the array and it says "numeric", then the
-# value is treated as numeric, i.e., it is not enclosed in quotation marks.
-# The type in the third position can be also "list" (of strings),
-# "list of numeric" and "list of structures".
-#------------------------------------------------------------------------------
-sub encode_json
-{
-    my @json = @_;
-    # Encode JSON.
-    my @json1 = ();
-    foreach my $pair (@json)
-    {
-        my $name = '"'.$pair->[0].'"';
-        my $value;
-        if(defined($pair->[2]))
-        {
-            if($pair->[2] eq 'numeric')
-            {
-                $value = $pair->[1];
-            }
-            elsif($pair->[2] eq 'list')
-            {
-                # Assume that each list element is a string.
-                my @array_json = ();
-                foreach my $element (@{$pair->[1]})
-                {
-                    my $element_json = $element;
-                    $element_json = escape_json_string($element_json);
-                    $element_json = '"'.$element_json.'"';
-                    push(@array_json, $element_json);
-                }
-                $value = '['.join(', ', @array_json).']';
-            }
-            elsif($pair->[2] eq 'list of numeric')
-            {
-                # Assume that each list element is numeric.
-                my @array_json = ();
-                foreach my $element (@{$pair->[1]})
-                {
-                    push(@array_json, $element);
-                }
-                $value = '['.join(', ', @array_json).']';
-            }
-            elsif($pair->[2] eq 'list of structures')
-            {
-                # Assume that each list element is a structure.
-                my @array_json = ();
-                foreach my $element (@{$pair->[1]})
-                {
-                    my $element_json = encode_json(@{$element});
-                    push(@array_json, $element_json);
-                }
-                $value = '['.join(', ', @array_json).']';
-            }
-            else
-            {
-                log_fatal("Unknown value type '$pair->[2]'.");
-            }
-        }
-        else # value is a string
-        {
-            if(!defined($pair->[1]))
-            {
-                die("Unknown value of attribute '$name'");
-            }
-            $value = $pair->[1];
-            $value = escape_json_string($value);
-            $value = '"'.$value.'"';
-        }
-        push(@json1, "$name: $value");
-    }
-    my $json = '{'.join(', ', @json1).'}';
     return $json;
 }
 
