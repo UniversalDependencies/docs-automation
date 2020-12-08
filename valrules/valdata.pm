@@ -58,210 +58,19 @@ sub read_feats_json
             # If the language has any local documentation, read it first.
             if(exists($docfeats->{ldocs}{$lcode}))
             {
-                my @features = keys(%{$docfeats->{ldocs}{$lcode}});
-                foreach my $f (@features)
-                {
-                    # Type is 'universal' or 'lspec'. A universal feature stays universal
-                    # even if it is locally documented and some language-specific values are added.
-                    if(exists($universal{$f}))
-                    {
-                        $data{$lcode}{$f}{type} = 'universal';
-                        # Get the universally valid values of the feature.
-                        my @uvalues = ();
-                        my @lvalues = ();
-                        foreach my $v (@{$docfeats->{ldocs}{$lcode}{$f}{values}})
-                        {
-                            if(exists($universal{$f}{$v}))
-                            {
-                                push(@uvalues, $v);
-                            }
-                            else
-                            {
-                                push(@lvalues, $v);
-                            }
-                        }
-                        $data{$lcode}{$f}{uvalues} = \@uvalues;
-                        $data{$lcode}{$f}{lvalues} = \@lvalues;
-                        $data{$lcode}{$f}{evalues} = [];
-                    }
-                    else
-                    {
-                        $data{$lcode}{$f}{type} = 'lspec';
-                        $data{$lcode}{$f}{uvalues} = [];
-                        $data{$lcode}{$f}{lvalues} = $docfeats->{ldocs}{$lcode}{$f}{values};
-                        $data{$lcode}{$f}{evalues} = [];
-                    }
-                    # Documentation can be 'global', 'local', 'gerror', 'lerror'.
-                    if(scalar(@{$docfeats->{ldocs}{$lcode}{$f}{errors}}) > 0)
-                    {
-                        $data{$lcode}{$f}{doc} = 'lerror';
-                        $data{$lcode}{$f}{errors} = $docfeats->{ldocs}{$lcode}{$f}{errors};
-                    }
-                    else
-                    {
-                        $data{$lcode}{$f}{doc} = 'local';
-                        $data{$lcode}{$f}{permitted} = 1;
-                        # In theory we should also require that the feature is universal or
-                        # if it is language-specific, that its values were declared in tools/data.
-                        # However, if the values are locally documented and the documentation is error-free,
-                        # we can assume that they are really valid for this language.
-                    }
-                }
+                copy_features_from_local_documentation($docfeats->{ldocs}{$lcode}, $data{$lcode}, \%universal);
             }
             # Read the global documentation and add features that were not documented locally.
-            my @features = keys(%{$docfeats->{gdocs}});
-            foreach my $f (@features)
-            {
-                # Skip globally documented features that have local documentation (even if with errors).
-                next if(exists($data{$lcode}{$f}));
-                # Type is 'universal' or 'lspec'.
-                if(exists($universal{$f}))
-                {
-                    $data{$lcode}{$f}{type} = 'universal';
-                    # This is global documentation of universal feature, thus all values are universal.
-                    $data{$lcode}{$f}{uvalues} = $docfeats->{gdocs}{$f}{values};
-                    $data{$lcode}{$f}{lvalues} = [];
-                    $data{$lcode}{$f}{evalues} = [];
-                }
-                else
-                {
-                    $data{$lcode}{$f}{type} = 'lspec';
-                    $data{$lcode}{$f}{uvalues} = [];
-                    # This is global documentation but the feature is not universal, thus we allow only
-                    # those values that were declared in tools/data (if they are mentioned in the documentation).
-                    my @lvalues = ();
-                    if(exists($declfeats->{$lcode}))
-                    {
-                        foreach my $v (@{$docfeats->{gdocs}{$f}{values}})
-                        {
-                            my $fv = "$f=$v";
-                            if(grep {$_ eq $fv} (@{$declfeats->{$lcode}}))
-                            {
-                                push(@lvalues, $v);
-                            }
-                        }
-                    }
-                    $data{$lcode}{$f}{lvalues} = \@lvalues;
-                    $data{$lcode}{$f}{evalues} = [];
-                }
-                # Documentation can be 'global', 'local', 'gerror', 'lerror'.
-                if(scalar(@{$docfeats->{gdocs}{$f}{errors}}) > 0)
-                {
-                    $data{$lcode}{$f}{doc} = 'gerror';
-                    $data{$lcode}{$f}{errors} = $docfeats->{gdocs}{$f}{errors};
-                }
-                else
-                {
-                    $data{$lcode}{$f}{doc} = 'global';
-                    # The feature is permitted in this language if it is universal or at least one of its documented values was declared in tools/data.
-                    $data{$lcode}{$f}{permitted} = $data{$lcode}{$f}{type} eq 'universal' || scalar(@{$data{$lcode}{$f}{lvalues}}) > 0;
-                }
-            }
+            copy_features_from_global_documentation($docfeats->{gdocs}, $data{$lcode}, \%universal, $declfeats->{$lcode});
             # Save features that were declared in tools/data but are not documented and thus not permitted.
-            if(exists($declfeats->{$lcode}))
+            if(defined($declfeats->{$lcode}))
             {
-                my @fvs = @{$declfeats->{$lcode}};
-                foreach my $fv (@fvs)
-                {
-                    if($fv =~ m/^(.+)=(.+)$/)
-                    {
-                        my $f = $1;
-                        my $v = $2;
-                        if(exists($data{$lcode}{$f}))
-                        {
-                            my $fdata = $data{$lcode}{$f};
-                            my @known = (@{$fdata->{uvalues}}, @{$fdata->{lvalues}}, @{$fdata->{evalues}});
-                            if(!grep {$_ eq $v} (@known))
-                            {
-                                # evalues will be list of extra values that were declared but not documented and thus not permitted
-                                push(@{$fdata->{evalues}}, $v);
-                            }
-                        }
-                        else
-                        {
-                            $data{$lcode}{$f}{type} = 'lspec';
-                            $data{$lcode}{$f}{doc} = 'none';
-                            $data{$lcode}{$f}{permitted} = 0;
-                            $data{$lcode}{$f}{uvalues} = [];
-                            $data{$lcode}{$f}{lvalues} = [];
-                            $data{$lcode}{$f}{evalues} = [];
-                            push(@{$data{$lcode}{$f}{evalues}}, $v);
-                        }
-                    }
-                    else
-                    {
-                        confess("Cannot parse declared feature-value '$fv'");
-                    }
-                }
+                copy_declared_but_undocumented_features($declfeats->{$lcode}, $data{$lcode});
             }
             # Check the feature values actually used in the treebank data.
             # Remove unused values from the permitted features.
             # Revoke the permission of the feature if no values remain.
-            # Aggregate feature-value pairs over all UPOS categories.
-            my %dfall;
-            if(exists($datafeats->{$lcode}))
-            {
-                foreach my $u (keys(%{$datafeats->{$lcode}}))
-                {
-                    foreach my $f (keys(%{$datafeats->{$lcode}{$u}}))
-                    {
-                        foreach my $v (keys(%{$datafeats->{$lcode}{$u}{$f}}))
-                        {
-                            $dfall{$f}{$v}++;
-                            # Make the UPOS-specific statistics of features available in the combined database.
-                            # $datafeats may contain feature values that are not valid according to the current rules (i.e., they are not documented).
-                            # Do not add such feature values to the 'byupos' hash. Discard them.
-                            if(exists($data{$lcode}{$f}) && grep {$_ eq $v} (@{$data{$lcode}{$f}{uvalues}}, @{$data{$lcode}{$f}{lvalues}}))
-                            {
-                                $data{$lcode}{$f}{byupos}{$u}{$v} = $datafeats->{$lcode}{$u}{$f}{$v};
-                            }
-                        }
-                    }
-                }
-            }
-            # Check the features we permitted before.
-            foreach my $f (keys(%{$data{$lcode}}))
-            {
-                # There are boolean universal features that do not depend on the language.
-                # Always allow them even if they have not been used in the data so far.
-                next if($f =~ m/^(Abbr|Foreign|Typo)$/);
-                if($data{$lcode}{$f}{permitted})
-                {
-                    my @values = @{$data{$lcode}{$f}{uvalues}};
-                    $data{$lcode}{$f}{uvalues} = [];
-                    $data{$lcode}{$f}{unused_uvalues} = [];
-                    foreach my $v (@values)
-                    {
-                        if(exists($dfall{$f}{$v}))
-                        {
-                            push(@{$data{$lcode}{$f}{uvalues}}, $v);
-                        }
-                        else
-                        {
-                            push(@{$data{$lcode}{$f}{unused_uvalues}}, $v);
-                        }
-                    }
-                    @values = @{$data{$lcode}{$f}{lvalues}};
-                    $data{$lcode}{$f}{lvalues} = [];
-                    $data{$lcode}{$f}{unused_lvalues} = [];
-                    foreach my $v (@values)
-                    {
-                        if(exists($dfall{$f}{$v}))
-                        {
-                            push(@{$data{$lcode}{$f}{lvalues}}, $v);
-                        }
-                        else
-                        {
-                            push(@{$data{$lcode}{$f}{unused_lvalues}}, $v);
-                        }
-                    }
-                    my $n = scalar(@{$data{$lcode}{$f}{uvalues}}) + scalar(@{$data{$lcode}{$f}{lvalues}});
-                    if($n==0)
-                    {
-                        $data{$lcode}{$f}{permitted} = 0;
-                    }
-                }
-            }
+            copy_feature_value_usage($datafeats->{$lcode}, $data{$lcode});
         }
     }
     else
@@ -271,6 +80,262 @@ sub read_feats_json
     ###!!! Temporary!
     #write_feats_json(\%data, "$path/feats.json");
     return %data;
+}
+
+
+
+#------------------------------------------------------------------------------
+# Copies feature from local language-specific documentation. This should happen
+# before global documentation of the same feature is checked, and global
+# documentation should be ignored if local exists.
+#------------------------------------------------------------------------------
+sub copy_features_from_local_documentation
+{
+    my $ldoc = shift; # hash ref, from $docfeats->{ldocs}{$lcode}
+    my $data = shift; # target hash ref, from $data{$lcode}
+    my $universal = shift; # hash ref, keys are universal features, under them values
+    my @features = keys(%{$ldoc});
+    foreach my $f (@features)
+    {
+        # Type is 'universal' or 'lspec'. A universal feature stays universal
+        # even if it is locally documented and some language-specific values are added.
+        if(exists($universal->{$f}))
+        {
+            $data->{$f}{type} = 'universal';
+            # Get the universally valid values of the feature.
+            my @uvalues = ();
+            my @lvalues = ();
+            foreach my $v (@{$ldoc->{$f}{values}})
+            {
+                if(exists($universal->{$f}{$v}))
+                {
+                    push(@uvalues, $v);
+                }
+                else
+                {
+                    push(@lvalues, $v);
+                }
+            }
+            $data->{$f}{uvalues} = \@uvalues;
+            $data->{$f}{lvalues} = \@lvalues;
+            $data->{$f}{evalues} = [];
+        }
+        else
+        {
+            $data->{$f}{type} = 'lspec';
+            $data->{$f}{uvalues} = [];
+            $data->{$f}{lvalues} = $ldoc->{$f}{values};
+            $data->{$f}{evalues} = [];
+        }
+        # Documentation can be 'global', 'local', 'gerror', 'lerror'.
+        if(scalar(@{$ldoc->{$f}{errors}}) > 0)
+        {
+            $data->{$f}{doc} = 'lerror';
+            $data->{$f}{errors} = $ldoc->{$f}{errors};
+        }
+        else
+        {
+            $data->{$f}{doc} = 'local';
+            $data->{$f}{permitted} = 1;
+            # In theory we should also require that the feature is universal or
+            # if it is language-specific, that its values were declared in tools/data.
+            # However, if the values are locally documented and the documentation is error-free,
+            # we can assume that they are really valid for this language.
+        }
+    }
+}
+
+
+
+#------------------------------------------------------------------------------
+# Copies feature from global documentation (these may still be non-universal,
+# i.e., technically language-specific. This should happen after local
+# documentation has been checked, and global documentation should be ignored
+# if local exists.
+#------------------------------------------------------------------------------
+sub copy_features_from_global_documentation
+{
+    my $gdoc = shift; # hash ref, from $docfeats->{gdocs}
+    my $data = shift; # target hash ref, from $data{$lcode} (we read global documentation into language-specific feature inventories)
+    my $universal = shift; # hash ref, keys are universal features, under them values
+    my $declared = shift; # array ref, feature-values from $declfeats->{$lcode} ###!!! only needed temporarily in this function!
+    # Read the global documentation and add features that were not documented locally.
+    my @features = keys(%{$gdoc});
+    foreach my $f (@features)
+    {
+        # Skip globally documented features that have local documentation (even if with errors).
+        next if(exists($data->{$f}));
+        # Type is 'universal' or 'lspec'.
+        if(exists($universal->{$f}))
+        {
+            $data->{$f}{type} = 'universal';
+            # This is global documentation of universal feature, thus all values are universal.
+            $data->{$f}{uvalues} = $gdoc->{$f}{values};
+            $data->{$f}{lvalues} = [];
+            $data->{$f}{evalues} = [];
+        }
+        else
+        {
+            $data->{$f}{type} = 'lspec';
+            $data->{$f}{uvalues} = [];
+            ###!!! The following filter should later be removed because the globally documented language-specific features will be turned on in the web interface.
+            # This is global documentation but the feature is not universal, thus we allow only
+            # those values that were declared in tools/data (if they are mentioned in the documentation).
+            my @lvalues = ();
+            if(defined($declared))
+            {
+                foreach my $v (@{$gdoc->{$f}{values}})
+                {
+                    my $fv = "$f=$v";
+                    if(grep {$_ eq $fv} (@{$declared}))
+                    {
+                        push(@lvalues, $v);
+                    }
+                }
+            }
+            $data->{$f}{lvalues} = \@lvalues;
+            $data->{$f}{evalues} = [];
+        }
+        # Documentation can be 'global', 'local', 'gerror', 'lerror'.
+        if(scalar(@{$gdoc->{$f}{errors}}) > 0)
+        {
+            $data->{$f}{doc} = 'gerror';
+            $data->{$f}{errors} = $gdoc->{$f}{errors};
+        }
+        else
+        {
+            $data->{$f}{doc} = 'global';
+            # The feature is permitted in this language if it is universal or at least one of its documented values was declared in tools/data.
+            $data->{$f}{permitted} = $data->{$f}{type} eq 'universal' || scalar(@{$data->{$f}{lvalues}}) > 0;
+        }
+    }
+}
+
+
+
+#------------------------------------------------------------------------------
+# Copies feature values that were declared in tools/data/feat_val.xx but they
+# cannot be used because they are not documented.
+#------------------------------------------------------------------------------
+sub copy_declared_but_undocumented_features
+{
+    my $declared = shift; # array ref, feature-values from $declfeats->{$lcode}
+    my $data = shift; # target hash ref, from $data{$lcode}
+    my @fvs = @{$declared};
+    foreach my $fv (@fvs)
+    {
+        if($fv =~ m/^(.+)=(.+)$/)
+        {
+            my $f = $1;
+            my $v = $2;
+            if(exists($data->{$f}))
+            {
+                my $fdata = $data->{$f};
+                my @known = (@{$fdata->{uvalues}}, @{$fdata->{lvalues}}, @{$fdata->{evalues}});
+                if(!grep {$_ eq $v} (@known))
+                {
+                    # evalues may already exist and contain values that appeared in documentation which contains errors.
+                    # Now it will also contain values that were declared but not documented. In any case, those values
+                    # are not permitted in the data.
+                    push(@{$fdata->{evalues}}, $v);
+                }
+            }
+            else
+            {
+                $data->{$f}{type} = 'lspec';
+                $data->{$f}{doc} = 'none';
+                $data->{$f}{permitted} = 0;
+                $data->{$f}{uvalues} = [];
+                $data->{$f}{lvalues} = [];
+                $data->{$f}{evalues} = [];
+                push(@{$data->{$f}{evalues}}, $v);
+            }
+        }
+        else
+        {
+            confess("Cannot parse declared feature-value '$fv'");
+        }
+    }
+}
+
+
+
+#------------------------------------------------------------------------------
+# For features permitted in the past (i.e., either universal, or declared,
+# regardless of documentation), copy the statistics of values that were
+# actually used in data. Values that were not used so far will be moved to
+# separate lists (uvalues to unused_uvalues, lvalues to unused_lvalues). This
+# may render the feature unpermitted if no values remain.
+#------------------------------------------------------------------------------
+sub copy_feature_value_usage
+{
+    my $dfupos = shift; # hash ref, from $datafeats->{$lcode}
+    my $data = shift; # target hash ref, from $data{$lcode}
+    # Aggregate feature-value pairs over all UPOS categories.
+    my %dfall;
+    if(defined($dfupos))
+    {
+        foreach my $u (keys(%{$dfupos}))
+        {
+            foreach my $f (keys(%{$dfupos->{$u}}))
+            {
+                foreach my $v (keys(%{$dfupos->{$u}{$f}}))
+                {
+                    $dfall{$f}{$v}++;
+                    # Make the UPOS-specific statistics of features available in the combined database.
+                    # $dfupos may contain feature values that are not valid according to the current rules (i.e., they are not documented).
+                    # Do not add such feature values to the 'byupos' hash. Discard them.
+                    if(exists($data->{$f}) && grep {$_ eq $v} (@{$data->{$f}{uvalues}}, @{$data->{$f}{lvalues}}))
+                    {
+                        $data->{$f}{byupos}{$u}{$v} = $dfupos->{$u}{$f}{$v};
+                    }
+                }
+            }
+        }
+    }
+    # Disallow previously permitted values if they were never used in the data.
+    foreach my $f (keys(%{$data}))
+    {
+        # There are boolean universal features that do not depend on the language.
+        # Always allow them even if they have not been used in the data so far.
+        next if($f =~ m/^(Abbr|Foreign|Typo)$/);
+        if($data->{$f}{permitted})
+        {
+            my @values = @{$data->{$f}{uvalues}};
+            $data->{$f}{uvalues} = [];
+            $data->{$f}{unused_uvalues} = [];
+            foreach my $v (@values)
+            {
+                if(exists($dfall{$f}{$v}))
+                {
+                    push(@{$data->{$f}{uvalues}}, $v);
+                }
+                else
+                {
+                    push(@{$data->{$f}{unused_uvalues}}, $v);
+                }
+            }
+            @values = @{$data->{$f}{lvalues}};
+            $data->{$f}{lvalues} = [];
+            $data->{$f}{unused_lvalues} = [];
+            foreach my $v (@values)
+            {
+                if(exists($dfall{$f}{$v}))
+                {
+                    push(@{$data->{$f}{lvalues}}, $v);
+                }
+                else
+                {
+                    push(@{$data->{$f}{unused_lvalues}}, $v);
+                }
+            }
+            my $n = scalar(@{$data->{$f}{uvalues}}) + scalar(@{$data->{$f}{lvalues}});
+            if($n==0)
+            {
+                $data->{$f}{permitted} = 0;
+            }
+        }
+    }
 }
 
 
