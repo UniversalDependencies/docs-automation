@@ -18,7 +18,7 @@ use charnames ();
 # to run at just one web server (currently https://quest.ms.mff.cuni.cz/udvalidator/),
 # hard-wiring the absolute path is a reasonable option (we will also need it to
 # access the data).
-my $path = '/home/zeman/unidep/docs-automation/valrules';
+my $path; BEGIN {$path = '/usr/lib/cgi-bin/unidep/docs-automation/valrules';}
 use lib $path;
 use valdata;
 
