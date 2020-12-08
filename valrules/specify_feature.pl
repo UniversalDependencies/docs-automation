@@ -12,52 +12,21 @@ binmode(STDERR, ':utf8');
 use open ':utf8';
 use Encode;
 use charnames ();
-# We need to tell Perl where to find my Perl modules relatively to the script.
-my $libpath;
-BEGIN
-{
-    use Cwd;
-    my $path = $0;
-    my $currentpath = getcwd();
-    $libpath = $currentpath;
-    $path =~ s:\\:/:g;
-    if($path =~ m:/:)
-    {
-        # Untaint $path before chdir (because it comes from $0, it is unsafe).
-        if($path =~ m:^(.*/)specify_feature\.pl$:)
-        {
-            $path = $1;
-        }
-        else
-        {
-            $path = '.';
-        }
-        chdir($path);
-        $libpath = getcwd();
-        # Untaint $currentpath, too.
-        if($currentpath =~ m/^(.+)$/)
-        {
-            $currentpath = $1;
-        }
-        chdir($currentpath);
-    }
-    # Untaint $libpath, too.
-    if($libpath =~ m/^(.+)$/)
-    {
-        $libpath = $1;
-    }
-    #print STDERR ("libpath=$libpath\n");
-}
-use lib $libpath;
+# We need to tell Perl where to find my Perl modules. We could make it relative
+# to the location of the script but we would have to take care for untainting
+# all path info from the operating system. Since this is a CGI script intended
+# to run at just one web server (currently https://quest.ms.mff.cuni.cz/udvalidator/),
+# hard-wiring the absolute path is a reasonable option (we will also need it to
+# access the data).
+my $path = '/home/zeman/unidep/docs-automation/valrules';
+use lib $path;
 use valdata;
 
-# Path to the data on the web server.
-my $path = '/home/zeman/unidep/docs-automation/valrules';
 # Read the list of known languages.
-my $languages = LoadFile('/home/zeman/unidep/docs-automation/codes_and_flags.yaml');
-if ( !defined($languages) )
+my $languages = LoadFile($path.'/../codes_and_flags.yaml');
+if(!defined($languages))
 {
-    die "Cannot read the list of languages";
+    die("Cannot read the list of languages");
 }
 # The $languages hash is indexed by language names. Create a mapping from language codes.
 # At the same time, separate family from genus where applicable.
@@ -167,7 +136,7 @@ elsif($config{lcode} eq '')
 else
 {
     # Read the data file from JSON.
-    my %data = valdata::read_data_json($path, \%lname_by_code);
+    my %data = valdata::read_feats_json($path, \%lname_by_code);
     # Perform an action according to the CGI parameters.
     # Saving may be needed even for documenting undocumented auxiliaries.
     if($config{save})
@@ -935,7 +904,7 @@ sub process_form_data
         }
         $record{status} = 'documented';
         $data->{$config{lcode}}{$config{lemma}} = \%record;
-        valdata::write_data_json($data, "$path/data.json");
+        valdata::write_feats_json($data, "$path/data.json");
         # Commit the changes to the repository and push them to Github.
         system("/home/zeman/bin/git-push-docs-automation.sh '$config{ghu}' '$config{lcode}' > /dev/null");
         print <<EOF

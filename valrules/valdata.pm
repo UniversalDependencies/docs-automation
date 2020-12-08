@@ -14,7 +14,7 @@ use utf8;
 #------------------------------------------------------------------------------
 # Reads the data about documented features from the JSON file.
 #------------------------------------------------------------------------------
-sub read_data_json
+sub read_feats_json
 {
     my $path = shift;
     my $lname_by_code = shift; # hash ref
@@ -269,7 +269,7 @@ sub read_data_json
         confess("No documented features found in the JSON file");
     }
     ###!!! Temporary!
-    #write_data_json(\%data, "$path/feats.json");
+    #write_feats_json(\%data, "$path/feats.json");
     return %data;
 }
 
@@ -278,7 +278,7 @@ sub read_data_json
 #------------------------------------------------------------------------------
 # Dumps the data as a JSON file.
 #------------------------------------------------------------------------------
-sub write_data_json
+sub write_feats_json
 {
     # Initially, the data is read from the Python code.
     # This will change in the future and we will read the JSON file instead!
