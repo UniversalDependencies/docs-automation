@@ -55,6 +55,7 @@ sub read_feats_json
             {
                 confess("Unknown language code '$lcode' in the JSON file");
             }
+            $data{$lcode} = {};
             # If the language has any local documentation, read it first.
             if(exists($docfeats->{ldocs}{$lcode}))
             {
