@@ -194,7 +194,6 @@ if(defined($result))
         system("perl docs-automation/valrules/scan_docs_for_deps.pl > docs-automation/valrules/docdeps.json 2>>$valilog");
         my $newdd = json_file_to_perl('docs-automation/valrules/docdeps.json');
         # Find languages whose list of documented relations has changed.
-        my %changed;
         foreach my $lcode (keys(%{$olddd->{lists}}))
         {
             if(!exists($newdd->{lists}{$lcode}))
