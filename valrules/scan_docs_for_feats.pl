@@ -164,6 +164,11 @@ foreach my $langfolder (@langfolders)
 # Print an overview of the features we found.
 #print_markdown_overview(\%hash, \%lhash);
 print_json(\%hash, \%lhash, \@deviations, $docs);
+###!!! Trying to debug this:
+###!!! JSON error at line 595: Unexpected end of input parsing string starting from byte 720890 at /usr/local/lib/x86_64-linux-gnu/perl/5.26.1/JSON/Parse.pm line 92.
+###!!! It first appeared when I added valdata::read_feats_json() below. The function reads the file we just printed.
+###!!! Could it be that all output buffers have not been flushed yet?
+sleep(5);
 # There is now a larger JSON about features of individual languages which
 # depends on the contents of docfeats.json generated here.
 ###!!! BTW since we access docs and feats.json using predefined paths, it does
