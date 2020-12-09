@@ -293,6 +293,11 @@ Japanese:
   lcode: ja
   iso3: jpn
   family: Japanese
+Kaapor:
+  flag: BR
+  lcode: urb
+  iso3: urb
+  family: Tupian, Tupi-Guarani
 Kannada:
   flag: IN
   lcode: kn
