@@ -136,7 +136,15 @@ elsif($config{lcode} eq '')
 else
 {
     # Read the data file from JSON.
-    my %data = valdata::read_feats_json($path, \%lname_by_code);
+    my $data = valdata::read_feats_json($path);
+    my %data = %{$data};
+    foreach my $lcode (keys(%data))
+    {
+        if(!exists($lname_by_code{$lcode}))
+        {
+            confess("Unknown language code '$lcode' in the JSON file");
+        }
+    }
     # Perform an action according to the CGI parameters.
     # Saving may be needed even for documenting undocumented auxiliaries.
     if($config{save})
