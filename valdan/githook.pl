@@ -157,7 +157,7 @@ if(defined($result))
         # Read the current list of documented features so that we can assess the changes.
         system("echo docs '=>' scan documentation of features >>$valilog");
         my $olddf = json_file_to_perl('docs-automation/valrules/docfeats.json');
-        system("perl docs-automation/valrules/scan_docs_for_feats.pl > docs-automation/valrules/docfeats.json 2>>$valilog");
+        system("perl docs-automation/valrules/scan_docs_for_feats.pl 2>>$valilog");
         my $newdf = json_file_to_perl('docs-automation/valrules/docfeats.json');
         # Find languages whose list of documented features has changed.
         my %changed;

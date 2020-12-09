@@ -162,14 +162,7 @@ foreach my $langfolder (@langfolders)
     }
 }
 # Print an overview of the features we found.
-#print_markdown_overview(\%hash, \%lhash);
-print_json(\%hash, \%lhash, \@deviations, $docs);
-###!!! Trying to debug this:
-###!!! JSON error at line 595: Unexpected end of input parsing string starting from byte 720890 at /usr/local/lib/x86_64-linux-gnu/perl/5.26.1/JSON/Parse.pm line 92.
-###!!! It first appeared when I added valdata::read_feats_json() below. The function reads the file we just printed.
-###!!! Could it be that all output buffers have not been flushed yet?
-close(STDOUT);
-sleep(5);
+print_json(\%hash, \%lhash, \@deviations, $docs, "$scriptpath/docfeats.json");
 # There is now a larger JSON about features of individual languages which
 # depends on the contents of docfeats.json generated here.
 ###!!! BTW since we access docs and feats.json using predefined paths, it does
@@ -304,74 +297,6 @@ sub read_feature_doc
 
 
 #------------------------------------------------------------------------------
-# Prints an overview of all documented features (as well as errors in the
-# format of documentation), formatted using MarkDown syntax.
-#------------------------------------------------------------------------------
-sub print_markdown_overview
-{
-    my $ghash = shift; # ref to hash with global features
-    my $lhash = shift; # ref to hash with local features
-    my @features = sort(keys(%{$ghash}));
-    print("# Universal features\n\n");
-    foreach my $feature (grep {$ghash->{$_}{type} eq 'universal'} (@features))
-    {
-        print("* [$feature](https://universaldependencies.org/u/feat/$feature.html)\n");
-        foreach my $value (@{$ghash->{$feature}{values}})
-        {
-            print('  * value `'.$value.'`: '.$ghash->{$feature}{valdoc}{$value}{shortdesc}."\n");
-        }
-        foreach my $error (@{$ghash->{$feature}{errors}})
-        {
-            print('  * <span style="color:red">ERROR: '.$error.'</span>'."\n");
-        }
-    }
-    print("\n");
-    print("# Globally documented non-universal features\n\n");
-    foreach my $feature (grep {$ghash->{$_}{type} eq 'global'} (@features))
-    {
-        my $file = $feature;
-        $file =~ s/^([A-Za-z0-9]+)\[([a-z]+)\]$/$1-$2/;
-        print("* [$feature](https://universaldependencies.org/u/feat/$file.html)\n");
-        foreach my $value (@{$ghash->{$feature}{values}})
-        {
-            print('  * value `'.$value.'`: '.$ghash->{$feature}{valdoc}{$value}{shortdesc}."\n");
-        }
-        foreach my $error (@{$ghash->{$feature}{errors}})
-        {
-            print('  * <span style="color:red">ERROR: '.$error.'</span>'."\n");
-        }
-    }
-    print("\n");
-    print("# Locally documented language-specific features\n\n");
-    my @lcodes = sort(keys(%{$lhash}));
-    my $n = scalar(@lcodes);
-    print("The following $n languages seem to have at least some documentation of features: ".join(' ', map {"$_ (".scalar(keys(%{$lhash->{$_}})).")"} (@lcodes))."\n");
-    print("\n");
-    foreach my $lcode (@lcodes)
-    {
-        print("## $lcode\n\n");
-        my @features = sort(keys(%{$lhash->{$lcode}}));
-        foreach my $feature (@features)
-        {
-            my $file = $feature;
-            $file =~ s/^([A-Za-z0-9]+)\[([a-z]+)\]$/$1-$2/;
-            print("* [$feature](https://universaldependencies.org/$lcode/feat/$file.html)\n");
-            foreach my $value (@{$lhash->{$lcode}{$feature}{values}})
-            {
-                print('  * value `'.$value.'`: '.$lhash->{$lcode}{$feature}{valdoc}{$value}{shortdesc}."\n");
-            }
-            foreach my $error (@{$lhash->{$lcode}{$feature}{errors}})
-            {
-                print('  * <span style="color:red">ERROR: '.$error.'</span>'."\n");
-            }
-        }
-        print("\n");
-    }
-}
-
-
-
-#------------------------------------------------------------------------------
 # Prints a JSON structure with documented feature-value pairs for each UD
 # language.
 #------------------------------------------------------------------------------
@@ -380,8 +305,8 @@ sub print_json
     my $ghash = shift; # ref to hash with global features
     my $lhash = shift; # ref to hash with local features
     my $deviations = shift; # ref to array with banned deviations
-    # We need to know the list of all UD languages first.
-    my $docspath = shift;
+    my $docspath = shift; # needed to be able to find the list of all UD languages
+    my $filename = shift; # where to write JSON to
     my $languagespath = "$docspath/../docs-automation/codes_and_flags.yaml";
     my $languages = LoadFile($languagespath);
     if( !defined($languages) )
@@ -389,8 +314,9 @@ sub print_json
         die "Cannot read the list of languages";
     }
     my @lcodes = sort(map {$languages->{$_}{lcode}} (keys(%{$languages})));
-    print("{\n");
-    print("\"lists\": {\n");
+    my $json = '';
+    $json .= "{\n";
+    $json .= "\"lists\": {\n";
     my @jsonlines = ();
     foreach my $lcode (@lcodes)
     {
@@ -427,17 +353,17 @@ sub print_json
         }
         push(@jsonlines, '"'.valdata::escape_json_string($lcode).'": ['.join(', ', map {'"'.valdata::escape_json_string($_).'"'} (@fvpairs)).']');
     }
-    print(join(",\n", @jsonlines)."\n");
-    print("},\n"); # end of lists
-    print("\"gdocs\": {\n");
+    $json .= join(",\n", @jsonlines)."\n";
+    $json .= "},\n"; # end of lists
+    $json .= "\"gdocs\": {\n";
     my @featurelines = ();
     foreach my $feature (sort(keys(%{$ghash})))
     {
         push(@featurelines, '"'.valdata::escape_json_string($feature).'": '.encode_feature_json($ghash->{$feature}));
     }
-    print(join(",\n", @featurelines)."\n");
-    print("},\n"); # end of gdocs
-    print("\"ldocs\": {\n");
+    $json .= join(",\n", @featurelines)."\n";
+    $json .= "},\n"; # end of gdocs
+    $json .= "\"ldocs\": {\n";
     my @languagelines = ();
     foreach my $lcode (sort(keys(%{$lhash})))
     {
@@ -455,17 +381,20 @@ sub print_json
             push(@languagelines, $languageline);
         }
     }
-    print(join(",\n", @languagelines)."\n");
-    print("},\n"); # end of ldocs
-    print("\"deviations\": [\n");
+    $json .= join(",\n", @languagelines)."\n";
+    $json .= "},\n"; # end of ldocs
+    $json .= "\"deviations\": [\n";
     my @deviationlines = ();
     foreach my $d (@{$deviations})
     {
         push(@deviationlines, valdata::encode_json(['re' => $d->{re}], ['msg' => $d->{msg}]));
     }
-    print(join(",\n", @deviationlines)."\n");
-    print("]\n"); # end of deviations
-    print("}\n");
+    $json .= join(",\n", @deviationlines)."\n";
+    $json .= "]\n"; # end of deviations
+    $json .= "}\n";
+    open(JSON, ">$filename") or confess("Cannot write '$filename': $!");
+    print JSON ($json);
+    close(JSON);
 }
 
 
