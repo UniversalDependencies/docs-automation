@@ -155,15 +155,9 @@ else
     elsif($config{feature} ne '')
     {
         summarize_guidelines();
-        ###!!!print_lemma_form(\%data);
         print_feature_details(\%data);
+        print_feature_form(\%data);
         print_values_in_all_languages(\%data);
-    }
-    elsif($config{add}) # addcop and addnoncop will be used inside print_lemma_form()
-    {
-        summarize_guidelines();
-        print_lemma_form(\%data);
-        print_all_features(\%data);
     }
     else
     {
@@ -418,52 +412,20 @@ sub get_lemma_links_to_edit
 
 
 #------------------------------------------------------------------------------
-# Prints the form where a particular lemma can be edited.
+# Prints the form where a particular feature can be edited.
 #------------------------------------------------------------------------------
-sub print_lemma_form
+sub print_feature_form
 {
     my $data = shift;
-    # This function can be called for an empty lemma, in which case we want to
-    # add a new auxiliary. However, if the lemma is non-empty, it must be
-    # known.
-    my $record;
-    if($config{lemma} eq '')
+    if($config{feature} eq '')
     {
-        $record =
-        {
-            'functions' => [],
-            'status'    => 'new'
-        };
+        die("Unknown feature");
     }
-    elsif(exists($data->{$config{lcode}}{$config{lemma}}))
+    if(!exists($data->{$config{lcode}}{$config{feature}}))
     {
-        $record = $data->{$config{lcode}}{$config{lemma}};
+        die("Feature '$config{feature}' not found in language '$config{lcode}'");
     }
-    else
-    {
-        die("Lemma '$config{lemma}' not found in language '$config{lcode}'");
-    }
-    # The field Deficient serves to justify multiple copulas per language.
-    # It should be available if we are adding or editing a copula or if we are
-    # documenting a previously undocumented auxiliary, which could be a copula.
-    my $show_deficient = $config{addcop} || $record->{status} eq 'undocumented';
-    if(grep {$_->{function} =~ m/^cop\./} (@{$record->{functions}}))
-    {
-        $show_deficient = 1;
-    }
-    my $show_exampleen = $config{lcode} ne 'en';
-    my $functions_exist = scalar(@{$record->{functions}}) > 0;
-    # Sort the existing functions following the global list of known functions.
-    # We especially need the copula, if present, to appear first.
-    if($functions_exist)
-    {
-        my %sortval;
-        for(my $i = 0; $i <= $#functions; $i++)
-        {
-            $sortval{$functions[$i][1]} = $i;
-        }
-        @{$record->{functions}} = sort {$sortval{$a->{function}} <=> $sortval{$b->{function}}} (@{$record->{functions}});
-    }
+    my $record = $data->{$config{lcode}}{$config{feature}};
     print <<EOF
   <form action="specify_feature.pl" method="post" enctype="multipart/form-data">
   <input name=lcode type=hidden value="$config{lcode}" />
@@ -481,240 +443,30 @@ EOF
     #--------------------------------------------------------------------------
     # Column headings
     print("    <tr id=\"inputheader\">\n");
-    print("      <td>Lemma</td>\n");
-    print("      <td>Function</td>\n");
-    print("      <td>Rule</td>\n");
-    if($show_deficient)
+    print("      <td>Value</td>\n");
+    my @upos = qw(ADJ ADP ADV AUX CCONJ DET INTJ NOUN NUM PART PRON PROPN PUNCT SCONJ SYM VERB X);
+    foreach my $u (@upos)
     {
-        print("      <td>Deficient paradigm</td>\n");
+        print("      <td>$u</td>\n");
     }
-    print("      <td>Example</td>\n");
-    if($show_exampleen)
-    {
-        print("      <td>English translation of the example</td>\n");
-    }
-    print("      <td>Comment</td>\n");
     print("    </tr>\n");
     #--------------------------------------------------------------------------
-    # Lemma and the first function
-    print("    <tr id=\"inputrow1\">\n");
-    print("      <td>");
-    if($config{lemma} ne '')
+    # Rows for individual values
+    foreach my $v (@{$record->{uvalues}}, @{$record->{lvalues}}, @{$record->{unused_uvalues}}, @{$record->{unused_lvalues}})
     {
-        my $hlemma = htmlescape($config{lemma});
-        print("<strong>$hlemma</strong><input name=lemma type=hidden size=10 value=\"$hlemma\" />");
-    }
-    else
-    {
-        print("<input name=lemma type=text size=10 />");
-    }
-    print("</td>\n");
-    # If we are adding or editing a copula, the function is restricted.
-    if($config{addcop} || $functions_exist && $record->{functions}[0]{function} =~ m/^cop\./)
-    {
-        print("      <td>\n");
-        print("        <select name=function1>\n");
-        foreach my $f (@functions)
+        print("    <tr>\n");
+        my $hv = htmlescape($v);
+        print("      <td>$hv</td>\n");
+        foreach my $u (@upos)
         {
-            next if($f->[1] !~ m/^cop\./);
-            my $selected = '';
-            if($functions_exist && $f->[1] eq $record->{functions}[0]{function})
-            {
-                $selected = ' selected';
-            }
-            print("          <option value=\"$f->[1]\"$selected>".htmlescape($f->[0])."</option>\n");
+            my $name = "value.$hv.$u";
+            my $checked = exists($record->{byupos}{$u}{$v}) ? ' checked' : '';
+            print("      <td><input type=\"checkbox\" id=\"$name\" name=\"$name\" value=\"1\"$checked /></td>\n");
         }
-        print("        </select>\n");
-        print("      </td>\n");
-        print("      <td>combination of the copula and a nonverbal predicate<input name=rule1 type=hidden value=\"combination of the copula and a nonverbal predicate\" /></td>\n");
-    }
-    else
-    {
-        print("      <td>\n");
-        print("        <select name=function1>\n");
-        print("          <option>-----</option>\n");
-        foreach my $f (@functions)
-        {
-            # The Copula functions should be available if we are documenting an undocumented auxiliary.
-            # Otherwise it is not available because we must use 'addcop', see above.
-            next if($f->[1] =~ m/^cop\./ && $record->{status} ne 'undocumented');
-            my $selected = '';
-            if($functions_exist && $f->[1] eq $record->{functions}[0]{function})
-            {
-                $selected = ' selected';
-            }
-            print("          <option value=\"$f->[1]\"$selected>".htmlescape($f->[0])."</option>\n");
-        }
-        print("        </select>\n");
-        print("      </td>\n");
-        my $hrule = '';
-        if($functions_exist)
-        {
-            $hrule = htmlescape($record->{functions}[0]{rule});
-        }
-        print("      <td><input name=rule1 type=text size=30 value=\"$hrule\" /></td>\n");
-    }
-    if($show_deficient)
-    {
-        my $hdeficient = '';
-        if($functions_exist)
-        {
-            $hdeficient = htmlescape($record->{functions}[0]{deficient});
-        }
-        print("      <td><input name=deficient1 type=text size=30 value=\"$hdeficient\" /></td>\n");
-    }
-    my $hexample = '';
-    if($functions_exist)
-    {
-        $hexample = htmlescape($record->{functions}[0]{example});
-    }
-    print("      <td><input name=example1 type=text size=30 value=\"$hexample\" /></td>\n");
-    if($show_exampleen)
-    {
-        my $hexampleen = '';
-        if($functions_exist)
-        {
-            $hexampleen = htmlescape($record->{functions}[0]{exampleen});
-        }
-        print("      <td><input name=exampleen1 type=text size=30 value=\"$hexampleen\" /></td>\n");
-    }
-    my $hcomment = '';
-    if($functions_exist)
-    {
-        $hcomment = htmlescape($record->{functions}[0]{comment});
-    }
-    print("      <td><input name=comment1 type=text value=\"$hcomment\" /></td>\n");
-    print("    </tr>\n");
-    #--------------------------------------------------------------------------
-    # Additional functions if we already know their values
-    for(my $ifun = 2; $ifun <= $#{$record->{functions}} + 1; $ifun++)
-    {
-        print("    <tr id=\"inputrow$ifun\">\n");
-        print("      <td>Function&nbsp;$ifun:</td>\n");
-        print("      <td>\n");
-        print("        <select name=function$ifun>\n");
-        print("          <option>-----</option>\n");
-        foreach my $f (@functions)
-        {
-            # Copula can be the first function but not an additional function.
-            next if($f->[1] =~ m/^cop\./);
-            my $selected = '';
-            if($f->[1] eq $record->{functions}[$ifun-1]{function})
-            {
-                $selected = ' selected';
-            }
-            print("          <option value=\"$f->[1]\"$selected>".htmlescape($f->[0])."</option>\n");
-        }
-        print("        </select>\n");
-        print("      </td>\n");
-        my $hrule = htmlescape($record->{functions}[$ifun-1]{rule});
-        print("      <td><input name=rule$ifun type=text size=30 value=\"$hrule\" /></td>\n");
-        if($show_deficient)
-        {
-            # The additional function cannot be a copula, so we will not provide a field for the deficient paradigm explanation.
-            print("      <td></td>\n");
-        }
-        my $hexample = htmlescape($record->{functions}[$ifun-1]{example});
-        print("      <td><input name=example$ifun type=text size=30 value=\"$hexample\" /></td>\n");
-        if($show_exampleen)
-        {
-            my $hexampleen = htmlescape($record->{functions}[$ifun-1]{exampleen});
-            print("      <td><input name=exampleen$ifun type=text size=30 value=\"$hexampleen\" /></td>\n");
-        }
-        my $hcomment = htmlescape($record->{functions}[$ifun-1]{comment});
-        print("      <td><input name=comment$ifun type=text value=\"$hcomment\" /></td>\n");
         print("    </tr>\n");
     }
-    #--------------------------------------------------------------------------
-    # Script to add more functions dynamically if needed
-    print <<EOF
-    <script type='text/javascript'>
-        function addFunction() {
-            // Figure out the currently highest number X in tablew row ids ("inputrowX").
-            var table = document.getElementById("inputtable");
-            var rows = table.rows;
-            var n_rows = rows.length;
-            var n_functions = n_rows - 2; // without header and footer
-            var ifun = n_functions + 1; // number of the new function that we are adding
-            //alert("The form currently accepts up to " + n_functions + " functions.");
-            var row = table.insertRow(n_rows-1);
-            row.id = "inputrow" + ifun
-EOF
-    ;
-    print("            var cell1 = row.insertCell(-1);\n");
-    print("            cell1.innerHTML = \"Function&nbsp;\" + ifun + \":\";\n");
-    print("            var cell2 = row.insertCell(-1);\n");
-    my $html = '';
-    # Double-escape newlines and quotes because this HTML is used as a string in JavaScript.
-    # Single-escaped quote will break the JavaScript string so that a JavaScript variable can be inserted.
-    $html .= "        <select name=function\" + ifun + \">\\n";
-    $html .= "          <option>-----</option>\\n";
-    foreach my $f (@functions)
-    {
-        # Copula can be the first function but not an additional function.
-        next if($f->[1] =~ m/^cop\./);
-        $html .= "          <option value=\\\"$f->[1]\\\">".htmlescape($f->[0])."</option>\\n";
-    }
-    $html .= "        </select>\\n";
-    print("            cell2.innerHTML = \"$html\";\n");
-    print("            var cell3 = row.insertCell(-1);\n");
-    print("            cell3.innerHTML = \"<input name=rule\" + ifun + \" type=text size=30 />\"\n");
-    if($show_deficient)
-    {
-        # The additional function cannot be a copula, so we will not provide a field for the deficient paradigm explanation.
-        print("            var cell4 = row.insertCell(-1);\n");
-    }
-    print("            var cell5 = row.insertCell(-1);\n");
-    print("            cell5.innerHTML = \"<input name=example\" + ifun + \" type=text size=30 />\"\n");
-    if($show_exampleen)
-    {
-        print("            var cell6 = row.insertCell(-1);\n");
-        print("            cell6.innerHTML = \"<input name=exampleen\" + ifun + \" type=text size=30 />\"\n");
-    }
-    print("            var cell7 = row.insertCell(-1);\n");
-    print("            cell7.innerHTML = \"<input name=comment\" + ifun + \" type=text />\"\n");
-    print("        }\n");
-    print("    </script>\n");
-    #--------------------------------------------------------------------------
-    # Buttons and hints
-    print("    <tr id=\"inputfooter\">\n");
-    print("      <td><input type=button value=\"More\" title=\"Add fields for another function of this auxiliary\" onclick=\"addFunction()\" /></td>\n");
-    # Do not print the hint for the function/rule if the function/rule is fixed (copula).
-    # But do print the hint for multiple copulas.
-    ###!!! We now print it always because there might be additional, non-copula functions.
-    if(0)
-    #$config{addcop} || $functions_exist && $record->{functions}[0]{function} =~ m/^cop\./)
-    {
-        print("      <td></td>\n");
-        print("      <td></td>\n");
-    }
-    else
-    {
-        print("      <td><small>Missing function that conforms to the guidelines? Contact Dan!</small></td>\n");
-        print("      <td><small>E.g. “combination of the auxiliary and a past participle of the main verb”</small></td>\n");
-    }
-    if($show_deficient)
-    {
-        print("      <td><small>If you want multiple copulas, you must justify each, e.g. “used in past tense only”</small></td>\n");
-    }
-    print("      <td><small>Mark the auxiliary by enclosing it in square brackets, e.g., “he [has] done it”</small></td>\n");
-    if($show_exampleen)
-    {
-        print("      <td></td>\n");
-    }
-    print("      <td></td>\n");
-    print("    </tr>\n");
     print("  </table>\n");
-    # If we are adding a new lemma, we will have to check that it is really new.
-    # Signal that with a slightly different button text, "Save new" instead of "Save".
-    if($config{add})
-    {
-        print("      <input name=save type=submit value=\"Save new\" />\n");
-    }
-    else
-    {
-        print("      <input name=save type=submit value=\"Save\" />\n");
-    }
+    print("  <input name=save type=submit value=\"Save\" />\n");
     print("  </form>\n");
 }
 
