@@ -12,10 +12,122 @@ use utf8;
 
 
 #------------------------------------------------------------------------------
-# Reads the data about documented features from the JSON file. Returns a hash
-# reference.
+# Reads the data about features in each language (feats.json), and the current
+# state of documentation (docfeats.json). Updates the main data with the info
+# about documentation, and returns a reference to the combined hash.
 #------------------------------------------------------------------------------
 sub read_feats_json
+{
+    my $path = shift; # docs-automation/valrules
+    my $docs = read_feats_json0($path);
+    my $data = json_file_to_perl("$path/feats.json");
+    merge_documented_and_declared_features($docs, $data);
+    return $data;
+}
+
+
+
+#------------------------------------------------------------------------------
+# Takes references to two hashes: features known from documentation and
+# features declared to be used in a given language. Both hashes have a similar
+# structure: $hash->{$lcode}{$feature}{...}. The first hash should reflect the
+# current state of the docs repository. Information on documentation of
+# features will be taken from the first hash and copied to the second hash
+# (where it will replace any such information that may be there from the past).
+# The remaining values in the second hash will be adjusted accordingly. For
+# example, a feature value that was previously permitted may now be disallowed
+# if it disappeared from documentation. On the other hand, the second hash has
+# the say in usage of the features with particular UPOS tags (the first hash
+# probably does not have such information anyway).
+#
+# The copies made here are not necessarily deep. We assume that the first hash
+# will not be further used. It is thus possible (but not guaranteed) that the
+# two hashes will share references to some substructures after merging.
+#------------------------------------------------------------------------------
+sub merge_documented_and_declared_features
+{
+    my $documented = shift; # hash ref
+    my $declared = shift; # hash ref
+    # Copy documented features to declared.
+    foreach my $lcode (keys(%{$documented}))
+    {
+        foreach my $f (keys(%{$documented->{$lcode}}))
+        {
+            # If the feature has not been previously used in the language, just add it.
+            if(!exists($declared->{$lcode}{$f}))
+            {
+                $declared->{$lcode}{$f} = $documented->{$lcode}{$f};
+            }
+            # If the feature has been previously used in the language, check its status and permitted values.
+            else
+            {
+                my $decf = $declared->{$lcode}{$f};
+                my $docf = $documented->{$lcode}{$f};
+                $decf->{type} = $docf->{type};
+                $decf->{doc} = $docf->{doc};
+                $decf->{errors} = $docf->{errors};
+                my %docuvalues; map {$docuvalues{$_}++} (@{$docf->{uvalues}}, @{$docf->{unused_uvalues}});
+                my %doclvalues; map {$doclvalues{$_}++} (@{$docf->{lvalues}}, @{$docf->{unused_lvalues}});
+                my %docevalues; map {$docevalues{$_}++} (@{$docf->{evalues}});
+                # Before we replace any values in the target hash, save the current
+                # set of values. Some of them may not appear in the new documentation
+                # but we still want to preserve them at least as evalues. (The new
+                # documentation may contain oversight errors which will be quickly
+                # fixed, and we do not want the user to lose all information on the
+                # feature because of a short-lived error.)
+                my %decvalues; map {$decvalues{$_}++} (@{$decf->{uvalues}}, @{$decf->{unused_uvalues}}, @{$decf->{lvalues}}, @{$decf->{unused_lvalues}}, @{$decf->{evalues}});
+                # Previously declared values that the current documentation does not
+                # classify as permitted will go to evalues (they may or may not already
+                # be there).
+                foreach my $v (keys(%decvalues))
+                {
+                    if(!exists($docuvalues{$v}) && !exists($doclvalues{$v}))
+                    {
+                        $docevalues{$v}++;
+                    }
+                }
+                # Now the %doc[ule]values hashes contain all known values, documented or declared.
+                # Sort the documented values as either used or unused, based on the $decf hash.
+                # Aggregate feature-value pairs over all UPOS categories.
+                my %used;
+                foreach my $u (keys(%{$decf->{byupos}}))
+                {
+                    foreach my $v (keys(%{$decf->{byupos}{$u}}))
+                    {
+                        $used{$v}++;
+                    }
+                }
+                @{$decf->{uvalues}} = grep {exists($used{$_})} (keys(%docuvalues));
+                @{$decf->{unused_uvalues}} = grep {!exists($used{$_})} (keys(%docuvalues));
+                @{$decf->{lvalues}} = grep {exists($used{$_})} (keys(%doclvalues));
+                @{$decf->{unused_lvalues}} = grep {!exists($used{$_})} (keys(%doclvalues));
+                @{$decf->{evalues}} = keys(%docevalues);
+                $decf->{permitted} = scalar(@{$decf->{uvalues}}) + scalar(@{$decf->{lvalues}}) > 0;
+            }
+        }
+        # If a whole feature was previously declared and disappeared from documentation,
+        # move all its values to evalues.
+        foreach my $f (keys(%{$declared->{$lcode}}))
+        {
+            if(!exists($documented->{$lcode}{$f}))
+            {
+                my $decf = $declared->{$lcode}{$f};
+                $decf->{permitted} = 0;
+                @{$decf->{evalues}} = (@{$decf->{uvalues}}, @{$decf->{unused_uvalues}}, @{$decf->{lvalues}}, @{$decf->{unused_lvalues}}, @{$decf->{evalues}});
+            }
+        }
+    }
+}
+
+
+
+#------------------------------------------------------------------------------
+# Reads the data about documented features from the JSON file. Returns a hash
+# reference. This is the older reading function, now deprecated. It combines
+# various source files but it does not read the previously combined feats.json,
+# so it discards anything that was edited through the web interface.
+#------------------------------------------------------------------------------
+sub read_feats_json0
 {
     my $path = shift;
     # Read the temporary JSON file with documented features.
