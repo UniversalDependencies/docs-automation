@@ -222,36 +222,6 @@ sub print_features_for_language
         }
         print("  <h2>Permitted features and values</h2>\n");
         print("  <p>".join(' ', @fvs)."</p>\n");
-        # The above are feature values that have been specifically permitted for this language.
-        # There may be other feature values that are well documented and could be permitted if desired.
-        if(0)
-        {
-            @fvs = ();
-            foreach my $f (@features)
-            {
-                # Do not look at 'permitted' now. The feature may be permitted but
-                # there might still be values that are not permitted.
-                my @values = ();
-                if(defined($ldata->{$f}{unused_uvalues}))
-                {
-                    push(@values, @{$ldata->{$f}{unused_uvalues}});
-                }
-                if(defined($ldata->{$f}{unused_lvalues}))
-                {
-                    push(@values, @{$ldata->{$f}{unused_lvalues}});
-                }
-                @values = sort(@values);
-                foreach my $v (@values)
-                {
-                    push(@fvs, "$f=$v");
-                }
-            }
-            if(scalar(@fvs) > 0)
-            {
-                print("  <h2>Currently unused feature values that could be permitted</h2>\n");
-                print("  <p>".join(' ', @fvs)."</p>\n");
-            }
-        }
         # Warn about feature values that were declared for the language in tools/data but they are not documented.
         @fvs = ();
         foreach my $f (@features)
@@ -313,56 +283,44 @@ sub print_feature_details
         print("  <h2>$config{feature}</h2>\n");
         if(exists($data->{$config{lcode}}{$config{feature}}))
         {
-            ###!!! Values
             my $fdata = $data->{$config{lcode}}{$config{feature}};
             my $type = $fdata->{type};
             $type = 'language-specific' if($type eq 'lspec');
+            my $howdoc = $fdata->{doc} =~ m/^(global|gerror)$/ ? 'global' : $fdata->{doc} =~ m/^(local|lerror)$/ ? 'local' : 'none';
+            my $href;
+            my $file = $config{feature};
+            $file =~ s/\[([a-z]+)\]/-$1/;
+            if($howdoc eq 'global')
+            {
+                $href = "https://universaldependencies.org/u/feat/$file.html";
+            }
+            elsif($howdoc eq 'local')
+            {
+                $here = "https://universaldependencies.org/$config{lcode}/feat/$file.html";
+            }
             if($fdata->{permitted})
             {
-                my ($howdoc, $here);
-                my $file = $config{feature};
-                $file =~ s/\[([a-z]+)\]/-$1/;
-                if($fdata->{doc} eq 'global')
-                {
-                    $howdoc = 'globally';
-                    $here = "<a href=\"https://universaldependencies.org/u/feat/$file.html\">here</a>";
-                }
-                else
-                {
-                    $howdoc = 'locally';
-                    $here = "<a href=\"https://universaldependencies.org/$config{lcode}/feat/$file.html\">here</a>";
-                }
-                print("  <p>This $type feature is currently permitted in $lname_by_code{$config{lcode}} and is $howdoc documented $here.</p>\n");
+                my $howdocly = $howdoc.'ly';
+                print("  <p>This $type feature is currently permitted in $lname_by_code{$config{lcode}} ".
+                           "and is $howdocly documented <a href=\"$href\">here</a>.</p>\n");
                 print("  <h3>Values permitted for individual parts of speech</h3>\n");
-                print("  <table>\n");
-                my @upos = sort(keys(%{$fdata->{byupos}}));
-                foreach my $upos (@upos)
-                {
-                    print("    <tr><td>$upos</td><td>");
-                    print(join(', ', sort(keys(%{$fdata->{byupos}{$upos}}))));
-                    print("</td></tr>\n");
-                }
-                print("  </table>\n");
             }
             else
             {
-                print("  <p>This $type feature is currently not permitted in $lname_by_code{$config{lcode}}.</p>\n");
+                print("  <p>This $type feature is currently not permitted in $lname_by_code{$config{lcode}}.");
+                if($howdoc eq 'none')
+                {
+                    print(" It is not documented.");
+                }
+                else
+                {
+                    my $howdocly = $howdoc.'ly';
+                    print(" It is $howdocly documented <a href=\"$href\">here</a>.</p>\n");
+                }
+                print("</p>\n");
                 if(scalar(@{$fdata->{errors}}) > 0)
                 {
-                    my ($howdoc, $documentation);
-                    my $file = $config{feature};
-                    $file =~ s/\[([a-z]+)\]/-$1/;
-                    if($fdata->{doc} eq 'gerror')
-                    {
-                        $howdoc = 'global';
-                        $documentation = "<a href=\"https://universaldependencies.org/u/feat/$file.html\">documentation</a>";
-                    }
-                    else
-                    {
-                        $howdoc = 'local';
-                        $documentation = "<a href=\"https://universaldependencies.org/$config{lcode}/feat/$file.html\">documentation</a>";
-                    }
-                    print("  <h3>Errors in $howdoc $documentation</h3>\n");
+                    print("  <h3>Errors in $howdoc <a href=\"$href\">documentation</a></h3>\n");
                     print("  <ul>\n");
                     for my $e (@{$fdata->{error}})
                     {
@@ -471,6 +429,7 @@ sub print_feature_form
         die("Feature '$config{feature}' not found in language '$config{lcode}'");
     }
     my $record = $data->{$config{lcode}}{$config{feature}};
+    print("  <h3>Values permitted for individual parts of speech</h3>\n");
     print <<EOF
   <form action="specify_feature.pl" method="post" enctype="multipart/form-data">
   <input name=lcode type=hidden value="$config{lcode}" />
