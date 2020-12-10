@@ -20,7 +20,7 @@ sub read_feats_json
 {
     my $path = shift; # docs-automation/valrules
     my $docs = read_feats_json0($path);
-    my $data = json_file_to_perl("$path/feats.json");
+    my $data = json_file_to_perl("$path/feats.json")->{features};
     merge_documented_and_declared_features($docs, $data);
     return $data;
 }
