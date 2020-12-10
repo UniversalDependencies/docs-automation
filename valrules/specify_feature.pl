@@ -216,7 +216,7 @@ sub print_features_for_language
         my @errors = ();
         foreach my $f (@features)
         {
-            my $howdoc = $fdata->{doc} =~ m/^(global|gerror)$/ ? 'global' : $fdata->{doc} =~ m/^(local|lerror)$/ ? 'local' : 'none';
+            my $howdoc = $ldata->{$f}{doc} =~ m/^(global|gerror)$/ ? 'global' : $ldata->{$f}{doc} =~ m/^(local|lerror)$/ ? 'local' : 'none';
             my $href;
             my $file = $f;
             $file =~ s/\[([a-z]+)\]/-$1/;
