@@ -607,6 +607,8 @@ sub write_feats_json
             my $nev = scalar(@{$data->{$lcode}{$f}{evalues}});
             my $nerr = defined($data->{$lcode}{$f}{errors}) ? scalar(@{$data->{$lcode}{$f}{errors}}) : 0;
             next if($nuv+$nlv+$nuuv+$nulv+$nev+$nerr == 0);
+            # Also skip features that are documented globally and not permitted in this language.
+            next if($data->{$lcode}{$f}{doc} eq 'global' && !$data->{$lcode}{$f}{permitted});
             my $fjson = '"'.escape_json_string($f).'": {';
             $fjson .= '"type": "'.escape_json_string($data->{$lcode}{$f}{type}).'", '; # universal lspec
             $fjson .= '"doc": "'.escape_json_string($data->{$lcode}{$f}{doc}).'", '; # global gerror local lerror none
