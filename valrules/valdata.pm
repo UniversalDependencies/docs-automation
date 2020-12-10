@@ -244,7 +244,7 @@ sub read_feats_json0
                 copy_features_from_local_documentation($docfeats->{ldocs}{$lcode}, $data{$lcode}, \%universal);
             }
             # Read the global documentation and add features that were not documented locally.
-            copy_features_from_global_documentation($docfeats->{gdocs}, $data{$lcode}, \%universal, $declfeats->{$lcode});
+            copy_features_from_global_documentation0($docfeats->{gdocs}, $data{$lcode}, \%universal, $declfeats->{$lcode});
             # Save features that were declared in tools/data but are not documented and thus not permitted.
             if(defined($declfeats->{$lcode}))
             {
@@ -335,6 +335,56 @@ sub copy_features_from_local_documentation
 # if local exists.
 #------------------------------------------------------------------------------
 sub copy_features_from_global_documentation
+{
+    my $gdoc = shift; # hash ref, from $docfeats->{gdocs}
+    my $data = shift; # target hash ref, from $data{$lcode} (we read global documentation into language-specific feature inventories)
+    my $universal = shift; # hash ref, keys are universal features, under them values
+    # Read the global documentation and add features that were not documented locally.
+    my @features = keys(%{$gdoc});
+    foreach my $f (@features)
+    {
+        # Skip globally documented features that have local documentation (even if with errors).
+        next if(exists($data->{$f}));
+        # Type is 'universal' or 'lspec'.
+        if(exists($universal->{$f}))
+        {
+            $data->{$f}{type} = 'universal';
+            # This is global documentation of universal feature, thus all values are universal.
+            $data->{$f}{uvalues} = $gdoc->{$f}{values};
+            $data->{$f}{lvalues} = [];
+            $data->{$f}{evalues} = [];
+        }
+        else
+        {
+            $data->{$f}{type} = 'lspec';
+            $data->{$f}{uvalues} = [];
+            $data->{$f}{lvalues} = $gdoc->{$f}{values};
+            $data->{$f}{evalues} = [];
+        }
+        # Documentation can be 'global', 'local', 'gerror', 'lerror'.
+        if(scalar(@{$gdoc->{$f}{errors}}) > 0)
+        {
+            $data->{$f}{doc} = 'gerror';
+            $data->{$f}{errors} = $gdoc->{$f}{errors};
+        }
+        else
+        {
+            $data->{$f}{doc} = 'global';
+            # The feature is permitted in this language if it is universal or it has at least one documented language-specific value.
+            $data->{$f}{permitted} = $data->{$f}{type} eq 'universal' || scalar(@{$data->{$f}{lvalues}}) > 0;
+        }
+    }
+}
+
+
+
+#------------------------------------------------------------------------------
+# Copies feature from global documentation (these may still be non-universal,
+# i.e., technically language-specific. This should happen after local
+# documentation has been checked, and global documentation should be ignored
+# if local exists.
+#------------------------------------------------------------------------------
+sub copy_features_from_global_documentation0
 {
     my $gdoc = shift; # hash ref, from $docfeats->{gdocs}
     my $data = shift; # target hash ref, from $data{$lcode} (we read global documentation into language-specific feature inventories)
