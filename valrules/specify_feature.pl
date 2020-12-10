@@ -208,7 +208,11 @@ sub print_features_for_language
         }
         print("  <p><b>Currently unused universal features:</b> ".join(', ', map {"<a href=\"specify_feature.pl?lcode=$config{lcode}&amp;feature=$_\">$_</a>"} (grep {$ldata->{$_}{type} eq 'universal'} (@afeatures)))."</p>\n");
         print("  <p><b>Other features that can be permitted:</b> ".join(', ', map {"<a href=\"specify_feature.pl?lcode=$config{lcode}&amp;feature=$_\">$_</a>"} (grep {$ldata->{$_}{type} eq 'lspec'} (@afeatures)))."</p>\n");
-        print("  <p><b>Undocumented features cannot be used:</b> ".join(', ', grep {$ldata->{$_}{doc} != m/^(global|local)$/} (@features))."</p>\n");
+        my @undocumented = grep {$ldata->{$_}{doc} !~ m/^(global|local)$/} (@features);
+        if(scalar(@undocumented) > 0)
+        {
+            print("  <p><b>Undocumented features cannot be used:</b> ".join(', ', @undocumented)."</p>\n");
+        }
         my @errors = ();
         foreach my $f (@features)
         {
