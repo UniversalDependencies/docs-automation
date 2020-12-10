@@ -63,6 +63,7 @@ sub merge_documented_and_declared_features
                 $decf->{lvalues} = [] if(!defined($decf->{lvalues}));
                 $decf->{unused_lvalues} = [] if(!defined($decf->{unused_lvalues}));
                 $decf->{evalues} = [] if(!defined($decf->{evalues}));
+                $decf->{errors} = [] if(!defined($decf->{errors}));
             }
             # If the feature has been previously used in the language, check its status and permitted values.
             else
@@ -72,6 +73,7 @@ sub merge_documented_and_declared_features
                 $decf->{type} = $docf->{type};
                 $decf->{doc} = $docf->{doc};
                 $decf->{errors} = $docf->{errors};
+                $decf->{errors} = [] if(!defined($decf->{errors}));
                 my %docuvalues; map {$docuvalues{$_}++} (@{$docf->{uvalues}}, @{$docf->{unused_uvalues}});
                 my %doclvalues; map {$doclvalues{$_}++} (@{$docf->{lvalues}}, @{$docf->{unused_lvalues}});
                 my %docevalues; map {$docevalues{$_}++} (@{$docf->{evalues}});
@@ -130,6 +132,7 @@ sub merge_documented_and_declared_features
                 $decf->{unused_uvalues} = [];
                 $decf->{lvalues} = [];
                 $decf->{unused_lvalues} = [];
+                $decf->{errors} = [];
             }
         }
     }
