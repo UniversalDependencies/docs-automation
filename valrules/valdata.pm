@@ -57,6 +57,11 @@ sub merge_documented_and_declared_features
             if(!exists($declared->{$lcode}{$f}))
             {
                 $declared->{$lcode}{$f} = $documented->{$lcode}{$f};
+                $decf->{uvalues} = [] if(!defined($decf->{uvalues}));
+                $decf->{unused_uvalues} = [] if(!defined($decf->{unused_uvalues}));
+                $decf->{lvalues} = [] if(!defined($decf->{lvalues}));
+                $decf->{unused_lvalues} = [] if(!defined($decf->{unused_lvalues}));
+                $decf->{evalues} = [] if(!defined($decf->{evalues}));
             }
             # If the feature has been previously used in the language, check its status and permitted values.
             else
@@ -120,6 +125,10 @@ sub merge_documented_and_declared_features
                 my $decf = $declared->{$lcode}{$f};
                 $decf->{permitted} = 0;
                 @{$decf->{evalues}} = (@{$decf->{uvalues}}, @{$decf->{unused_uvalues}}, @{$decf->{lvalues}}, @{$decf->{unused_lvalues}}, @{$decf->{evalues}});
+                $decf->{uvalues} = [];
+                $decf->{unused_uvalues} = [];
+                $decf->{lvalues} = [];
+                $decf->{unused_lvalues} = [];
             }
         }
     }
