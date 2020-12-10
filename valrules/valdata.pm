@@ -487,7 +487,7 @@ sub write_feats_json
                 my $ajson .= '"'.$array.'": [';
                 if(defined($data->{$lcode}{$f}{$array}))
                 {
-                    $ajson .= join(', ', map {'"'.escape_json_string($_).'"'} (@{$data->{$lcode}{$f}{$array}}));
+                    $ajson .= join(', ', map {'"'.escape_json_string($_).'"'} (sort(@{$data->{$lcode}{$f}{$array}})));
                 }
                 $ajson .= ']';
                 push(@ajsons, $ajson);
