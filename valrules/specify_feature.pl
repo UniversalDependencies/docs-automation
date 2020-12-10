@@ -208,22 +208,19 @@ sub print_features_for_language
         }
         print("  <p><b>Currently unused universal features:</b> ".join(', ', map {"<a href=\"specify_feature.pl?lcode=$config{lcode}&amp;feature=$_\">$_</a>"} (grep {$ldata->{$_}{type} eq 'universal'} (@afeatures)))."</p>\n");
         print("  <p><b>Other features that can be permitted:</b> ".join(', ', map {"<a href=\"specify_feature.pl?lcode=$config{lcode}&amp;feature=$_\">$_</a>"} (grep {$ldata->{$_}{type} eq 'lspec'} (@afeatures)))."</p>\n");
-        my @fvs = ();
-        foreach my $f (@features)
+        print("  <p><b>Undocumented features cannot be used:</b> ".join(', ', grep {$ldata->{$_}{doc} != m/^(global|local)$/} (@features))."</p>\n");
+        if(scalar(@errors) > 0)
         {
-            if($ldata->{$f}{permitted})
+            print("  <h2>Errors in documentation</h2>\n");
+            print("  <ul>\n");
+            foreach my $e (@errors)
             {
-                my @values = sort(@{$ldata->{$f}{uvalues}}, @{$ldata->{$f}{lvalues}});
-                foreach my $v (@values)
-                {
-                    push(@fvs, "$f=$v");
-                }
+                print("    <li style='color:red'>$e</li>\n");
             }
+            print("  </ul>\n");
         }
-        print("  <h2>Permitted features and values</h2>\n");
-        print("  <p>".join(' ', @fvs)."</p>\n");
         # Warn about feature values that were declared for the language in tools/data but they are not documented.
-        @fvs = ();
+        my @fvs = ();
         foreach my $f (@features)
         {
             # Do not look at 'permitted' now. The feature may be permitted but
@@ -252,16 +249,6 @@ sub print_features_for_language
                     push(@errors, "ERROR in documentation of $f: $e");
                 }
             }
-        }
-        if(scalar(@errors) > 0)
-        {
-            print("  <h2>Errors in documentation</h2>\n");
-            print("  <ul>\n");
-            foreach my $e (@errors)
-            {
-                print("    <li style='color:red'>$e</li>\n");
-            }
-            print("  </ul>\n");
         }
     }
     else
