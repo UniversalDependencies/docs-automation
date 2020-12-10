@@ -508,7 +508,7 @@ sub process_form_data
         @{$fdata->{lvalues}} = grep {$newused{$_}} (@lvalues);
         @{$fdata->{unused_lvalues}} = grep {!$newused{$_}} (@lvalues);
         $fdata->{permitted} = scalar(@{$fdata->{uvalues}}) + scalar(@{$fdata->{lvalues}}) > 0;
-        valdata::write_feats_json($data, "$path/data.json");
+        valdata::write_feats_json($data, "$path/feats.json");
         # Commit the changes to the repository and push them to Github.
         system("/home/zeman/bin/git-push-docs-automation.sh '$config{ghu}' '$config{lcode}' > /dev/null");
         print <<EOF
