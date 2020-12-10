@@ -422,6 +422,7 @@ sub process_form_data
         print("    <li style='color:red'>ERROR: Unsatisfactory robotic response</li>\n");
         $error = 1;
     }
+    my %newbyupos;
     if($config{feature} ne '')
     {
         print("    <li>feature = '$config{feature}'</li>\n");
@@ -431,14 +432,34 @@ sub process_form_data
         # feature.
         my $fdata = $data->{$config{lcode}}{$config{feature}};
         my @available = sort(@{$fdata->{uvalues}}, @{$fdata->{unused_uvalues}}, @{$fdata->{lvalues}}, @{$fdata->{unused_lvalues}});
+        my @upos = qw(ADJ ADP ADV AUX CCONJ DET INTJ NOUN NUM PART PRON PROPN PUNCT SCONJ SYM VERB X);
         foreach my $v (@available)
         {
-            foreach my $u (qw(ADJ ADP ADV AUX CCONJ DET INTJ NOUN NUM PART PRON PROPN PUNCT SCONJ SYM VERB X))
+            foreach my $u (@upos)
             {
                 my $name = "value.$v.$u";
                 if($query->param($name)==1)
                 {
-                    print("    <li>value '$v' usable with $u</li>\n");
+                    $newbyupos{$u}{$v} = 1;
+                }
+            }
+        }
+        # Compare the new byupos with the old one.
+        my $oldbyupos = $data->{$config{lcode}}{$config{feature}}{byupos};
+        foreach my $u (@upos)
+        {
+            foreach my $v (sort(keys(%{$newbyupos{$u}})))
+            {
+                if(!exists($oldbyupos->{$u}{$v}) || !$oldbyupos->{$u}{$v})
+                {
+                    print("    <li style='color:blue'>value '$v' now usable with $u</li>\n");
+                }
+            }
+            foreach my $v (sort(keys(%{$oldbyupos->{$u}})))
+            {
+                if(!exists($newbyupos{$u}{$v}))
+                {
+                    print("    <li style='color:purple'>value '$v' no longer usable with $u</li>\n");
                 }
             }
         }
