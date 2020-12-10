@@ -644,6 +644,14 @@ sub write_feats_json
             }
             $fjson .= join(', ', @ujsons);
             $fjson .= '}'; # byupos
+            if(exists($data->{$lcode}{$f}{lastchanged}))
+            {
+                $fjson .= ', "lastchanged": "'.escape_json_string($data->{$lcode}{$f}{lastchanged}).'"';
+            }
+            if(exists($data->{$lcode}{$f}{lastchanger}))
+            {
+                $fjson .= ', "lastchanger": "'.escape_json_string($data->{$lcode}{$f}{lastchanger}).'"';
+            }
             $fjson .= '}';
             push(@fjsons, $fjson);
         }

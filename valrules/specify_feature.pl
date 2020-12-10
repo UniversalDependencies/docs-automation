@@ -423,6 +423,7 @@ sub process_form_data
         $error = 1;
     }
     my %newbyupos;
+    my %newused;
     if($config{feature} ne '')
     {
         print("    <li>feature = '$config{feature}'</li>\n");
@@ -446,6 +447,7 @@ sub process_form_data
                         if($query->param($name)==1)
                         {
                             $newbyupos{$u}{$v} = 1;
+                            $newused{$v}++;
                         }
                     }
                 }
@@ -498,16 +500,17 @@ sub process_form_data
         my $timestamp = sprintf("%04d-%02d-%02d-%02d-%02d-%02d", 1900+$year, 1+$mon, $mday, $hour, $min, $sec);
         $fdata->{lastchanged} = $timestamp;
         $fdata->{lastchanger} = $config{ghu};
-        if(0)
-        {
-            valdata::write_feats_json($data, "$path/data.json");
-            # Commit the changes to the repository and push them to Github.
-            system("/home/zeman/bin/git-push-docs-automation.sh '$config{ghu}' '$config{lcode}' > /dev/null");
-        }
-        else
-        {
-            print("<p style='color:red'><strong>DEBUGGING, NO SAVING YET</strong></p>\n");
-        }
+        $fdata->{byupos} = \%newbyupos;
+        my @uvalues = sort(@{$fdata->{uvalues}}, @{$fdata->{unused_uvalues}});
+        my @lvalues = sort(@{$fdata->{lvalues}}, @{$fdata->{unused_lvalues}});
+        @{$fdata->{uvalues}} = grep {$newused{$_}} (@uvalues);
+        @{$fdata->{unused_uvalues}} = grep {!$newused{$_}} (@uvalues);
+        @{$fdata->{lvalues}} = grep {$newused{$_}} (@lvalues);
+        @{$fdata->{unused_lvalues}} = grep {!$newused{$_}} (@lvalues);
+        $fdata->{permitted} = scalar(@{$fdata->{uvalues}}) + scalar(@{$fdata->{lvalues}}) > 0;
+        valdata::write_feats_json($data, "$path/data.json");
+        # Commit the changes to the repository and push them to Github.
+        system("/home/zeman/bin/git-push-docs-automation.sh '$config{ghu}' '$config{lcode}' > /dev/null");
         print <<EOF
   <form action="specify_feature.pl" method="post" enctype="multipart/form-data">
     <input name=lcode type=hidden value="$config{lcode}" />
