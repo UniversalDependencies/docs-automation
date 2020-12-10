@@ -49,26 +49,6 @@ foreach my $lname (keys(%{$languages}))
     }
     $languages->{$lname}{family} = 'Indo-European' if($languages->{$lname}{family} eq 'IE');
 }
-my @functions =
-(
-    ['Copula (tagged AUX)', 'cop.AUX'],
-    ['Copula (tagged PRON/DET)', 'cop.PRON'],
-    ['Periphrastic aspect: perfect', 'Aspect=Perf'],
-    ['Periphrastic aspect: progressive', 'Aspect=Prog'],
-    ['Periphrastic aspect: iterative', 'Aspect=Iter'],
-    ['Periphrastic tense: past', 'Tense=Past'],
-    ['Periphrastic tense: present', 'Tense=Pres'],
-    ['Periphrastic tense: future', 'Tense=Fut'],
-    ['Periphrastic voice: passive', 'Voice=Pass'],
-    ['Periphrastic voice: causative', 'Voice=Cau'],
-    ['Periphrastic mood: conditional', 'Mood=Cnd'],
-    ['Periphrastic mood: imperative', 'Mood=Imp'],
-    ['Needed in negative clauses (like English “do”, not like “not”)', 'neg'],
-    ['Needed in interrogative clauses (like English “do”)', 'int'],
-    ['Modal auxiliary: necessitative (“must, should”)', 'Mood=Nec'],
-    ['Modal auxiliary: potential (“can, might”)', 'Mood=Pot'],
-    ['Modal auxiliary: desiderative (“want”)', 'Mood=Des']
-);
 # We must set our own PATH even if we do not depend on it.
 # The system call may potentially use it, and the one from outside is considered insecure.
 $ENV{'PATH'} = $path.':/home/zeman/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin';
@@ -81,7 +61,7 @@ if ( exists($ENV{HTTP_X_FORWARDED_FOR}) && $ENV{HTTP_X_FORWARDED_FOR} =~ m/^(\d+
 {
     $remoteaddr = $1;
 }
-my %config = get_parameters($query, \%lname_by_code, \@functions);
+my %config = get_parameters($query, \%lname_by_code);
 $query->charset('utf-8'); # makes the charset explicitly appear in the headers
 print($query->header());
 print <<EOF
@@ -150,7 +130,7 @@ else
     # Saving may be needed even for documenting undocumented auxiliaries.
     if($config{save})
     {
-        process_form_data(\%data);
+        process_form_data(\%data, $query);
     }
     # If we are not saving but have received a feature, it means the feature should be edited.
     elsif($config{feature} ne '')
@@ -412,13 +392,14 @@ EOF
 #------------------------------------------------------------------------------
 # Processes data submitted from a form and prints confirmation or an error
 # message.
-# We are processing a Save request after a lemma was edited.
+# We are processing a Save request after a feature was edited.
 # We have briefly checked that the parameters match expected regular expressions.
 # Nevertheless, only now we can also report an error if a parameter is empty.
 #------------------------------------------------------------------------------
 sub process_form_data
 {
     my $data = shift;
+    my $query = shift;
     my $error = 0;
     print("  <h2>This is a result of a Save button</h2>\n");
     print("  <ul>\n");
@@ -440,133 +421,31 @@ sub process_form_data
         print("    <li style='color:red'>ERROR: Unsatisfactory robotic response</li>\n");
         $error = 1;
     }
-    if($config{lemma} ne '')
+    if($config{feature} ne '')
     {
-        print("    <li>lemma = '$config{lemma}'</li>\n");
-        if($config{savenew} && exists($data->{$config{lcode}}{$config{lemma}}))
+        print("    <li>feature = '$config{feature}'</li>\n");
+        # We have postponed reading value-UPOS combinations from the CGI query
+        # because we had not read the feature data when we were reading the
+        # parameters. Now we can look directly for values relevant for this
+        # feature.
+        my $fdata = $data->{$config{lcode}}{$config{feature}};
+        my @available = sort(@{$fdata->{uvalues}}, @{$fdata->{unused_uvalues}}, @{$fdata->{lvalues}}, @{$fdata->{unused_lvalues}});
+        foreach my $v (@available)
         {
-            print("    <li style='color:red'>ERROR: There already is an auxiliary with the lemma '$config{lemma}'. Instead of re-adding it, you should edit it</li>\n");
-            $error = 1;
+            foreach my $u (qw(ADJ ADP ADV AUX CCONJ DET INTJ NOUN NUM PART PRON PROPN PUNCT SCONJ SYM VERB X))
+            {
+                my $name = "value.$v.$u";
+                if($query->param($name)==1)
+                {
+                    print("    <li>value '$v' usable with $u</li>\n");
+                }
+            }
         }
     }
     else
     {
-        print("    <li style='color:red'>ERROR: Missing lemma</li>\n");
+        print("    <li style='color:red'>ERROR: Missing feature</li>\n");
         $error = 1;
-    }
-    # There may be multiple functions and each will have its own set of numbered attributes.
-    my %unique_functions;
-    my $copula_among_functions = 0;
-    my $deficient = '';
-    my $maxifun = 1;
-    for(my $ifun = 1; exists($config{"function$ifun"}) && defined($config{"function$ifun"}) && $config{"function$ifun"} ne ''; $ifun++)
-    {
-        $maxifun = $ifun;
-        my $fname = "function$ifun";
-        if($config{$fname} ne '')
-        {
-            print("    <li>function $ifun = '".htmlescape($config{$fname})."'</li>\n");
-            my $uf = $config{$fname};
-            $uf =~ s/^cop\..+$/cop/;
-            if(exists($unique_functions{$uf}))
-            {
-                print("    <li style='color:red'>ERROR: Repeated function '$uf'</li>\n");
-                $error = 1;
-            }
-            $unique_functions{$uf}++;
-        }
-        else
-        {
-            print("    <li style='color:red'>ERROR: Missing function $ifun</li>\n");
-            $error = 1;
-        }
-        my $rname = "rule$ifun";
-        if($config{$rname} ne '')
-        {
-            print("    <li>rule $ifun = '".htmlescape($config{$rname})."'</li>\n");
-        }
-        else
-        {
-            print("    <li style='color:red'>ERROR: Missing rule $ifun</li>\n");
-            $error = 1;
-        }
-        # We will assess the obligatoriness of the 'deficient' parameter later.
-        my $dname = "deficient$ifun";
-        if($config{$dname} ne '')
-        {
-            print("    <li>deficient $ifun = '".htmlescape($config{$dname})."'</li>\n");
-        }
-        if($config{$fname} =~ m/^cop\./)
-        {
-            $copula_among_functions = 1;
-            $deficient = $config{$dname};
-        }
-        my $ename = "example$ifun";
-        if($config{$ename} ne '')
-        {
-            print("    <li>example $ifun = '".htmlescape($config{$ename})."'</li>\n");
-        }
-        else
-        {
-            print("    <li style='color:red'>ERROR: Missing example $ifun</li>\n");
-            $error = 1;
-        }
-        $ename = "exampleen$ifun";
-        if($config{$ename} ne '')
-        {
-            print("    <li>exampleen $ifun = '".htmlescape($config{$ename})."'</li>\n");
-        }
-        elsif($config{lcode} ne 'en')
-        {
-            print("    <li style='color:red'>ERROR: Missing English translation of the example $ifun</li>\n");
-            $error = 1;
-        }
-        my $cname = "comment$ifun";
-        if($config{$cname} ne '')
-        {
-            print("    <li>comment $ifun = '".htmlescape($config{$cname})."'</li>\n");
-        }
-    } # loop over multiple functions
-    # Check whether there will be more than one copulas if we add this one to the data.
-    # If there will, check that all of them (including the new one) have a distinct
-    # explanation of its deficient paradigm.
-    if($copula_among_functions)
-    {
-        my %copjust;
-        foreach my $lemma (keys(%{$data->{$config{lcode}}}))
-        {
-            foreach my $function (@{$data->{$config{lcode}}{$lemma}{functions}})
-            {
-                if($function->{function} =~ m/^cop\./)
-                {
-                    $copjust{$lemma} = $function->{deficient};
-                    # Even if a lemma has multiple functions, only one of the
-                    # functions can be copula, so we do not have to examine the
-                    # others.
-                    last;
-                }
-            }
-        }
-        $copjust{$config{lemma}} = $deficient;
-        my $ok = 1;
-        my @copulas = sort(keys(%copjust));
-        my $n = scalar(@copulas);
-        if($n > 1)
-        {
-            foreach my $lemma (@copulas)
-            {
-                if($copjust{$lemma} eq '')
-                {
-                    print("    <li style='color:red'>ERROR: Copula '$lemma' does not have a deficient paradigm, hence there cannot be $n copulas</li>\n");
-                    $error = 1;
-                }
-                if($lemma ne $config{lemma} && $copjust{$lemma} eq $deficient)
-                {
-                    print("    <li style='color:red'>ERROR: Explanation of deficient paradigm '$deficient' is identical to the explanation given for '$lemma'</li>\n");
-                    $error = 1;
-                }
-            }
-        }
     }
     print("  </ul>\n");
     if($error)
@@ -585,25 +464,17 @@ sub process_form_data
         my $timestamp = sprintf("%04d-%02d-%02d-%02d-%02d-%02d", 1900+$year, 1+$mon, $mday, $hour, $min, $sec);
         $record{lastchanged} = $timestamp;
         $record{lastchanger} = $config{ghu};
-        $record{functions} = [];
-        for(my $ifun = 1; $ifun <= $maxifun; $ifun++)
+        if(0)
         {
-            my %frecord =
-            (
-                'function'  => $config{"function$ifun"},
-                'rule'      => $config{"rule$ifun"},
-                'deficient' => $config{"deficient$ifun"},
-                'example'   => $config{"example$ifun"},
-                'exampleen' => $config{"exampleen$ifun"},
-                'comment'   => $config{"comment$ifun"}
-            );
-            push(@{$record{functions}}, \%frecord);
+            $data->{$config{lcode}}{$config{feature}} = \%record;
+            valdata::write_feats_json($data, "$path/data.json");
+            # Commit the changes to the repository and push them to Github.
+            system("/home/zeman/bin/git-push-docs-automation.sh '$config{ghu}' '$config{lcode}' > /dev/null");
         }
-        $record{status} = 'documented';
-        $data->{$config{lcode}}{$config{lemma}} = \%record;
-        valdata::write_feats_json($data, "$path/data.json");
-        # Commit the changes to the repository and push them to Github.
-        system("/home/zeman/bin/git-push-docs-automation.sh '$config{ghu}' '$config{lcode}' > /dev/null");
+        else
+        {
+            print("<p style='color:red'><strong>DEBUGGING, NO SAVING YET</strong></p>\n");
+        }
         print <<EOF
   <form action="specify_feature.pl" method="post" enctype="multipart/form-data">
     <input name=lcode type=hidden value="$config{lcode}" />
@@ -786,7 +657,6 @@ sub get_parameters
 {
     my $query = shift; # The CGI object that can supply the parameters.
     my $lname_by_code = shift; # hash ref
-    my $functions = shift; # ref to array of pairs (arrays)
     my %config; # our hash where we store the parameters
     my @errors; # we store error messages about parameters here
     $config{errors} = \@errors;
@@ -862,6 +732,14 @@ sub get_parameters
         push(@errors, "Feature '$config{feature}' does not have the form prescribed by the guidelines");
     }
     #--------------------------------------------------------------------------
+    # Value.* is a boolean (=1) parameter that says whether a given value is
+    # permitted with a given part of speech. It comes from the form and it only
+    # makes sense if there are valid lcode and feature parameters.
+    # For example, value.Sing.PRON=1 may appear with feature=Number and it
+    # means that the feature Number can have the Sing value for pronouns.
+    # We need to read the feature database first, so we will read these
+    # parameters from the query later.
+    #--------------------------------------------------------------------------
     # The parameter 'save' comes from the Save button which submitted the form.
     $config{save} = decode('utf8', $query->param('save'));
     if(!defined($config{save}))
@@ -874,40 +752,9 @@ sub get_parameters
         $config{save} = 1;
         $config{savenew} = 0;
     }
-    elsif($config{save} =~ m/^Save new$/)
-    {
-        $config{save} = 1;
-        $config{savenew} = 1;
-    }
     else
     {
         push(@errors, "Unrecognized save button '$config{save}'");
-    }
-    #--------------------------------------------------------------------------
-    # The parameter 'add' comes from the buttons that launch the form to add
-    # a new auxiliary (separate buttons for copula and other auxiliaries).
-    $config{add} = decode('utf8', $query->param('add'));
-    if(!defined($config{add}))
-    {
-        $config{add} = 0;
-        $config{addcop} = 0;
-        $config{addnoncop} = 0;
-    }
-    elsif($config{add} =~ m/^Add copula$/)
-    {
-        $config{addcop} = 1;
-        $config{add} = 1;
-        $config{addnoncop} = 0;
-    }
-    elsif($config{add} =~ m/^Add (other|non-copula)$/)
-    {
-        $config{addnoncop} = 1;
-        $config{add} = 1;
-        $config{addcop} = 0;
-    }
-    else
-    {
-        push(@errors, "Unrecognized add button '$config{add}'");
     }
     return %config;
 }
