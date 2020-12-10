@@ -303,7 +303,6 @@ sub print_feature_details
                 my $howdocly = $howdoc.'ly';
                 print("  <p>This $type feature is currently permitted in $lname_by_code{$config{lcode}} ".
                            "and is $howdocly documented <a href=\"$href\">here</a>.</p>\n");
-                print("  <h3>Values permitted for individual parts of speech</h3>\n");
             }
             else
             {
