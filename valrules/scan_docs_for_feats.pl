@@ -163,6 +163,24 @@ foreach my $langfolder (@langfolders)
         read_feature_doc($feature, "$ldfeats/$file", $lhash{$lcode}{$feature}, \@deviations, $corresponding_global);
     }
 }
+# Before printing the data, remove all values from features with errors.
+foreach my $f (keys(%hash))
+{
+    if(scalar(@{$f->{errors}}) > 0)
+    {
+        $f->{values} = [];
+    }
+}
+foreach my $l (keys(%lhash))
+{
+    foreach my $f (keys(%{$lhash{$l}}))
+    {
+        if(scalar(@{$f->{errors}}) > 0)
+        {
+            $f->{values} = [];
+        }
+    }
+}
 # Print an overview of the features we found.
 print_json(\%hash, \%lhash, \@deviations, $docs, "$scriptpath/docfeats.json");
 # There is now a larger JSON about features of individual languages which
@@ -408,21 +426,9 @@ sub encode_feature_json
 {
     my $feature = shift; # hash reference
     my $json = '{';
-    # If there are errors, list the errors and hide values (they would not be allowed anyway).
-    if(scalar(@{$feature->{errors}}) > 0)
-    {
-        $json .= '"type": "'.valdata::escape_json_string($feature->{type}).'", ';
-        $json .= '"values": [], "errors": [';
-        $json .= join(', ', map {'"'.valdata::escape_json_string($_).'"'} (@{$feature->{errors}}));
-        $json .= ']';
-    }
-    else
-    {
-        $json .= '"type": "'.valdata::escape_json_string($feature->{type}).'", ';
-        $json .= '"values": [';
-        $json .= join(', ', map {'"'.valdata::escape_json_string($_).'"'} (@{$feature->{values}}));
-        $json .= '], "errors": []';
-    }
+    $json .= '"type": "'.valdata::escape_json_string($feature->{type}).'", ';
+    $json .= '"values": ['.join(', ', map {'"'.valdata::escape_json_string($_).'"'} (@{$feature->{values}})).'], ';
+    $json .= '"errors": ['.join(', ', map {'"'.valdata::escape_json_string($_).'"'} (@{$feature->{errors}})).']';
     $json .= '}';
     return $json;
 }
