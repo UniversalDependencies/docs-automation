@@ -426,42 +426,57 @@ sub process_form_data
     if($config{feature} ne '')
     {
         print("    <li>feature = '$config{feature}'</li>\n");
-        # We have postponed reading value-UPOS combinations from the CGI query
-        # because we had not read the feature data when we were reading the
-        # parameters. Now we can look directly for values relevant for this
-        # feature.
-        my $fdata = $data->{$config{lcode}}{$config{feature}};
-        my @available = sort(@{$fdata->{uvalues}}, @{$fdata->{unused_uvalues}}, @{$fdata->{lvalues}}, @{$fdata->{unused_lvalues}});
-        my @upos = qw(ADJ ADP ADV AUX CCONJ DET INTJ NOUN NUM PART PRON PROPN PUNCT SCONJ SYM VERB X);
-        foreach my $v (@available)
+        # Check that the feature is known and has available values.
+        if(exists($data->{$config{lcode}}{$config{feature}}))
         {
-            foreach my $u (@upos)
+            # We have postponed reading value-UPOS combinations from the CGI query
+            # because we had not read the feature data when we were reading the
+            # parameters. Now we can look directly for values relevant for this
+            # feature.
+            my $fdata = $data->{$config{lcode}}{$config{feature}};
+            my @available = sort(@{$fdata->{uvalues}}, @{$fdata->{unused_uvalues}}, @{$fdata->{lvalues}}, @{$fdata->{unused_lvalues}});
+            if(scalar(@available) > 0)
             {
-                my $name = "value.$v.$u";
-                if($query->param($name)==1)
+                my @upos = qw(ADJ ADP ADV AUX CCONJ DET INTJ NOUN NUM PART PRON PROPN PUNCT SCONJ SYM VERB X);
+                foreach my $v (@available)
                 {
-                    $newbyupos{$u}{$v} = 1;
+                    foreach my $u (@upos)
+                    {
+                        my $name = "value.$v.$u";
+                        if($query->param($name)==1)
+                        {
+                            $newbyupos{$u}{$v} = 1;
+                        }
+                    }
                 }
+                # Compare the new byupos with the old one.
+                my $oldbyupos = $data->{$config{lcode}}{$config{feature}}{byupos};
+                foreach my $u (@upos)
+                {
+                    foreach my $v (sort(keys(%{$newbyupos{$u}})))
+                    {
+                        if(!exists($oldbyupos->{$u}{$v}) || !$oldbyupos->{$u}{$v})
+                        {
+                            print("    <li style='color:blue'>value '$v' now usable with $u</li>\n");
+                        }
+                    }
+                    foreach my $v (sort(keys(%{$oldbyupos->{$u}})))
+                    {
+                        if(!exists($newbyupos{$u}{$v}))
+                        {
+                            print("    <li style='color:purple'>value '$v' no longer usable with $u</li>\n");
+                        }
+                    }
+                }
+            }
+            else
+            {
+                print("    <li style='color:red'>ERROR: No documented values are available for feature '$config{feature}' in language '$config{language}'</li>\n");
             }
         }
-        # Compare the new byupos with the old one.
-        my $oldbyupos = $data->{$config{lcode}}{$config{feature}}{byupos};
-        foreach my $u (@upos)
+        else
         {
-            foreach my $v (sort(keys(%{$newbyupos{$u}})))
-            {
-                if(!exists($oldbyupos->{$u}{$v}) || !$oldbyupos->{$u}{$v})
-                {
-                    print("    <li style='color:blue'>value '$v' now usable with $u</li>\n");
-                }
-            }
-            foreach my $v (sort(keys(%{$oldbyupos->{$u}})))
-            {
-                if(!exists($newbyupos{$u}{$v}))
-                {
-                    print("    <li style='color:purple'>value '$v' no longer usable with $u</li>\n");
-                }
-            }
+            print("    <li style='color:red'>ERROR: Unknown feature '$config{feature}' in language '$config{language}'</li>\n");
         }
     }
     else
@@ -476,19 +491,15 @@ sub process_form_data
     }
     else
     {
-        # Create a new record. Even if we are editing an existing auxiliary,
-        # all previous values will be thrown away and replaced with the new
-        # ones.
-        my %record;
+        my $fdata = $data->{$config{lcode}}{$config{feature}};
         # Do I want to use my local time or universal time in the timestamps?
         #my ($sec, $min, $hour, $mday, $mon, $year, $wday, $yday) = gmtime(time());
         my ($sec, $min, $hour, $mday, $mon, $year, $wday, $yday) = localtime(time());
         my $timestamp = sprintf("%04d-%02d-%02d-%02d-%02d-%02d", 1900+$year, 1+$mon, $mday, $hour, $min, $sec);
-        $record{lastchanged} = $timestamp;
-        $record{lastchanger} = $config{ghu};
+        $fdata->{lastchanged} = $timestamp;
+        $fdata->{lastchanger} = $config{ghu};
         if(0)
         {
-            $data->{$config{lcode}}{$config{feature}} = \%record;
             valdata::write_feats_json($data, "$path/data.json");
             # Commit the changes to the repository and push them to Github.
             system("/home/zeman/bin/git-push-docs-automation.sh '$config{ghu}' '$config{lcode}' > /dev/null");
