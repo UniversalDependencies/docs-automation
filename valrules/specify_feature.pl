@@ -188,6 +188,7 @@ sub print_features_for_language
         my @features = sort(keys(%{$ldata}));
         print("  <h2>Features</h2>\n");
         print("  <p><b>Currently permitted:</b> ".join(', ', map {"<a href=\"specify_feature.pl?lcode=$config{lcode}&amp;feature=$_\">$_</a>"} (grep {$ldata->{$_}{permitted}} (@features)))."</p>\n");
+        print("  <p><b>Available to be permitted:</b> ".join(', ', map {"<a href=\"specify_feature.pl?lcode=$config{lcode}&amp;feature=$_\">$_</a>"} (grep {!$ldata->{$_}{permitted} && scalar(@{$ldata->{$_}{unused_uvalues}}) + scalar(@{$ldata->{$_}{unused_lvalues}}) > 0} (@features)))."</p>\n");
         my @fvs = ();
         foreach my $f (@features)
         {
