@@ -455,11 +455,14 @@ sub process_form_data
                 my $oldbyupos = $data->{$config{lcode}}{$config{feature}}{byupos};
                 foreach my $u (@upos)
                 {
-                    foreach my $v (sort(keys(%{$newbyupos{$u}})))
+                    if(exists($newbyupos{$u}))
                     {
-                        if(!exists($oldbyupos->{$u}{$v}) || !$oldbyupos->{$u}{$v})
+                        foreach my $v (sort(keys(%{$newbyupos{$u}})))
                         {
-                            print("    <li style='color:blue'>value '$v' now usable with $u</li>\n");
+                            if(!exists($oldbyupos->{$u}{$v}) || !$oldbyupos->{$u}{$v})
+                            {
+                                print("    <li style='color:blue'>value '$v' now usable with $u</li>\n");
+                            }
                         }
                     }
                     foreach my $v (sort(keys(%{$oldbyupos->{$u}})))
