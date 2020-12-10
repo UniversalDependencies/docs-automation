@@ -166,18 +166,18 @@ foreach my $langfolder (@langfolders)
 # Before printing the data, remove all values from features with errors.
 foreach my $f (keys(%hash))
 {
-    if(scalar(@{$f->{errors}}) > 0)
+    if(scalar(@{$hash{$f}{errors}}) > 0)
     {
-        $f->{values} = [];
+        $hash{$f}{values} = [];
     }
 }
 foreach my $l (keys(%lhash))
 {
     foreach my $f (keys(%{$lhash{$l}}))
     {
-        if(scalar(@{$f->{errors}}) > 0)
+        if(scalar(@{$lhash{$l}{$f}{errors}}) > 0)
         {
-            $f->{values} = [];
+            $lhash{$l}{$f}{values} = [];
         }
     }
 }
