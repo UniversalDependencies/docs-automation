@@ -21,6 +21,7 @@ use charnames ();
 my $path; BEGIN {$path = '/usr/lib/cgi-bin/unidep/docs-automation/valrules';}
 use lib $path;
 use valdata;
+use langgraph;
 
 # Read the list of known languages.
 my $languages = LoadFile($path.'/../codes_and_flags.yaml');
@@ -162,7 +163,6 @@ else
     else
     {
         summarize_guidelines();
-        ###!!!print_edit_add_menu(\%data);
         print_features_for_language(\%data);
         # Show all known auxiliaries so the user can compare. This and related languages first.
         print_all_features(\%data);
@@ -341,77 +341,6 @@ sub print_feature_details
     {
         die("No information about features for language '$config{lcode}'");
     }
-}
-
-
-
-#------------------------------------------------------------------------------
-# Prints the list of documented auxiliaries for editing and the button to add
-# a new auxiliary.
-#------------------------------------------------------------------------------
-sub print_edit_add_menu
-{
-    my $data = shift;
-    print("  <h2>Edit or add auxiliaries</h2>\n");
-    my @ndcop = ();
-    if(exists($data->{$config{lcode}}))
-    {
-        my @lemmas = sort(keys(%{$data->{$config{lcode}}}));
-        my $hrefs = get_lemma_links_to_edit(@lemmas);
-        print("  <p>$hrefs</p>\n");
-        # Look for copulas without documented deficient paradigm. If there is
-        # one, we will not offer adding another copula.
-        foreach my $lemma (@lemmas)
-        {
-            my @functions = @{$data->{$config{lcode}}{$lemma}{functions}};
-            my @ndcop_lemma = grep {$_->{function} =~ m/^cop\./ && $_->{deficient} eq ''} (@functions);
-            if(scalar(@ndcop_lemma) > 0)
-            {
-                push(@ndcop, $lemma);
-            }
-        }
-    }
-    print("  <form action=\"specify_feature.pl\" method=\"post\" enctype=\"multipart/form-data\">\n");
-    print("    <input name=lcode type=hidden value=\"$config{lcode}\" />\n");
-    print("    <input name=ghu type=hidden value=\"$config{ghu}\" />\n");
-    if(scalar(@ndcop)==0)
-    {
-        print("    <input name=add type=submit value=\"Add copula\" />\n");
-        print("    <input name=add type=submit value=\"Add other\" />\n");
-    }
-    else
-    {
-        print("    The copula has been specified <i>(".join(', ', @ndcop).")</i>.\n");
-        print("    <input name=add type=submit value=\"Add non-copula\" />\n");
-    }
-    print("  </form>\n");
-}
-
-
-
-#------------------------------------------------------------------------------
-# Returns a list of lemmas as HTML links to the edit form.
-#------------------------------------------------------------------------------
-sub get_lemma_links_to_edit
-{
-    my @lemmas = @_;
-    my @hrefs;
-    foreach my $lemma0 (@lemmas)
-    {
-        # For a safe URL we assume that the lemma contains only letters. That should not be a problem normally.
-        # We must also allow the hyphen, needed in Skolt Sami "i-ǥõl". (Jack Rueter: It is written with a hyphen. Historically it might be traced to a combination of the AUX:NEG ij and a reduced ǥõl stem derived from what is now the verb õlggâd ʹhave toʹ. The word-initial g has been retained in the fossilized contraction as ǥ, but that same word-initial letter has been lost in the standard verb.)
-        # We must also allow the apostrophe, needed in Mbya Guarani "nda'ei" and "nda'ipoi".
-        my $lemma = $lemma0;
-        $lemma =~ s/[^-\pL\pM']//g; #'
-        my $alert = '';
-        if($lemma ne $lemma0)
-        {
-            $alert = " <span style='color:red'>ERROR: Lemma must consist only of letters but stripping non-letters from '".htmlescape($lemma0)."' yields '$lemma'!</span>";
-        }
-        my $href = "<a href=\"specify_feature.pl?ghu=$config{ghu}&amp;lcode=$config{lcode}&amp;lemma=$lemma\">$lemma</a>$alert";
-        push(@hrefs, $href);
-    }
-    return join(' ', @hrefs);
 }
 
 
@@ -710,7 +639,7 @@ sub print_all_features
     my $data = shift;
     # Print the data on the web page.
     print("  <h2>Permitted features for this and other languages</h2>\n");
-    my @lcodes = sort_lcodes_by_relatedness($languages, $config{lcode});
+    my @lcodes = langgraph::sort_lcodes_by_relatedness($languages, $config{lcode});
     # Get the list of all known feature names. Every language has a different set.
     my %features;
     foreach my $lcode (@lcodes)
@@ -798,7 +727,7 @@ sub print_values_in_all_languages
     my $data = shift;
     # Print the data on the web page.
     print("  <h2>Permitted values for this and other languages</h2>\n");
-    my @lcodes = sort_lcodes_by_relatedness($languages, $config{lcode});
+    my @lcodes = langgraph::sort_lcodes_by_relatedness($languages, $config{lcode});
     my @upos = qw(ADJ ADP ADV AUX CCONJ DET INTJ NOUN NUM PART PRON PROPN PUNCT SCONJ SYM VERB X);
     print("  <table>\n");
     my $i = 0;
@@ -839,212 +768,6 @@ sub print_values_in_all_languages
         }
     }
     print("  </table>\n");
-}
-
-
-
-#------------------------------------------------------------------------------
-# Returns the list of all languages, this and related languages first.
-#------------------------------------------------------------------------------
-sub sort_lcodes_by_relatedness
-{
-    my $languages = shift; # ref to hash read from YAML, indexed by names
-    my $mylcode = shift; # from global $config{lcode}
-    my @lcodes;
-    my %lname_by_code; # this may exist as a global variable but I want to keep this function more autonomous and re-creating the index is cheap
-    foreach my $lname (keys(%{$languages}))
-    {
-        my $lcode = $languages->{$lname}{lcode};
-        push(@lcodes, $lcode);
-        $lname_by_code{$lcode} = $lname;
-    }
-    # First display the actual language.
-    # Then display languages from the same family and genus.
-    # Then languages from the same family but different genera.
-    # Then all remaining languages.
-    # Hash families and genera for language codes.
-    my %family;
-    my %genus;
-    my %familygenus;
-    my %genera;
-    my %families;
-    foreach my $lcode (@lcodes)
-    {
-        my $lhash = $languages->{$lname_by_code{$lcode}};
-        $family{$lcode} = $lhash->{family};
-        $genus{$lcode} = $lhash->{genus};
-        $familygenus{$lcode} = $lhash->{familygenus};
-        $families{$family{$lcode}}++;
-        $genera{$genus{$lcode}}++;
-    }
-    my $myfamilygenus = $familygenus{$mylcode};
-    my $myfamily = $family{$mylcode};
-    my $mygenus = $genus{$mylcode};
-    my $langgraph = read_language_graph();
-    my $rank = rank_languages_by_proximity_to($mylcode, $langgraph, @lcodes);
-    my $grank = rank_languages_by_proximity_to($mygenus, $langgraph, keys(%genera));
-    my $frank = rank_languages_by_proximity_to($myfamily, $langgraph, keys(%families));
-    @lcodes = sort
-    {
-        my $r = $frank->{$family{$a}} <=> $frank->{$family{$b}};
-        unless($r)
-        {
-            $r = $family{$a} cmp $family{$b};
-            unless($r)
-            {
-                $r = $grank->{$genus{$a}} <=> $grank->{$genus{$b}};
-                unless($r)
-                {
-                    $r = $genus{$a} cmp $genus{$b};
-                    unless($r)
-                    {
-                        $r = $rank->{$a} <=> $rank->{$b};
-                        unless($r)
-                        {
-                            $r = $lname_by_code{$a} cmp $lname_by_code{$b};
-                        }
-                    }
-                }
-            }
-        }
-        $r
-    }
-    (@lcodes);
-    my @lcodes_my_genus = grep {$_ ne $mylcode && $languages->{$lname_by_code{$_}}{familygenus} eq $myfamilygenus} (@lcodes);
-    my @lcodes_my_family = grep {$languages->{$lname_by_code{$_}}{familygenus} ne $myfamilygenus && $languages->{$lname_by_code{$_}}{family} eq $myfamily} (@lcodes);
-    my @lcodes_other = grep {$languages->{$lname_by_code{$_}}{family} ne $myfamily} (@lcodes);
-    @lcodes = ($mylcode, @lcodes_my_genus, @lcodes_my_family, @lcodes_other);
-    return @lcodes;
-}
-
-
-
-#------------------------------------------------------------------------------
-# Reads the graph of "neighboring" (geographically or genealogically)
-# languages, genera, and families. Returns a reference to the graph (hash).
-# Reads from a hardwired path.
-#------------------------------------------------------------------------------
-sub read_language_graph
-{
-    my %graph;
-    open(GRAPH, 'langgraph.txt');
-    while(<GRAPH>)
-    {
-        chomp;
-        if(m/^(.+)----(.+)$/)
-        {
-            my $n1 = $1;
-            my $n2 = $2;
-            if($n1 ne $n2)
-            {
-                $graph{$n1}{$n2} = 1;
-                $graph{$n2}{$n1} = 1;
-            }
-        }
-        elsif(m/^(.+)--(\d+)--(.+)$/)
-        {
-            my $n1 = $1;
-            my $d = $2;
-            my $n2 = $3;
-            if($n1 ne $n2)
-            {
-                $graph{$n1}{$n2} = $d;
-                $graph{$n2}{$n1} = $d;
-            }
-        }
-        else
-        {
-            print STDERR ("Unrecognized graph line '$_'\n");
-        }
-    }
-    close(GRAPH);
-    return \%graph;
-}
-
-
-
-#------------------------------------------------------------------------------
-# Experimental sorting of languages by proximity to language X. We follow
-# weighted edges in an adjacency graph read from an external file. The weights
-# may ensure that all languages of the same genus are visited before switching
-# to another genus, or the graph may only cover intra-genus relationships and
-# the ranking provided by this function may be used as one of sorting criteria,
-# the other being genus and family membership. The graph may also express
-# relations among genera and families.
-#------------------------------------------------------------------------------
-sub rank_languages_by_proximity_to
-{
-    my $reflcode = shift; # language X
-    my $graph = shift;
-    my @lcodes = @_; # all language codes to sort (we need them only because some of them may not be reachable via the graph)
-    # Sorting rules:
-    # - first language X
-    # - then other languages of the same genus
-    # - then other languages of the same family
-    # - then languages from other families
-    # - within the same genus, proximity of languages can be controlled by
-    #   a graph that we load from an external file
-    # - similarly we can control proximity of genera within the same family
-    # - similarly we can control proximity of families
-    # - if two languages (genera, families) are at the same distance following
-    #   the graph, they will be ordered alphabetically
-    # Compute order of other languages when traversing from X
-    # (roughly deep-first search, but observing distance from X and from the previous node at the same time).
-    # The algorithm will not work well if the edge values do not satisfy the
-    # triangle inequality but we do not check it.
-    my %rank;
-    my %done;
-    my @queue = ($reflcode);
-    my %qscore;
-    my $current;
-    my $lastrank = -1;
-    while($current = shift(@queue))
-    {
-        # Sanity check.
-        die "There is a bug in the program" if($done{$current});
-        # Increase the score of all remaining nodes in the queue by my score (read as if we would have to return via the edge just traversed).
-        foreach my $n (@queue)
-        {
-            $qscore{$n} += $qscore{$current};
-        }
-        delete($qscore{$current});
-        $rank{$current} = ++$lastrank;
-        if(exists($graph->{$current}))
-        {
-            my @neighbors = grep {!$done{$_}} (keys(%{$graph->{$current}}));
-            # Add the neighbors to the queue if they are not already there.
-            # Update there queue scores.
-            foreach my $n (@neighbors)
-            {
-                push(@queue, $n) unless(scalar(grep {$_ eq $n} (@queue)));
-                $qscore{$n} = $graph->{$current}{$n};
-            }
-            # Reorder the queue by the new scores.
-            @queue = sort
-            {
-                my $r = $qscore{$a} <=> $qscore{$b};
-                unless($r)
-                {
-                    $r = $a cmp $b;
-                }
-                $r
-            }
-            (@queue);
-            #print STDERR ("LANGGRAPH DEBUG: $current --> ", join(', ', map {"$_:$qscore{$_}"} (@queue)), "\n");
-        }
-        $done{$current}++;
-    }
-    # Some languages may be unreachable via the graph. Make sure that they have
-    # a defined rank too, and that their rank is higher than the rank of any
-    # reachable language.
-    foreach my $lcode (@lcodes)
-    {
-        if(!defined($rank{$lcode}))
-        {
-            $rank{$lcode} = $lastrank+1;
-        }
-    }
-    return \%rank;
 }
 
 
