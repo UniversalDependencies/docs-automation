@@ -64,6 +64,12 @@ sub merge_documented_and_declared_features
                 $decf->{unused_lvalues} = [] if(!defined($decf->{unused_lvalues}));
                 $decf->{evalues} = [] if(!defined($decf->{evalues}));
                 $decf->{errors} = [] if(!defined($decf->{errors}));
+                # The feature will not be permitted until at least one value is turned on for at least one UPOS tag.
+                $decf->{permitted} = 0;
+                @{$decf->{unused_uvalues}} = (@{$decf->{uvalues}}, @{$decf->{unused_uvalues}});
+                $decf->{uvalues} = [];
+                @{$decf->{unused_lvalues}} = (@{$decf->{lvalues}}, @{$decf->{unused_lvalues}});
+                $decf->{lvalues} = [];
             }
             # If the feature has been previously used in the language, check its status and permitted values.
             else
