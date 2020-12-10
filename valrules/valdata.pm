@@ -19,7 +19,7 @@ use utf8;
 sub read_feats_json
 {
     my $path = shift; # docs-automation/valrules
-    my $docs = read_feats_json0($path);
+    my $docs = read_feats_json1($path);
     my $data = json_file_to_perl("$path/feats.json")->{features};
     merge_documented_and_declared_features($docs, $data);
     return $data;
@@ -136,6 +136,61 @@ sub merge_documented_and_declared_features
             }
         }
     }
+}
+
+
+
+#------------------------------------------------------------------------------
+# Reads the data about documented features from the JSON file. Returns a hash
+# reference. This is a variant of the older function, still partially needed.
+#------------------------------------------------------------------------------
+sub read_feats_json1
+{
+    my $path = shift;
+    # Read the temporary JSON file with documented features.
+    my $docfeats = json_file_to_perl("$path/docfeats.json");
+    # Get the universal features and values from the global documentation.
+    my %universal;
+    if(exists($docfeats->{gdocs}) && ref($docfeats->{gdocs}) eq 'HASH')
+    {
+        foreach my $f (keys(%{$docfeats->{gdocs}}))
+        {
+            if($docfeats->{gdocs}{$f}{type} eq 'universal')
+            {
+                foreach my $v (@{$docfeats->{gdocs}{$f}{values}})
+                {
+                    $universal{$f}{$v}++;
+                }
+            }
+        }
+    }
+    else
+    {
+        confess("No globally documented features found in the JSON file");
+    }
+    # Create the combined data structure we will need in this script.
+    my %data;
+    # $docfeats->{lists} should contain all languages known in UD, so we will use its index.
+    if(exists($docfeats->{lists}) && ref($docfeats->{lists}) eq 'HASH')
+    {
+        my @lcodes = keys(%{$docfeats->{lists}});
+        foreach my $lcode (@lcodes)
+        {
+            $data{$lcode} = {};
+            # If the language has any local documentation, read it first.
+            if(exists($docfeats->{ldocs}{$lcode}))
+            {
+                copy_features_from_local_documentation($docfeats->{ldocs}{$lcode}, $data{$lcode}, \%universal);
+            }
+            # Read the global documentation and add features that were not documented locally.
+            copy_features_from_global_documentation($docfeats->{gdocs}, $data{$lcode}, \%universal, $declfeats->{$lcode});
+        }
+    }
+    else
+    {
+        confess("No documented features found in the JSON file");
+    }
+    return \%data;
 }
 
 
