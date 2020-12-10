@@ -452,7 +452,9 @@ EOF
     print("    </tr>\n");
     #--------------------------------------------------------------------------
     # Rows for individual values
-    foreach my $v (@{$record->{uvalues}}, @{$record->{lvalues}}, @{$record->{unused_uvalues}}, @{$record->{unused_lvalues}})
+    my @used = sort(@{$record->{uvalues}}, @{$record->{lvalues}});
+    my @unused = sort(@{$record->{unused_uvalues}}, @{$record->{unused_lvalues}});
+    foreach my $v (@used, @unused)
     {
         print("    <tr>\n");
         my $hv = htmlescape($v);
