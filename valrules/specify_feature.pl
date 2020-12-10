@@ -216,11 +216,23 @@ sub print_features_for_language
         my @errors = ();
         foreach my $f (@features)
         {
+            my $howdoc = $fdata->{doc} =~ m/^(global|gerror)$/ ? 'global' : $fdata->{doc} =~ m/^(local|lerror)$/ ? 'local' : 'none';
+            my $href;
+            my $file = $f;
+            $file =~ s/\[([a-z]+)\]/-$1/;
+            if($howdoc eq 'global')
+            {
+                $href = "https://universaldependencies.org/u/feat/$file.html";
+            }
+            elsif($howdoc eq 'local')
+            {
+                $href = "https://universaldependencies.org/$config{lcode}/feat/$file.html";
+            }
             if(defined($ldata->{$f}{errors}))
             {
                 foreach my $e (@{$ldata->{$f}{errors}})
                 {
-                    push(@errors, "ERROR in documentation of $f: $e");
+                    push(@errors, "ERROR in <a href=\"$href\">documentation</a> of $f: $e");
                 }
             }
         }
