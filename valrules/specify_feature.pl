@@ -332,12 +332,12 @@ sub print_feature_details
                     if($fdata->{doc} eq 'gerror')
                     {
                         $howdoc = 'global';
-                        $here = "<a href=\"https://universaldependencies.org/u/feat/$file.html\">documentation</a>";
+                        $documentation = "<a href=\"https://universaldependencies.org/u/feat/$file.html\">documentation</a>";
                     }
                     else
                     {
                         $howdoc = 'local';
-                        $here = "<a href=\"https://universaldependencies.org/$config{lcode}/feat/$file.html\">documentation</a>";
+                        $documentation = "<a href=\"https://universaldependencies.org/$config{lcode}/feat/$file.html\">documentation</a>";
                     }
                     print("  <h3>Errors in $howdoc $documentation</h3>\n");
                     print("  <ul>\n");
