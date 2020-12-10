@@ -296,7 +296,7 @@ sub print_feature_details
             }
             elsif($howdoc eq 'local')
             {
-                $here = "https://universaldependencies.org/$config{lcode}/feat/$file.html";
+                $href = "https://universaldependencies.org/$config{lcode}/feat/$file.html";
             }
             if($fdata->{permitted})
             {
