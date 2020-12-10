@@ -290,7 +290,6 @@ sub print_feature_details
         print("  <h2>$config{feature}</h2>\n");
         if(exists($data->{$config{lcode}}{$config{feature}}))
         {
-            ###!!! Errors in doc
             ###!!! Values
             my $fdata = $data->{$config{lcode}}{$config{feature}};
             my $type = $fdata->{type};
@@ -324,7 +323,30 @@ sub print_feature_details
             }
             else
             {
-                print("  <p>This $type feature is currently not permitted in $config{lcode}.</p>\n");
+                print("  <p>This $type feature is currently not permitted in $lname_by_code{$config{lcode}}.</p>\n");
+                if(scalar(@{$fdata->{errors}}) > 0)
+                {
+                    my ($howdoc, $documentation);
+                    my $file = $config{feature};
+                    $file =~ s/\[([a-z]+)\]/-$1/;
+                    if($fdata->{doc} eq 'gerror')
+                    {
+                        $howdoc = 'global';
+                        $here = "<a href=\"https://universaldependencies.org/u/feat/$file.html\">documentation</a>";
+                    }
+                    else
+                    {
+                        $howdoc = 'local';
+                        $here = "<a href=\"https://universaldependencies.org/$config{lcode}/feat/$file.html\">documentation</a>";
+                    }
+                    print("  <h3>Errors in $howdoc $documentation</h3>\n");
+                    print("  <ul>\n");
+                    for my $e (@{$fdata->{error}})
+                    {
+                        print("    <li style='color:red'>$e</li>\n");
+                    }
+                    print("  </ul>\n");
+                }
             }
         }
         else
