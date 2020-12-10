@@ -209,6 +209,17 @@ sub print_features_for_language
         print("  <p><b>Currently unused universal features:</b> ".join(', ', map {"<a href=\"specify_feature.pl?lcode=$config{lcode}&amp;feature=$_\">$_</a>"} (grep {$ldata->{$_}{type} eq 'universal'} (@afeatures)))."</p>\n");
         print("  <p><b>Other features that can be permitted:</b> ".join(', ', map {"<a href=\"specify_feature.pl?lcode=$config{lcode}&amp;feature=$_\">$_</a>"} (grep {$ldata->{$_}{type} eq 'lspec'} (@afeatures)))."</p>\n");
         print("  <p><b>Undocumented features cannot be used:</b> ".join(', ', grep {$ldata->{$_}{doc} != m/^(global|local)$/} (@features))."</p>\n");
+        my @errors = ();
+        foreach my $f (@features)
+        {
+            if(defined($ldata->{$f}{errors}))
+            {
+                foreach my $e (@{$ldata->{$f}{errors}})
+                {
+                    push(@errors, "ERROR in documentation of $f: $e");
+                }
+            }
+        }
         if(scalar(@errors) > 0)
         {
             print("  <h2>Errors in documentation</h2>\n");
@@ -238,17 +249,6 @@ sub print_features_for_language
         {
             print("  <h2>Feature values previously declared but undocumented</h2>\n");
             print("  <p>".join(' ', @fvs)."</p>\n");
-        }
-        my @errors = ();
-        foreach my $f (@features)
-        {
-            if(defined($ldata->{$f}{errors}))
-            {
-                foreach my $e (@{$ldata->{$f}{errors}})
-                {
-                    push(@errors, "ERROR in documentation of $f: $e");
-                }
-            }
         }
     }
     else
