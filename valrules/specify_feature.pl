@@ -206,7 +206,8 @@ sub print_features_for_language
                 push(@afeatures, $f);
             }
         }
-        print("  <p><b>Available to be permitted:</b> ".join(', ', map {"<a href=\"specify_feature.pl?lcode=$config{lcode}&amp;feature=$_\">$_</a>"} (@afeatures))."</p>\n");
+        print("  <p><b>Currently unused universal features:</b> ".join(', ', map {"<a href=\"specify_feature.pl?lcode=$config{lcode}&amp;feature=$_\">$_</a>"} (grep {$ldata->{$_}{type} eq 'universal'} (@afeatures)))."</p>\n");
+        print("  <p><b>Other features that can be permitted:</b> ".join(', ', map {"<a href=\"specify_feature.pl?lcode=$config{lcode}&amp;feature=$_\">$_</a>"} (grep {$ldata->{$_}{type} eq 'lspec'} (@afeatures)))."</p>\n");
         my @fvs = ();
         foreach my $f (@features)
         {
