@@ -97,6 +97,12 @@ sub merge_documented_and_declared_features
                         $used{$v}++;
                     }
                 }
+                # There are boolean universal features that do not depend on the language.
+                # Always allow them even if they have not been used in the data so far.
+                if($f =~ m/^(Abbr|Foreign|Typo)$/)
+                {
+                    $used{'Yes'}++;
+                }
                 @{$decf->{uvalues}} = grep {exists($used{$_})} (keys(%docuvalues));
                 @{$decf->{unused_uvalues}} = grep {!exists($used{$_})} (keys(%docuvalues));
                 @{$decf->{lvalues}} = grep {exists($used{$_})} (keys(%doclvalues));
