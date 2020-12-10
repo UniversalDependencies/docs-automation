@@ -57,6 +57,7 @@ sub merge_documented_and_declared_features
             if(!exists($declared->{$lcode}{$f}))
             {
                 $declared->{$lcode}{$f} = $documented->{$lcode}{$f};
+                my $decf = $declared->{$lcode}{$f};
                 $decf->{uvalues} = [] if(!defined($decf->{uvalues}));
                 $decf->{unused_uvalues} = [] if(!defined($decf->{unused_uvalues}));
                 $decf->{lvalues} = [] if(!defined($decf->{lvalues}));
