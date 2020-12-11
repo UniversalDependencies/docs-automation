@@ -192,11 +192,11 @@ sub print_deprels_for_language
             $file =~ s/:/-/g;
             if($howdoc eq 'global')
             {
-                $href = "https://universaldependencies.org/u/feat/$file.html";
+                $href = "https://universaldependencies.org/u/dep/$file.html";
             }
             elsif($howdoc eq 'local')
             {
-                $href = "https://universaldependencies.org/$config{lcode}/feat/$file.html";
+                $href = "https://universaldependencies.org/$config{lcode}/dep/$file.html";
             }
             if(defined($ldata->{$f}{errors}))
             {
@@ -245,11 +245,11 @@ sub print_deprel_details
             $file =~ s/:/-/g;
             if($howdoc eq 'global')
             {
-                $href = "https://universaldependencies.org/u/feat/$file.html";
+                $href = "https://universaldependencies.org/u/dep/$file.html";
             }
             elsif($howdoc eq 'local')
             {
-                $href = "https://universaldependencies.org/$config{lcode}/feat/$file.html";
+                $href = "https://universaldependencies.org/$config{lcode}/dep/$file.html";
             }
             if($fdata->{permitted})
             {
