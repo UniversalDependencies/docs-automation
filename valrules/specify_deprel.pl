@@ -69,7 +69,7 @@ print <<EOF
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head>
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-  <title>Specify features in UD</title>
+  <title>Specify deprels in UD</title>
   <style type="text/css">
     img {border: none;}
     img.flag {
@@ -97,7 +97,7 @@ if(scalar(@{$config{errors}}) > 0)
 # No language code specified. Show the list of known languages.
 elsif($config{lcode} eq '')
 {
-    print("  <h1>Specify features for a language</h1>\n");
+    print("  <h1>Specify dependency relations for a language</h1>\n");
     # Print the list of known languages.
     print("  <p><strong>Select a language:</strong></p>\n");
     print("  <table>\n");
@@ -107,13 +107,13 @@ elsif($config{lcode} eq '')
     {
         print("  <tr><td>$family:</td><td>");
         my @lnames = sort(grep {$languages->{$_}{family} eq $family} (keys(%{$languages})));
-        print(join(', ', map {"<span style='white-space:nowrap'><img class=\"flag\" src=\"https://universaldependencies.org/flags/png/$languages->{$_}{flag}.png\" /> <a href=\"specify_feature.pl?lcode=$languages->{$_}{lcode}\">$_</a></span>"} (@lnames)));
+        print(join(', ', map {"<span style='white-space:nowrap'><img class=\"flag\" src=\"https://universaldependencies.org/flags/png/$languages->{$_}{flag}.png\" /> <a href=\"specify_deprel.pl?lcode=$languages->{$_}{lcode}\">$_</a></span>"} (@lnames)));
         print("</td></tr>\n");
     }
     print("  </table>\n");
 }
 #------------------------------------------------------------------------------
-# Language code specified. We can edit features of that language.
+# Language code specified. We can edit deprels of that language.
 else
 {
     # Read the data file from JSON.
@@ -132,20 +132,20 @@ else
     {
         process_form_data(\%data, $query);
     }
-    # If we are not saving but have received a feature, it means the feature should be edited.
-    elsif($config{feature} ne '')
+    # If we are not saving but have received a deprel, it means the deprel should be edited.
+    elsif($config{deprel} ne '')
     {
         summarize_guidelines();
-        print_feature_details(\%data);
-        print_feature_form(\%data);
-        print_values_in_all_languages(\%data, $languages);
+        print_deprel_details(\%data);
+        print_deprel_form(\%data);
+        print_all_deprels(\%data, $languages);
     }
     else
     {
         summarize_guidelines();
-        print_features_for_language(\%data);
+        print_deprels_for_language(\%data);
         # Show all known auxiliaries so the user can compare. This and related languages first.
-        print_all_features(\%data, $languages);
+        print_all_deprels(\%data, $languages);
     }
 }
 print <<EOF
@@ -157,49 +157,39 @@ EOF
 
 
 #------------------------------------------------------------------------------
-# Prints the list of features and values permitted in the current language.
+# Prints the list of deprels and values permitted in the current language.
 #------------------------------------------------------------------------------
-sub print_features_for_language
+sub print_deprels_for_language
 {
     my $data = shift;
     if(exists($data->{$config{lcode}}))
     {
         my $ldata = $data->{$config{lcode}};
-        my @features = sort(keys(%{$ldata}));
-        print("  <h2>Features</h2>\n");
-        print("  <p><b>Currently permitted:</b> ".join(', ', map {"<a href=\"specify_feature.pl?lcode=$config{lcode}&amp;feature=$_\">$_</a>"} (grep {$ldata->{$_}{permitted}} (@features)))."</p>\n");
-        my @afeatures = ();
-        foreach my $f (@features)
+        my @deprels = sort(keys(%{$ldata}));
+        print("  <h2>Deprels</h2>\n");
+        print("  <p><b>Currently permitted:</b> ".join(', ', map {"<a href=\"specify_deprel.pl?lcode=$config{lcode}&amp;deprel=$_\">$_</a>"} (grep {$ldata->{$_}{permitted}} (@deprels)))."</p>\n");
+        my @adeprels = ();
+        foreach my $f (@deprels)
         {
-            if(!defined($ldata->{$f}{unused_uvalues}))
+            if(!$ldata->{$f}{permitted})
             {
-                die("Undefined unused_uvalues for feature '$f'");
-            }
-            if(!defined($ldata->{$f}{unused_lvalues}))
-            {
-                die("Undefined unused_lvalues for feature '$f'");
-            }
-            my $nuu = scalar(@{$ldata->{$f}{unused_uvalues}});
-            my $nul = scalar(@{$ldata->{$f}{unused_lvalues}});
-            if(!$ldata->{$f}{permitted} && $nuu + $nul > 0)
-            {
-                push(@afeatures, $f);
+                push(@adeprels, $f);
             }
         }
-        print("  <p><b>Currently unused universal features:</b> ".join(', ', map {"<a href=\"specify_feature.pl?lcode=$config{lcode}&amp;feature=$_\">$_</a>"} (grep {$ldata->{$_}{type} eq 'universal'} (@afeatures)))."</p>\n");
-        print("  <p><b>Other features that can be permitted:</b> ".join(', ', map {"<a href=\"specify_feature.pl?lcode=$config{lcode}&amp;feature=$_\">$_</a>"} (grep {$ldata->{$_}{type} eq 'lspec'} (@afeatures)))."</p>\n");
-        my @undocumented = grep {$ldata->{$_}{doc} !~ m/^(global|local)$/} (@features);
+        print("  <p><b>Currently unused universal dependency relations:</b> ".join(', ', map {"<a href=\"specify_deprel.pl?lcode=$config{lcode}&amp;deprel=$_\">$_</a>"} (grep {$ldata->{$_}{type} eq 'universal'} (@adeprels)))."</p>\n");
+        print("  <p><b>Other dependency relations that can be permitted:</b> ".join(', ', map {"<a href=\"specify_deprel.pl?lcode=$config{lcode}&amp;deprel=$_\">$_</a>"} (grep {$ldata->{$_}{type} eq 'lspec'} (@adeprels)))."</p>\n");
+        my @undocumented = grep {$ldata->{$_}{doc} !~ m/^(global|local)$/} (@deprels);
         if(scalar(@undocumented) > 0)
         {
-            print("  <p><b>Undocumented features cannot be used:</b> ".join(', ', @undocumented)."</p>\n");
+            print("  <p><b>Undocumented dependency relations cannot be used:</b> ".join(', ', @undocumented)."</p>\n");
         }
         my @errors = ();
-        foreach my $f (@features)
+        foreach my $f (@deprels)
         {
             my $howdoc = $ldata->{$f}{doc} =~ m/^(global|gerror)$/ ? 'global' : $ldata->{$f}{doc} =~ m/^(local|lerror)$/ ? 'local' : 'none';
             my $href;
             my $file = $f;
-            $file =~ s/\[([a-z]+)\]/-$1/;
+            $file =~ s/:/-/g;
             if($howdoc eq 'global')
             {
                 $href = "https://universaldependencies.org/u/feat/$file.html";
@@ -226,53 +216,33 @@ sub print_features_for_language
             }
             print("  </ul>\n");
         }
-        # Warn about feature values that were declared for the language in tools/data but they are not documented.
-        my @fvs = ();
-        foreach my $f (@features)
-        {
-            # Do not look at 'permitted' now. The feature may be permitted but
-            # there might still be values that are not permitted.
-            if(defined($ldata->{$f}{evalues}))
-            {
-                my @values = sort(@{$ldata->{$f}{evalues}});
-                foreach my $v (@values)
-                {
-                    push(@fvs, "$f=$v");
-                }
-            }
-        }
-        if(scalar(@fvs) > 0)
-        {
-            print("  <h2>Feature values previously declared but undocumented</h2>\n");
-            print("  <p>".join(' ', @fvs)."</p>\n");
-        }
     }
     else
     {
-        die("No information about features for language '$config{lcode}'");
+        die("No information about dependency relations for language '$config{lcode}'");
     }
 }
 
 
 
 #------------------------------------------------------------------------------
-# Prints the list of values permitted for a given feature in a given language.
+# Prints information about a given deprel in a given language.
 #------------------------------------------------------------------------------
-sub print_feature_details
+sub print_deprel_details
 {
     my $data = shift;
     if(exists($data->{$config{lcode}}))
     {
-        print("  <h2>$config{feature}</h2>\n");
-        if(exists($data->{$config{lcode}}{$config{feature}}))
+        print("  <h2>$config{deprel}</h2>\n");
+        if(exists($data->{$config{lcode}}{$config{deprel}}))
         {
-            my $fdata = $data->{$config{lcode}}{$config{feature}};
+            my $fdata = $data->{$config{lcode}}{$config{deprel}};
             my $type = $fdata->{type};
             $type = 'language-specific' if($type eq 'lspec');
             my $howdoc = $fdata->{doc} =~ m/^(global|gerror)$/ ? 'global' : $fdata->{doc} =~ m/^(local|lerror)$/ ? 'local' : 'none';
             my $href;
-            my $file = $config{feature};
-            $file =~ s/\[([a-z]+)\]/-$1/;
+            my $file = $config{deprel};
+            $file =~ s/:/-/g;
             if($howdoc eq 'global')
             {
                 $href = "https://universaldependencies.org/u/feat/$file.html";
@@ -284,12 +254,12 @@ sub print_feature_details
             if($fdata->{permitted})
             {
                 my $howdocly = $howdoc.'ly';
-                print("  <p>This $type feature is currently permitted in $lname_by_code{$config{lcode}} ".
+                print("  <p>This $type dependency relation is currently permitted in $lname_by_code{$config{lcode}} ".
                            "and is $howdocly documented <a href=\"$href\">here</a>.</p>\n");
             }
             else
             {
-                print("  <p>This $type feature is currently not permitted in $lname_by_code{$config{lcode}}.");
+                print("  <p>This $type dependency relation is currently not permitted in $lname_by_code{$config{lcode}}.");
                 if($howdoc eq 'none')
                 {
                     print(" It is not documented.");
@@ -314,37 +284,38 @@ sub print_feature_details
         }
         else
         {
-            die("No information about feature '$config{feature}' in language '$config{lcode}'");
+            die("No information about dependency relation '$config{deprel}' in language '$config{lcode}'");
         }
     }
     else
     {
-        die("No information about features for language '$config{lcode}'");
+        die("No information about dependency relations for language '$config{lcode}'");
     }
 }
 
 
 
 #------------------------------------------------------------------------------
-# Prints the form where a particular feature can be edited.
+# Prints the form where a particular deprel can be edited.
 #------------------------------------------------------------------------------
-sub print_feature_form
+sub print_deprel_form
 {
     my $data = shift;
-    if($config{feature} eq '')
+    if($config{deprel} eq '')
     {
-        die("Unknown feature");
+        die("Unknown deprel");
     }
-    if(!exists($data->{$config{lcode}}{$config{feature}}))
+    if(!exists($data->{$config{lcode}}{$config{deprel}}))
     {
-        die("Feature '$config{feature}' not found in language '$config{lcode}'");
+        die("Dependency relation '$config{deprel}' not found in language '$config{lcode}'");
     }
-    my $record = $data->{$config{lcode}}{$config{feature}};
-    print("  <h3>Values permitted for individual parts of speech</h3>\n");
+    my $hdeprel = htmlescape($config{deprel});
+    my $hlanguage = htmlescape($lname_by_code($config{lcode}));
+    print("  <h3>Permit or forbid $hdeprel</h3>\n");
     print <<EOF
-  <form action="specify_feature.pl" method="post" enctype="multipart/form-data">
+  <form action="specify_deprel.pl" method="post" enctype="multipart/form-data">
   <input name=lcode type=hidden value="$config{lcode}" />
-  <input name=feature type=hidden value="$config{feature}" />
+  <input name=deprel type=hidden value="$config{deprel}" />
   <p>Please tell us your Github user name:
     <input name=ghu type=text value="$config{ghu}" />
     Are you a robot? (one word) <input name=smartquestion type=text size=10 /><br />
@@ -353,37 +324,10 @@ sub print_feature_form
     issues to be discussed. This is not a problem when you edit directly on
     Github, but here the actual push action will be formally done by another
     user.</small></p>
-  <table id="inputtable">
 EOF
     ;
-    #--------------------------------------------------------------------------
-    # Column headings
-    print("    <tr id=\"inputheader\">\n");
-    print("      <td>Value</td>\n");
-    my @upos = qw(ADJ ADP ADV AUX CCONJ DET INTJ NOUN NUM PART PRON PROPN PUNCT SCONJ SYM VERB X);
-    foreach my $u (@upos)
-    {
-        print("      <td>$u</td>\n");
-    }
-    print("    </tr>\n");
-    #--------------------------------------------------------------------------
-    # Rows for individual values
-    my @used = sort(@{$record->{uvalues}}, @{$record->{lvalues}});
-    my @unused = sort(@{$record->{unused_uvalues}}, @{$record->{unused_lvalues}});
-    foreach my $v (@used, @unused)
-    {
-        print("    <tr>\n");
-        my $hv = htmlescape($v);
-        print("      <td>$hv</td>\n");
-        foreach my $u (@upos)
-        {
-            my $name = "value.$hv.$u";
-            my $checked = exists($record->{byupos}{$u}{$v}) ? ' checked' : '';
-            print("      <td><input type=\"checkbox\" id=\"$name\" name=\"$name\" value=\"1\"$checked /></td>\n");
-        }
-        print("    </tr>\n");
-    }
-    print("  </table>\n");
+    print("  <p>Check <input type=\"checkbox\" id=\"permitted\" name=\"permitted\" value=\"1\"$checked /> here\n");
+    print("    if $hdeprel should be permitted in $hlanguage.</p>\n");
     print("  <input name=save type=submit value=\"Save\" />\n");
     print("  </form>\n");
 }
@@ -393,7 +337,7 @@ EOF
 #------------------------------------------------------------------------------
 # Processes data submitted from a form and prints confirmation or an error
 # message.
-# We are processing a Save request after a feature was edited.
+# We are processing a Save request after a deprel was edited.
 # We have briefly checked that the parameters match expected regular expressions.
 # Nevertheless, only now we can also report an error if a parameter is empty.
 #------------------------------------------------------------------------------
@@ -422,73 +366,52 @@ sub process_form_data
         print("    <li style='color:red'>ERROR: Unsatisfactory robotic response</li>\n");
         $error = 1;
     }
-    my %newbyupos;
-    my %newused;
-    if($config{feature} ne '')
+    if($config{deprel} ne '')
     {
-        print("    <li>feature = '$config{feature}'</li>\n");
-        # Check that the feature is known and has available values.
-        if(exists($data->{$config{lcode}}{$config{feature}}))
+        print("    <li>deprel = '$config{deprel}'</li>\n");
+        # Check that the deprel is known and documented.
+        if(exists($data->{$config{lcode}}{$config{deprel}}))
         {
-            # We have postponed reading value-UPOS combinations from the CGI query
-            # because we had not read the feature data when we were reading the
-            # parameters. Now we can look directly for values relevant for this
-            # feature.
-            my $fdata = $data->{$config{lcode}}{$config{feature}};
-            my @available = sort(@{$fdata->{uvalues}}, @{$fdata->{unused_uvalues}}, @{$fdata->{lvalues}}, @{$fdata->{unused_lvalues}});
-            if(scalar(@available) > 0)
+            if($data->{$config{lcode}}{$config{deprel}}{doc} =~ m/^(global|local)$/)
             {
-                my @upos = qw(ADJ ADP ADV AUX CCONJ DET INTJ NOUN NUM PART PRON PROPN PUNCT SCONJ SYM VERB X);
-                foreach my $v (@available)
+                if($config{permitted})
                 {
-                    foreach my $u (@upos)
+                    if($data->{$config{lcode}}{$config{deprel}}{permitted})
                     {
-                        my $name = "value.$v.$u";
-                        if($query->param($name)==1)
-                        {
-                            $newbyupos{$u}{$v} = 1;
-                            $newused{$v}++;
-                        }
+                        print("    <li>No change: still permitted</li>\n");
+                    }
+                    else
+                    {
+                        print("    <li style='color:blue'>Now permitted</li>\n");
                     }
                 }
-                # Compare the new byupos with the old one.
-                my $oldbyupos = $data->{$config{lcode}}{$config{feature}}{byupos};
-                foreach my $u (@upos)
+                else
                 {
-                    if(exists($newbyupos{$u}))
+                    if($data->{$config{lcode}}{$config{deprel}}{permitted})
                     {
-                        foreach my $v (sort(keys(%{$newbyupos{$u}})))
-                        {
-                            if(!exists($oldbyupos->{$u}{$v}) || !$oldbyupos->{$u}{$v})
-                            {
-                                print("    <li style='color:blue'>value '$v' now usable with $u</li>\n");
-                            }
-                        }
+                        print("    <li style='color:purple'>No longer permitted</li>\n");
                     }
-                    foreach my $v (sort(keys(%{$oldbyupos->{$u}})))
+                    else
                     {
-                        if(!exists($newbyupos{$u}{$v}))
-                        {
-                            print("    <li style='color:purple'>value '$v' no longer usable with $u</li>\n");
-                        }
+                        print("    <li>No change: still not permitted</li>\n");
                     }
                 }
             }
             else
             {
-                print("    <li style='color:red'>ERROR: No documented values are available for feature '$config{feature}' in language '$config{language}'</li>\n");
+                print("    <li style='color:red'>ERROR: Undocumented dependency relation '$config{deprel}' cannot be used in language '$config{language}'</li>\n");
                 $error = 1;
             }
         }
         else
         {
-            print("    <li style='color:red'>ERROR: Unknown feature '$config{feature}' in language '$config{language}'</li>\n");
+            print("    <li style='color:red'>ERROR: Unknown dependency relation '$config{deprel}' in language '$config{language}'</li>\n");
             $error = 1;
         }
     }
     else
     {
-        print("    <li style='color:red'>ERROR: Missing feature</li>\n");
+        print("    <li style='color:red'>ERROR: Missing deprel</li>\n");
         $error = 1;
     }
     print("  </ul>\n");
@@ -498,26 +421,19 @@ sub process_form_data
     }
     else
     {
-        my $fdata = $data->{$config{lcode}}{$config{feature}};
+        my $ddata = $data->{$config{lcode}}{$config{deprel}};
         # Do I want to use my local time or universal time in the timestamps?
         #my ($sec, $min, $hour, $mday, $mon, $year, $wday, $yday) = gmtime(time());
         my ($sec, $min, $hour, $mday, $mon, $year, $wday, $yday) = localtime(time());
         my $timestamp = sprintf("%04d-%02d-%02d-%02d-%02d-%02d", 1900+$year, 1+$mon, $mday, $hour, $min, $sec);
-        $fdata->{lastchanged} = $timestamp;
-        $fdata->{lastchanger} = $config{ghu};
-        $fdata->{byupos} = \%newbyupos;
-        my @uvalues = sort(@{$fdata->{uvalues}}, @{$fdata->{unused_uvalues}});
-        my @lvalues = sort(@{$fdata->{lvalues}}, @{$fdata->{unused_lvalues}});
-        @{$fdata->{uvalues}} = grep {$newused{$_}} (@uvalues);
-        @{$fdata->{unused_uvalues}} = grep {!$newused{$_}} (@uvalues);
-        @{$fdata->{lvalues}} = grep {$newused{$_}} (@lvalues);
-        @{$fdata->{unused_lvalues}} = grep {!$newused{$_}} (@lvalues);
-        $fdata->{permitted} = scalar(@{$fdata->{uvalues}}) + scalar(@{$fdata->{lvalues}}) > 0;
-        valdata::write_feats_json($data, "$path/feats.json");
+        $ddata->{lastchanged} = $timestamp;
+        $ddata->{lastchanger} = $config{ghu};
+        $ddata->{permitted} = $config{permitted};
+        valdata::write_deprels_json($data, "$path/deprels.json");
         # Commit the changes to the repository and push them to Github.
         system("/home/zeman/bin/git-push-docs-automation.sh '$config{ghu}' '$config{lcode}' > /dev/null");
         print <<EOF
-  <form action="specify_feature.pl" method="post" enctype="multipart/form-data">
+  <form action="specify_deprel.pl" method="post" enctype="multipart/form-data">
     <input name=lcode type=hidden value="$config{lcode}" />
     <input name=ghu type=hidden value="$config{ghu}" />
     <input name=gotolang type=submit value="Return to list" />
@@ -536,12 +452,11 @@ sub summarize_guidelines
 {
     print <<EOF
   <h1><img class=\"flag\" src=\"https://universaldependencies.org/flags/png/$languages->{$lname_by_code{$config{lcode}}}{flag}.png\" />
-    Specify features for $lname_by_code{$config{lcode}}</h1>
-  <p>A feature-value pair will be permitted in the language only if it is registered
-    here at least for one universal part-of-speech tag. All features and values must
-    be documented. If you need a language-specific feature (or value) that is not yet
-    available here, write its language-specific documentation page (see
-    <a href="https://universaldependencies.org/contributing_language_specific.html#language-specific-features">here</a>
+    Specify dependency relations for $lname_by_code{$config{lcode}}</h1>
+  <p>A dependency relation subtype will be permitted in the language only if it is registered
+    here. All relations must be documented. If you need a language-specific relation subtype
+    that is not yet available here, write its language-specific documentation page (see
+    <a href="https://universaldependencies.org/contributing_language_specific.html#language-specific-subtypes-of-dependency-relations">here</a>
     for instructions).</p>
 EOF
     ;
@@ -550,36 +465,36 @@ EOF
 
 
 #------------------------------------------------------------------------------
-# Prints features of all languages, this and related languages first.
+# Prints deprels of all languages, this and related languages first.
 #------------------------------------------------------------------------------
-sub print_all_features
+sub print_all_deprels
 {
     my $data = shift;
     my $languages = shift; # ref to hash read from YAML, indexed by names
     # Print the data on the web page.
-    print("  <h2>Permitted features for this and other languages</h2>\n");
+    print("  <h2>Permitted dependency relations for this and other languages</h2>\n");
     my @lcodes = langgraph::sort_lcodes_by_relatedness($languages, $config{lcode});
-    # Get the list of all known feature names. Every language has a different set.
-    my %features;
+    # Get the list of all known deprels. Every language has a different set.
+    my %deprels;
     foreach my $lcode (@lcodes)
     {
-        my @features = keys(%{$data->{$lcode}});
-        foreach my $f (@features)
+        my @deprels = keys(%{$data->{$lcode}});
+        foreach my $d (@deprels)
         {
-            $features{$f} = $data->{$lcode}{$f}{type};
+            $deprels{$d} = $data->{$lcode}{$d}{type};
         }
     }
-    my @features = sort
+    my @deprels = sort
     {
-        # Universal features come before language-specific.
-        my $r = $features{$b} cmp $features{$a};
+        # Universal deprels come before language-specific.
+        my $r = $deprels{$b} cmp $deprels{$a};
         unless($r)
         {
             $r = $a cmp $b;
         }
         $r
     }
-    (keys(%features));
+    (keys(%deprels));
     print("  <table>\n");
     my $i = 0;
     foreach my $lcode (@lcodes)
@@ -589,7 +504,7 @@ sub print_all_features
         {
             print("    <tr><th colspan=2>Language</th><th>Total</th>");
             my $j = 0;
-            foreach my $f (@features)
+            foreach my $f (@deprels)
             {
                 # Repeat the language every 12 columns.
                 if($j != 0 && $j % 12 == 0)
@@ -602,11 +517,11 @@ sub print_all_features
             print("</tr>\n");
         }
         $i++;
-        # Get the number of features permitted in this language.
-        my $n = scalar(grep {exists($data->{$lcode}{$_}) && $data->{$lcode}{$_}{permitted}} (@features));
+        # Get the number of deprels permitted in this language.
+        my $n = scalar(grep {exists($data->{$lcode}{$_}) && $data->{$lcode}{$_}{permitted}} (@deprels));
         print("    <tr><td>$lname_by_code{$lcode}</td><td>$lcode</td><td>$n</td>");
         my $j = 0;
-        foreach my $f (@features)
+        foreach my $d (@deprels)
         {
             # Repeat the language every 12 columns.
             if($j != 0 && $j % 12 == 0)
@@ -615,77 +530,13 @@ sub print_all_features
             }
             $j++;
             print('<td>');
-            if(exists($data->{$lcode}{$f}) && $data->{$lcode}{$f}{permitted})
+            if(exists($data->{$lcode}{$d}) && $data->{$lcode}{$d}{permitted})
             {
-                my $nu = scalar(@{$data->{$lcode}{$f}{uvalues}});
-                my $nl = scalar(@{$data->{$lcode}{$f}{lvalues}});
-                if($nu + $nl > 0)
-                {
-                    print($nu);
-                    if($nl > 0)
-                    {
-                        print("+$nl");
-                    }
-                }
+                print($d);
             }
             print('</td>');
         }
         print("</tr>\n");
-    }
-    print("  </table>\n");
-}
-
-
-
-#------------------------------------------------------------------------------
-# Prints values of one feature by UPOS of all languages, this and related
-# languages first.
-#------------------------------------------------------------------------------
-sub print_values_in_all_languages
-{
-    my $data = shift;
-    my $languages = shift; # ref to hash read from YAML, indexed by names
-    # Print the data on the web page.
-    print("  <h2>Permitted values for this and other languages</h2>\n");
-    my @lcodes = langgraph::sort_lcodes_by_relatedness($languages, $config{lcode});
-    my @upos = qw(ADJ ADP ADV AUX CCONJ DET INTJ NOUN NUM PART PRON PROPN PUNCT SCONJ SYM VERB X);
-    print("  <table>\n");
-    my $i = 0;
-    foreach my $lcode (@lcodes)
-    {
-        if(exists($data->{$lcode}{$config{feature}}))
-        {
-            # Repeat the headers every 20 rows.
-            if($i % 20 == 0)
-            {
-                print("    <tr><th colspan=2>Language</th><th>Total</th>");
-                foreach my $u (@upos)
-                {
-                    print("<th>$u</th>");
-                }
-                print("</tr>\n");
-            }
-            $i++;
-            my $fdata = $data->{$lcode}{$config{feature}};
-            # Get the number of values permitted in this language.
-            my $n = scalar(@{$fdata->{uvalues}}) + scalar(@{$fdata->{lvalues}});
-            print("    <tr><td>$lname_by_code{$lcode}</td><td>$lcode</td><td>$n</td>");
-            foreach my $u (@upos)
-            {
-                print('<td>');
-                if(exists($fdata->{byupos}{$u}))
-                {
-                    #print(join(' ', sort(keys(%{$fdata->{byupos}{$u}}))));
-                    ###!!! At present the 'byupos' hash may include values that are not permitted!
-                    ###!!! The hash has been collected from treebank data and has not been pruned yet.
-                    ###!!! We thus must prune it here.
-                    my @values = sort(grep {exists($fdata->{byupos}{$u}{$_})} (@{$fdata->{uvalues}}, @{$fdata->{lvalues}}));
-                    print(join(' ', @values));
-                }
-                print('</td>');
-            }
-            print("</tr>\n");
-        }
     }
     print("  </table>\n");
 }
@@ -765,29 +616,37 @@ sub get_parameters
         push(@errors, "Unsatisfactory robotic response :-)");
     }
     #--------------------------------------------------------------------------
-    # Feature is the name of the feature whose details we want to see and edit.
-    $config{feature} = decode('utf8', $query->param('feature'));
-    if(!defined($config{feature}) || $config{feature} =~ m/^\s*$/)
+    # Deprel is the name of the deprel whose details we want to see and edit.
+    $config{deprel} = decode('utf8', $query->param('deprel'));
+    if(!defined($config{deprel}) || $config{deprel} =~ m/^\s*$/)
     {
-        $config{feature} = '';
+        $config{deprel} = '';
     }
-    # Forms of feature names are prescribed in the UD guidelines.
-    elsif($config{feature} =~ m/^([A-Z][A-Za-z0-9]*(\[[a-z]+\])?)$/)
+    # Forms of deprels are prescribed in the UD guidelines.
+    elsif($config{deprel} =~ m/^([a-z]+(:[a-z]+)?)$/)
     {
-        $config{feature} = $1;
+        $config{deprel} = $1;
     }
     else
     {
-        push(@errors, "Feature '$config{feature}' does not have the form prescribed by the guidelines");
+        push(@errors, "Deprel '$config{deprel}' does not have the form prescribed by the guidelines");
     }
     #--------------------------------------------------------------------------
-    # Value.* is a boolean (=1) parameter that says whether a given value is
-    # permitted with a given part of speech. It comes from the form and it only
-    # makes sense if there are valid lcode and feature parameters.
-    # For example, value.Sing.PRON=1 may appear with feature=Number and it
-    # means that the feature Number can have the Sing value for pronouns.
-    # We need to read the feature database first, so we will read these
-    # parameters from the query later.
+    # Permitted is a boolean (=1) parameter that says whether a given deprel is
+    # permitted in the language.
+    $config{permitted} = decode('utf8', $query->param('permitted'));
+    if(!defined($config{permitted}) || $config{permitted} =~ m/^\s*$/ || $config{permitted} == 0)
+    {
+        $config{permitted} = '';
+    }
+    elsif($config{permitted} =~ m/^0*1$/)
+    {
+        $config{permitted} = 1;
+    }
+    else
+    {
+        push(@errors, "Unexpected value '$config{permitted}' of the parameter 'permitted'");
+    }
     #--------------------------------------------------------------------------
     # The parameter 'save' comes from the Save button which submitted the form.
     $config{save} = decode('utf8', $query->param('save'));

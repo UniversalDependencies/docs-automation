@@ -578,7 +578,7 @@ sub copy_feature_value_usage
 
 
 #------------------------------------------------------------------------------
-# Dumps the data as a JSON file.
+# Dumps the feature data as a JSON file.
 #------------------------------------------------------------------------------
 sub write_feats_json
 {
@@ -658,6 +658,219 @@ sub write_feats_json
             push(@fjsons, $fjson);
         }
         $ljson .= join(",\n", @fjsons)."\n";
+        $ljson .= '}';
+        push(@ljsons, $ljson);
+    }
+    $json .= join(",\n", @ljsons)."\n";
+    $json .= "}}\n";
+    open(JSON, ">$filename") or confess("Cannot write '$filename': $!");
+    print JSON ($json);
+    close(JSON);
+}
+
+
+
+#------------------------------------------------------------------------------
+# Reads the data about deprels in each language (deprels.json), and the current
+# state of documentation (docdeps.json). Updates the main data with the info
+# about documentation, and returns a reference to the combined hash.
+#------------------------------------------------------------------------------
+sub read_deprels_json
+{
+    my $path = shift; # docs-automation/valrules
+    my $docs = read_documented_deprels_json($path);
+    my $data = json_file_to_perl("$path/deprels.json")->{deprels};
+    merge_documented_and_declared_deprels($docs, $data);
+    return $data;
+}
+
+
+
+#------------------------------------------------------------------------------
+# Reads the JSON about dependency relations that are documented globally and
+# for individual languages.
+#------------------------------------------------------------------------------
+sub read_documented_deprels_json
+{
+    my $path = shift; # docs-automation/valrules
+    my $docdeps = json_file_to_perl("$path/docdeps.json");
+    my %data;
+    # $docdeps->{lists} should contain all languages known in UD, so we will use its index.
+    if(exists($docdeps->{lists}) && ref($docdeps->{lists}) eq 'HASH')
+    {
+        my @lcodes = keys(%{$docdeps->{lists}});
+        foreach my $lcode (@lcodes)
+        {
+            $data{$lcode} = {};
+            # If the language has any local documentation, read it first.
+            if(exists($docdeps->{ldocs}{$lcode}))
+            {
+                my @deprels = keys($docdeps->{ldocs}{$lcode});
+                foreach my $d (@deprels)
+                {
+                    $data{$lcode}{$d}{type} = $docdeps->{ldocs}{$lcode}{$d}{type};
+                    $data{$lcode}{$d}{errors} = $docdeps->{ldocs}{$lcode}{$d}{errors};
+                    my $nerr = scalar(@{$data{$lcode}{$d}{errors}});
+                    if($nerr > 0)
+                    {
+                        $data{$lcode}{$d}{doc} = 'lerror';
+                        $data{$lcode}{$d}{permitted} = 0;
+                    }
+                    else
+                    {
+                        $data{$lcode}{$d}{doc} = 'local';
+                        $data{$lcode}{$d}{permitted} = 1;
+                    }
+                }
+            }
+            # Read the global documentation and add deprels that were not documented locally.
+            my @deprels = keys($docdeps->{gdocs});
+            foreach my $d (@deprels)
+            {
+                if(!exists($data{$lcode}{$d}))
+                {
+                    $data{$lcode}{$d}{type} = $docdeps->{gdocs}{$d}{type};
+                    $data{$lcode}{$d}{errors} = $docdeps->{gdocs}{$d}{errors};
+                    my $nerr = scalar(@{$data{$lcode}{$d}{errors}});
+                    if($nerr > 0)
+                    {
+                        $data{$lcode}{$d}{doc} = 'gerror';
+                        $data{$lcode}{$d}{permitted} = 0;
+                    }
+                    else
+                    {
+                        $data{$lcode}{$d}{doc} = 'global';
+                        $data{$lcode}{$d}{permitted} = 1;
+                    }
+                }
+            }
+        }
+    }
+    else
+    {
+        confess("No documented dependency relations found in the JSON file");
+    }
+    return \%data;
+}
+
+
+
+#------------------------------------------------------------------------------
+# Takes references to two hashes: deprels known from documentation and
+# deprels declared to be used in a given language. Both hashes have a similar
+# structure: $hash->{$lcode}{$deprel}{...}. The first hash should reflect the
+# current state of the docs repository. Information on documentation of
+# features will be taken from the first hash and copied to the second hash
+# (where it will replace any such information that may be there from the past).
+# The remaining values in the second hash will be adjusted accordingly. For
+# example, a deprel that was previously permitted may now be disallowed if it
+# disappeared from documentation. On the other hand, if the deprel was
+# previously not permitted for the language, documentation will not
+# automatically allow it.
+#
+# The copies made here are not necessarily deep. We assume that the first hash
+# will not be further used. It is thus possible (but not guaranteed) that the
+# two hashes will share references to some substructures after merging.
+#------------------------------------------------------------------------------
+sub merge_documented_and_declared_deprels
+{
+    my $documented = shift; # hash ref
+    my $declared = shift; # hash ref
+    # Copy documented features to declared.
+    foreach my $lcode (keys(%{$documented}))
+    {
+        foreach my $d (keys(%{$documented->{$lcode}}))
+        {
+            # If the deprel has not been previously used in the language, just add it.
+            if(!exists($declared->{$lcode}{$d}))
+            {
+                $declared->{$lcode}{$d} = $documented->{$lcode}{$d};
+                my $decd = $declared->{$lcode}{$d};
+                $decd->{errors} = [] if(!defined($decd->{errors}));
+                # A new universal deprel is automatically permitted (provided it is well documented, i.e., permitted by documentation).
+                # A new language-specific relation subtype is not permitted until it is turned on for the language in the web interface.
+                $decd->{permitted} = $decd->{permitted} && $decd->{type} eq 'universal';
+            }
+            # If the deprel has been previously used in the language, check its status.
+            else
+            {
+                my $decd = $declared->{$lcode}{$d};
+                my $docd = $documented->{$lcode}{$d};
+                $decd->{type} = $docd->{type};
+                $decd->{doc} = $docd->{doc};
+                $decd->{errors} = $docd->{errors};
+                $decd->{errors} = [] if(!defined($decd->{errors}));
+                $decd->{permitted} = $decd->{permitted} && $docd->{permitted};
+            }
+        }
+        # If a deprel was previously declared and disappeared from documentation,
+        # it is no longer permitted.
+        foreach my $d (keys(%{$declared->{$lcode}}))
+        {
+            if(!exists($documented->{$lcode}{$d}))
+            {
+                my $decd = $declared->{$lcode}{$d};
+                $decd->{permitted} = 0;
+                $decd->{doc} = 'none';
+                $decd->{errors} = [];
+            }
+        }
+    }
+}
+
+
+
+#------------------------------------------------------------------------------
+# Dumps the deprel data as a JSON file.
+#------------------------------------------------------------------------------
+sub write_deprels_json
+{
+    # Initially, the data is read from the Python code.
+    # This will change in the future and we will read the JSON file instead!
+    my $data = shift;
+    my $filename = shift;
+    my $json = '{"WARNING": "Please do not edit this file manually. Such edits will be overwritten without notice. Go to http://quest.ms.mff.cuni.cz/udvalidator/cgi-bin/unidep/langspec/specify_deprel.pl instead.",'."\n\n";
+    $json .= '"deprels": {'."\n";
+    my @ljsons = ();
+    # Sort the list so that git diff is informative when we investigate changes.
+    my @lcodes = sort(keys(%{$data}));
+    foreach my $lcode (@lcodes)
+    {
+        my $ljson = '"'.$lcode.'"'.": {\n";
+        my @djsons = ();
+        my @deprels = sort(keys(%{$data->{$lcode}}));
+        foreach my $d (@deprels)
+        {
+            # Skip deprels that are documented globally and not permitted in this language.
+            next if($data->{$lcode}{$d}{doc} eq 'global' && !$data->{$lcode}{$d}{permitted});
+            my $djson = '"'.escape_json_string($d).'": {';
+            $djson .= '"type": "'.escape_json_string($data->{$lcode}{$d}{type}).'", '; # universal lspec
+            $djson .= '"doc": "'.escape_json_string($data->{$lcode}{$d}{doc}).'", '; # global gerror local lerror none
+            $djson .= '"permitted": '.($data->{$lcode}{$d}{permitted} ? 1 : 0).', '; # 1 0
+            my @ajsons = ();
+            foreach my $array (qw(errors))
+            {
+                my $ajson .= '"'.$array.'": [';
+                if(defined($data->{$lcode}{$d}{$array}))
+                {
+                    $ajson .= join(', ', map {'"'.escape_json_string($_).'"'} (sort(@{$data->{$lcode}{$d}{$array}})));
+                }
+                $ajson .= ']';
+                push(@ajsons, $ajson);
+            }
+            $djson .= join(', ', @ajsons);
+            if(exists($data->{$lcode}{$d}{lastchanged}))
+            {
+                $djson .= ', "lastchanged": "'.escape_json_string($data->{$lcode}{$d}{lastchanged}).'"';
+            }
+            if(exists($data->{$lcode}{$d}{lastchanger}))
+            {
+                $djson .= ', "lastchanger": "'.escape_json_string($data->{$lcode}{$d}{lastchanger}).'"';
+            }
+            $djson .= '}';
+            push(@djsons, $djson);
+        }
+        $ljson .= join(",\n", @djsons)."\n";
         $ljson .= '}';
         push(@ljsons, $ljson);
     }
