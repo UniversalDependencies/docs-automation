@@ -138,14 +138,14 @@ else
         summarize_guidelines();
         print_feature_details(\%data);
         print_feature_form(\%data);
-        print_values_in_all_languages(\%data);
+        print_values_in_all_languages(\%data, $languages);
     }
     else
     {
         summarize_guidelines();
         print_features_for_language(\%data);
         # Show all known auxiliaries so the user can compare. This and related languages first.
-        print_all_features(\%data);
+        print_all_features(\%data, $languages);
     }
 }
 print <<EOF
@@ -547,6 +547,7 @@ EOF
 sub print_all_features
 {
     my $data = shift;
+    my $languages = shift; # ref to hash read from YAML, indexed by names
     # Print the data on the web page.
     print("  <h2>Permitted features for this and other languages</h2>\n");
     my @lcodes = langgraph::sort_lcodes_by_relatedness($languages, $config{lcode});
@@ -635,6 +636,7 @@ sub print_all_features
 sub print_values_in_all_languages
 {
     my $data = shift;
+    my $languages = shift; # ref to hash read from YAML, indexed by names
     # Print the data on the web page.
     print("  <h2>Permitted values for this and other languages</h2>\n");
     my @lcodes = langgraph::sort_lcodes_by_relatedness($languages, $config{lcode});
