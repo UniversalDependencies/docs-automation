@@ -496,11 +496,14 @@ sub print_all_deprels
         my %subtypes;
         foreach my $d (keys(%{$data->{$lcode}}))
         {
-            if($d =~ m/^([a-z]+):([a-z]+)$/)
+            if($data->{$lcode}{$d}{permitted})
             {
-                my $udep = $1;
-                my $lspec = $2;
-                $subtypes{$udep}{$lspec}++;
+                if($d =~ m/^([a-z]+):([a-z]+)$/)
+                {
+                    my $udep = $1;
+                    my $lspec = $2;
+                    $subtypes{$udep}{$lspec}++;
+                }
             }
         }
         # Repeat the headers every 20 rows.
@@ -516,13 +519,7 @@ sub print_all_deprels
                     print('<th></th>');
                 }
                 $j++;
-                my $s = '';
-                if(exists($subtypes{$d}))
-                {
-                    my @subtypes = sort(keys(%{$subtypes{$d}}));
-                    $s = '<br />'.join('<br />', map {"↳:$_"} (@subtypes));
-                }
-                print("<th>$d$s</th>");
+                print("<th>$d</th>");
             }
             print("</tr>\n");
         }
@@ -540,10 +537,19 @@ sub print_all_deprels
             }
             $j++;
             print('<td>');
+            my $dp = '';
             if(exists($data->{$lcode}{$d}) && $data->{$lcode}{$d}{permitted})
             {
-                print($d);
+                $dp = $d;
             }
+            my $s = '';
+            if(exists($subtypes{$d}))
+            {
+                $dp = '---' if($dp eq '');
+                my @subtypes = sort(keys(%{$subtypes{$d}}));
+                $s = '<br />'.join('<br />', map {"↳:$_"} (@subtypes));
+            }
+            print($dp.$s);
             print('</td>');
         }
         print("</tr>\n");
