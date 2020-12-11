@@ -117,7 +117,7 @@ elsif($config{lcode} eq '')
 else
 {
     # Read the data file from JSON.
-    my $data = valdata::read_feats_json($path);
+    my $data = valdata::read_deprels_json($path);
     my %data = %{$data};
     foreach my $lcode (keys(%data))
     {
