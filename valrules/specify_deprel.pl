@@ -533,7 +533,7 @@ sub print_all_deprels
             # Repeat the language every 12 columns.
             if($j != 0 && $j % 12 == 0)
             {
-                print("<td>$lcode</td>");
+                print("<td><b>$lcode</b></td>");
             }
             $j++;
             print('<td>');
