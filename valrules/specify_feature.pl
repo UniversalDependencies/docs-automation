@@ -535,6 +535,12 @@ sub summarize_guidelines
     print <<EOF
   <h1><img class=\"flag\" src=\"https://universaldependencies.org/flags/png/$languages->{$lname_by_code{$config{lcode}}}{flag}.png\" />
     Specify features for $lname_by_code{$config{lcode}}</h1>
+  <p>A feature-value pair will be permitted in the language only if it is registered
+    here at least for one universal part-of-speech tag. All features and values must
+    be documented. If you need a language-specific feature (or value) that is not yet
+    available here, write its language-specific documentation page (see
+    <a href="https://universaldependencies.org/contributing_language_specific.html#language-specific-features">here</a>
+    for instructions).</p>
 EOF
     ;
 }
