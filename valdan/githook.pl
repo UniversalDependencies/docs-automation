@@ -242,7 +242,7 @@ if(defined($result))
         # We must do it even if we did not observe a real change. In case any
         # formal aspect changed and the file is different, we need to make sure
         # that the repository is clean and in sync, otherwise future git pulls would fail.
-        system("/home/zeman/bin/git-push-docs-automation.sh 'dan-zeman' '$changed' > /dev/null");
+        system("/home/zeman/bin/git-push-docs-automation.sh '$result->{pusher}{name}' '$changed' > /dev/null");
         # We must figure out what files have changed.
         # At present we are only interested in index files of language-specific documentation.
         foreach my $commit (@{$result->{commits}})
