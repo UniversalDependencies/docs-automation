@@ -475,37 +475,40 @@ sub print_all_deprels
     # Print the data on the web page.
     print("  <h2>Permitted dependency relations for this and other languages</h2>\n");
     my @lcodes = langgraph::sort_lcodes_by_relatedness($languages, $config{lcode});
-    # Get the list of all known deprels. Every language has a different set.
+    # Get the list of all known deprels. Take only the main types; we will display their subtypes in the same cell.
     my %deprels;
     foreach my $lcode (@lcodes)
     {
         my @deprels = keys(%{$data->{$lcode}});
         foreach my $d (@deprels)
         {
-            $deprels{$d} = $data->{$lcode}{$d}{type};
+            my $ud = $d;
+            $ud =~ s/:.*//;
+            $deprels{$ud}++;
         }
     }
-    my @deprels = sort
-    {
-        # Universal deprels come before language-specific.
-        my $r = $deprels{$b} cmp $deprels{$a};
-        unless($r)
-        {
-            $r = $a cmp $b;
-        }
-        $r
-    }
-    (keys(%deprels));
+    my @deprels = sort(keys(%deprels));
     print("  <table>\n");
     my $i = 0;
     foreach my $lcode (@lcodes)
     {
+        # Collect language-specific subtypes of relations.
+        my %subtypes;
+        foreach my $d (keys(%{$data->{$lcode}}))
+        {
+            if($d =~ m/^([a-z]+):([a-z]+)$/)
+            {
+                my $udep = $1;
+                my $lspec = $2;
+                $subtypes{$udep}{$lspec}++;
+            }
+        }
         # Repeat the headers every 20 rows.
         if($i % 20 == 0)
         {
             print("    <tr><th colspan=2>Language</th><th>Total</th>");
             my $j = 0;
-            foreach my $f (@deprels)
+            foreach my $d (@deprels)
             {
                 # Repeat the language every 12 columns.
                 if($j != 0 && $j % 12 == 0)
@@ -513,7 +516,13 @@ sub print_all_deprels
                     print('<th></th>');
                 }
                 $j++;
-                print("<th>$f</th>");
+                my $s = '';
+                if(exists($subtypes{$d}))
+                {
+                    my @subtypes = sort(keys(%{$subtypes{$d}}));
+                    $s = '<br />'.join('<br />', map {"↳:$_"} (@subtypes));
+                }
+                print("<th>$d$s</th>");
             }
             print("</tr>\n");
         }
