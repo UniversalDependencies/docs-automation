@@ -326,6 +326,7 @@ sub print_deprel_form
     user.</small></p>
 EOF
     ;
+    my $checked = $data->{$config{lcode}}{$config{deprel}}{permitted} ? ' checked' : '';
     print("  <p>Check <input type=\"checkbox\" id=\"permitted\" name=\"permitted\" value=\"1\"$checked /> here\n");
     print("    if $hdeprel should be permitted in $hlanguage.</p>\n");
     print("  <input name=save type=submit value=\"Save\" />\n");
