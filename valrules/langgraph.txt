@@ -134,6 +134,7 @@ hi--2--mag
 bho----mag
 bho--2--bn
 mag--2--bn
+bn----as
 hi--10--mr
 Sami----Finnic
 Finnic--2--Mordvin
