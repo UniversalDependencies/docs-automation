@@ -126,10 +126,14 @@ nyq----soj
 kfm--10--fa
 fa--100--ur
 ur----hi
+ur--2--sd
 hi--2--sa
 hi--2--xnr
 hi--2--bho
+hi--2--mag
+bho----mag
 bho--2--bn
+mag--2--bn
 hi--10--mr
 Sami----Finnic
 Finnic--2--Mordvin
