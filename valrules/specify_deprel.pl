@@ -545,7 +545,7 @@ sub print_all_deprels
             my $s = '';
             if(exists($subtypes{$d}))
             {
-                $dp = '---' if($dp eq '');
+                $dp = "($d)" if($dp eq '');
                 my @subtypes = sort(keys(%{$subtypes{$d}}));
                 $s = '<br />'.join('<br />', map {"↳:$_"} (@subtypes));
             }
