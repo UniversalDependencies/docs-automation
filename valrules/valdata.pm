@@ -705,7 +705,7 @@ sub read_documented_deprels_json
             # If the language has any local documentation, read it first.
             if(exists($docdeps->{ldocs}{$lcode}))
             {
-                my @deprels = keys($docdeps->{ldocs}{$lcode});
+                my @deprels = keys(%{$docdeps->{ldocs}{$lcode}});
                 foreach my $d (@deprels)
                 {
                     $data{$lcode}{$d}{type} = $docdeps->{ldocs}{$lcode}{$d}{type};
@@ -724,7 +724,7 @@ sub read_documented_deprels_json
                 }
             }
             # Read the global documentation and add deprels that were not documented locally.
-            my @deprels = keys($docdeps->{gdocs});
+            my @deprels = keys(%{$docdeps->{gdocs}});
             foreach my $d (@deprels)
             {
                 if(!exists($data{$lcode}{$d}))
