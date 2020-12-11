@@ -310,7 +310,7 @@ sub print_deprel_form
         die("Dependency relation '$config{deprel}' not found in language '$config{lcode}'");
     }
     my $hdeprel = htmlescape($config{deprel});
-    my $hlanguage = htmlescape($lname_by_code($config{lcode}));
+    my $hlanguage = htmlescape($lname_by_code{$config{lcode}});
     print("  <h3>Permit or forbid $hdeprel</h3>\n");
     print <<EOF
   <form action="specify_deprel.pl" method="post" enctype="multipart/form-data">
