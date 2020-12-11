@@ -10,6 +10,27 @@ binmode(STDOUT, ':utf8');
 binmode(STDERR, ':utf8');
 use Cwd; # getcwd()
 use YAML qw(LoadFile);
+# We need to tell Perl where to find my Perl modules, relative to the location
+# of the script. We will also need the path to access the data.
+my ($currentpath, $scriptpath, $docs);
+BEGIN
+{
+    $currentpath = getcwd();
+    $scriptpath = $0;
+    $scriptpath =~ s:\\:/:g;
+    if($scriptpath =~ m:/:)
+    {
+        $scriptpath =~ s:/[^/]*$:/:;
+        chdir($scriptpath) or die("Cannot go to folder '$scriptpath': $!");
+    }
+    $scriptpath = getcwd();
+    # Go to docs relatively to the script position.
+    chdir('../../docs') or die("Cannot go from $scriptpath to folder '../../docs': $!");
+    $docs = getcwd();
+    chdir($currentpath);
+}
+use lib $scriptpath;
+use valdata;
 
 # Describe banned relations. People sometimes define a language-specific subtype
 # for something that is already defined for many other languages but with a
@@ -22,22 +43,6 @@ my @deviations =
      'msg' => "The recommended label for relative clauses is 'acl:relcl'."}
 );
 
-# The docs repository should be locatable relatively to this script:
-# this script = .../docs-automation/valrules/scan_docs_for_feats.pl
-# docs        = .../docs
-# Temporarily go to the folder of the script (if we are not already there).
-my $currentpath = getcwd();
-my $scriptpath = $0;
-if($scriptpath =~ m:/:)
-{
-    $scriptpath =~ s:/[^/]*$:/:;
-    chdir($scriptpath) or die("Cannot go to folder '$scriptpath': $!");
-}
-# Go to docs relatively to the script position.
-chdir('../../docs') or die("Cannot go from ".getcwd()." to folder '../../docs': $!");
-my $docs = getcwd();
-chdir($currentpath);
-# We are back in the original folder and we have the absolute path to docs.
 my %hash;
 my %lhash;
 # Scan globally documented relations.
@@ -156,9 +161,15 @@ foreach my $langfolder (@langfolders)
         read_relation_doc($relation, "$lddeps/$file", $lhash{$lcode}{$relation}, \@deviations);
     }
 }
-# Print an overview of the features we found.
-#print_markdown_overview(\%hash, \%lhash);
-print_json(\%hash, \%lhash, \@deviations, $docs);
+# Print an overview of the relations we found.
+print_json(\%hash, \%lhash, \@deviations, $docs, "$scriptpath/docdeps.json");
+# There is now a larger JSON about deprels of individual languages which
+# depends on the contents of docdeps.json generated here.
+# The following reader will also read the file docdeps.json we just wrote,
+# and project it to the larger data structure. We thus only need to write the
+# structure again to update its representation on the disk.
+my $data = valdata::read_deprels_json($scriptpath);
+valdata::write_deprels_json($data, "$scriptpath/deprels.json");
 
 
 
@@ -212,64 +223,6 @@ sub read_relation_doc
 
 
 #------------------------------------------------------------------------------
-# Prints an overview of all documented relations (as well as errors in the
-# format of documentation), formatted using MarkDown syntax.
-#------------------------------------------------------------------------------
-sub print_markdown_overview
-{
-    my $ghash = shift; # ref to hash with global features
-    my $lhash = shift; # ref to hash with local features
-    my @relations = sort(keys(%{$ghash}));
-    print("# Universal relations\n\n");
-    foreach my $relation (grep {$ghash->{$_}{type} eq 'universal'} (@relations))
-    {
-        my $file = $relation;
-        $file = 'aux_' if($file eq 'aux');
-        print("* [$relation](https://universaldependencies.org/u/dep/$file.html)\n");
-        foreach my $error (@{$ghash->{$relation}{errors}})
-        {
-            print('  * <span style="color:red">ERROR: '.$error.'</span>'."\n");
-        }
-    }
-    print("\n");
-    print("# Globally documented non-universal relations\n\n");
-    foreach my $relation (grep {$ghash->{$_}{type} eq 'global'} (@relations))
-    {
-        my $file = $relation;
-        $file =~ s/^([a-z]+):([a-z]+)$/$1-$2/;
-        print("* [$relation](https://universaldependencies.org/u/dep/$file.html)\n");
-        foreach my $error (@{$ghash->{$relation}{errors}})
-        {
-            print('  * <span style="color:red">ERROR: '.$error.'</span>'."\n");
-        }
-    }
-    print("\n");
-    print("# Locally documented language-specific relations\n\n");
-    my @lcodes = sort(keys(%{$lhash}));
-    my $n = scalar(@lcodes);
-    print("The following $n languages seem to have at least some documentation of relations: ".join(' ', map {"$_ (".scalar(keys(%{$lhash->{$_}})).")"} (@lcodes))."\n");
-    print("\n");
-    foreach my $lcode (@lcodes)
-    {
-        print("## $lcode\n\n");
-        my @relations = sort(keys(%{$lhash->{$lcode}}));
-        foreach my $relation (@relations)
-        {
-            my $file = $relation;
-            $file =~ s/^([a-z]+):([a-z]+)$/$1-$2/;
-            print("* [$relation](https://universaldependencies.org/$lcode/dep/$file.html)\n");
-            foreach my $error (@{$lhash->{$lcode}{$relation}{errors}})
-            {
-                print('  * <span style="color:red">ERROR: '.$error.'</span>'."\n");
-            }
-        }
-        print("\n");
-    }
-}
-
-
-
-#------------------------------------------------------------------------------
 # Prints a JSON structure with documented relation types for each UD language.
 #------------------------------------------------------------------------------
 sub print_json
@@ -277,8 +230,8 @@ sub print_json
     my $ghash = shift; # ref to hash with global features
     my $lhash = shift; # ref to hash with local features
     my $deviations = shift; # ref to array with banned deviations
-    # We need to know the list of all UD languages first.
-    my $docspath = shift;
+    my $docspath = shift; # needed to be able to find the list of all UD languages
+    my $filename = shift; # where to write JSON to
     my $languagespath = "$docspath/../docs-automation/codes_and_flags.yaml";
     my $languages = LoadFile($languagespath);
     if( !defined($languages) )
@@ -286,8 +239,9 @@ sub print_json
         die "Cannot read the list of languages";
     }
     my @lcodes = sort(map {$languages->{$_}{lcode}} (keys(%{$languages})));
-    print("{\n");
-    print("\"lists\": {\n");
+    my $json = '';
+    $json .= "{\n";
+    $json .= "\"lists\": {\n";
     my @jsonlines = ();
     foreach my $lcode (@lcodes)
     {
@@ -316,19 +270,19 @@ sub print_json
                 }
             }
         }
-        push(@jsonlines, '"'.escape_json_string($lcode).'": ['.join(', ', map {'"'.escape_json_string($_).'"'} (@relations)).']');
+        push(@jsonlines, '"'.valdata::escape_json_string($lcode).'": ['.join(', ', map {'"'.valdata::escape_json_string($_).'"'} (@relations)).']');
     }
-    print(join(",\n", @jsonlines)."\n");
-    print("},\n"); # end of lists
-    print("\"gdocs\": {\n");
+    $json .= join(",\n", @jsonlines)."\n";
+    $json .= "},\n"; # end of lists
+    $json .= "\"gdocs\": {\n";
     my @relationlines = ();
     foreach my $relation (sort(keys(%{$ghash})))
     {
-        push(@relationlines, '"'.escape_json_string($relation).'": '.encode_relation_json($ghash->{$relation}));
+        push(@relationlines, '"'.valdata::escape_json_string($relation).'": '.encode_relation_json($ghash->{$relation}));
     }
-    print(join(",\n", @relationlines)."\n");
-    print("},\n"); # end of gdocs
-    print("\"ldocs\": {\n");
+    $json .= join(",\n", @relationlines)."\n";
+    $json .= "},\n"; # end of gdocs
+    $json .= "\"ldocs\": {\n";
     my @languagelines = ();
     foreach my $lcode (sort(keys(%{$lhash})))
     {
@@ -339,24 +293,27 @@ sub print_json
             @relationlines = ();
             foreach my $relation (@relations)
             {
-                push(@relationlines, '"'.escape_json_string($relation).'": '.encode_relation_json($lhash->{$lcode}{$relation}));
+                push(@relationlines, '"'.valdata::escape_json_string($relation).'": '.encode_relation_json($lhash->{$lcode}{$relation}));
             }
             $languageline .= join(",\n", @relationlines)."\n";
             $languageline .= '}';
             push(@languagelines, $languageline);
         }
     }
-    print(join(",\n", @languagelines)."\n");
-    print("},\n"); # end of ldocs
-    print("\"deviations\": [\n");
+    $json .= join(",\n", @languagelines)."\n";
+    $json .= "},\n"; # end of ldocs
+    $json .= "\"deviations\": [\n";
     my @deviationlines = ();
     foreach my $d (@{$deviations})
     {
-        push(@deviationlines, encode_json(['re' => $d->{re}], ['msg' => $d->{msg}]));
+        push(@deviationlines, valdata::encode_json(['re' => $d->{re}], ['msg' => $d->{msg}]));
     }
-    print(join(",\n", @deviationlines)."\n");
-    print("]\n"); # end of deviations
-    print("}\n");
+    $json .= join(",\n", @deviationlines)."\n";
+    $json .= "]\n"; # end of deviations
+    $json .= "}\n";
+    open(JSON, ">$filename") or confess("Cannot write '$filename': $!");
+    print JSON ($json);
+    close(JSON);
 }
 
 
@@ -368,113 +325,8 @@ sub encode_relation_json
 {
     my $relation = shift; # hash reference
     my $json = '{';
-    $json .= '"type": "'.escape_json_string($relation->{type}).'", ';
-    $json .= '"errors": ['.join(', ', map {'"'.escape_json_string($_).'"'} (@{$relation->{errors}})).']';
+    $json .= '"type": "'.valdata::escape_json_string($relation->{type}).'", ';
+    $json .= '"errors": ['.join(', ', map {'"'.valdata::escape_json_string($_).'"'} (@{$relation->{errors}})).']';
     $json .= '}';
     return $json;
-}
-
-
-
-#------------------------------------------------------------------------------
-# Takes a list of pairs [name, value] and returns the corresponding JSON
-# structure {"name1": "value1", "name2": "value2"}. The pair is an arrayref;
-# if there is a third element in the array and it says "numeric", then the
-# value is treated as numeric, i.e., it is not enclosed in quotation marks.
-# The type in the third position can be also "list" (of strings),
-# "list of numeric" and "list of structures".
-#------------------------------------------------------------------------------
-sub encode_json
-{
-    my @json = @_;
-    # Encode JSON.
-    my @json1 = ();
-    foreach my $pair (@json)
-    {
-        my $name = '"'.$pair->[0].'"';
-        my $value;
-        if(defined($pair->[2]))
-        {
-            if($pair->[2] eq 'numeric')
-            {
-                $value = $pair->[1];
-            }
-            elsif($pair->[2] eq 'list')
-            {
-                # Assume that each list element is a string.
-                my @array_json = ();
-                foreach my $element (@{$pair->[1]})
-                {
-                    my $element_json = $element;
-                    $element_json = escape_json_string($element_json);
-                    $element_json = '"'.$element_json.'"';
-                    push(@array_json, $element_json);
-                }
-                $value = '['.join(', ', @array_json).']';
-            }
-            elsif($pair->[2] eq 'list of numeric')
-            {
-                # Assume that each list element is numeric.
-                my @array_json = ();
-                foreach my $element (@{$pair->[1]})
-                {
-                    push(@array_json, $element);
-                }
-                $value = '['.join(', ', @array_json).']';
-            }
-            elsif($pair->[2] eq 'list of structures')
-            {
-                # Assume that each list element is a structure.
-                my @array_json = ();
-                foreach my $element (@{$pair->[1]})
-                {
-                    my $element_json = encode_json(@{$element});
-                    push(@array_json, $element_json);
-                }
-                $value = '['.join(', ', @array_json).']';
-            }
-            else
-            {
-                log_fatal("Unknown value type '$pair->[2]'.");
-            }
-        }
-        else # value is a string
-        {
-            if(!defined($pair->[1]))
-            {
-                die("Unknown value of attribute '$name'");
-            }
-            $value = $pair->[1];
-            $value = escape_json_string($value);
-            $value = '"'.$value.'"';
-        }
-        push(@json1, "$name: $value");
-    }
-    my $json = '{'.join(', ', @json1).'}';
-    return $json;
-}
-
-
-
-#------------------------------------------------------------------------------
-# Takes a string and escapes characters that would prevent it from being used
-# in JSON. (For control characters, it throws a fatal exception instead of
-# escaping them because they should not occur in anything we export in this
-# block.)
-#------------------------------------------------------------------------------
-sub escape_json_string
-{
-    my $string = shift;
-    # https://www.ietf.org/rfc/rfc4627.txt
-    # The only characters that must be escaped in JSON are the following:
-    # \ " and control codes (anything less than U+0020)
-    # Escapes can be written as \uXXXX where XXXX is UTF-16 code.
-    # There are a few shortcuts, too: \\ \"
-    $string =~ s/\\/\\\\/g; # escape \
-    $string =~ s/"/\\"/g; # escape " # "
-    if($string =~ m/[\x{00}-\x{1F}]/)
-    {
-        log_fatal("The string must not contain control characters.");
-    }
-    return $string;
 }

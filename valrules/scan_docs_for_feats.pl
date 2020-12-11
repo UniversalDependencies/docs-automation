@@ -185,9 +185,6 @@ foreach my $l (keys(%lhash))
 print_json(\%hash, \%lhash, \@deviations, $docs, "$scriptpath/docfeats.json");
 # There is now a larger JSON about features of individual languages which
 # depends on the contents of docfeats.json generated here.
-###!!! BTW since we access docs and feats.json using predefined paths, it does
-###!!! not make sense to write to STDOUT in print_json() above. We could write
-###!!! directly to docfeats.json as long as we need that file at all.
 # The following reader will also read the file docfeats.json we just wrote,
 # and project it to the larger data structure. We thus only need to write the
 # structure again to update its representation on the disk.
