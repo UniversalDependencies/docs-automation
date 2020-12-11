@@ -127,9 +127,10 @@ kfm--10--fa
 fa--100--ur
 ur----hi
 hi--2--sa
+hi--2--xnr
 hi--2--bho
 bho--2--bn
-hi--2--mr
+hi--10--mr
 Sami----Finnic
 Finnic--2--Mordvin
 Finnic--2--Permic
