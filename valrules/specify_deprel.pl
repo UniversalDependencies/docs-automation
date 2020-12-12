@@ -486,6 +486,7 @@ sub print_all_deprels
     print("  <h2>Permitted dependency relations for this and other languages</h2>\n");
     my @lcodes = langgraph::sort_lcodes_by_relatedness($languages, $config{lcode});
     # Get the list of all known deprels. Take only the main types; we will display their subtypes in the same cell.
+    my %udeprels;
     my %deprels;
     foreach my $lcode (@lcodes)
     {
@@ -494,13 +495,15 @@ sub print_all_deprels
         {
             if($data->{$lcode}{$d}{permitted})
             {
+                $deprels{$d}++;
                 my $ud = $d;
                 $ud =~ s/:.*//;
-                $deprels{$ud}++;
+                $udeprels{$ud}++;
             }
         }
     }
     my @deprels = sort(keys(%deprels));
+    my @udeprels = sort(keys(%udeprels));
     print("  <table>\n");
     my $i = 0;
     foreach my $lcode (@lcodes)
@@ -524,7 +527,7 @@ sub print_all_deprels
         {
             print("    <tr><th colspan=2>Language</th><th>Total</th>");
             my $j = 0;
-            foreach my $d (@deprels)
+            foreach my $d (@udeprels)
             {
                 # Repeat the language every 12 columns.
                 if($j != 0 && $j % 12 == 0)
@@ -541,7 +544,7 @@ sub print_all_deprels
         my $n = scalar(grep {exists($data->{$lcode}{$_}) && $data->{$lcode}{$_}{permitted}} (@deprels));
         print("    <tr><td>$lname_by_code{$lcode}</td><td>$lcode</td><td>$n</td>");
         my $j = 0;
-        foreach my $d (@deprels)
+        foreach my $d (@udeprels)
         {
             # Repeat the language every 12 columns.
             if($j != 0 && $j % 12 == 0)
