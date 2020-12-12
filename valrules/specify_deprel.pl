@@ -173,7 +173,7 @@ sub print_deprels_for_language
         my @deprels_on = grep {$ldata->{$_}{permitted}} (@deprels);
         my @deprels_off = grep {!$ldata->{$_}{permitted} && $ldata->{$_}{doc} =~ m/^(global|local)$/} (@deprels);
         my @udeprels_off = grep {$ldata->{$_}{type} eq 'universal'} (@deprels_off);
-        my @ldeprels_off = grep {$ldata->{$_}{type} eq 'lspec'} (@deprels_off);
+        my @ldeprels_off = grep {$ldata->{$_}{type} ne 'universal'} (@deprels_off); # type is 'global' or 'lspec', although type in docdeps.json is 'global' or 'local'
         my @undocumented = grep {$ldata->{$_}{doc} !~ m/^(global|local)$/} (@deprels);
         print("  <h2>Deprels</h2>\n");
         if(scalar(@deprels_on) > 0)
