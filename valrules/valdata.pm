@@ -788,19 +788,27 @@ sub merge_documented_and_declared_deprels
                 my $decd = $declared->{$lcode}{$d};
                 $decd->{errors} = [] if(!defined($decd->{errors}));
                 # A new universal deprel is automatically permitted (provided it is well documented, i.e., permitted by documentation).
-                # A new language-specific relation subtype is not permitted until it is turned on for the language in the web interface.
-                $decd->{permitted} = $decd->{permitted} && $decd->{type} eq 'universal';
+                # A new language-specific relation subtype is automatically permitted if it is documented locally for this language.
+                # A new global language-specific relation subtype is not permitted until it is turned on for the language in the web interface.
+                $decd->{permitted} = $decd->{permitted} && ($decd->{type} eq 'universal' || $decd->{doc} eq 'local');
             }
             # If the deprel has been previously used in the language, check its status.
             else
             {
                 my $decd = $declared->{$lcode}{$d};
                 my $docd = $documented->{$lcode}{$d};
+                # If it was previously permitted and the new documentation permits it, it will continue to be permitted.
+                $decd->{permitted} = $decd->{permitted} && $docd->{permitted};
+                # Universal or local language-specific deprel is permitted if it was previously permitted or if it had previously problems with documentation.
+                # In other cases, the deprel may have been previously turned off manually. It will not be permitted until it is turned on manually again.
+                if(!$decd->{permitted} && $docd->{permitted} && $decd->{doc} !~ m/^(global|local)$/)
+                {
+                    $decd->{permitted} = 1;
+                }
                 $decd->{type} = $docd->{type};
                 $decd->{doc} = $docd->{doc};
                 $decd->{errors} = $docd->{errors};
                 $decd->{errors} = [] if(!defined($decd->{errors}));
-                $decd->{permitted} = $decd->{permitted} && $docd->{permitted};
             }
         }
         # If a deprel was previously declared and disappeared from documentation,
