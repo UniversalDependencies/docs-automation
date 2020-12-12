@@ -279,7 +279,7 @@ sub print_deprel_details
                 {
                     print("  <h3>Errors in $howdoc <a href=\"$href\">documentation</a></h3>\n");
                     print("  <ul>\n");
-                    for my $e (@{$fdata->{error}})
+                    for my $e (@{$fdata->{errors}})
                     {
                         print("    <li style='color:red'>$e</li>\n");
                     }
