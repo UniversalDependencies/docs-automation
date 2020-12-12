@@ -166,19 +166,24 @@ sub print_deprels_for_language
     {
         my $ldata = $data->{$config{lcode}};
         my @deprels = sort(keys(%{$ldata}));
-        print("  <h2>Deprels</h2>\n");
-        print("  <p><b>Currently permitted:</b> ".join(', ', map {"<a href=\"specify_deprel.pl?lcode=$config{lcode}&amp;deprel=$_\">$_</a>"} (grep {$ldata->{$_}{permitted}} (@deprels)))."</p>\n");
-        my @adeprels = ();
-        foreach my $f (@deprels)
-        {
-            if(!$ldata->{$f}{permitted})
-            {
-                push(@adeprels, $f);
-            }
-        }
-        print("  <p><b>Currently unused universal dependency relations:</b> ".join(', ', map {"<a href=\"specify_deprel.pl?lcode=$config{lcode}&amp;deprel=$_\">$_</a>"} (grep {$ldata->{$_}{type} eq 'universal'} (@adeprels)))."</p>\n");
-        print("  <p><b>Other dependency relations that can be permitted:</b> ".join(', ', map {"<a href=\"specify_deprel.pl?lcode=$config{lcode}&amp;deprel=$_\">$_</a>"} (grep {$ldata->{$_}{type} eq 'lspec'} (@adeprels)))."</p>\n");
+        my @deprels_on = grep {$ldata->{$_}{permitted}} (@deprels);
+        my @deprels_off = grep {!$ldata->{$_}{permitted} && $ldata->{$_}{doc} =~ m/^(global|local)$/} (@deprels);
+        my @udeprels_off = grep {$ldata->{$_}{type} eq 'universal'} (@deprels_off);
+        my @ldeprels_off = grep {$ldata->{$_}{type} eq 'lspec'} (@deprels_off);
         my @undocumented = grep {$ldata->{$_}{doc} !~ m/^(global|local)$/} (@deprels);
+        print("  <h2>Deprels</h2>\n");
+        if(scalar(@deprels_on) > 0)
+        {
+            print("  <p><b>Currently permitted:</b> ".join(', ', map {"<a href=\"specify_deprel.pl?lcode=$config{lcode}&amp;deprel=$_\">$_</a>"} (@deprels_on))."</p>\n");
+        }
+        if(scalar(@udeprels_off) > 0)
+        {
+            print("  <p><b>Currently unused universal dependency relations:</b> ".join(', ', map {"<a href=\"specify_deprel.pl?lcode=$config{lcode}&amp;deprel=$_\">$_</a>"} (@udeprels_off))."</p>\n");
+        }
+        if(scalar(@ldeprels_off) > 0)
+        {
+            print("  <p><b>Other dependency relations that can be permitted:</b> ".join(', ', map {"<a href=\"specify_deprel.pl?lcode=$config{lcode}&amp;deprel=$_\">$_</a>"} (@ldeprels_off))."</p>\n");
+        }
         if(scalar(@undocumented) > 0)
         {
             print("  <p><b>Undocumented dependency relations cannot be used:</b> ".join(', ', @undocumented)."</p>\n");
