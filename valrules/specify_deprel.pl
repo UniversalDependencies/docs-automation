@@ -137,7 +137,11 @@ else
     {
         summarize_guidelines();
         print_deprel_details(\%data);
-        print_deprel_form(\%data);
+        # Do not offer editing for undocumented deprels!
+        if(exists($data{$config{lcode}}{$config{deprel}}) && $data{$config{lcode}}{$config{deprel}}{doc} =~ m/^(global|local)$/)
+        {
+            print_deprel_form(\%data);
+        }
         print_all_deprels(\%data, $languages);
     }
     else
