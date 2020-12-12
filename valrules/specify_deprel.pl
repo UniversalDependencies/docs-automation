@@ -482,9 +482,12 @@ sub print_all_deprels
         my @deprels = keys(%{$data->{$lcode}});
         foreach my $d (@deprels)
         {
-            my $ud = $d;
-            $ud =~ s/:.*//;
-            $deprels{$ud}++;
+            if($data->{$lcode}{$d}{permitted})
+            {
+                my $ud = $d;
+                $ud =~ s/:.*//;
+                $deprels{$ud}++;
+            }
         }
     }
     my @deprels = sort(keys(%deprels));
