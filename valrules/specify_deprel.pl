@@ -192,7 +192,7 @@ sub print_deprels_for_language
         {
             print("  <p><b>Undocumented dependency relations cannot be used:</b> ".join(', ', @undocumented)."</p>\n");
         }
-        print("  <p><b>DEBUGGING: All deprels known in relation to this language:</b> ".join(', ', @deprels)."</p>\n");
+        print("  <p><b>DEBUGGING: All deprels known in relation to this language:</b> ".join(', ', map {"$_ ($ldata->{$_}{doc})"} (@deprels))."</p>\n");
         my @errors = ();
         foreach my $f (@deprels)
         {
