@@ -95,7 +95,9 @@ es--2--gl
 es----lad
 ca--2--oc
 oc--2--fr
-fr--2--it
+fr----fro
+fr--2--rm
+rm--10--it
 it--2--ro
 fr--100--br
 en--100--cy
