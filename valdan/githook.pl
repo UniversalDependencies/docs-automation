@@ -55,6 +55,9 @@ vypsat_html_konec();
 if(defined($result))
 {
     my $valilog = 'log/validation.log';
+    #--------------------------------------------------------------------------
+    # UD_Something UD_Something UD_Something UD_Something UD_Something
+    #--------------------------------------------------------------------------
     # Change in dev branch of a treebank repository should trigger re-validation of the data.
     # Ignore changes in other branches.
     if($result->{repository}{name} =~ m/^UD_/ && $result->{ref} eq 'refs/heads/dev')
@@ -78,6 +81,9 @@ if(defined($result))
             #system("docs-automation/valdan/clone_one.sh $folder >>$valilog 2>&1");
         }
     }
+    #--------------------------------------------------------------------------
+    # tools tools tools tools tools tools tools tools tools tools tools tools
+    #--------------------------------------------------------------------------
     # Change in master branch of repository tools may mean changed validation algorithm.
     # Ignore changes in other branches.
     elsif($result->{repository}{name} eq 'tools' && $result->{ref} eq 'refs/heads/master')
@@ -141,6 +147,9 @@ if(defined($result))
             system("perl evaluate_all.pl | tee evaluation-report.txt >>$valilog 2>&1");
         }
     }
+    #--------------------------------------------------------------------------
+    # docs docs docs docs docs docs docs docs docs docs docs docs docs docs
+    #--------------------------------------------------------------------------
     # Change in pages_source branch of repository docs may mean changes in documentation that are reflected in validation.
     elsif($result->{repository}{name} eq 'docs' && $result->{ref} eq 'refs/heads/pages-source')
     {
@@ -156,103 +165,68 @@ if(defined($result))
         system("echo ---------------------------------------------------------------------- >>$valilog");
         # Read the current list of documented features so that we can assess the changes.
         system("echo docs '=>' scan documentation of features >>$valilog");
-        my $olddf = json_file_to_perl('docs-automation/valrules/docfeats.json');
+        my $oldfeats = json_file_to_perl('docs-automation/valrules/feats.json');
         system("perl docs-automation/valrules/scan_docs_for_feats.pl 2>>$valilog");
-        my $newdf = json_file_to_perl('docs-automation/valrules/docfeats.json');
+        my $newfeats = json_file_to_perl('docs-automation/valrules/feats.json');
         # Find languages whose list of documented features has changed.
         my %changed;
-        foreach my $lcode (keys(%{$olddf->{lists}}))
+        my @changed = ();
+        my $c = get_changes(\%changed, $oldfeats->{features}, $newfeats->{features});
+        if($c)
         {
-            if(!exists($newdf->{lists}{$lcode}))
-            {
-                $changed{$lcode}++;
-            }
-            else
-            {
-                my $oldlist = join(',', sort(@{$olddf->{lists}{$lcode}}));
-                my $newlist = join(',', sort(@{$newdf->{lists}{$lcode}}));
-                if($newlist ne $oldlist)
-                {
-                    $changed{$lcode}++;
-                }
-            }
-        }
-        foreach my $lcode (keys(%{$newdf-{lists}}))
-        {
-            if(!exists($olddf->{lists}{$lcode}))
-            {
-                $changed{$lcode}++;
-            }
-        }
-        if(scalar(keys(%changed))==0)
-        {
-            system("echo No changes so far. >>$valilog");
-        }
-        # Read the current list of documented relations so that we can assess the changes.
-        system("echo docs '=>' scan documentation of relations >>$valilog");
-        my $olddd = json_file_to_perl('docs-automation/valrules/docdeps.json');
-        system("perl docs-automation/valrules/scan_docs_for_deps.pl 2>>$valilog");
-        my $newdd = json_file_to_perl('docs-automation/valrules/docdeps.json');
-        # Find languages whose list of documented relations has changed.
-        foreach my $lcode (keys(%{$olddd->{lists}}))
-        {
-            if(!exists($newdd->{lists}{$lcode}))
-            {
-                $changed{$lcode}++;
-            }
-            else
-            {
-                my $oldlist = join(',', sort(@{$olddd->{lists}{$lcode}}));
-                my $newlist = join(',', sort(@{$newdd->{lists}{$lcode}}));
-                if($newlist ne $oldlist)
-                {
-                    $changed{$lcode}++;
-                }
-            }
-        }
-        foreach my $lcode (keys(%{$newdd-{lists}}))
-        {
-            if(!exists($olddd->{lists}{$lcode}))
-            {
-                $changed{$lcode}++;
-            }
-        }
-        my $changed = 'none';
-        if(scalar(keys(%changed))==0)
-        {
-            system("echo No changes so far. >>$valilog");
+            push(@changed, 'features');
         }
         else
         {
-            $changed = join(',', sort(keys(%changed)));
-            if(length($changed) > 20)
+            system("echo No changes in features. >>$valilog");
+        }
+        # Read the current list of documented relations so that we can assess the changes.
+        system("echo docs '=>' scan documentation of relations >>$valilog");
+        my $olddeprels = json_file_to_perl('docs-automation/valrules/deprels.json');
+        system("perl docs-automation/valrules/scan_docs_for_deps.pl 2>>$valilog");
+        my $newdeprels = json_file_to_perl('docs-automation/valrules/deprels.json');
+        # Find languages whose list of documented relations has changed.
+        $c = get_changes(\%changed, $olddeprels->{deprels}, $newdeprels->{deprels});
+        if($c)
+        {
+            push(@changed, 'deprels');
+        }
+        else
+        {
+            system("echo No changes in dependency relations. >>$valilog");
+        }
+        # Construct a descriptive git commit message for the changes.
+        # It should not be just a language code because then this script would
+        # pick it up again and try to re-validate what we're about to validate now.
+        my $changed;
+        if(scalar(keys(%changed)) > 0)
+        {
+            $changed = join('/', @changed); # features/deprels
+            my @changedlcodes = sort(keys(%changed));
+            my $n = scalar(@changedlcodes);
+            if($n > 5)
             {
-                $changed = substr($changed, 0, 20).'...';
+                $changed .= ": $n languages";
             }
-            ###!!! Just a hack now:
-            # While I want the commit message to list the languages affected,
-            # I do not want this script to later pick up (on hook on tools)
-            # and re-validate the languages because I will validate them right
-            # now here. So I am prefixing the list of languages with something
-            # that will make the regex for commit message fail even if there
-            # is just one language on the list.
-            $changed = 'features: '.$changed;
+            else
+            {
+                $changed .= ': '.join(',' @changedlcodes);
+            }
         }
         # Commit the changes to the repositories and push them to Github.
         # We must do it even if we did not observe a real change. In case any
         # formal aspect changed and the file is different, we need to make sure
         # that the repository is clean and in sync, otherwise future git pulls would fail.
         system("/home/zeman/bin/git-push-docs-automation.sh '$result->{pusher}{name}' '$changed' > /dev/null");
-        # We must figure out what files have changed.
-        # At present we are only interested in index files of language-specific documentation.
+        # Furthermore, a change in language-specific documentation index will also trigger re-validation.
         foreach my $commit (@{$result->{commits}})
         {
             foreach my $file (@{$commit->{added}}, @{$commit->{modified}}, @{$commit->{removed}})
             {
                 if($file =~ m:^_([a-z]+)/index\.md$:)
                 {
-                    my $ltcode = $1;
-                    $changed{$ltcode}++;
+                    my $lcode = $1;
+                    $changed{$lcode}++;
                 }
             }
         }
@@ -268,6 +242,9 @@ if(defined($result))
             system("perl docs-automation/valdan/validate_all.pl $changed >>$valilog 2>&1");
         }
     }
+    #--------------------------------------------------------------------------
+    # docs-automation docs-automation docs-automation docs-automation
+    #--------------------------------------------------------------------------
     # Change in master branch of repository docs-automation may mean new languages were added or the validation infrastructure modified.
     elsif($result->{repository}{name} eq 'docs-automation' && $result->{ref} eq 'refs/heads/master')
     {
@@ -283,6 +260,48 @@ if(defined($result))
     }
 }
 close(LOG);
+
+
+
+#------------------------------------------------------------------------------
+# Compares lists of permitted features/relations before and after. Reports
+# languages that have changed. Marks the languages in a hash supplied by the
+# caller. Returns 1 if at least one language changed.
+#------------------------------------------------------------------------------
+sub get_changes
+{
+    my $changed = shift; # hash reference: languages with chages
+    my $oldhash = shift; # hash reference: permitted before
+    my $newhash = shift; # hash reference: permitted after
+    my $change = 0;
+    foreach my $lcode (keys(%{$oldhash}))
+    {
+        if(!exists($newhash->{$lcode}))
+        {
+            $changed->{$lcode}++;
+            $change = 1;
+        }
+        else
+        {
+            my $oldlist = join(',', sort(grep {$oldhash->{$lcode}{$_}{permitted}} (keys(%{$oldhash->{$lcode}}))));
+            my $newlist = join(',', sort(grep {$newhash->{$lcode}{$_}{permitted}} (keys(%{$newhash->{$lcode}}))));
+            if($newlist ne $oldlist)
+            {
+                $changed->{$lcode}++;
+                $change = 1;
+            }
+        }
+    }
+    foreach my $lcode (keys(%{$newhash}))
+    {
+        if(!exists($oldhash->{$lcode}))
+        {
+            $changed->{$lcode}++;
+            $change = 1;
+        }
+    }
+    return $change;
+}
 
 
 
