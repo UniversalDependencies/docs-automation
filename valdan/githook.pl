@@ -210,7 +210,7 @@ if(defined($result))
             }
             else
             {
-                $changed .= ': '.join(',' @changedlcodes);
+                $changed .= ': '.join(',', @changedlcodes);
             }
         }
         # Commit the changes to the repositories and push them to Github.
