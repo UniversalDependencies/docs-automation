@@ -55,6 +55,7 @@ my @functions =
     ['Copula (tagged AUX)', 'cop.AUX'],
     ['Copula (tagged PRON/DET)', 'cop.PRON'],
     ['Periphrastic aspect: perfect', 'Aspect=Perf'],
+    ['Periphrastic aspect: imperfect', 'Aspect=Imp'],
     ['Periphrastic aspect: progressive', 'Aspect=Prog'],
     ['Periphrastic aspect: iterative', 'Aspect=Iter'],
     ['Periphrastic tense: past', 'Tense=Past'],
