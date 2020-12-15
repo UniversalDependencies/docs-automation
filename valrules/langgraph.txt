@@ -26,8 +26,8 @@ Afro-Asiatic--10--Turkic
 Sumerian--10--Turkic
 Eastern Sudanic----Afro-Asiatic
 Mande----Niger-Congo
-Mande----Afro-Asiatic
-Niger-Congo----Afro-Asiatic
+Mande--10--Afro-Asiatic
+Niger-Congo--10--Afro-Asiatic
 Khoe-Kwadi----Niger-Congo
 Chukotko-Kamchatkan--100--Mongolic
 Chukotko-Kamchatkan----Eskimo-Aleut
