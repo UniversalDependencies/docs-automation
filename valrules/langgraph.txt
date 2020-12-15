@@ -188,3 +188,11 @@ vi--1000--ifb
 ifb--100--tl
 tl----hil
 hil--100--id
+Tupi-Guarani--10--Munduruku
+Tupari----Munduruku
+urb----gub
+gub----tpn
+tpn----gun
+gun--100--aqz
+aqz--100--myu
+myu--100--urb

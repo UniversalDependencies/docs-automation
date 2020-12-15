@@ -233,6 +233,11 @@ Greek:
   lcode: el
   iso3: ell
   family: IE, Greek
+Guajajara:
+  flag: BR
+  lcode: gub
+  iso3: gub
+  family: Tupian, Tupi-Guarani
 Hausa:
   flag: NG
   lcode: ha
