@@ -44,6 +44,8 @@ use valdata;
 # features, the message starts 'Did you mean' rather than 'The correct UD label is'.
 my @deviations =
 (
+    {'re'  => 'NounType=Class(if(ier)?)?',
+     'msg' => "Did you mean 'NounType=Clf'?"},
     {'re'  => 'PronType=Inter(r?og(at(ive)?)?)?',
      'msg' => "The correct UD label for interrogative pronouns is 'PronType=Int'."},
     {'re'  => 'PronType=Refl(e?x(ive)?)?',
