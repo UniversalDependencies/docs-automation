@@ -64,6 +64,7 @@ my @functions =
     ['Periphrastic voice: passive', 'Voice=Pass'],
     ['Periphrastic voice: causative', 'Voice=Cau'],
     ['Periphrastic mood: conditional', 'Mood=Cnd'],
+    ['Periphrastic mood: subjunctive', 'Mood=Sub'],
     ['Periphrastic mood: imperative', 'Mood=Imp'],
     ['Needed in negative clauses (like English “do”, not like “not”)', 'neg'],
     ['Needed in interrogative clauses (like English “do”)', 'int'],
