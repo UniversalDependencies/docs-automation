@@ -618,6 +618,11 @@ Sindhi:
   lcode: sd
   iso3: snd
   family: IE, Indic
+Sinhala:
+  flag: LK
+  lcode: si
+  iso3: sin
+  family: IE, Indic
 Skolt Sami:
   flag: SAMI
   lcode: sms
