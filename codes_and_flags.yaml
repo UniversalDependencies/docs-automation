@@ -118,6 +118,11 @@ Cantonese:
   lcode: yue
   iso3: yue
   family: Sino-Tibetan
+Cappadocian:
+  flag: GR-ORTHODOX
+  lcode: cpg
+  iso3: cpg
+  family: IE, Greek
 Catalan:
   flag: ES-CT
   lcode: ca
