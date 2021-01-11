@@ -338,6 +338,11 @@ Khunsari:
   lcode: kfm
   iso3: kfm
   family: IE, Iranian
+Kiche:
+  flag: GT-QC
+  lcode: quc
+  iso3: quc
+  family: Mayan
 Kiga:
   flag: UG
   lcode: cgg

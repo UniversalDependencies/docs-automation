@@ -32,7 +32,8 @@ Khoe-Kwadi----Niger-Congo
 Chukotko-Kamchatkan--100--Mongolic
 Chukotko-Kamchatkan----Eskimo-Aleut
 Eskimo-Aleut--100--Hokan
-Arawakan--100--Hokan
+Hokan--100--Mayan
+Arawakan--100--Mayan
 Arawakan----Panoan
 Arawakan----Tupian
 Tupian----Panoan
