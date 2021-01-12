@@ -1870,6 +1870,12 @@
 "VerbForm": {"type": "universal", "doc": "global", "permitted": 1, "errors": [], "uvalues": ["Conv", "Fin", "Inf", "Part", "Vnoun"], "lvalues": [], "unused_uvalues": ["Gdv", "Ger", "Sup"], "unused_lvalues": [], "evalues": [], "byupos": {"AUX": {"Conv": 8, "Fin": 1022, "Inf": 19, "Part": 2}, "VERB": {"Conv": 98, "Fin": 830, "Inf": 441, "Part": 569, "Vnoun": 220}}},
 "Voice": {"type": "universal", "doc": "global", "permitted": 1, "errors": [], "uvalues": ["Cau", "Pass", "Rcp"], "lvalues": [], "unused_uvalues": ["Act", "Antip", "Bfoc", "Dir", "Inv", "Lfoc", "Mid"], "unused_lvalues": [], "evalues": ["CauCau", "CauCauPass", "CauPass", "CauPassRcp", "CauRcp", "PassPass", "PassRcp", "PassRfl", "Rfl"], "byupos": {"AUX": {"Pass": 13}, "VERB": {"Cau": 57, "Pass": 51, "Rcp": 2}}}
 },
+"quc": {
+"Animacy": {"type": "universal", "doc": "local", "permitted": 0, "errors": [], "uvalues": [], "lvalues": [], "unused_uvalues": ["Anim"], "unused_lvalues": [], "evalues": [], "byupos": {}},
+"Person": {"type": "universal", "doc": "local", "permitted": 0, "errors": [], "uvalues": [], "lvalues": [], "unused_uvalues": ["1", "2", "3"], "unused_lvalues": [], "evalues": [], "byupos": {}},
+"Valency": {"type": "lspec", "doc": "local", "permitted": 0, "errors": [], "uvalues": [], "lvalues": [], "unused_uvalues": [], "unused_lvalues": ["1", "2"], "evalues": [], "byupos": {}},
+"Voice": {"type": "universal", "doc": "local", "permitted": 0, "errors": [], "uvalues": [], "lvalues": [], "unused_uvalues": ["Pass"], "unused_lvalues": ["Anti"], "evalues": [], "byupos": {}}
+},
 "quz": {
 "Abbr": {"type": "universal", "doc": "global", "permitted": 1, "errors": [], "uvalues": ["Yes"], "lvalues": [], "unused_uvalues": [], "unused_lvalues": [], "evalues": [], "byupos": {}},
 "Deriv": {"type": "lspec", "doc": "none", "permitted": 0, "errors": [], "uvalues": [], "lvalues": [], "unused_uvalues": [], "unused_lvalues": [], "evalues": ["Ag", "Rptn"], "byupos": {}},
