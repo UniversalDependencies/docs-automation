@@ -82,6 +82,8 @@ my @deviations =
      'msg' => "The correct UD label for conjunctive/subjunctive mood is 'Mood=Sub'."},
     {'re'  => 'Mood=Quot(at(ive?)?)?',
      'msg' => "The correct UD label for quotative mood is 'Mood=Qot'."},
+    {'re'  => 'Voice=(Anti|Antipas(s(ive?)?)?)',
+     'msg' => "The correct UD label for antipassive voice is 'Voice=Antip'."},
     {'re'  => 'VerbForm=Finite?',
      'msg' => "The correct UD label for finite verbs is 'VerbForm=Fin'."},
     {'re'  => 'VerbForm=Trans',
