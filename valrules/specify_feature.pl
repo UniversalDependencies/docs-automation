@@ -542,7 +542,11 @@ sub summarize_guidelines
     be documented. If you need a language-specific feature (or value) that is not yet
     available here, write its language-specific documentation page (see
     <a href="https://universaldependencies.org/contributing_language_specific.html#language-specific-features">here</a>
-    for instructions).</p>
+    for instructions). Once the feature is documented, it will appear below
+    <b>but it will not be permitted automatically!</b> You have to click on
+    the feature name and check the permitted UPOS-value combinations in the
+    form that appears. Only after submitting the form will the feature be
+    usable with the given values and part-of-speech categories.</p>
 EOF
     ;
 }
