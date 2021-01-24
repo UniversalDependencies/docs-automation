@@ -40,7 +40,9 @@ use valdata;
 my @deviations =
 (
     {'re'  => 'acl:rel',
-     'msg' => "The recommended label for relative clauses is 'acl:relcl'."}
+     'msg' => "The recommended label for relative clauses is 'acl:relcl'."},
+    {'re'  => 'obl:loc',
+     'msg' => "The recommended label for locative oblique nominals is 'obl:lmod'."}
 );
 
 my %hash;
