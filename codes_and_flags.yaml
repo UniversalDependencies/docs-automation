@@ -548,6 +548,11 @@ Old Irish:
   lcode: sga
   iso3: sga
   family: IE, Celtic
+Old Japanese:
+  flag: JP
+  lcode: ojp
+  iso3: ojp
+  family: Japanese
 Old Saxon:
   flag: DE-HRR
   lcode: osx
