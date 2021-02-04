@@ -104,6 +104,11 @@ print <<EOF
   </style>
 </head>
 <body>
+  <p style="position: absolute; right: 10px; font-size:0.8em">
+    <a href="specify_auxiliary.pl">a</a>
+    <a href="specify_feature.pl">f</a>
+    <a href="specify_deprel.pl">d</a>
+  </p>
 EOF
 ;
 #------------------------------------------------------------------------------
