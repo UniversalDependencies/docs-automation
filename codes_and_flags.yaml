@@ -208,6 +208,11 @@ French:
   lcode: fr
   iso3: fra
   family: IE, Romance
+Frisian Dutch:
+  flag: NL-FR
+  lcode: qfn
+  iso3: qfn
+  family: Code switching
 Ga:
   flag: NG
   lcode: gqa
