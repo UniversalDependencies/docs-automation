@@ -438,6 +438,11 @@ Maghrebi Arabic French:
   lcode: qaf
   iso3: qaf
   family: Code switching
+Makurap:
+  flag: BR
+  lcode: mpu
+  iso3: mpu
+  family: Tupian, Tupari
 Maltese:
   flag: MT
   lcode: mt
