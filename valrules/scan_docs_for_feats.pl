@@ -44,6 +44,16 @@ use valdata;
 # features, the message starts 'Did you mean' rather than 'The correct UD label is'.
 my @deviations =
 (
+    {'re'  => 'Abbr=True',
+     'msg' => "The correct UD label for abbreviations is 'Abbr=Yes'."},
+    {'re'  => 'Foreign=True',
+     'msg' => "The correct UD label for foreign words is 'Foreign=Yes'."},
+    {'re'  => 'Typo=True',
+     'msg' => "The correct UD label for typos is 'Typo=Yes'."},
+    {'re'  => 'Poss=True',
+     'msg' => "The correct UD label for possessive pronouns is 'Poss=Yes'."},
+    {'re'  => 'Reflex=True',
+     'msg' => "The correct UD label for reflexive pronouns is 'Reflex=Yes'."},
     {'re'  => 'NounType=Class(if(ier)?)?',
      'msg' => "Did you mean 'NounType=Clf'?"},
     {'re'  => 'PronType=Inter(r?og(at(ive)?)?)?',
