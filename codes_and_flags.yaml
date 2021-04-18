@@ -413,6 +413,11 @@ Lezgian:
   lcode: lez
   iso3: lez
   family: Nakh-Daghestanian, Lezgic
+Ligurian:
+  flag: IT-LIG
+  lcode: lij
+  iso3: lij
+  family: IE, Romance
 Lithuanian:
   flag: LT
   lcode: lt
