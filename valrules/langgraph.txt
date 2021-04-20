@@ -78,8 +78,9 @@ cs--100--de
 pl--100--de
 de--2--nds
 de----gsw
+nds----osx
 nds----fy
-fy----nl
+fy--2--nl
 nl----af
 nl--10--en
 de--10--da
