@@ -99,6 +99,8 @@ oc--2--fr
 fr----fro
 fr--2--rm
 rm--10--it
+fr--4--lij
+lij--4--it
 it--2--ro
 fr--100--br
 en--100--cy
