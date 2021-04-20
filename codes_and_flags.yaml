@@ -83,6 +83,11 @@ Batad Ifugao:
   lcode: ifb
   iso3: ifb
   family: Austronesian, Northern Luzon
+Beja:
+  flag: SD
+  lcode: bej
+  iso3: bej
+  family: Afro-Asiatic, Cushitic
 Belarusian:
   flag: BY
   lcode: be

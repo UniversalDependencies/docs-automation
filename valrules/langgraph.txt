@@ -183,6 +183,7 @@ ar--2--aii
 aii----akk
 ar--10--cop
 cop--50--ha
+cop--50--bej
 Southwestern----Southeastern
 Southeastern----Northeastern
 Northeastern----Northwestern
