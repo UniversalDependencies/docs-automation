@@ -428,6 +428,11 @@ Livvi:
   lcode: olo
   iso3: olo
   family: Uralic, Finnic
+Low Saxon:
+  flag: DE-NI
+  lcode: nds
+  iso3: nds
+  family: IE, Germanic
 Macedonian:
   flag: MK
   lcode: mk

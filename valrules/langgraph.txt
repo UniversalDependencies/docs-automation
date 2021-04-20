@@ -76,7 +76,10 @@ orv--10--cu
 bg--10--cu
 cs--100--de
 pl--100--de
-de----nl
+de--2--nds
+de----gsw
+nds----fy
+fy----nl
 nl----af
 nl--10--en
 de--10--da
