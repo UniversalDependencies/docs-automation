@@ -124,10 +124,11 @@ el----grc
 el----pnt
 el----cpg
 cpg----pnt
-pnt--100--hy
+pnt--100--hyw
 grc--100--hit
-hit--100--hy
+hit--100--hyw
 hit--1000--tr
+hyw----hy
 kmr--100--hy
 kmr--100--hit
 kmr--10--kfm

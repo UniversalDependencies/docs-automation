@@ -797,6 +797,11 @@ Welsh:
   lcode: cy
   iso3: cym
   family: IE, Celtic
+Western Armenian:
+  flag: AM
+  lcode: hyw
+  iso3: hyw
+  family: IE, Armenian
 Wolof:
   flag: SN
   lcode: wo
