@@ -194,7 +194,6 @@
 },
 "cu": {
 "бꙑти": {"functions": [{"function": "cop.AUX", "rule": "combination of the copula and a nonverbal predicate", "deficient": "", "example": "Свѣтильникъ тѣлоу [естъ] око.", "exampleen": "The light of the body is the eye.", "comment": ""}, {"function": "Aspect=Perf", "rule": "combination of a present indicative form of the auxiliary and a perfect participle of a main verb", "deficient": "", "example": "пришелъ [еси] погоубитъ насъ", "exampleen": "You came to kill us.", "comment": ""}, {"function": "Mood=Cnd", "rule": "combination of a conditional form of the auxiliary and past participle of a main verb", "deficient": "", "example": "г҃и аште би сьде бꙑлъ не [би] братръ мои оумрълъ", "exampleen": "Lord, if thou hadst been here, my brother had not died.", "comment": ""}], "status": "documented", "lastchanged": "2020-11-21-22-52-02", "lastchanger": "dan-zeman"},
-"не.бꙑти": {"functions": [{"function": "", "rule": "", "deficient": "", "example": "", "exampleen": "", "comment": ""}], "status": "undocumented", "lastchanged": "", "lastchanger": ""}
 },
 "cy": {
 "am": {"functions": [{"function": "Tense=Fut", "rule": "combination of the auxiliary and a verbnoun", "deficient": "", "example": "Mae hi [am] ddod", "exampleen": "She is about to come", "comment": ""}], "status": "documented", "lastchanged": "2020-12-29-16-42-39", "lastchanger": "jheinecke"},
