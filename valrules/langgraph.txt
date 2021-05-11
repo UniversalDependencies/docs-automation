@@ -169,7 +169,8 @@ myv----mdf
 mdf--1000--ru
 Semitic----Cushitic
 Semitic----Egyptian
-Egyptian--10--Biu-Mandara
+Egyptian----Berber
+Berber--10--Biu-Mandara
 Biu-Mandara----West Chadic
 Semitic--1000--Romance
 Semitic--1000--Southwestern
@@ -183,8 +184,10 @@ he--2--aii
 ar--2--aii
 aii----akk
 ar--10--cop
-cop--50--ha
+ar--10--kab
+cop--10--kab
 cop--50--bej
+kab--50--ha
 Southwestern----Southeastern
 Southeastern----Northeastern
 Northeastern----Northwestern

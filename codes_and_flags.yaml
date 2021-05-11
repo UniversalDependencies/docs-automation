@@ -318,6 +318,11 @@ Kaapor:
   lcode: urb
   iso3: urb
   family: Tupian, Tupi-Guarani
+Kabyle:
+  flag: DZ
+  lcode: kab
+  iso3: kab
+  family: Afro-Asiatic, Berber
 Kangri:
   flag: IN
   lcode: xnr
