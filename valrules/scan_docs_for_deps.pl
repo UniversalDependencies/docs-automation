@@ -191,6 +191,7 @@ sub read_relation_doc
             push(@{$dephash->{errors}}, "Wrong relation '$relation'. $d->{msg}");
         }
     }
+    my $title = '';
     my $udver = 1;
     $dephash{examples} = 0;
     my $first_line = 1;
@@ -213,8 +214,12 @@ sub read_relation_doc
                 push(@{$feathash->{errors}}, "MarkDown page must not start with an endian signature.");
             }
         }
-        # The following line should occur in the MarkDown header (between two '---' lines).
-        # We take the risk and do not check where exactly it occurs.
+        # The following lines should occur in the MarkDown header (between two '---' lines).
+        # We take the risk and do not check where exactly they occur.
+        if(m/^title:\s*'(.+?)'$/)
+        {
+            $title = $1;
+        }
         if(m/^udver:\s*'(\d+)'$/)
         {
             $udver = $1;
@@ -230,6 +235,10 @@ sub read_relation_doc
     if($dephash{examples} == 0)
     {
         push(@{$dephash->{errors}}, "No examples found for relation '$relation'.");
+    }
+    if($title eq '')
+    {
+        push(@{$feathash->{errors}}, "No title found in the header.");
     }
     if($udver != 2)
     {

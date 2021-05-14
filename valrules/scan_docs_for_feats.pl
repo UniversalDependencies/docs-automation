@@ -234,6 +234,7 @@ sub read_feature_doc
             $global_lc{lc($value)} = $value;
         }
     }
+    my $title = '';
     my $udver = 1;
     my @values = ();
     my %valdoc;
@@ -259,8 +260,12 @@ sub read_feature_doc
                 push(@{$feathash->{errors}}, "MarkDown page must not start with an endian signature.");
             }
         }
-        # The following line should occur in the MarkDown header (between two '---' lines).
-        # We take the risk and do not check where exactly it occurs.
+        # The following lines should occur in the MarkDown header (between two '---' lines).
+        # We take the risk and do not check where exactly they occur.
+        if(m/^title:\s*'(.+?)'$/)
+        {
+            $title = $1;
+        }
         if(m/^udver:\s*'(\d+)'$/)
         {
             $udver = $1;
@@ -333,6 +338,14 @@ sub read_feature_doc
     if(defined($current_value) && $valdoc{$current_value}{examples} == 0)
     {
         push(@{$feathash->{errors}}, "No examples found under value '$current_value'.", @unrecognized_example_lines);
+    }
+    if($title eq '')
+    {
+        push(@{$feathash->{errors}}, "No title found in the header.");
+    }
+    elsif($title ne $feature)
+    {
+        push(@{$feathash->{errors}}, "Header title '$title' does not match the file name '$feature'.");
     }
     if($udver != 2)
     {
