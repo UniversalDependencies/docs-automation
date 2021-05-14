@@ -193,12 +193,26 @@ sub read_relation_doc
     }
     my $udver = 1;
     $dephash{examples} = 0;
+    my $first_line = 1;
     #print STDERR ("Reading $filepath\n");
     open(FILE, $filepath) or die("Cannot read file '$filepath': $!");
     while(<FILE>)
     {
         chomp();
         s/\s+$//;
+        # The first line must consist of three hyphens. Otherwise the file will
+        # not be recognized by Jekyll as a MarkDown file and the corresponding
+        # HTML page will not be generated. Specifically, the file must not start
+        # with an endian signature (\x{FEFF} ZERO WIDTH NO-BREAK SPACE, or the
+        # non-character \x{FFFE}).
+        if($first_line && !m/^---/)
+        {
+            push(@{$feathash->{errors}}, "MarkDown page does not start with the required header.");
+            if(m/^(\x{FEFF}|\x{FFFE})/)
+            {
+                push(@{$feathash->{errors}}, "MarkDown page must not start with an endian signature.");
+            }
+        }
         # The following line should occur in the MarkDown header (between two '---' lines).
         # We take the risk and do not check where exactly it occurs.
         if(m/^udver:\s*'(\d+)'$/)
@@ -210,6 +224,7 @@ sub read_relation_doc
         {
             $dephash{examples}++;
         }
+        $first_line = 0;
     }
     close(FILE);
     if($dephash{examples} == 0)
