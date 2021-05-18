@@ -67,18 +67,19 @@ def genre_filter(genres,genre_symbols={}):
     spans="".join(span%genre_symbols.get(g,"file-o") for g in genres)
     return '<span class="hint--top hint--info" data-hint="%s">%s</span>'%(symbols,spans)
 
-
 def license_filter(lic):
     """Used from the template to produce the license logo"""
-    lic_abbr,lic_name=lic  #something like BY-SA, CC BY-SA 4.0 unported
-    if lic_abbr=="GNU":
-        logo_file="gpl"
+    lic_abbr,lic_name=lic # something like BY-SA, CC BY-SA 4.0 unported
+    if lic_abbr == "GNU":
+        logo_file = "gpl"
+    elif lic_name.startswith("CC0"):
+        logo_file = "cc-zero"
     elif lic_name.startswith("CC"):
-        logo_file=lic_abbr.lower()
-    elif lic=="LGPLLR":
-        logo_file="LGPLLR"
+        logo_file = lic_abbr.lower()
+    elif lic == "LGPLLR":
+        logo_file = "LGPLLR"
     else:
-        logo_file=None
+        logo_file = None
     if logo_file:
         return '<span class="hint--top hint--info" data-hint="%s"><img class="license" src="logos/%s.svg" /></span>'%(lic_name,logo_file)
     else:
