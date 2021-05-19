@@ -7,10 +7,9 @@
     <!-- English has so many genres that they no longer fit in doublewidespan. -->
     <span class="triplewidespan">{{genres|genre_filter|safe}}</span>
     <span class="triplewidespan">{{language_family}}</span>
-
   </div>   <!-- end of {{language_name}} accordion row -->
 
-  <div>   <!-- start of {{language_name}} accordion body -->
+  <div style="display: none">   <!-- start of {{language_name}} accordion body -->
 
   <!-- empty space so tooltip fits -->
   <h3> {{language_name}} treebanks</h3>

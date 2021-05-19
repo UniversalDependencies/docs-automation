@@ -115,7 +115,6 @@ if __name__=="__main__":
     opt_parser.add_argument('input', nargs='+', help='Input corpus stat json files')
     args=opt_parser.parse_args()
 
-
     with open(args.codes_flags) as f:
         codes_flags=yaml.load(f)
 
@@ -132,7 +131,7 @@ if __name__=="__main__":
     t_env.filters["contributor_filter"]=contributor_filter
     t_env.filters["stars_filter"]=stars_filter
 
-    tbanks={} #language -> [tbank,tbank,...]
+    tbanks={} # language -> [tbank,tbank,...]
 
     for f_name in args.input:
         try:
@@ -141,7 +140,6 @@ if __name__=="__main__":
                 tbanks.setdefault(tbank["language_name"],[]).append(tbank)
         except:
             print("Whoa, couldn't load", f_name, file=sys.stderr)
-
 
     lang_template=t_env.get_template("language.md")
     for lang,lang_tbanks in sorted(tbanks.items()):
@@ -169,5 +167,3 @@ if __name__=="__main__":
 
         r=lang_template.render(flag=codes_flags[lang]["flag"],language_name=lang,language_code=language_code,language_hub=language_hub,tbank_comparison=tbank_comparison,counts=sum_counts,treebanks=lang_tbanks,genres=union_genres,language_family=codes_flags[lang]["family"])
         print(r)
-
-
