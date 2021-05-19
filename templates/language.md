@@ -9,7 +9,7 @@
     <span class="triplewidespan">{{language_family}}</span>
   </div>   <!-- end of {{language_name}} accordion row -->
 
-  <div style="display: none">   <!-- start of {{language_name}} accordion body -->
+  <div<!--initial style="display: none" would make the page a bit better before setup is done but the height of the subaccordions would not be measured correctly-->>   <!-- start of {{language_name}} accordion body -->
 
   <!-- empty space so tooltip fits -->
   <h3> {{language_name}} treebanks</h3>
