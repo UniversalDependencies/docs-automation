@@ -9,7 +9,7 @@
     <span class="triplewidespan">{{language_family}}</span>
   </div> <!-- end of {{language_name}} accordion row -->
 
-  <div class="ui-accordion-content ui-helper-reset ui-widget-content ui-corner-bottom" style="height: 0px;" role="tabpanel"> <!-- start of {{language_name}} accordion body -->
+  <div class="ui-accordion-content ui-helper-reset ui-widget-content ui-corner-bottom" style="" role="tabpanel"> <!-- start of {{language_name}} accordion body -->
   <!--initial style="height:558.8px; display: none" would make the page a bit better before setup is done but the height of the subaccordions would not be measured correctly-->
 
   <!-- empty space so tooltip fits -->
