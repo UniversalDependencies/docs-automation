@@ -204,10 +204,13 @@ ifb--100--tl
 tl----hil
 hil--100--id
 Tupi-Guarani--10--Munduruku
-Tupari----Munduruku
+Purubora-Ramarama----Munduruku
+Tupari----Purubora-Ramarama
 urb----gub
 gub----tpn
 tpn----gun
 gun--100--aqz
-aqz--100--myu
+aqz----mpu
+aqz--100--arr
+arr--100--myu
 myu--100--urb

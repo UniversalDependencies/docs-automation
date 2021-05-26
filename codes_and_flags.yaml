@@ -338,6 +338,11 @@ Karelian:
   lcode: krl
   iso3: krl
   family: Uralic, Finnic
+Karo:
+  flag: BR
+  lcode: arr
+  iso3: arr
+  family: Tupian, Purubora-Ramarama
 Kazakh:
   flag: KZ
   lcode: kk
