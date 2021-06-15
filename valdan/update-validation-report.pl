@@ -42,7 +42,7 @@ my $record = get_ud_files_and_codes($folder);
 print STDERR ("Folder   = $folder\n");
 print STDERR ("Language = $record->{lname}\n");
 print STDERR ("Language code derived from file names = $record->{lcode}\n");
-print STDERR ("Language code obtained from YAML      = $languages_from_yaml->{$record->{lname}}\n");
+print STDERR ("Language code obtained from YAML      = $languages_from_yaml->{$record->{lname}}{lcode}\n");
 my $treebank_message;
 my %error_stats;
 if(scalar(@{$record->{files}}) > 0)
