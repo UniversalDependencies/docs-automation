@@ -39,10 +39,9 @@ $folder =~ s:/$::;
 $folder =~ s:^\./::;
 system("cd $folder ; (git pull --no-edit >/dev/null 2>&1) ; cd ..");
 my $record = get_ud_files_and_codes($folder);
-print STDERR ("Folder   = $folder\n");
-print STDERR ("Language = $record->{lname}\n");
-print STDERR ("Language code derived from file names = $record->{lcode}\n");
-print STDERR ("Language code obtained from YAML      = $languages_from_yaml->{$record->{lname}}{lcode}\n");
+# The $record contains a language code guessed from the file names; however, the
+# file names can be wrong. We will use the official code from YAML instead.
+my $lcode = $languages_from_yaml->{$record->{lname}}{lcode};
 my $treebank_message;
 my %error_stats;
 if(scalar(@{$record->{files}}) > 0)
@@ -54,10 +53,12 @@ if(scalar(@{$record->{files}}) > 0)
     system("echo $command >> log/$folder.log");
     my $result = saferun("perl -I perllib/lib/perl5 -I perllib/lib/perl5/x86_64-linux-gnu-thread-multi $command >> log/$folder.log 2>&1");
     $folder_success = $folder_success && $result;
-    # Check individual data files.
-    foreach my $file (@{$record->{files}})
+    # Check individual data files. Check them all in one validator run.
+    if(scalar(@{$record->{files}}) > 0)
     {
-        $command = "./validate.sh --lang $record->{lcode} --max-err 0 $folder/$file";
+        my $files = join(' ', map {"$folder/$_"} (@{$record->{files}}));
+        $command = "./validate.sh --lang $lcode --max-err 0 $files";
+        print STDERR ("$command\n");
         system("echo $command >> log/$folder.log");
         $result = saferun("$command >> log/$folder.log 2>&1");
         $folder_success = $folder_success && $result;
