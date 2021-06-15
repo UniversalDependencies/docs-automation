@@ -1,6 +1,6 @@
 #!/usr/bin/env perl
 # Updates the validation report line of a particular treebank.
-# Copyright © 2018 Dan Zeman <zeman@ufal.mff.cuni.cz>
+# Copyright © 2018-2021 Dan Zeman <zeman@ufal.mff.cuni.cz>
 # License: GNU GPL
 
 use utf8;
@@ -8,15 +8,41 @@ use open ':utf8';
 binmode(STDIN, ':utf8');
 binmode(STDOUT, ':utf8');
 binmode(STDERR, ':utf8');
+# We need to tell Perl where to find our udlib module.
+BEGIN
+{
+    use Cwd;
+    my $path = $0;
+    $path =~ s:\\:/:g;
+    my $currentpath = getcwd();
+    $libpath = $currentpath;
+    if($path =~ m:/:)
+    {
+        $path =~ s:/[^/]*$:/:;
+        chdir($path);
+        $libpath = getcwd();
+        chdir($currentpath);
+    }
+    #print STDERR ("libpath=$libpath\n");
+}
+# We assume that the 'tools' repository lies next to 'docs-automation' where this script resides.
+use lib "$libpath/../../tools";
+use udlib;
 
 
 
+# Get the hash of UD language names, codes, and families.
+my $languages_from_yaml = udlib::get_language_hash();
 my $folder = $ARGV[0];
 exit if(!defined($folder));
 $folder =~ s:/$::;
 $folder =~ s:^\./::;
 system("cd $folder ; (git pull --no-edit >/dev/null 2>&1) ; cd ..");
 my $record = get_ud_files_and_codes($folder);
+print STDERR ("Folder   = $folder\n");
+print STDERR ("Language = $record->{lname}\n");
+print STDERR ("Language code derived from file names = $record->{lcode}\n");
+print STDERR ("Language code obtained from YAML      = $languages_from_yaml->{$record->{lname}}\n");
 my $treebank_message;
 my %error_stats;
 if(scalar(@{$record->{files}}) > 0)
@@ -31,6 +57,7 @@ if(scalar(@{$record->{files}}) > 0)
     # Check individual data files.
     foreach my $file (@{$record->{files}})
     {
+        if($record->{lcode} ne $languages_from_yaml->{
         $command = "./validate.sh --lang $record->{lcode} --max-err 0 $folder/$file";
         system("echo $command >> log/$folder.log");
         $result = saferun("$command >> log/$folder.log 2>&1");
@@ -79,7 +106,8 @@ while(<REPORT>)
 close(REPORT);
 $valreps{$folder} = $treebank_message;
 my @treebanks = sort(keys(%valreps));
-###!!! This is still not safe enough! If two processes try to modify the file at the same time, it can get corrupt!
+# This is still not 100% safe: If two processes try to modify the file at the
+# same time, it can get corrupt. However, it is not very likely.
 system("cp validation-report.txt validation-report.bak");
 open(REPORT, ">validation-report.txt");
 foreach my $treebank (@treebanks)
@@ -514,10 +542,9 @@ sub saferun
 
 
 #==============================================================================
-# The following functions are available in tools/udlib.pm. However, udlib uses
-# JSON::Parse, which is not installed on quest, so we cannot use it here.
-# Moreover, I have modified the functions here and they are no longer
-# equivalent to the original in udlib.pm.
+# The following functions are available in tools/udlib.pm. However, I have
+# modified the functions here and they are no longer equivalent to the original
+# in udlib.pm.
 #==============================================================================
 
 
