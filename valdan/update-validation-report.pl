@@ -50,6 +50,7 @@ if(scalar(@{$record->{files}}) > 0)
     system("date > log/$folder.log 2>&1");
     # Check list of files and metadata in README.
     my $command = "tools/check_files.pl $folder";
+    print STDERR ("$command\n");
     system("echo $command >> log/$folder.log");
     my $result = saferun("perl -I perllib/lib/perl5 -I perllib/lib/perl5/x86_64-linux-gnu-thread-multi $command >> log/$folder.log 2>&1");
     $folder_success = $folder_success && $result;
