@@ -57,7 +57,6 @@ if(scalar(@{$record->{files}}) > 0)
     # Check individual data files.
     foreach my $file (@{$record->{files}})
     {
-        if($record->{lcode} ne $languages_from_yaml->{
         $command = "./validate.sh --lang $record->{lcode} --max-err 0 $folder/$file";
         system("echo $command >> log/$folder.log");
         $result = saferun("$command >> log/$folder.log 2>&1");
