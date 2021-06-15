@@ -25,8 +25,8 @@ BEGIN
     }
     #print STDERR ("libpath=$libpath\n");
 }
-# We assume that the 'tools' repository lies next to 'docs-automation' where this script resides.
-use lib "$libpath/../../tools";
+# We assume that a copy of this script is invoked that resides above all UD repositories, including tools.
+use lib "$libpath/tools";
 use udlib;
 
 
