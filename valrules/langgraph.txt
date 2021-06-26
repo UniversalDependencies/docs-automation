@@ -143,6 +143,7 @@ hi--2--sa
 hi--2--xnr
 hi--2--bho
 hi--2--mag
+xnr----ne
 bho----mag
 bho--2--bn
 mag--2--bn
