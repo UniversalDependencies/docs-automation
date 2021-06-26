@@ -543,6 +543,11 @@ Ndengeleko:
   lcode: ndg
   iso3: ndg
   family: Niger-Congo, Bantoid
+Nepali:
+  flag: NP
+  lcode: ne
+  iso3: nep
+  family: IE, Indic
 Nkore:
   flag: UG
   lcode: nyn
