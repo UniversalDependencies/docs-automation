@@ -762,6 +762,11 @@ Thai:
   lcode: th
   iso3: tha
   family: Tai-Kadai
+Tigrinya:
+  flag: ER
+  lcode: ti
+  iso3: tir
+  family: Afro-Asiatic, Semitic
 Tupinamba:
   flag: BR
   lcode: tpn
