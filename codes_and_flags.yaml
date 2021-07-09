@@ -628,6 +628,10 @@ Portuguese:
   lcode: pt
   iso3: por
   family: IE, Romance
+Prakrit:
+  flag: IN
+  lcode: pra
+  family: IE, Indic
 Purki:
   flag: IN
   lcode: prx
