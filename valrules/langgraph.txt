@@ -33,7 +33,8 @@ Chukotko-Kamchatkan--100--Mongolic
 Chukotko-Kamchatkan----Eskimo-Aleut
 Eskimo-Aleut--100--Hokan
 Hokan--100--Mayan
-Arawakan--100--Mayan
+Mayan----Chibchan
+Arawakan--100--Chibchan
 Arawakan----Panoan
 Arawakan----Tupian
 Tupian----Panoan
@@ -105,6 +106,7 @@ fr--2--rm
 rm--10--it
 fr--4--lij
 lij--4--it
+it----nap
 it--2--ro
 fr--100--br
 en--100--cy
