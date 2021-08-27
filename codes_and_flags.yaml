@@ -108,6 +108,11 @@ Breton:
   lcode: br
   iso3: bre
   family: IE, Celtic
+Bribri:
+  flag: CR
+  lcode: bzd
+  iso3: bzd
+  family: Chibchan
 Bulgarian:
   flag: BG
   lcode: bg
