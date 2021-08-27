@@ -548,6 +548,11 @@ Ndengeleko:
   lcode: ndg
   iso3: ndg
   family: Niger-Congo, Bantoid
+Neapolitan:
+  flag: IT-CAM
+  lcode: nap
+  iso3: nap
+  family: IE, Romance
 Nepali:
   flag: NP
   lcode: ne
