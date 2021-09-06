@@ -202,11 +202,13 @@ kk--100--ug
 ug--100--otk
 Northern Luzon----Central Philippine
 Central Philippine--10--Malayo-Sumbawan
+Malayo-Sumbawan----Javanese
 zh--1000--ifb
 vi--1000--ifb
 ifb--100--tl
 tl----hil
 hil--100--id
+id----jv
 Tupi-Guarani--10--Munduruku
 Purubora-Ramarama----Munduruku
 Tupari----Purubora-Ramarama

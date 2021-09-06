@@ -318,6 +318,11 @@ Japanese:
   lcode: ja
   iso3: jpn
   family: Japanese
+Javanese:
+  flag: ID
+  lcode: jv
+  iso3: jav
+  family: Austronesian, Javanese
 Kaapor:
   flag: BR
   lcode: urb
