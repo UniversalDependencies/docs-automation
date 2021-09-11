@@ -633,6 +633,11 @@ Polish:
   lcode: pl
   iso3: pol
   family: IE, Slavic
+Pomak:
+  flag: TAMRASH
+  lcode: qpm
+  iso3: qpm
+  family: IE, Slavic
 Pontic:
   flag: TR-PONTOS
   lcode: pnt

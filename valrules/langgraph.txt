@@ -72,6 +72,8 @@ hr----sr
 sr--2--mk
 sr--2--bg
 bg----mk
+bg----qpm
+mk----qpm
 ru----orv
 orv--10--cu
 bg--10--cu
@@ -122,6 +124,7 @@ sr--100--sq
 sq--100--el
 mk--100--el
 bg--100--el
+qpm--100--el
 el----grc
 el----pnt
 el----cpg
