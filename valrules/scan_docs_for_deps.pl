@@ -1,5 +1,5 @@
 #!/usr/bin/env perl
-# Scans the UD docs repository for documentation of features.
+# Scans the UD docs repository for documentation of relations.
 # Copyright © 2020 Dan Zeman <zeman@ufal.mff.cuni.cz>
 # License: GNU GPL
 
@@ -106,7 +106,7 @@ foreach my $file (@gdfiles)
     }
     read_relation_doc($relation, "$gddeps/$file", $hash{$relation}, \@deviations);
 }
-# Scan locally documented (language-specific) features.
+# Scan locally documented (language-specific) relations.
 opendir(DIR, $docs) or die("Cannot read folder '$docs': $!");
 my @langfolders = sort(grep {m/^_[a-z]{2,3}$/ && -d "$docs/$_/dep"} (readdir(DIR)));
 closedir(DIR);
@@ -176,7 +176,7 @@ valdata::write_deprels_json($data, "$scriptpath/deprels.json");
 
 
 #------------------------------------------------------------------------------
-# Reads a MarkDown file that documents one feature.
+# Reads a MarkDown file that documents one relation.
 #------------------------------------------------------------------------------
 sub read_relation_doc
 {
@@ -253,8 +253,8 @@ sub read_relation_doc
 #------------------------------------------------------------------------------
 sub print_json
 {
-    my $ghash = shift; # ref to hash with global features
-    my $lhash = shift; # ref to hash with local features
+    my $ghash = shift; # ref to hash with global relations
+    my $lhash = shift; # ref to hash with local relations
     my $deviations = shift; # ref to array with banned deviations
     my $docspath = shift; # needed to be able to find the list of all UD languages
     my $filename = shift; # where to write JSON to
@@ -284,7 +284,7 @@ sub print_json
                 }
             }
         }
-        # Add globally defined features that are not redefined locally.
+        # Add globally defined relations that are not redefined locally.
         foreach my $relation (sort(keys(%{$ghash})))
         {
             unless(exists($lhash->{$lcode}{$relation}))
@@ -345,7 +345,7 @@ sub print_json
 
 
 #------------------------------------------------------------------------------
-# Encodes the hash of one feature in JSON.
+# Encodes the hash of one relation in JSON.
 #------------------------------------------------------------------------------
 sub encode_relation_json
 {
