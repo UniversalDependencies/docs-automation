@@ -483,6 +483,11 @@ Maltese:
   lcode: mt
   iso3: mlt
   family: Afro-Asiatic, Semitic
+Mandyali:
+  flag: IN
+  lcode: mjl
+  iso3: mjl
+  family: IE, Indic
 Manx:
   flag: IM
   lcode: gv

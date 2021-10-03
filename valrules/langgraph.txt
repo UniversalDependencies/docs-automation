@@ -146,10 +146,13 @@ ur----hi
 ur--2--sd
 hi--2--pra
 hi--2--xnr
+hi--2--mjl
 hi--2--bho
 hi--2--mag
 pra----sa
+xnr----mjl
 xnr----ne
+mjl----ne
 bho----mag
 bho--2--bn
 mag--2--bn
