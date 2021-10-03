@@ -786,6 +786,11 @@ Tamil:
   lcode: ta
   iso3: tam
   family: Dravidian, Southern
+Tatar:
+  flag: RU-TA
+  lcode: tt
+  iso3: tat
+  family: Turkic, Northwestern
 Telugu:
   flag: IN
   lcode: te

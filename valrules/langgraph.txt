@@ -29,6 +29,7 @@ Mande----Niger-Congo
 Mande--10--Afro-Asiatic
 Niger-Congo--10--Afro-Asiatic
 Khoe-Kwadi----Niger-Congo
+Chukotko-Kamchatkan--100--Turkic
 Chukotko-Kamchatkan--100--Mongolic
 Chukotko-Kamchatkan----Eskimo-Aleut
 Eskimo-Aleut--100--Hokan
@@ -207,10 +208,10 @@ Northeastern----Northwestern
 Northwestern----Southwestern
 tr--1000--lzz
 tr--100--kk
+kk----tt
 kk--100--ug
-kk--100--sah
 ug--100--otk
-ug--100--sah
+otk----sah
 sah--1000--ckt
 ckt--1000--ess
 Northern Luzon----Central Philippine
