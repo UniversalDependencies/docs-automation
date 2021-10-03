@@ -583,6 +583,11 @@ Occitan:
   lcode: oc
   iso3: oci
   family: IE, Romance
+Odia:
+  flag: IN
+  lcode: or
+  iso3: ori
+  family: IE, Indic
 Old Church Slavonic:
   flag: MORAVA
   lcode: cu

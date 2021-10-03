@@ -153,6 +153,9 @@ xnr----ne
 bho----mag
 bho--2--bn
 mag--2--bn
+bho--2--or
+mag--2--or
+bn--2--or
 bn----as
 hi--10--mr
 mr--10--si
