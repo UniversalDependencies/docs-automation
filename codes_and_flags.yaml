@@ -851,6 +851,11 @@ Wolof:
   lcode: wo
   iso3: wol
   family: Niger-Congo, Northern Atlantic
+Yakut:
+  flag: RU-SA
+  lcode: sah
+  iso3: sah
+  family: Turkic, Northeastern
 Yoruba:
   flag: NG
   lcode: yo

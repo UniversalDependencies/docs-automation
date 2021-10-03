@@ -202,7 +202,11 @@ Northwestern----Southwestern
 tr--1000--lzz
 tr--100--kk
 kk--100--ug
+kk--100--sah
 ug--100--otk
+ug--100--sah
+sah--1000--ckt
+ckt--1000--ess
 Northern Luzon----Central Philippine
 Central Philippine--10--Malayo-Sumbawan
 Malayo-Sumbawan----Javanese
