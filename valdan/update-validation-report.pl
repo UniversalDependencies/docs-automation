@@ -8,6 +8,7 @@ use open ':utf8';
 binmode(STDIN, ':utf8');
 binmode(STDOUT, ':utf8');
 binmode(STDERR, ':utf8');
+use JSON::Parse 'json_file_to_perl';
 # We need to tell Perl where to find our udlib module.
 BEGIN
 {
@@ -143,6 +144,17 @@ sub count_error_types
 
 BEGIN
 {
+    ###!!! Testing the new way of storing exceptions.
+    my $dispfile;
+    if(-f 'dispensations.json')
+    {
+        $dispfile = 'dispensations.json';
+    }
+    else
+    {
+        $dispfile = "$libpath/docs-automation/valdan/dispensations.json";
+    }
+    $dispensations = json_file_to_perl($dispfile);
     # List for each folder name tests that this treebank is allowed to fail.
     %exceptions =
     (
