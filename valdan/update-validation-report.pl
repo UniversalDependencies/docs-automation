@@ -154,7 +154,7 @@ BEGIN
     {
         $dispfile = "$libpath/docs-automation/valdan/dispensations.json";
     }
-    $dispensations = json_file_to_perl($dispfile);
+    $dispensations = json_file_to_perl($dispfile)->{dispensations};
     # Re-hash the dispensations so that for each folder name we know the tests that this treebank is allowed to fail.
     %exceptions;
     foreach my $d (sort(keys(%{$dispensations})))
