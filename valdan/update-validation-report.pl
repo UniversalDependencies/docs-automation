@@ -164,9 +164,6 @@ BEGIN
             push(@{$exceptions{$t}}, $d);
         }
     }
-    ###!!! DEBUGGING
-    my $n = scalar(@{$exceptions{'UD_English-EWT'}});
-    print STDERR ("$n dispensations for UD_English-EWT\n");
 
 
 
