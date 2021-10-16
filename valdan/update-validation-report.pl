@@ -38,6 +38,28 @@ my $folder = $ARGV[0];
 exit if(!defined($folder));
 $folder =~ s:/$::;
 $folder =~ s:^\./::;
+# Get the list of previous releases. If the treebank is invalid but there was
+# a valid version in the previous release, we can use it as a backup.
+my $relfile;
+if(-f 'releases.json')
+{
+    $relfile = 'releases.json';
+}
+else
+{
+    $relfile = "$libpath/docs-automation/valdan/releases.json";
+}
+my $releases = json_file_to_perl($relfile)->{releases};
+my @release_numbers = sort_release_numbers(keys(%{$releases}));
+my $backup_release;
+foreach my $t (@{$releases->{$release_numbers[-1]}{treebanks}})
+{
+    if($t eq $folder)
+    {
+        $backup_release = $release_numbers[-1];
+        last;
+    }
+}
 system("cd $folder ; (git pull --no-edit >/dev/null 2>&1) ; cd ..");
 my $record = get_ud_files_and_codes($folder);
 # The $record contains a language code guessed from the file names; however, the
@@ -79,7 +101,7 @@ if(scalar(@{$record->{files}}) > 0)
         }
         # Error types include level, class, and test id, e.g., "L3 Syntax leaf-mark-case".
         $error_stats = ' ('.join('; ', ("TOTAL $total", map {"$_ $error_stats{$_}"} (@error_types))).')';
-        $legacy_status = get_legacy_status($folder, \@testids);
+        $legacy_status = get_legacy_status($folder, \@testids, $backup_release);
     }
     $treebank_message = "$folder: ";
     $treebank_message .= $folder_success ? 'VALID' : $legacy_status.$error_stats;
@@ -197,27 +219,6 @@ BEGIN
             push(@{$exceptions{$t}}, $d);
         }
     }
-    # We need to know for each treebank what is the last valid release that could be used in case of problems with the current data.
-    # For most treebanks, release 2.4 does not count as valid because some errors that were already reported were forgiven at once.
-    # Since then, all previously released treebanks (except UD_Japanese-KTB, which was abandoned long ago) always had the previous
-    # release as backup, and we never had to actually use the backup instead of the dev version.
-    my $relfile;
-    if(-f 'releases.json')
-    {
-        $relfile = 'releases.json';
-    }
-    else
-    {
-        $relfile = "$libpath/docs-automation/valdan/releases.json";
-    }
-    $releases = json_file_to_perl($relfile)->{releases};
-    @release_numbers = sort_release_numbers(keys(%{$releases}));
-    $last_release = $release_numbers[-1];
-    %last_valid_release;
-    foreach my $t (@{$releases->{$last_release}{treebanks}})
-    {
-        $last_valid_release{$t} = $last_release;
-    }
 }
 
 
@@ -233,6 +234,7 @@ sub get_legacy_status
 {
     my $folder = shift;
     my $error_types = shift; # array ref
+    my $backup_release = shift;
     my @error_types = @{$error_types};
     if(scalar(@error_types) == 0)
     {
@@ -256,9 +258,9 @@ sub get_legacy_status
     # If we are here, there are new errors that prevent the data from being released.
     # But maybe there is an older release that could be re-released.
     # Only 2.* releases can be used as backup. Discard Japanese KTC, which was last valid in 1.4.
-    if($last_valid_release{$folder} =~ m/^2\.\d+$/)
+    if(defined($backup_release) && $backup_release =~ m/^2\.\d+$/)
     {
-        return "ERROR; BACKUP $last_valid_release{$folder}";
+        return "ERROR; BACKUP $backup_release";
     }
     else
     {
