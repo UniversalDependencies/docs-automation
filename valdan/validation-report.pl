@@ -95,7 +95,7 @@ while(<REPORT>)
         {
             my $errorlist = '';
             my $reportlink = '';
-            if(s/(ERROR; DISCARD|ERROR; BACKUP \d+\.\d+|LEGACY(; \d+-\d+-\d+)?)(\s*\(.+?\))/$1/)
+            if(s/(ERROR; DISCARD|ERROR; BACKUP \d+\.\d+|LEGACY(?:; \d+-\d+-\d+)?)(\s*\(.+?\))/$1/)
             {
                 $errorlist = $2;
             }
