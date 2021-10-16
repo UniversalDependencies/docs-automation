@@ -60,6 +60,29 @@ foreach my $t (@{$releases->{$release_numbers[-1]}{treebanks}})
         last;
     }
 }
+# Get the list of validation dispensations for this treebank.
+my $dispfile;
+if(-f 'dispensations.json')
+{
+    $dispfile = 'dispensations.json';
+}
+else
+{
+    $dispfile = "$libpath/docs-automation/valdan/dispensations.json";
+}
+my $dispensations = json_file_to_perl($dispfile)->{dispensations};
+my @exceptions;
+foreach my $d (sort(keys(%{$dispensations})))
+{
+    foreach my $t (@{$dispensations->{$d}{treebanks}})
+    {
+        if($t eq $folder)
+        {
+            push(@exceptions, $d);
+            last;
+        }
+    }
+}
 system("cd $folder ; (git pull --no-edit >/dev/null 2>&1) ; cd ..");
 my $record = get_ud_files_and_codes($folder);
 # The $record contains a language code guessed from the file names; however, the
@@ -101,11 +124,11 @@ if(scalar(@{$record->{files}}) > 0)
         }
         # Error types include level, class, and test id, e.g., "L3 Syntax leaf-mark-case".
         $error_stats = ' ('.join('; ', ("TOTAL $total", map {"$_ $error_stats{$_}"} (@error_types))).')';
-        $legacy_status = get_legacy_status($folder, \@testids, $backup_release);
+        $legacy_status = get_legacy_status($folder, \@testids, $backup_release, \@exceptions);
     }
     $treebank_message = "$folder: ";
     $treebank_message .= $folder_success ? 'VALID' : $legacy_status.$error_stats;
-    my @unused = get_unused_exceptions($folder, \@testids);
+    my @unused = get_unused_exceptions($folder, \@testids, \@exceptions);
     if(scalar(@unused) > 0)
     {
         $treebank_message .= ' UNEXCEPT '.join(' ', @unused);
@@ -197,32 +220,6 @@ sub sort_release_numbers
 
 
 
-BEGIN
-{
-    # Read the registered validation exceptions for legacy treebanks.
-    my $dispfile;
-    if(-f 'dispensations.json')
-    {
-        $dispfile = 'dispensations.json';
-    }
-    else
-    {
-        $dispfile = "$libpath/docs-automation/valdan/dispensations.json";
-    }
-    $dispensations = json_file_to_perl($dispfile)->{dispensations};
-    # Re-hash the dispensations so that for each folder name we know the tests that this treebank is allowed to fail.
-    %exceptions;
-    foreach my $d (sort(keys(%{$dispensations})))
-    {
-        foreach my $t (@{$dispensations->{$d}{treebanks}})
-        {
-            push(@{$exceptions{$t}}, $d);
-        }
-    }
-}
-
-
-
 #------------------------------------------------------------------------------
 # If a treebank has been valid and part of a previous release, it can be
 # granted the "legacy" status. If a new test is introduced and the treebank
@@ -235,17 +232,17 @@ sub get_legacy_status
     my $folder = shift;
     my $error_types = shift; # array ref
     my $backup_release = shift;
+    my $exceptions = shift; # array ref
     my @error_types = @{$error_types};
     if(scalar(@error_types) == 0)
     {
         return 'VALID';
     }
-    my @exceptions = @{$exceptions{$folder}};
     my @unforgivable = ();
-    print STDERR ("Forgivable exceptions for $folder: ".join(' ', @exceptions)."\n");
+    print STDERR ("Forgivable exceptions for $folder: ".join(' ', @{$exceptions})."\n");
     foreach my $error_type (@error_types)
     {
-        unless(grep {$_ eq $error_type} (@exceptions))
+        unless(grep {$_ eq $error_type} (@{$exceptions}))
         {
             push(@unforgivable, $error_type);
             print STDERR ("Unforgivable error '$error_type'\n");
@@ -279,10 +276,10 @@ sub get_unused_exceptions
 {
     my $folder = shift;
     my $error_types = shift; # array ref
+    my $exceptions = shift; # array ref
     my @error_types = @{$error_types};
-    my @exceptions = @{$exceptions{$folder}};
     my @unused = ();
-    foreach my $exception (@exceptions)
+    foreach my $exception (@{$exceptions})
     {
         unless(grep {$_ eq $exception} (@error_types))
         {
