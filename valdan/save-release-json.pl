@@ -114,30 +114,7 @@ my $json = "{\n";
 $json .= '"releases": {'."\n";
 @rjsons = ();
 # Order the releases by their release numbers.
-my @sorted = sort
-{
-    my $amaj = $a;
-    my $amin = 0;
-    my $bmaj = $b;
-    my $bmin = 0;
-    if($a =~ m/^(\d+)\.(\d+)$/)
-    {
-        $amaj = $1;
-        $amin = $2;
-    }
-    if($b =~ m/^(\d+)\.(\d+)$/)
-    {
-        $bmaj = $1;
-        $bmin = $2;
-    }
-    my $r = $amaj <=> $bmaj;
-    unless($r)
-    {
-        $r = $amin <=> $bmin;
-    }
-    $r
-}
-(keys(%{$releases}));
+my @sorted = sort_release_numbers(keys(%{$releases}));
 get_changes_in_treebank_list($releases, @sorted);
 my $lastrnum;
 my $lastdate;
@@ -170,6 +147,39 @@ $json .= "}\n"; # end of JSON
 open(JSON, ">$jsonfile") or die("Cannot write '$jsonfile': $!");
 print JSON ($json);
 close(JSON);
+
+
+
+#------------------------------------------------------------------------------
+# Sort release numbers.
+#------------------------------------------------------------------------------
+sub sort_release_numbers
+{
+    return sort
+    {
+        my $amaj = $a;
+        my $amin = 0;
+        my $bmaj = $b;
+        my $bmin = 0;
+        if($a =~ m/^(\d+)\.(\d+)$/)
+        {
+            $amaj = $1;
+            $amin = $2;
+        }
+        if($b =~ m/^(\d+)\.(\d+)$/)
+        {
+            $bmaj = $1;
+            $bmin = $2;
+        }
+        my $r = $amaj <=> $bmaj;
+        unless($r)
+        {
+            $r = $amin <=> $bmin;
+        }
+        $r
+    }
+    (@_);
+}
 
 
 
