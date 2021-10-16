@@ -124,7 +124,7 @@ if(scalar(@{$record->{files}}) > 0)
         }
         # Error types include level, class, and test id, e.g., "L3 Syntax leaf-mark-case".
         $error_stats = ' ('.join('; ', ("TOTAL $total", map {"$_ $error_stats{$_}"} (@error_types))).')';
-        $legacy_status = get_legacy_status($folder, \@testids, $backup_release, \@exceptions);
+        $legacy_status = get_legacy_status($folder, \@testids, $backup_release, $dispensations);
     }
     $treebank_message = "$folder: ";
     $treebank_message .= $folder_success ? 'VALID' : $legacy_status.$error_stats;
@@ -232,17 +232,34 @@ sub get_legacy_status
     my $folder = shift;
     my $error_types = shift; # array ref
     my $backup_release = shift;
-    my $exceptions = shift; # array ref
+    my $dispensations = shift; # hash ref
     my @error_types = @{$error_types};
     if(scalar(@error_types) == 0)
     {
         return 'VALID';
     }
     my @unforgivable = ();
-    print STDERR ("Forgivable exceptions for $folder: ".join(' ', @{$exceptions})."\n");
+    my $date_oldest_dispensation;
     foreach my $error_type (@error_types)
     {
-        unless(grep {$_ eq $error_type} (@{$exceptions}))
+        if(exists($dispensations->{$error_type}))
+        {
+            # Some treebanks have dispensations for this error type. Is our treebank among them?
+            if(grep {$_ eq $folder} (@{$dispensations->{$error_type}{treebanks}}))
+            {
+                if(!defined($date_oldest_dispensation) || $dispensations->{$error_type}{date} lt $date_oldest_dispensation)
+                {
+                    $date_oldest_dispensation = $dispensations->{$error_type}{date};
+                }
+                print STDERR ("Forgivable exception '$error_type'\n");
+            }
+            else
+            {
+                push(@unforgivable, $error_type);
+                print STDERR ("Unforgivable error '$error_type'\n");
+            }
+        }
+        else
         {
             push(@unforgivable, $error_type);
             print STDERR ("Unforgivable error '$error_type'\n");
@@ -250,7 +267,7 @@ sub get_legacy_status
     }
     if(scalar(@unforgivable) == 0)
     {
-        return 'LEGACY';
+        return "LEGACY; $date_oldest_dispensation";
     }
     # If we are here, there are new errors that prevent the data from being released.
     # But maybe there is an older release that could be re-released.
