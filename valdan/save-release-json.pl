@@ -151,6 +151,17 @@ foreach my $r (@sorted)
     $lastrnum = $r;
     $lastdate = $releases->{$r}{date};
     my $rjson = '"'.$r.'": '.encode_json(['date', $releases->{$r}{date}], ['treebanks', $releases->{$r}{treebanks}, 'list']);
+    if(defined($releases->{$r}{renamed}) && scalar(@{$releases->{$r}{renamed}}) > 0)
+    {
+        my @rnmjsons;
+        foreach my $rnm (@{$releases->{$r}{renamed}})
+        {
+            push(@rnmjsons, '["'.escape_json_string($rnm->[0]).'", "'.escape_json_string($rnm->[1]).'"]');
+        }
+        my $rnmjson = '['.join(', ', @rnmjsons).']'; #{{
+        $rjson =~ s/\}$/, /;
+        $rjson .= '"renamed": '.$rnmjson.'}';
+    }
     push(@rjsons, $rjson);
 }
 $json .= join(",\n", @rjsons)."\n";
@@ -274,6 +285,20 @@ sub get_changes_in_treebank_list
         ['2.7', 'UD_Old_Russian-RNC', '2.8', 'UD_Old_East_Slavic-RNC'],
         ['2.7', 'UD_Old_Russian-TOROT', '2.8', 'UD_Old_East_Slavic-TOROT']
     );
+    # Save name changes with the releases.
+    foreach my $r (@releases)
+    {
+        my @rchanges;
+        foreach my $nc (@name_changes)
+        {
+            # Is this release where the new name appeared for the first time?
+            if($nc->[2] eq $r)
+            {
+                push(@rchanges, [$nc->[1], $nc->[3]]);
+            }
+        }
+        $releases->{$r}{renamed} = \@rchanges;
+    }
 }
 
 
