@@ -8,6 +8,7 @@ use open ':utf8';
 binmode(STDIN, ':utf8');
 binmode(STDOUT, ':utf8');
 binmode(STDERR, ':utf8');
+use JSON::Parse 'json_file_to_perl';
 # We need to tell Perl where to find our udlib module.
 BEGIN
 {
@@ -143,69 +144,26 @@ sub count_error_types
 
 BEGIN
 {
-    # List for each folder name tests that this treebank is allowed to fail.
-    %exceptions =
-    (
-        'UD_Amharic-ATT'                => ['lang-spec-doc', 'goeswith-gap', 'leaf-aux-cop', 'leaf-cc', 'leaf-mark-case', 'right-to-left-goeswith', 'punct-is-nonproj', 'rel-upos-advmod', 'rel-upos-aux', 'rel-upos-cc', 'rel-upos-cop', 'rel-upos-det', 'rel-upos-expl', 'rel-upos-mark', 'rel-upos-nummod', 'too-many-subjects', 'upos-rel-punct', 'aux-lemma', 'cop-lemma'],
-        'UD_Ancient_Greek-PROIEL'       => ['lang-spec-doc', 'leaf-cc', 'orphan-parent', 'aux-lemma'],
-        'UD_Ancient_Greek-Perseus'      => ['lang-spec-doc', 'leaf-aux-cop', 'leaf-cc', 'leaf-mark-case', 'leaf-punct', 'punct-causes-nonproj', 'rel-upos-advmod', 'rel-upos-aux', 'rel-upos-case', 'rel-upos-cc', 'rel-upos-cop', 'rel-upos-mark', 'rel-upos-punct'],
-        'UD_Arabic-NYUAD'               => ['aux-lemma'],
-        'UD_Arabic-PUD'                 => ['goeswith-gap', 'goeswith-nospace', 'leaf-aux-cop', 'leaf-fixed', 'leaf-goeswith', 'leaf-mark-case', 'orphan-parent', 'punct-is-nonproj', 'rel-upos-advmod', 'rel-upos-aux', 'rel-upos-case', 'rel-upos-cop', 'rel-upos-det', 'rel-upos-mark', 'rel-upos-nummod', 'aux-lemma', 'cop-lemma'],
-        'UD_Bambara-CRB'                => ['lang-spec-doc', 'orphan-parent', 'rel-upos-advmod', 'rel-upos-case', 'rel-upos-cc', 'aux-lemma'],
-        'UD_Basque-BDT'                 => ['lang-spec-doc', 'leaf-aux-cop', 'leaf-cc', 'leaf-fixed', 'leaf-mark-case', 'leaf-punct', 'right-to-left-appos', 'punct-causes-nonproj', 'punct-is-nonproj', 'rel-upos-advmod', 'rel-upos-aux', 'rel-upos-case', 'rel-upos-cc', 'rel-upos-cop', 'rel-upos-det', 'rel-upos-mark', 'rel-upos-punct', 'upos-rel-punct', 'aux-lemma', 'cop-lemma'],
-        'UD_Breton-KEB'                 => ['lang-spec-doc'],
-        'UD_Buryat-BDT'                 => ['orphan-parent', 'rel-upos-advmod', 'rel-upos-aux', 'aux-lemma', 'cop-lemma'],
-        'UD_Cantonese-HK'               => ['lang-spec-doc', 'leaf-aux-cop', 'leaf-mark-case', 'rel-upos-advmod', 'rel-upos-case', 'rel-upos-det', 'rel-upos-mark', 'aux-lemma'],
-        'UD_Catalan-AnCora'             => ['leaf-aux-cop', 'leaf-cc', 'leaf-fixed', 'leaf-mark-case', 'rel-upos-advmod', 'rel-upos-aux', 'rel-upos-case', 'rel-upos-cc', 'rel-upos-det', 'rel-upos-mark', 'rel-upos-nummod', 'aux-lemma', 'cop-lemma'],
-        'UD_Chinese-CFL'                => ['lang-spec-doc', 'leaf-aux-cop', 'leaf-cc', 'leaf-mark-case', 'leaf-punct', 'punct-causes-nonproj', 'rel-upos-advmod', 'rel-upos-aux', 'rel-upos-cc', 'rel-upos-cop', 'rel-upos-det', 'rel-upos-mark', 'rel-upos-punct', 'upos-rel-punct', 'aux-lemma', 'cop-lemma'],
-        'UD_Chinese-GSD'                => ['lang-spec-doc', 'leaf-aux-cop', 'leaf-cc', 'leaf-mark-case', 'punct-causes-nonproj', 'rel-upos-advmod', 'rel-upos-aux', 'rel-upos-case', 'rel-upos-cop', 'rel-upos-det', 'rel-upos-mark', 'rel-upos-nummod', 'rel-upos-punct', 'upos-rel-punct', 'aux-lemma', 'cop-lemma'],
-        'UD_Chinese-GSDSimp'            => ['lang-spec-doc', 'leaf-aux-cop', 'leaf-mark-case', 'rel-upos-advmod', 'rel-upos-aux', 'rel-upos-case', 'rel-upos-cop', 'rel-upos-det', 'rel-upos-mark', 'rel-upos-nummod', 'rel-upos-punct', 'upos-rel-punct', 'aux-lemma', 'cop-lemma'],
-        'UD_Chinese-HK'                 => ['lang-spec-doc', 'leaf-aux-cop', 'rel-upos-advmod', 'rel-upos-case', 'rel-upos-det'],
-        'UD_Chinese-PUD'                => ['lang-spec-doc', 'leaf-aux-cop', 'leaf-mark-case', 'punct-causes-nonproj', 'punct-is-nonproj', 'rel-upos-advmod', 'rel-upos-aux', 'rel-upos-case', 'rel-upos-mark', 'rel-upos-nummod'],
-        'UD_Danish-DDT'                 => ['lang-spec-doc', 'goeswith-gap', 'leaf-aux-cop', 'leaf-cc', 'leaf-goeswith', 'leaf-mark-case', 'leaf-punct', 'right-to-left-appos', 'punct-causes-nonproj', 'punct-is-nonproj', 'rel-upos-advmod', 'rel-upos-cc', 'rel-upos-expl', 'rel-upos-mark', 'rel-upos-nummod', 'rel-upos-punct', 'too-many-subjects', 'cop-lemma'],
-        'UD_Dutch-Alpino'               => ['punct-causes-nonproj', 'punct-is-nonproj'],
-        'UD_Dutch-LassySmall'           => ['punct-causes-nonproj', 'punct-is-nonproj'],
-        'UD_English-ESL'                => ['goeswith-gap', 'leaf-aux-cop', 'leaf-cc', 'leaf-goeswith', 'leaf-mark-case', 'leaf-punct', 'right-to-left-appos', 'punct-causes-nonproj', 'punct-is-nonproj', 'rel-upos-advmod', 'rel-upos-aux', 'rel-upos-case', 'rel-upos-cc', 'rel-upos-det', 'rel-upos-mark', 'rel-upos-punct'],
-        'UD_English-EWT'                => ['goeswith-nospace', 'rel-upos-advmod', 'rel-upos-aux', 'rel-upos-det', 'rel-upos-mark', 'rel-upos-nummod'],
-        'UD_Faroese-OFT'                => ['leaf-aux-cop', 'leaf-cc', 'leaf-mark-case', 'leaf-punct', 'rel-upos-advmod', 'rel-upos-nummod', 'cop-lemma'],
-        'UD_Finnish-FTB'                => ['aux-lemma'],
-        'UD_French-FTB'                 => ['aux-lemma', 'leaf-aux-cop', 'leaf-cc', 'leaf-fixed', 'leaf-mark-case', 'leaf-punct', 'right-to-left-appos', 'orphan-parent', 'punct-causes-nonproj', 'punct-is-nonproj', 'rel-upos-advmod', 'rel-upos-aux', 'rel-upos-case', 'rel-upos-cc', 'rel-upos-cop', 'rel-upos-det', 'rel-upos-expl', 'rel-upos-mark', 'rel-upos-nummod', 'rel-upos-punct', 'too-many-subjects', 'upos-rel-punct'],
-        'UD_Galician-CTG'               => ['leaf-aux-cop', 'leaf-cc', 'leaf-mark-case', 'leaf-punct', 'rel-upos-advmod', 'rel-upos-aux', 'rel-upos-case', 'rel-upos-cc', 'rel-upos-det', 'rel-upos-mark', 'rel-upos-nummod', 'rel-upos-punct', 'too-many-subjects', 'upos-rel-punct'],
-        'UD_Gothic-PROIEL'              => ['lang-spec-doc', 'orphan-parent', 'rel-upos-advmod', 'too-many-subjects'],
-        'UD_Hebrew-HTB'                 => ['leaf-aux-cop', 'leaf-cc', 'leaf-fixed', 'leaf-mark-case', 'right-to-left-appos', 'punct-causes-nonproj', 'punct-is-nonproj', 'rel-upos-advmod', 'rel-upos-aux', 'rel-upos-case', 'rel-upos-det', 'rel-upos-mark', 'too-many-subjects', 'upos-rel-punct', 'aux-lemma', 'cop-lemma'],
-        'UD_Hindi-HDTB'                 => ['rel-upos-advmod', 'rel-upos-aux', 'rel-upos-case', 'rel-upos-cc', 'rel-upos-cop', 'rel-upos-det', 'rel-upos-mark', 'rel-upos-nummod', 'rel-upos-punct', 'too-many-subjects', 'upos-rel-punct', 'aux-lemma', 'cop-lemma'],
-        'UD_Hindi_English-HIENCS'       => ['lang-spec-doc', 'leaf-aux-cop', 'leaf-cc', 'leaf-fixed', 'leaf-mark-case', 'leaf-punct', 'right-to-left-appos', 'orphan-parent', 'punct-causes-nonproj', 'punct-is-nonproj', 'rel-upos-advmod', 'rel-upos-cop', 'rel-upos-punct'],
-        'UD_Hungarian-Szeged'           => ['lang-spec-doc', 'leaf-aux-cop', 'leaf-cc', 'leaf-mark-case', 'right-to-left-appos', 'orphan-parent', 'punct-is-nonproj', 'rel-upos-advmod', 'rel-upos-cc', 'rel-upos-cop', 'cop-lemma'],
-        'UD_Indonesian-GSD'             => ['leaf-cc', 'leaf-fixed', 'leaf-mark-case', 'leaf-punct', 'right-to-left-appos', 'punct-is-nonproj', 'rel-upos-advmod', 'rel-upos-cc', 'rel-upos-det', 'rel-upos-mark', 'rel-upos-nummod', 'rel-upos-punct'],
-        'UD_Japanese-Modern'            => ['aux-lemma'],
-        'UD_Kazakh-KTB'                 => ['lang-spec-doc', 'leaf-aux-cop', 'leaf-cc', 'punct-is-nonproj', 'rel-upos-advmod', 'rel-upos-aux', 'rel-upos-cc', 'aux-lemma', 'cop-lemma'],
-        'UD_Korean-GSD'                 => ['lang-spec-doc', 'leaf-aux-cop', 'leaf-mark-case', 'leaf-punct', 'right-to-left-appos', 'punct-causes-nonproj', 'punct-is-nonproj', 'rel-upos-advmod', 'rel-upos-cop', 'rel-upos-det', 'rel-upos-mark', 'rel-upos-punct', 'too-many-subjects', 'upos-rel-punct', 'aux-lemma', 'cop-lemma'],
-        'UD_Korean-Kaist'               => ['lang-spec-doc', 'leaf-aux-cop', 'leaf-cc', 'leaf-mark-case', 'leaf-punct', 'right-to-left-appos', 'punct-causes-nonproj', 'punct-is-nonproj', 'rel-upos-advmod', 'rel-upos-aux', 'rel-upos-cc', 'rel-upos-cop', 'rel-upos-mark', 'rel-upos-nummod', 'rel-upos-punct', 'too-many-subjects', 'upos-rel-punct', 'aux-lemma', 'cop-lemma'],
-        'UD_Korean-PUD'                 => ['lang-spec-doc', 'goeswith-gap', 'leaf-aux-cop', 'right-to-left-appos', 'punct-causes-nonproj', 'punct-is-nonproj', 'rel-upos-advmod', 'rel-upos-aux', 'rel-upos-nummod'],
-        'UD_Kurmanji-MG'                => ['lang-spec-doc', 'leaf-aux-cop', 'leaf-cc', 'leaf-fixed', 'leaf-mark-case', 'rel-upos-advmod', 'rel-upos-aux', 'rel-upos-case', 'rel-upos-mark'],
-        'UD_Latin-PROIEL'               => ['leaf-aux-cop', 'orphan-parent', 'rel-upos-advmod', 'rel-upos-aux', 'aux-lemma'],
-        'UD_Latin-Perseus'              => ['leaf-aux-cop', 'leaf-cc', 'leaf-mark-case', 'leaf-punct', 'punct-causes-nonproj', 'punct-is-nonproj', 'rel-upos-advmod', 'rel-upos-aux', 'rel-upos-cop', 'rel-upos-mark', 'rel-upos-punct', 'too-many-subjects'],
-        'UD_Marathi-UFAL'               => ['lang-spec-doc', 'leaf-aux-cop', 'leaf-fixed', 'leaf-mark-case', 'rel-upos-advmod', 'rel-upos-aux', 'rel-upos-case', 'rel-upos-cop', 'rel-upos-det', 'rel-upos-mark', 'rel-upos-nummod', 'upos-rel-punct', 'aux-lemma', 'cop-lemma'],
-        'UD_Norwegian-NynorskLIA'       => ['leaf-aux-cop', 'leaf-cc', 'leaf-mark-case', 'punct-causes-nonproj', 'punct-is-nonproj', 'rel-upos-cc', 'rel-upos-cop', 'rel-upos-det', 'rel-upos-expl', 'rel-upos-punct'],
-        'UD_Old_Church_Slavonic-PROIEL' => ['lang-spec-doc', 'orphan-parent'],
-        'UD_Old_East_Slavic-TOROT'      => ['orphan-parent'],
-        'UD_Old_French-SRCMF'           => ['lang-spec-doc', 'rel-upos-advmod'],
-        'UD_Persian-PerDT'              => ['aux-lemma', 'cop-lemma'],
-        'UD_Persian-Seraji'             => ['leaf-aux-cop', 'leaf-cc', 'leaf-fixed', 'leaf-mark-case', 'leaf-punct', 'right-to-left-appos', 'punct-is-nonproj', 'rel-upos-advmod', 'rel-upos-aux', 'rel-upos-cc', 'rel-upos-cop', 'rel-upos-det', 'rel-upos-nummod', 'rel-upos-punct', 'too-many-subjects', 'upos-rel-punct', 'aux-lemma', 'cop-lemma'],
-        'UD_Portuguese-Bosque'          => ['punct-causes-nonproj', 'punct-is-nonproj'],
-        'UD_Portuguese-GSD'             => ['leaf-aux-cop', 'leaf-cc', 'leaf-mark-case', 'leaf-punct', 'right-to-left-appos', 'punct-causes-nonproj', 'punct-is-nonproj', 'rel-upos-advmod', 'rel-upos-aux', 'rel-upos-case', 'rel-upos-cc', 'rel-upos-cop', 'rel-upos-det', 'rel-upos-expl', 'rel-upos-mark', 'rel-upos-nummod', 'upos-rel-punct', 'aux-lemma', 'cop-lemma'],
-        'UD_Russian-SynTagRus'          => ['leaf-aux-cop', 'leaf-cc', 'leaf-mark-case', 'orphan-parent', 'punct-causes-nonproj', 'punct-is-nonproj', 'rel-upos-advmod', 'rel-upos-aux', 'rel-upos-cc', 'rel-upos-cop', 'rel-upos-expl', 'rel-upos-mark', 'rel-upos-nummod', 'cop-lemma'],
-        'UD_Spanish-GSD'                => ['leaf-aux-cop', 'leaf-fixed', 'leaf-mark-case', 'leaf-punct', 'punct-causes-nonproj', 'punct-is-nonproj', 'rel-upos-advmod', 'rel-upos-aux', 'rel-upos-case', 'rel-upos-cc', 'rel-upos-cop', 'rel-upos-det', 'rel-upos-mark', 'rel-upos-nummod', 'rel-upos-punct', 'aux-lemma', 'cop-lemma'],
-        'UD_Spanish-PUD'                => ['goeswith-gap', 'goeswith-nospace', 'leaf-aux-cop', 'leaf-fixed', 'leaf-goeswith', 'leaf-mark-case', 'orphan-parent', 'rel-upos-advmod', 'rel-upos-aux', 'rel-upos-case', 'rel-upos-det', 'rel-upos-mark', 'rel-upos-punct'],
-        'UD_Swedish_Sign_Language-SSLC' => ['lang-spec-doc', 'leaf-aux-cop', 'rel-upos-advmod', 'rel-upos-aux', 'rel-upos-case', 'rel-upos-cc', 'rel-upos-cop', 'rel-upos-det', 'rel-upos-mark', 'rel-upos-nummod'],
-        'UD_Telugu-MTG'                 => ['lang-spec-doc'],
-        'UD_Thai-PUD'                   => ['lang-spec-doc', 'leaf-aux-cop', 'leaf-cc', 'leaf-mark-case', 'rel-upos-advmod', 'rel-upos-cc'],
-        'UD_Turkish-IMST'               => ['leaf-cc', 'leaf-fixed', 'leaf-mark-case', 'rel-upos-advmod', 'rel-upos-case', 'rel-upos-cc', 'rel-upos-det', 'too-many-subjects'],
-        'UD_Ukrainian-IU'               => ['lang-spec-doc', 'leaf-cc', 'leaf-mark-case'],
-        'UD_Urdu-UDTB'                  => ['rel-upos-advmod', 'rel-upos-aux', 'rel-upos-case', 'rel-upos-cc', 'rel-upos-det', 'rel-upos-mark', 'rel-upos-nummod', 'rel-upos-punct', 'too-many-subjects', 'upos-rel-punct', 'aux-lemma', 'cop-lemma'],
-        'UD_Uyghur-UDT'                 => ['lang-spec-doc', 'goeswith-gap', 'goeswith-nospace', 'leaf-aux-cop', 'leaf-cc', 'leaf-mark-case', 'leaf-punct', 'right-to-left-appos', 'orphan-parent', 'punct-causes-nonproj', 'punct-is-nonproj', 'rel-upos-advmod', 'rel-upos-aux', 'rel-upos-case', 'rel-upos-cc', 'rel-upos-cop', 'rel-upos-det', 'rel-upos-mark', 'rel-upos-nummod', 'rel-upos-punct', 'too-many-subjects', 'aux-lemma', 'cop-lemma'],
-        'UD_Vietnamese-VTB'             => ['lang-spec-doc', 'leaf-aux-cop', 'leaf-cc', 'leaf-mark-case', 'leaf-punct', 'right-to-left-appos', 'punct-causes-nonproj', 'punct-is-nonproj', 'rel-upos-advmod', 'rel-upos-aux', 'rel-upos-cop', 'rel-upos-det', 'rel-upos-mark', 'rel-upos-punct', 'upos-rel-punct'],
-    );
+    # Read the registered validation exceptions for legacy treebanks.
+    my $dispfile;
+    if(-f 'dispensations.json')
+    {
+        $dispfile = 'dispensations.json';
+    }
+    else
+    {
+        $dispfile = "$libpath/docs-automation/valdan/dispensations.json";
+    }
+    $dispensations = json_file_to_perl($dispfile)->{dispensations};
+    # Re-hash the dispensations so that for each folder name we know the tests that this treebank is allowed to fail.
+    %exceptions;
+    foreach my $d (sort(keys(%{$dispensations})))
+    {
+        foreach my $t (@{$dispensations->{$d}{treebanks}})
+        {
+            push(@{$exceptions{$t}}, $d);
+        }
+    }
 
 
 
