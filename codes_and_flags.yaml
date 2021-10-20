@@ -218,6 +218,11 @@ French:
   lcode: fr
   iso3: fra
   family: IE, Romance
+Frisian:
+  flag: NL-FR
+  lcode: fy
+  iso3: fry
+  family: IE, Germanic
 Frisian Dutch:
   flag: NL-FR
   lcode: qfn
