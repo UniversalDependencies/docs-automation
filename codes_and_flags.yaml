@@ -811,6 +811,11 @@ Tigrinya:
   lcode: ti
   iso3: tir
   family: Afro-Asiatic, Semitic
+Tunisian Arabic:
+  flag: TN
+  lcode: aeb
+  iso3: aeb
+  family: Afro-Asiatic, Semitic
 Tupinamba:
   flag: BR
   lcode: tpn
