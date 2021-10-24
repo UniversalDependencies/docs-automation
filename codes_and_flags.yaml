@@ -876,6 +876,11 @@ Wolof:
   lcode: wo
   iso3: wol
   family: Niger-Congo, Northern Atlantic
+Xibe:
+  flag: CN
+  lcode: sjo
+  iso3: sjo
+  family: Tungusic
 Yakut:
   flag: RU-SA
   lcode: sah
