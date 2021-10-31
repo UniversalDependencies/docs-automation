@@ -666,6 +666,7 @@ Portuguese:
 Prakrit:
   flag: IN
   lcode: pra
+  iso3: pka
   family: IE, Indic
 Purki:
   flag: IN
@@ -775,6 +776,7 @@ Swedish:
 Swedish Sign Language:
   flag: SE
   lcode: swl
+  iso3: swl
   family: Sign Language
 Swiss German:
   flag: CH
