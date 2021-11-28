@@ -883,6 +883,11 @@ Western Armenian:
   lcode: hyw
   iso3: hyw
   family: IE, Armenian
+Western Sierra Puebla Nahuatl:
+  flag: MX
+  lcode: nhi
+  iso3: nhi
+  family: Uto-Aztecan
 Wolof:
   flag: SN
   lcode: wo

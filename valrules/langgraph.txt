@@ -34,7 +34,8 @@ Chukotko-Kamchatkan--100--Turkic
 Chukotko-Kamchatkan--100--Tungusic
 Chukotko-Kamchatkan----Eskimo-Aleut
 Eskimo-Aleut--100--Hokan
-Hokan--100--Mayan
+Hokan--100--Uto-Aztecan
+Uto-Aztecan----Mayan
 Mayan----Chibchan
 Arawakan--100--Chibchan
 Arawakan----Panoan
