@@ -138,6 +138,11 @@ Catalan:
   lcode: ca
   iso3: cat
   family: IE, Romance
+Cebuano:
+  flag: PH
+  lcode: ceb
+  iso3: ceb
+  family: Austronesian, Central Philippine
 Chinese:
   flag: CN
   lcode: zh
