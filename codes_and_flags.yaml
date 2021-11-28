@@ -668,6 +668,11 @@ Prakrit:
   lcode: pra
   iso3: pka
   family: IE, Indic
+Punjabi:
+  flag: IN
+  lcode: pa
+  iso3: pan
+  family: IE, Indic
 Purki:
   flag: IN
   lcode: prx
