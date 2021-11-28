@@ -223,6 +223,8 @@ zh--1000--ifb
 vi--1000--ifb
 ifb--100--tl
 tl----hil
+tl----ceb
+hil----ceb
 hil--100--id
 id----jv
 Tupi-Guarani--10--Munduruku
