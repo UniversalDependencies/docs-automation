@@ -252,6 +252,11 @@ if __name__=="__main__":
             stats.treebank_lcode_code=stats.language_code
             if stats.treebank_code:
                 stats.treebank_lcode_code+="_"+stats.treebank_code.lower()
+        # A dirty hack. Some language names are too long to fit nicely in the
+        # table on the UD intro page. Shorten them. Only do it now when we have
+        # used them to access the language code and flag.
+        if stats.language_name == 'Western Sierra Puebla Nahuatl':
+            stats.language_name = 'Western S.P. Nahuatl'
 
     # We may want to get rid of the argument and test the branch ourselves by calling
     # git branch | grep '*' | sed 's/^\*\s*//'
@@ -272,5 +277,3 @@ if __name__=="__main__":
 
     if args.json:
         print(stats.as_json(args))
-
-
