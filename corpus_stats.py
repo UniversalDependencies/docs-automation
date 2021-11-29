@@ -57,6 +57,7 @@ class TreebankInfo:
         self.deprel_counter={} #key:deprel value: count
         self.readme_data_raw={} #raw key-value pairs from readme
         self.language_name=None
+        self.language_name_short=None
         self.treebank_code=None #xxx
         self.treebank_lcode_code=None #cs_xxx
         self.language_code=None #cs
@@ -253,10 +254,10 @@ if __name__=="__main__":
             if stats.treebank_code:
                 stats.treebank_lcode_code+="_"+stats.treebank_code.lower()
         # A dirty hack. Some language names are too long to fit nicely in the
-        # table on the UD intro page. Shorten them. Only do it now when we have
-        # used them to access the language code and flag.
-        if stats.language_name == 'Western Sierra Puebla Nahuatl':
-            stats.language_name = 'Western S.P. Nahuatl'
+        # table on the UD intro page. Shorten them.
+        stats.language_name_short = stats.language_name
+        if stats.language_name_short == 'Western Sierra Puebla Nahuatl':
+            stats.language_name_short = 'Western S.P. Nahuatl'
 
     # We may want to get rid of the argument and test the branch ourselves by calling
     # git branch | grep '*' | sed 's/^\*\s*//'

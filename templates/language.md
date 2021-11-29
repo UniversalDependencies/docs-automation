@@ -13,7 +13,7 @@
   <!--initial style="height:558.8px; display: none" would make the page a bit better before setup is done but the height of the subaccordions would not be measured correctly-->
 
   <!-- empty space so tooltip fits -->
-  <h3>{{language_name}} treebanks</h3>
+  <h3>{{language_name_short}} treebanks</h3>
 
     <div class="jquery-ui-subaccordion-closed ui-accordion ui-widget ui-helper-reset ui-accordion-icons" role="tablist"> <!-- start of {{language_name}} treebank list -->
       {% for tbank in treebanks %}
