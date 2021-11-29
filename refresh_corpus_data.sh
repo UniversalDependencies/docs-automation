@@ -37,7 +37,7 @@ do
     fi
     popd
     echo $(basename $repo_dir)
-    python3 corpus_stats.py --readme-dir $repo_dir --repo-name $(basename $repo_dir) --repo-branch $repo_branch --codes-flags ./codes_and_flags.yaml --json $repo_dir/*-ud-{train,dev,test}*.conllu > $OUTDIR/$(basename $repo_dir).json
+    python3 corpus_stats.py --readme-dir $repo_dir --repo-name $(basename $repo_dir) --repo-branch $repo_branch --codes-flags ./codes_and_flags.yaml --releases ./valdan/releases.json --json $repo_dir/*-ud-{train,dev,test}*.conllu > $OUTDIR/$(basename $repo_dir).json
     pushd $repo_dir
     git checkout dev
     popd
