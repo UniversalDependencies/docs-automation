@@ -148,10 +148,24 @@ if __name__=="__main__":
         for tb in lang_tbanks:
             union_genres|=set(tb["meta"]["genre"])
         union_genres=list(union_genres)
-        if args.skip=="empty" and sum_counts["word"]==0:
+        ###!!! Experiment: Instead of skipping empty languages, skip those that have never been released.
+        ###!!! In the long run, we should distinguish three kinds of treebanks:
+        ###!!! - those that have valid data and have been officially released
+        ###!!! - those that have data (valid or not) but have not been released yet
+        ###!!! - those that are empty (we may want to hide these from the title page)
+        at_least_one_released = False
+        for tbank in lang_tbanks:
+            if tbank['first_release']:
+                at_least_one_released = True
+                break
+        if args.skip == 'empty' and not at_least_one_released:
             continue
-        if args.skip=="withdata" and sum_counts["word"]>0:
+        if args.skip == 'withdata' and at_least_one_released:
             continue
+        #if args.skip=="empty" and sum_counts["word"]==0:
+        #    continue
+        #if args.skip=="withdata" and sum_counts["word"]>0:
+        #    continue
         # Sort treebanks by evaluation score (this is new) or by size (this is old; comment one of the two lines):
         #lang_tbanks.sort(key=lambda tb: tb["counts"]["word"],reverse=True)
         lang_tbanks.sort(key=lambda tb: tb["score"],reverse=True)
