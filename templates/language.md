@@ -1,7 +1,7 @@
   <!-- Except for class="jquery-ui-subaccordion-closed", all attributes of the accordion-related div elements can be generated during initialization of the page. However, the initialization takes up to 10 seconds and we want something reasonably nice to be visible as soon as possible. -->
   <div class="ui-accordion-header ui-helper-reset ui-state-default ui-corner-all" role="tab" aria-expanded="false" aria-selected="false" tabindex="-1"> <!-- start of {{language_name}} accordion row -->
     <span class="flagspan"><img class="flag" src="flags/svg/{{flag}}.svg" /></span>
-    <span class="doublewidespan">{{language_name}}</span>
+    <span class="doublewidespan">{{language_name_short}}</span>
     <span class="widespan"><span class="hint--top hint--info" data-hint="{{treebanks|length}} treebank{% if treebanks|length > 1 %}s{% endif %}">{{treebanks|length}}</span></span>
     <span class="widespan"><span class="hint--top hint--info" data-hint="{{counts.token|tsepk}} tokens {{counts.word|tsepk}} words {{counts.tree|tsepk}} sentences">{{counts.word|tsepk(use_k=true)}}</span></span>
     <!-- English has so many genres that they no longer fit in doublewidespan. -->
@@ -13,7 +13,7 @@
   <!--initial style="height:558.8px; display: none" would make the page a bit better before setup is done but the height of the subaccordions would not be measured correctly-->
 
   <!-- empty space so tooltip fits -->
-  <h3>{{language_name_short}} treebanks</h3>
+  <h3>{{language_name}} treebanks</h3>
 
     <div class="jquery-ui-subaccordion-closed ui-accordion ui-widget ui-helper-reset ui-accordion-icons" role="tablist"> <!-- start of {{language_name}} treebank list -->
       {% for tbank in treebanks %}

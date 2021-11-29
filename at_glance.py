@@ -156,6 +156,7 @@ if __name__=="__main__":
         #lang_tbanks.sort(key=lambda tb: tb["counts"]["word"],reverse=True)
         lang_tbanks.sort(key=lambda tb: tb["score"],reverse=True)
         language_code=codes_flags[lang]["lcode"]
+        language_name_short = lang_tbanks[0]['language_name_short'] if len(lang_tbanks)>0 else lang
         if os.path.exists(os.path.join(args.docs_dir,"_"+language_code,"index.md")):
             language_hub="index.md"
         else:
@@ -165,5 +166,5 @@ if __name__=="__main__":
         else:
             tbank_comparison=None
 
-        r=lang_template.render(flag=codes_flags[lang]["flag"],language_name=lang,language_code=language_code,language_hub=language_hub,tbank_comparison=tbank_comparison,counts=sum_counts,treebanks=lang_tbanks,genres=union_genres,language_family=codes_flags[lang]["family"])
+        r=lang_template.render(flag=codes_flags[lang]["flag"],language_name=lang,language_name_short=language_name_short,language_code=language_code,language_hub=language_hub,tbank_comparison=tbank_comparison,counts=sum_counts,treebanks=lang_tbanks,genres=union_genres,language_family=codes_flags[lang]["family"])
         print(r)
