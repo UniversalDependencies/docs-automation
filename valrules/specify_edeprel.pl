@@ -513,7 +513,7 @@ sub process_form_data
         $ddata->{lastchanged} = $timestamp;
         $ddata->{lastchanger} = $config{ghu};
         $ddata->{permitted} = $config{permitted};
-        valdata::write_deprels_json($data, "$path/deprels.json");
+        valdata::write_edeprels_json($data, "$path/edeprels.json");
         # Commit the changes to the repository and push them to Github.
         system("/home/zeman/bin/git-push-docs-automation.sh '$config{ghu}' '$config{lcode}' > /dev/null");
         print <<EOF
