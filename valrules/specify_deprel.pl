@@ -84,6 +84,7 @@ print <<EOF
     <a href="specify_auxiliary.pl">a</a>
     <a href="specify_feature.pl">f</a>
     <a href="specify_deprel.pl">d</a>
+    <a href="specify_edeprel.pl">e</a>
   </p>
 EOF
 ;
@@ -132,7 +133,6 @@ else
         }
     }
     # Perform an action according to the CGI parameters.
-    # Saving may be needed even for documenting undocumented auxiliaries.
     if($config{save})
     {
         process_form_data(\%data, $query);
@@ -153,7 +153,7 @@ else
     {
         summarize_guidelines();
         print_deprels_for_language(\%data);
-        # Show all known auxiliaries so the user can compare. This and related languages first.
+        # Show all known deprels so the user can compare. This and related languages first.
         print_all_deprels(\%data, $languages);
     }
 }
@@ -166,7 +166,7 @@ EOF
 
 
 #------------------------------------------------------------------------------
-# Prints the list of deprels and values permitted in the current language.
+# Prints the list of deprels permitted in the current language.
 #------------------------------------------------------------------------------
 sub print_deprels_for_language
 {
@@ -311,9 +311,9 @@ sub print_deprel_details
 
 
 #------------------------------------------------------------------------------
-# Prints the form where a particular deprel can be edited.
+# Prints the form where a particular edeprel can be edited.
 #------------------------------------------------------------------------------
-sub print_deprel_form
+sub print_edeprel_form
 {
     my $data = shift;
     if($config{deprel} eq '')

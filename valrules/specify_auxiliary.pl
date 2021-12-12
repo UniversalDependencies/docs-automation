@@ -110,6 +110,7 @@ print <<EOF
     <a href="specify_auxiliary.pl">a</a>
     <a href="specify_feature.pl">f</a>
     <a href="specify_deprel.pl">d</a>
+    <a href="specify_edeprel.pl">e</a>
   </p>
 EOF
 ;
