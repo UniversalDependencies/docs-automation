@@ -191,7 +191,7 @@ elsif($config{lcode} eq '')
 else
 {
     # Read the data file from JSON.
-    my $data = read_edeprels_json();
+    my $data = read_edeprels_json($path);
     my %data = %{$data};
     foreach my $lcode (keys(%data))
     {
