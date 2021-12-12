@@ -790,6 +790,19 @@ sub get_parameters
 
 
 #------------------------------------------------------------------------------
+# Reads the data about edeprels in each language (edeprels.json). Returns a
+# reference to the hash.
+#------------------------------------------------------------------------------
+sub read_edeprels_json
+{
+    my $path = shift; # docs-automation/valrules
+    my $data = json_file_to_perl("$path/edeprels.json")->{edeprels};
+    return $data;
+}
+
+
+
+#------------------------------------------------------------------------------
 # Escapes HTML control characters in a string.
 #------------------------------------------------------------------------------
 sub htmlescape
