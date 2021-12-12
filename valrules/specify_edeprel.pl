@@ -181,7 +181,7 @@ elsif($config{lcode} eq '')
     {
         print("  <tr><td>$family:</td><td>");
         my @lnames = sort(grep {$languages->{$_}{family} eq $family} (keys(%{$languages})));
-        print(join(', ', map {"<span style='white-space:nowrap'><img class=\"flag\" src=\"https://universaldependencies.org/flags/png/$languages->{$_}{flag}.png\" /> <a href=\"specify_auxiliary.pl?lcode=$languages->{$_}{lcode}\">$_</a></span>"} (@lnames)));
+        print(join(', ', map {"<span style='white-space:nowrap'><img class=\"flag\" src=\"https://universaldependencies.org/flags/png/$languages->{$_}{flag}.png\" /> <a href=\"specify_edeprel.pl?lcode=$languages->{$_}{lcode}\">$_</a></span>"} (@lnames)));
         print("</td></tr>\n");
     }
     print("  </table>\n");
