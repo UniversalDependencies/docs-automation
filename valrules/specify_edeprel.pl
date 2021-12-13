@@ -327,10 +327,10 @@ EOF
     {
         $extchecked{$deprel} = ' checked';
     }
-    print("  <input type=\"checkbox\" id=\"extobl\"   name=\"extobl\"   value=\"1\"$extchecked{obl} /> <tt>obl</tt>\n");
-    print("  <input type=\"checkbox\" id=\"extnmod\"  name=\"extnmod\"  value=\"1\"$extchecked{nmod} /> <tt>nmod</tt>\n");
-    print("  <input type=\"checkbox\" id=\"extadvcl\" name=\"extadvcl\" value=\"1\"$extchecked{advcl} /> <tt>advcl</tt>\n");
-    print("  <input type=\"checkbox\" id=\"extacl\"   name=\"extacl\"   value=\"1\"$extchecked{acl} /> <tt>acl</tt>\n");
+    print("  <input type=\"checkbox\" id=\"extobl\"   name=\"extobl\"   value=\"1\"$extchecked{obl} />&nbsp;<tt>obl</tt>\n");
+    print("  <input type=\"checkbox\" id=\"extnmod\"  name=\"extnmod\"  value=\"1\"$extchecked{nmod} />&nbsp;<tt>nmod</tt>\n");
+    print("  <input type=\"checkbox\" id=\"extadvcl\" name=\"extadvcl\" value=\"1\"$extchecked{advcl} />&nbsp;<tt>advcl</tt>\n");
+    print("  <input type=\"checkbox\" id=\"extacl\"   name=\"extacl\"   value=\"1\"$extchecked{acl} />&nbsp;<tt>acl</tt>\n");
     print("  <table>\n");
     print("    <tr id=\"inputheader\">\n");
     print("      <td>Function</td>\n");
@@ -340,6 +340,15 @@ EOF
         print("      <td>English translation of the example</td>\n");
     }
     print("      <td>Comment</td>\n");
+    print("    </tr>\n");
+    print("    <tr id=\"inputhints\">\n");
+    print("      <td></td>\n");
+    print("      <td><small>Mark the cased part by enclosing it in square brackets, e.g., “He is [in the house].”</small></td>\n");
+    if($show_exampleen)
+    {
+        print("      <td></td>\n");
+    }
+    print("      <td></td>\n");
     print("    </tr>\n");
     # Collect the current function codes of the current case marker.
     my %curfunctions;
