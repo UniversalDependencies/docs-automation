@@ -458,7 +458,7 @@ sub process_form_data
             {
                 $extends{$deprel} = 1;
             }
-            foreach my $udeprel (qw('obl', 'nmod', 'advcl', 'acl'))
+            foreach my $udeprel (qw(obl nmod advcl acl))
             {
                 if($extends{$udeprel})
                 {
