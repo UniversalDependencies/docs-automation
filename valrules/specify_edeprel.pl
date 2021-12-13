@@ -333,7 +333,7 @@ EOF
     ;
     print("  <strong>Lexical marker:</strong> <input name=edeprel type=text size=10 value=\"$hedeprel\" />");
     print("  <strong>Morphological marker:</strong> NONE");
-    print("  <strong>Can be used with:</strong>");
+    print("  <strong>Can be used with:</strong>\n");
     my %extchecked;
     foreach my $deprel (@{$data->{$config{lcode}}{$config{edeprel}}{extends}})
     {
