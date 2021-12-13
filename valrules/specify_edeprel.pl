@@ -735,7 +735,6 @@ sub get_parameters
         else
         {
             $config{$extdeprel} = 1;
-            push(@errors, "Extends $deprel = '$config{$extdeprel}'");
         }
     }
     #--------------------------------------------------------------------------
