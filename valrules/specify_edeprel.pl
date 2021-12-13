@@ -272,7 +272,7 @@ sub print_edeprel_details
         if(exists($data->{$config{lcode}}{$config{edeprel}}))
         {
             my $fdata = $data->{$config{lcode}}{$config{edeprel}};
-            print("<p>TODO: Print the current functions of this case marker.</p>\n");
+            # There is nothing more to do here. The actual details will be shown in the form.
         }
         else
         {
@@ -305,11 +305,10 @@ sub print_edeprel_form
     my $show_exampleen = $config{lcode} ne 'en';
     my $hedeprel = htmlescape($config{edeprel});
     my $hlanguage = htmlescape($lname_by_code{$config{lcode}});
-    print("  <h3>Permit or forbid $hedeprel</h3>\n");
+    print("  <h3>Specify the possible functions of $hedeprel</h3>\n");
     print <<EOF
   <form action="specify_edeprel.pl" method="post" enctype="multipart/form-data">
   <input name=lcode type=hidden value="$config{lcode}" />
-  <input name=edeprel type=hidden value="$hedeprel" />
   <p>Please tell us your Github user name:
     <input name=ghu type=text value="$config{ghu}" />
     Are you a robot? (one word) <input name=smartquestion type=text size=10 /><br />
@@ -320,8 +319,20 @@ sub print_edeprel_form
     user.</small></p>
 EOF
     ;
+    print("  <strong>Lexical marker:</strong> <input name=edeprel type=hidden size=10 value=\"$hedeprel\" />");
+    print("  <strong>Morphological marker:</strong> NONE");
+    print("  <strong>Can be used with:</strong>");
+    my %extchecked;
+    foreach my $deprel (@{$data->{$config{lcode}}{$config{edeprel}}{extends}})
+    {
+        $extchecked{$deprel} = ' checked';
+    }
+    print("  <input type=\"checkbox\" id=\"extobl\"   name=\"extobl\"   value=\"1\"$extchecked{obl} />\n");
+    print("  <input type=\"checkbox\" id=\"extnmod\"  name=\"extnmod\"  value=\"1\"$extchecked{nmod} />\n");
+    print("  <input type=\"checkbox\" id=\"extadvcl\" name=\"extadvcl\" value=\"1\"$extchecked{advcl} />\n");
+    print("  <input type=\"checkbox\" id=\"extacl\"   name=\"extacl\"   value=\"1\"$extchecked{acl} />\n");
     print("  <table>\n");
-    print("    <tr>\n");
+    print("    <tr id=\"inputheader\">\n");
     print("      <td>Function</td>\n");
     print("      <td>Example</td>\n");
     if($show_exampleen)
