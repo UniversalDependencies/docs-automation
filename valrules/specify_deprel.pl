@@ -311,9 +311,9 @@ sub print_deprel_details
 
 
 #------------------------------------------------------------------------------
-# Prints the form where a particular edeprel can be edited.
+# Prints the form where a particular deprel can be edited.
 #------------------------------------------------------------------------------
-sub print_edeprel_form
+sub print_deprel_form
 {
     my $data = shift;
     if($config{deprel} eq '')

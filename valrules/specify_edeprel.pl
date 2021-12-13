@@ -293,21 +293,21 @@ sub print_edeprel_details
 sub print_edeprel_form
 {
     my $data = shift;
-    if($config{deprel} eq '')
+    if($config{edeprel} eq '')
     {
-        die("Unknown deprel");
+        die("Unknown edeprel");
     }
-    if(!exists($data->{$config{lcode}}{$config{deprel}}))
+    if(!exists($data->{$config{lcode}}{$config{edeprel}}))
     {
-        die("Dependency relation '$config{deprel}' not found in language '$config{lcode}'");
+        die("Case enhancement '$config{edeprel}' not found in language '$config{lcode}'");
     }
-    my $hdeprel = htmlescape($config{deprel});
+    my $hdeprel = htmlescape($config{edeprel});
     my $hlanguage = htmlescape($lname_by_code{$config{lcode}});
     print("  <h3>Permit or forbid $hdeprel</h3>\n");
     print <<EOF
-  <form action="specify_deprel.pl" method="post" enctype="multipart/form-data">
+  <form action="specify_edeprel.pl" method="post" enctype="multipart/form-data">
   <input name=lcode type=hidden value="$config{lcode}" />
-  <input name=deprel type=hidden value="$config{deprel}" />
+  <input name=edeprel type=hidden value="$config{edeprel}" />
   <p>Please tell us your Github user name:
     <input name=ghu type=text value="$config{ghu}" />
     Are you a robot? (one word) <input name=smartquestion type=text size=10 /><br />
@@ -318,7 +318,7 @@ sub print_edeprel_form
     user.</small></p>
 EOF
     ;
-    my $checked = $data->{$config{lcode}}{$config{deprel}}{permitted} ? ' checked' : '';
+    my $checked = $data->{$config{lcode}}{$config{edeprel}}{permitted} ? ' checked' : '';
     print("  <p>Check <input type=\"checkbox\" id=\"permitted\" name=\"permitted\" value=\"1\"$checked /> here\n");
     print("    if $hdeprel should be permitted in $hlanguage.</p>\n");
     print("  <input name=save type=submit value=\"Save\" />\n");
