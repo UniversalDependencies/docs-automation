@@ -377,10 +377,10 @@ EOF
             }
             my $checkbox = "<input type=\"checkbox\" id=\"permitted\" name=\"permitted\" value=\"1\"$checked />";
             print("      <td>$indent$checkbox$f->[1]</td>\n");
-            print("      <td><input name=example1 type=text size=30 value=\"$hexample\" /></td>\n");
+            print("      <td><input name=example1 type=text size=50 value=\"$hexample\" /></td>\n");
             if($show_exampleen)
             {
-                print("      <td><input name=exampleen1 type=text size=30 value=\"$hexampleen\" /></td>\n");
+                print("      <td><input name=exampleen1 type=text size=50 value=\"$hexampleen\" /></td>\n");
             }
             print("      <td><input name=comment1 type=text value=\"$hcomment\" /></td>\n");
         }
