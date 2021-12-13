@@ -269,63 +269,20 @@ sub print_edeprel_details
     my $data = shift;
     if(exists($data->{$config{lcode}}))
     {
-        print("  <h2>$config{deprel}</h2>\n");
-        if(exists($data->{$config{lcode}}{$config{deprel}}))
+        print("  <h2>$config{edeprel}</h2>\n");
+        if(exists($data->{$config{lcode}}{$config{edeprel}}))
         {
-            my $fdata = $data->{$config{lcode}}{$config{deprel}};
-            my $type = $fdata->{type};
-            $type = 'language-specific' if($type eq 'lspec');
-            my $howdoc = $fdata->{doc} =~ m/^(global|gerror)$/ ? 'global' : $fdata->{doc} =~ m/^(local|lerror)$/ ? 'local' : 'none';
-            my $href;
-            my $file = $config{deprel};
-            $file =~ s/:/-/g;
-            if($howdoc eq 'global')
-            {
-                $href = "https://universaldependencies.org/u/dep/$file.html";
-            }
-            elsif($howdoc eq 'local')
-            {
-                $href = "https://universaldependencies.org/$config{lcode}/dep/$file.html";
-            }
-            if($fdata->{permitted})
-            {
-                my $howdocly = $howdoc.'ly';
-                print("  <p>This $type dependency relation is currently permitted in $lname_by_code{$config{lcode}} ".
-                           "and is $howdocly documented <a href=\"$href\">here</a>.</p>\n");
-            }
-            else
-            {
-                print("  <p>This $type dependency relation is currently not permitted in $lname_by_code{$config{lcode}}.");
-                if($howdoc eq 'none')
-                {
-                    print(" It is not documented.");
-                }
-                else
-                {
-                    my $howdocly = $howdoc.'ly';
-                    print(" It is $howdocly documented <a href=\"$href\">here</a>.</p>\n");
-                }
-                print("</p>\n");
-                if(scalar(@{$fdata->{errors}}) > 0)
-                {
-                    print("  <h3>Errors in $howdoc <a href=\"$href\">documentation</a></h3>\n");
-                    print("  <ul>\n");
-                    for my $e (@{$fdata->{errors}})
-                    {
-                        print("    <li style='color:red'>$e</li>\n");
-                    }
-                    print("  </ul>\n");
-                }
-            }
+            my $fdata = $data->{$config{lcode}}{$config{edeprel}};
+            print("<p>TODO: Print the current functions of this case marker.</p>\n");
         }
         else
         {
-            die("No information about dependency relation '$config{deprel}' in language '$config{lcode}'");
+            die("No information about case enhancement '$config{edeprel}' in language '$config{lcode}'");
         }
     }
     else
     {
-        die("No information about dependency relations for language '$config{lcode}'");
+        die("No case enhancements have been specified so far for language '$config{lcode}'");
     }
 }
 
