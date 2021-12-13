@@ -458,28 +458,28 @@ sub process_form_data
             {
                 $extends{$deprel} = 1;
             }
-            foreach my $udeprel (qw(obl nmod advcl acl))
+            foreach my $deprel (qw(obl nmod advcl acl))
             {
-                if($extends{$udeprel})
+                if($extends{$deprel})
                 {
-                    if($config{'ext'.$udeprel})
+                    if($config{'ext'.$deprel})
                     {
-                        print("    <li>No change: still permitted with '$udeprel'</li>\n");
+                        print("    <li>No change: still permitted with '$deprel'</li>\n");
                     }
                     else
                     {
-                        print("    <li style='color:blue'>Now permitted with '$udeprel'</li>\n");
+                        print("    <li style='color:purple'>No longer permitted with '$deprel'</li>\n");
                     }
                 }
                 else # not extended previously
                 {
-                    if($config{'ext'.$udeprel})
+                    if($config{'ext'.$deprel})
                     {
-                        print("    <li style='color:purple'>No longer permitted with '$udeprel'</li>\n");
+                        print("    <li style='color:blue'>Now permitted with '$deprel'</li>\n");
                     }
                     else
                     {
-                        print("    <li>No change: still not permitted with '$udeprel'</li>\n");
+                        print("    <li>No change: still not permitted with '$deprel'</li>\n");
                     }
                 }
             }
