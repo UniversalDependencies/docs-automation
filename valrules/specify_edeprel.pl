@@ -492,6 +492,8 @@ sub process_form_data
             foreach my $f (@{$functions})
             {
                 my $ename = 'example'.$f->[2];
+                my $eename = 'exampleen'.$f->[2];
+                my $cname = 'comment'.$f->[2];
                 if($config{'func'.$f->[2]})
                 {
                     if($curfunctions{$f->[2]})
@@ -504,12 +506,25 @@ sub process_form_data
                     }
                     if($config{$ename})
                     {
-                        print("    <li>Example = '$config{$ename}'</li>\n");
+                        print("    <li>Example = '".htmlescape($config{$ename})."'</li>\n");
                     }
                     else
                     {
                         print("    <li style='color:red'>ERROR: Missing example of '$f->[2]'</li>\n");
                         $error = 1;
+                    }
+                    if($config{$eename})
+                    {
+                        print("    <li>Example = '".htmlescape($config{$eename})."'</li>\n");
+                    }
+                    elsif($config{lcode} ne 'en')
+                    {
+                        print("    <li style='color:red'>ERROR: Missing English translation of the example of '$f->[2]'</li>\n");
+                        $error = 1;
+                    }
+                    if($config{$cname} ne '')
+                    {
+                        print("    <li>Comment = '".htmlescape($config{$cname})."'</li>\n");
                     }
                 }
                 else
@@ -520,7 +535,17 @@ sub process_form_data
                     }
                     if($config{$ename})
                     {
-                        print("    <li style='color:red'>ERROR: Example '$config{ename}' cannot be accepted when the function '$f->[2]' is not turned on</li>\n");
+                        print("    <li style='color:red'>ERROR: Example '".htmlescape($config{ename})."' cannot be accepted when the function '$f->[2]' is not turned on</li>\n");
+                        $error = 1;
+                    }
+                    if($config{$eename})
+                    {
+                        print("    <li style='color:red'>ERROR: Example '".htmlescape($config{eename})."' cannot be accepted when the function '$f->[2]' is not turned on</li>\n");
+                        $error = 1;
+                    }
+                    if($config{$cname})
+                    {
+                        print("    <li style='color:red'>ERROR: Comment '".htmlescape($config{cname})."' cannot be accepted when the function '$f->[2]' is not turned on</li>\n");
                         $error = 1;
                     }
                 }
