@@ -727,7 +727,7 @@ sub get_parameters
     foreach my $deprel (qw(obl nmod advcl acl))
     {
         my $extdeprel = 'ext'.$deprel;
-        if(defined($config{$extdeprel}) || $config{$extdeprel} =~ m/^\s*$/)
+        if(!defined($config{$extdeprel}) || $config{$extdeprel} =~ m/^\s*$/)
         {
             $config{$extdeprel} = '';
         }
