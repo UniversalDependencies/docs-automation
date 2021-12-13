@@ -321,6 +321,15 @@ sub print_edeprel_form
 EOF
     ;
     print("  <table>\n");
+    print("    <tr>\n");
+    print("      <td>Function</td>\n");
+    print("      <td>Example</td>\n");
+    if($show_exampleen)
+    {
+        print("      <td>English translation of the example</td>\n");
+    }
+    print("      <td>Comment</td>\n");
+    print("    </tr>\n");
     # Collect the current function codes of the current case marker.
     my %curfunctions;
     foreach my $f (@{$data->{$config{lcode}}{$config{edeprel}}{functions}})
