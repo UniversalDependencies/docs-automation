@@ -215,7 +215,7 @@ else
     # Perform an action according to the CGI parameters.
     if($config{save})
     {
-        process_form_data(\%data, $query);
+        process_form_data(\%data, $query, \@functions);
     }
     # If we are not saving but have received an edeprel, it means the edeprel should be edited.
     elsif($config{edeprel} ne '')
@@ -426,6 +426,7 @@ sub process_form_data
 {
     my $data = shift;
     my $query = shift;
+    my $functions = shift;
     my $error = 0;
     print("  <h2>This is a result of a Save button</h2>\n");
     print("  <ul>\n");
@@ -480,6 +481,37 @@ sub process_form_data
                     else
                     {
                         print("    <li>No change: still not permitted with '$deprel'</li>\n");
+                    }
+                }
+            }
+            my %curfunctions;
+            foreach my $f (@{$data->{$config{lcode}}{$config{edeprel}}{functions}})
+            {
+                $curfunctions{$f->{function}} = $f;
+            }
+            foreach my $f (@{$functions})
+            {
+                if($curfunctions{$f->[2]})
+                {
+                    if($config{'func'.$f->[2]})
+                    {
+                        print("    <li>No change: still has the function '$f->[2]': '$f->[1]'</li>\n");
+                    }
+                    else
+                    {
+                        print("    <li style='color:purple'>No longer has the function '$f->[2]': '$f->[1]'</li>\n");
+                    }
+                }
+                else
+                {
+                    if($config{'func'.$f->[2]})
+                    {
+                        print("    <li style='color:blue'>Now has the function '$f->[2]': '$f->[1]'</li>\n");
+                    }
+                    else
+                    {
+                        # Omit this message. There would be too many of them and they would obscure the more interesting ones.
+                        #print("    <li>No change: still does not have the function '$f->[2]': '$f->[1]'</li>\n");
                     }
                 }
             }
@@ -743,8 +775,15 @@ sub get_parameters
     {
         if(defined($f->[2]))
         {
-            if(defined($config{'func'.$f->[2]}))
+            my $func = 'func'.$f->[2];
+            $config{$func} = decode('utf8', $query->param($func));
+            if(!defined($config{$func}) || $config{$func} =~ m/^\s*$/)
             {
+                $config{$func} = '';
+            }
+            else
+            {
+                $config{$func} = 1;
             }
         }
     }
