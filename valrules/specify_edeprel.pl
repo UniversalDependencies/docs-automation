@@ -491,27 +491,37 @@ sub process_form_data
             }
             foreach my $f (@{$functions})
             {
-                if($curfunctions{$f->[2]})
+                my $ename = 'example'.$f->[2];
+                if($config{'func'.$f->[2]})
                 {
-                    if($config{'func'.$f->[2]})
+                    if($curfunctions{$f->[2]})
                     {
                         print("    <li>No change: still has the function '$f->[2]': '$f->[1]'</li>\n");
                     }
                     else
                     {
-                        print("    <li style='color:purple'>No longer has the function '$f->[2]': '$f->[1]'</li>\n");
+                        print("    <li style='color:blue'>Now has the function '$f->[2]': '$f->[1]'</li>\n");
+                    }
+                    if($config{$ename})
+                    {
+                        print("    <li>Example = '$config{$ename}'</li>\n");
+                    }
+                    else
+                    {
+                        print("    <li style='color:red'>ERROR: Missing example of '$f->[2]'</li>\n");
+                        $error = 1;
                     }
                 }
                 else
                 {
-                    if($config{'func'.$f->[2]})
+                    if($curfunctions{$f->[2]})
                     {
-                        print("    <li style='color:blue'>Now has the function '$f->[2]': '$f->[1]'</li>\n");
+                        print("    <li style='color:purple'>No longer has the function '$f->[2]': '$f->[1]'</li>\n");
                     }
-                    else
+                    if($config{$ename})
                     {
-                        # Omit this message. There would be too many of them and they would obscure the more interesting ones.
-                        #print("    <li>No change: still does not have the function '$f->[2]': '$f->[1]'</li>\n");
+                        print("    <li style='color:red'>ERROR: Example '$config{ename}' cannot be accepted when the function '$f->[2]' is not turned on</li>\n");
+                        $error = 1;
                     }
                 }
             }
