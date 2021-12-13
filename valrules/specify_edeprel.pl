@@ -723,6 +723,31 @@ sub get_parameters
         push(@errors, "Edeprel '$config{edeprel}' does not have the form prescribed by the guidelines");
     }
     #--------------------------------------------------------------------------
+    # What universal relations does this edeprel extend?
+    foreach my $deprel (qw(obl nmod advcl acl))
+    {
+        my $extdeprel = 'ext'.$deprel;
+        if(defined($config{$extdeprel}) || $config{$extdeprel} =~ m/^\s*$/)
+        {
+            $config{$extdeprel} = '';
+        }
+        else
+        {
+            $config{$extdeprel} = 1;
+        }
+    }
+    #--------------------------------------------------------------------------
+    # There may be multiple functions and each will have its own set of numbered attributes.
+    foreach my $f (@{$functions})
+    {
+        if(defined($f->[2]))
+        {
+            if(defined($config{'func'.$f->[2]}))
+            {
+            }
+        }
+    }
+    #--------------------------------------------------------------------------
     # The parameter 'save' comes from the Save button which submitted the form.
     $config{save} = decode('utf8', $query->param('save'));
     if(!defined($config{save}))
