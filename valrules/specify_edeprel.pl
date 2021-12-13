@@ -242,62 +242,11 @@ sub print_edeprels_for_language
     if(exists($data->{$config{lcode}}))
     {
         my $ldata = $data->{$config{lcode}};
-        my @deprels = sort(keys(%{$ldata}));
-        my @deprels_on = grep {$ldata->{$_}{permitted}} (@deprels);
-        my @deprels_off = grep {!$ldata->{$_}{permitted} && $ldata->{$_}{doc} =~ m/^(global|local)$/} (@deprels);
-        my @udeprels_off = grep {$ldata->{$_}{type} eq 'universal'} (@deprels_off);
-        my @ldeprels_off = grep {$ldata->{$_}{type} ne 'universal'} (@deprels_off); # type is 'global' or 'lspec', although type in docdeps.json is 'global' or 'local'
-        my @undocumented = grep {$ldata->{$_}{doc} !~ m/^(global|local)$/} (@deprels);
-        print("  <h2>Deprels</h2>\n");
-        if(scalar(@deprels_on) > 0)
+        my @edeprels = sort(keys(%{$ldata}));
+        print("  <h2>Case markers for enhanced deprels</h2>\n");
+        if(scalar(@edeprels) > 0)
         {
-            print("  <p><b>Currently permitted:</b> ".join(', ', map {"<a href=\"specify_deprel.pl?lcode=$config{lcode}&amp;deprel=$_\">$_</a>"} (@deprels_on))."</p>\n");
-        }
-        if(scalar(@udeprels_off) > 0)
-        {
-            print("  <p><b>Currently unused universal dependency relations:</b> ".join(', ', map {"<a href=\"specify_deprel.pl?lcode=$config{lcode}&amp;deprel=$_\">$_</a>"} (@udeprels_off))."</p>\n");
-        }
-        if(scalar(@ldeprels_off) > 0)
-        {
-            print("  <p><b>Other dependency relations that can be permitted:</b> ".join(', ', map {"<a href=\"specify_deprel.pl?lcode=$config{lcode}&amp;deprel=$_\">$_</a>"} (@ldeprels_off))."</p>\n");
-        }
-        if(scalar(@undocumented) > 0)
-        {
-            print("  <p><b>Undocumented dependency relations cannot be used:</b> ".join(', ', @undocumented)."</p>\n");
-        }
-        #print("  <p><b>DEBUGGING: All deprels known in relation to this language:</b> ".join(', ', map {"$_ ($ldata->{$_}{type}, $ldata->{$_}{doc}, $ldata->{$_}{permitted})"} (@deprels))."</p>\n");
-        my @errors = ();
-        foreach my $f (@deprels)
-        {
-            my $howdoc = $ldata->{$f}{doc} =~ m/^(global|gerror)$/ ? 'global' : $ldata->{$f}{doc} =~ m/^(local|lerror)$/ ? 'local' : 'none';
-            my $href;
-            my $file = $f;
-            $file =~ s/:/-/g;
-            if($howdoc eq 'global')
-            {
-                $href = "https://universaldependencies.org/u/dep/$file.html";
-            }
-            elsif($howdoc eq 'local')
-            {
-                $href = "https://universaldependencies.org/$config{lcode}/dep/$file.html";
-            }
-            if(defined($ldata->{$f}{errors}))
-            {
-                foreach my $e (@{$ldata->{$f}{errors}})
-                {
-                    push(@errors, "ERROR in <a href=\"$href\">documentation</a> of $f: $e");
-                }
-            }
-        }
-        if(scalar(@errors) > 0)
-        {
-            print("  <h2>Errors in documentation</h2>\n");
-            print("  <ul>\n");
-            foreach my $e (@errors)
-            {
-                print("    <li style='color:red'>$e</li>\n");
-            }
-            print("  </ul>\n");
+            print("  <p>".join(', ', map {"<a href=\"specify_deprel.pl?lcode=$config{lcode}&amp;edeprel=$_\">$_</a>"} (@edeprels))."</p>\n");
         }
     }
     else
