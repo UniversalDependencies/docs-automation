@@ -418,7 +418,7 @@ EOF
 #------------------------------------------------------------------------------
 # Processes data submitted from a form and prints confirmation or an error
 # message.
-# We are processing a Save request after a deprel was edited.
+# We are processing a Save request after an edeprel was edited.
 # We have briefly checked that the parameters match expected regular expressions.
 # Nevertheless, only now we can also report an error if a parameter is empty.
 #------------------------------------------------------------------------------
@@ -447,52 +447,30 @@ sub process_form_data
         print("    <li style='color:red'>ERROR: Unsatisfactory robotic response</li>\n");
         $error = 1;
     }
-    if($config{deprel} ne '')
+    if($config{edeprel} ne '')
     {
-        print("    <li>deprel = '$config{deprel}'</li>\n");
-        # Check that the deprel is known and documented.
-        if(exists($data->{$config{lcode}}{$config{deprel}}))
+        print("    <li>edeprel = '$config{edeprel}'</li>\n");
+        # Check that the edeprel is known and documented.
+        if(exists($data->{$config{lcode}}{$config{edeprel}}))
         {
-            if($data->{$config{lcode}}{$config{deprel}}{doc} =~ m/^(global|local)$/)
+            if($data->{$config{lcode}}{$config{edeprel}}{permitted})
             {
-                if($config{permitted})
-                {
-                    if($data->{$config{lcode}}{$config{deprel}}{permitted})
-                    {
-                        print("    <li>No change: still permitted</li>\n");
-                    }
-                    else
-                    {
-                        print("    <li style='color:blue'>Now permitted</li>\n");
-                    }
-                }
-                else
-                {
-                    if($data->{$config{lcode}}{$config{deprel}}{permitted})
-                    {
-                        print("    <li style='color:purple'>No longer permitted</li>\n");
-                    }
-                    else
-                    {
-                        print("    <li>No change: still not permitted</li>\n");
-                    }
-                }
+                print("    <li style='color:purple'>No longer permitted</li>\n");
             }
             else
             {
-                print("    <li style='color:red'>ERROR: Undocumented dependency relation '$config{deprel}' cannot be used in language '$config{language}'</li>\n");
-                $error = 1;
+                print("    <li>No change: still not permitted</li>\n");
             }
         }
         else
         {
-            print("    <li style='color:red'>ERROR: Unknown dependency relation '$config{deprel}' in language '$config{language}'</li>\n");
+            print("    <li style='color:red'>ERROR: Unknown dependency relation '$config{edeprel}' in language '$config{language}'</li>\n");
             $error = 1;
         }
     }
     else
     {
-        print("    <li style='color:red'>ERROR: Missing deprel</li>\n");
+        print("    <li style='color:red'>ERROR: Missing edeprel</li>\n");
         $error = 1;
     }
     print("  </ul>\n");
@@ -502,7 +480,7 @@ sub process_form_data
     }
     else
     {
-        my $ddata = $data->{$config{lcode}}{$config{deprel}};
+        my $ddata = $data->{$config{lcode}}{$config{edeprel}};
         # Do I want to use my local time or universal time in the timestamps?
         #my ($sec, $min, $hour, $mday, $mon, $year, $wday, $yday) = gmtime(time());
         my ($sec, $min, $hour, $mday, $mon, $year, $wday, $yday) = localtime(time());
@@ -510,11 +488,11 @@ sub process_form_data
         $ddata->{lastchanged} = $timestamp;
         $ddata->{lastchanger} = $config{ghu};
         $ddata->{permitted} = $config{permitted};
-        valdata::write_edeprels_json($data, "$path/edeprels.json");
+   #     valdata::write_edeprels_json($data, "$path/edeprels.json");
         # Commit the changes to the repository and push them to Github.
         system("/home/zeman/bin/git-push-docs-automation.sh '$config{ghu}' '$config{lcode}' > /dev/null");
         print <<EOF
-  <form action="specify_deprel.pl" method="post" enctype="multipart/form-data">
+  <form action="specify_edeprel.pl" method="post" enctype="multipart/form-data">
     <input name=lcode type=hidden value="$config{lcode}" />
     <input name=ghu type=hidden value="$config{ghu}" />
     <input name=gotolang type=submit value="Return to list" />
