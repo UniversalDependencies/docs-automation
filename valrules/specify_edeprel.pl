@@ -319,7 +319,7 @@ sub print_edeprel_form
     user.</small></p>
 EOF
     ;
-    print("  <strong>Lexical marker:</strong> <input name=edeprel type=hidden size=10 value=\"$hedeprel\" />");
+    print("  <strong>Lexical marker:</strong> <input name=edeprel type=text size=10 value=\"$hedeprel\" />");
     print("  <strong>Morphological marker:</strong> NONE");
     print("  <strong>Can be used with:</strong>");
     my %extchecked;
@@ -327,10 +327,10 @@ EOF
     {
         $extchecked{$deprel} = ' checked';
     }
-    print("  <input type=\"checkbox\" id=\"extobl\"   name=\"extobl\"   value=\"1\"$extchecked{obl} />\n");
-    print("  <input type=\"checkbox\" id=\"extnmod\"  name=\"extnmod\"  value=\"1\"$extchecked{nmod} />\n");
-    print("  <input type=\"checkbox\" id=\"extadvcl\" name=\"extadvcl\" value=\"1\"$extchecked{advcl} />\n");
-    print("  <input type=\"checkbox\" id=\"extacl\"   name=\"extacl\"   value=\"1\"$extchecked{acl} />\n");
+    print("  <input type=\"checkbox\" id=\"extobl\"   name=\"extobl\"   value=\"1\"$extchecked{obl} /> <tt>obl</tt>\n");
+    print("  <input type=\"checkbox\" id=\"extnmod\"  name=\"extnmod\"  value=\"1\"$extchecked{nmod} /> <tt>nmod</tt>\n");
+    print("  <input type=\"checkbox\" id=\"extadvcl\" name=\"extadvcl\" value=\"1\"$extchecked{advcl} /> <tt>advcl</tt>\n");
+    print("  <input type=\"checkbox\" id=\"extacl\"   name=\"extacl\"   value=\"1\"$extchecked{acl} /> <tt>acl</tt>\n");
     print("  <table>\n");
     print("    <tr id=\"inputheader\">\n");
     print("      <td>Function</td>\n");
