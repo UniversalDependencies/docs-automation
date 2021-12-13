@@ -730,11 +730,12 @@ sub get_parameters
         if(!defined($config{$extdeprel}) || $config{$extdeprel} =~ m/^\s*$/)
         {
             $config{$extdeprel} = '';
+            push(@errors, "Extends $deprel = '$config{$extdeprel}'");
         }
         else
         {
             $config{$extdeprel} = 1;
-            push(@errors, "Extends $extdeprel = '$config{$extdeprel}'");
+            push(@errors, "Extends $deprel = '$config{$extdeprel}'");
         }
     }
     #--------------------------------------------------------------------------
