@@ -325,7 +325,7 @@ EOF
         my $indent = '&nbsp;&nbsp;&nbsp;&nbsp;' x $f->[0];
         my $checked = $data->{$config{lcode}}{$config{edeprel}}{permitted} ? ' checked' : '';
         my $checkbox = "<input type=\"checkbox\" id=\"permitted\" name=\"permitted\" value=\"1\"$checked />";
-        print("    <tr>$indent$f->[1]</tr>\n");
+        print("    <tr><td>$indent$f->[1]</td></tr>\n");
     }
     print("  </table>\n");
     print("  <input name=save type=submit value=\"Save\" />\n");
