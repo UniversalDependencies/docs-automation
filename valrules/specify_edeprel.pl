@@ -547,7 +547,7 @@ sub print_all_edeprels
         {
             print("    <tr><th colspan=2>Language</th><th>Total</th>");
             my $j = 0;
-            foreach my $d (@udeprels)
+            foreach my $e (@edeprels)
             {
                 # Repeat the language every 12 columns.
                 if($j != 0 && $j % 12 == 0)
@@ -555,7 +555,7 @@ sub print_all_edeprels
                     print('<th></th>');
                 }
                 $j++;
-                print("<th>$d</th>");
+                print("<th>$e</th>");
             }
             print("</tr>\n");
         }
@@ -564,7 +564,7 @@ sub print_all_edeprels
         my $n = scalar(grep {exists($data->{$lcode}{$_})} (@edeprels));
         print("    <tr><td>$lname_by_code{$lcode}</td><td>$lcode</td><td>$n</td>");
         my $j = 0;
-        foreach my $d (@udeprels)
+        foreach my $e (@edeprels)
         {
             # Repeat the language every 12 columns.
             if($j != 0 && $j % 12 == 0)
@@ -574,9 +574,9 @@ sub print_all_edeprels
             $j++;
             print('<td>');
             my $dp = '';
-            if(exists($data->{$lcode}{$d}) && $data->{$lcode}{$d}{permitted})
+            if(exists($data->{$lcode}{$e}))
             {
-                $dp = $d;
+                $dp = $e;
             }
             my $s = '';
             print($dp.$s);
