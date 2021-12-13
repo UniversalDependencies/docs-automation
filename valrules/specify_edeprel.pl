@@ -246,7 +246,7 @@ sub print_edeprels_for_language
         my @edeprels = sort(keys(%{$ldata}));
         if(scalar(@edeprels) > 0)
         {
-            print("  <p>".join(', ', map {"<a href=\"specify_deprel.pl?lcode=$config{lcode}&amp;edeprel=$_\">$_</a>"} (@edeprels))."</p>\n");
+            print("  <p>".join(', ', map {"<a href=\"specify_edeprel.pl?lcode=$config{lcode}&amp;edeprel=$_\">$_</a>"} (@edeprels))."</p>\n");
         }
         else
         {
@@ -514,43 +514,32 @@ sub print_all_edeprels
     my $data = shift;
     my $languages = shift; # ref to hash read from YAML, indexed by names
     # Print the data on the web page.
-    print("  <h2>Permitted dependency relations for this and other languages</h2>\n");
+    print("  <h2>Permitted case enhancements for this and other languages</h2>\n");
     my @lcodes = langgraph::sort_lcodes_by_relatedness($languages, $config{lcode});
-    # Get the list of all known deprels. Take only the main types; we will display their subtypes in the same cell.
-    my %udeprels;
-    my %deprels;
+    # Get the list of all known case markers.
+    my %edeprels;
     foreach my $lcode (@lcodes)
     {
-        my @deprels = keys(%{$data->{$lcode}});
-        foreach my $d (@deprels)
+        my @edeprels = keys(%{$data->{$lcode}});
+        foreach my $e (@edeprels)
         {
-            if($data->{$lcode}{$d}{permitted})
-            {
-                $deprels{$d}++;
-                my $ud = $d;
-                $ud =~ s/:.*//;
-                $udeprels{$ud}++;
-            }
+            $edeprels{$e}++;
         }
     }
-    my @deprels = sort(keys(%deprels));
-    my @udeprels = sort(keys(%udeprels));
+    my @edeprels = sort(keys(%edeprels));
     print("  <table>\n");
     my $i = 0;
     foreach my $lcode (@lcodes)
     {
         # Collect language-specific subtypes of relations.
         my %subtypes;
-        foreach my $d (keys(%{$data->{$lcode}}))
+        foreach my $e (keys(%{$data->{$lcode}}))
         {
-            if($data->{$lcode}{$d}{permitted})
+            if($e =~ m/^([a-z]+):([a-z]+)$/)
             {
-                if($d =~ m/^([a-z]+):([a-z]+)$/)
-                {
-                    my $udep = $1;
-                    my $lspec = $2;
-                    $subtypes{$udep}{$lspec}++;
-                }
+                my $udep = $1;
+                my $lspec = $2;
+                $subtypes{$udep}{$lspec}++;
             }
         }
         # Repeat the headers every 20 rows.
@@ -571,8 +560,8 @@ sub print_all_edeprels
             print("</tr>\n");
         }
         $i++;
-        # Get the number of deprels permitted in this language.
-        my $n = scalar(grep {exists($data->{$lcode}{$_}) && $data->{$lcode}{$_}{permitted}} (@deprels));
+        # Get the number of edeprels permitted in this language.
+        my $n = scalar(grep {exists($data->{$lcode}{$_})} (@edeprels));
         print("    <tr><td>$lname_by_code{$lcode}</td><td>$lcode</td><td>$n</td>");
         my $j = 0;
         foreach my $d (@udeprels)
@@ -590,12 +579,6 @@ sub print_all_edeprels
                 $dp = $d;
             }
             my $s = '';
-            if(exists($subtypes{$d}))
-            {
-                $dp = "($d)" if($dp eq '');
-                my @subtypes = sort(keys(%{$subtypes{$d}}));
-                $s = '<br />'.join('<br />', map {"↳:$_"} (@subtypes));
-            }
             print($dp.$s);
             print('</td>');
         }
