@@ -727,6 +727,7 @@ sub get_parameters
     foreach my $deprel (qw(obl nmod advcl acl))
     {
         my $extdeprel = 'ext'.$deprel;
+        $config{$extdeprel} = decode('utf8', $query->param($extdeprel));
         if(!defined($config{$extdeprel}) || $config{$extdeprel} =~ m/^\s*$/)
         {
             $config{$extdeprel} = '';
