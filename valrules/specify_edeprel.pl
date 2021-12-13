@@ -319,16 +319,15 @@ sub print_edeprel_form
     user.</small></p>
 EOF
     ;
-    print("  <ul>\n");
+    print("  <table>\n");
     foreach my $f (@{$functions})
     {
-        my $indent = '&nbsp;&nbsp;' x $f->[0];
-        print("    <li>$indent$f->[1]</li>\n");
+        my $indent = '&nbsp;&nbsp;&nbsp;&nbsp;' x $f->[0];
+        my $checked = $data->{$config{lcode}}{$config{edeprel}}{permitted} ? ' checked' : '';
+        my $checkbox = "<input type=\"checkbox\" id=\"permitted\" name=\"permitted\" value=\"1\"$checked />";
+        print("    <tr>$indent$f->[1]</tr>\n");
     }
-    print("  </ul>\n");
-    my $checked = $data->{$config{lcode}}{$config{edeprel}}{permitted} ? ' checked' : '';
-    print("  <p>Check <input type=\"checkbox\" id=\"permitted\" name=\"permitted\" value=\"1\"$checked /> here\n");
-    print("    if $hdeprel should be permitted in $hlanguage.</p>\n");
+    print("  </table>\n");
     print("  <input name=save type=submit value=\"Save\" />\n");
     print("  </form>\n");
 }
