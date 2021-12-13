@@ -536,37 +536,17 @@ sub summarize_guidelines
 {
     print <<EOF
   <h1><img class=\"flag\" src=\"https://universaldependencies.org/flags/png/$languages->{$lname_by_code{$config{lcode}}}{flag}.png\" />
-    Specify auxiliaries for $lname_by_code{$config{lcode}}</h1>
-  <p><strong>Remember:</strong> Not everything that a traditional grammar labels
-    as auxiliary is necessarily an <a href="https://universaldependencies.org/u/pos/AUX_.html">auxiliary in UD</a>.
-    Just because a verb combines with another verb does not necessarily mean
-    that one of the verbs is auxiliary; the usual alternative in UD is treating
-    one of the verbs as an <tt><a href="https://universaldependencies.org/u/dep/xcomp.html">xcomp</a></tt>
-    of the other, or in some languages as a serial verb construction
-    (<tt><a href="https://universaldependencies.org/u/dep/compound.html">compound:svc</a></tt>).
-    Language-specific tests whether a verb is auxiliary are
-    grammatical rather than semantic: just because something has a modal or
-    near-modal meaning does not mean that it is an auxiliary, and in some
-    languages modal verbs do not count as auxiliaries at all. Some verbs
-    function as auxiliaries in some constructions and as full verbs in others
-    (e.g., <i>to have</i> in English). There are also auxiliaries whose nature
-    is completely different from verbs in the given language.</p>
-  <p><strong>Remember:</strong> A language typically has at most one lemma for
-    <a href="https://universaldependencies.org/u/dep/cop.html">copula</a>.
-    Exceptions include deficient paradigms (different present and past copula,
-    positive and negative, imperfect and iterative), and also the Romance verbs
-    <i>ser</i> and <i>estar</i> (both equivalents of “to be”). In contrast,
-    equivalents of “to become, to stay, to look like, to be called” etc. are not copulas
-    in UD, even if a traditional grammar classifies them as such. In UD they
-    should head an <tt><a href="https://universaldependencies.org/u/dep/xcomp.html">xcomp</a></tt>
-    relation instead. Existential “to be” can be copula only if it is the same
-    verb as in equivalence (“John is a teacher”). If the language uses two different
-    verbs, then <strong>the existential one is not a copula.</strong>
-    A copula is normally tagged <a href="https://universaldependencies.org/u/pos/AUX_.html">AUX</a>.
-    Exception: in some languages a personal or demonstrative pronoun /
-    determiner can be used as a copula and then we keep it tagged
-    <a href="https://universaldependencies.org/u/pos/PRON.html">PRON</a> or
-    <a href="https://universaldependencies.org/u/pos/DET.html">DET</a>.</p>
+    Specify enhanced dependency relations for $lname_by_code{$config{lcode}}</h1>
+  <p>The <a href="https://universaldependencies.org/u/overview/enhanced-syntax.html">guidelines
+    for enhanced dependencies</a> say that certain dependency relations (such
+    as <tt><a href="https://universaldependencies.org/u/dep/obl.html">obl</a></tt>
+    or <tt><a href="https://universaldependencies.org/u/dep/nmod.html">nmod</a></tt>)
+    can be enhanced to explicitly show the case marker of the dependent nominal.
+    The case marker can be lexical (typically corresponding to a lemma of an
+    adposition), morphological (corresponding to a value of the
+    <tt><a href="https://universaldependencies.org/u/feat/Case.html">Case</a></tt>
+    feature), or a combination of both. The official UD validator will accept
+    case markers that are documented here.</p>
 EOF
     ;
 }
