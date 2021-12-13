@@ -330,7 +330,7 @@ sub print_deprel_form
     print <<EOF
   <form action="specify_deprel.pl" method="post" enctype="multipart/form-data">
   <input name=lcode type=hidden value="$config{lcode}" />
-  <input name=deprel type=hidden value="$config{deprel}" />
+  <input name=deprel type=hidden value="$hdeprel" />
   <p>Please tell us your Github user name:
     <input name=ghu type=text value="$config{ghu}" />
     Are you a robot? (one word) <input name=smartquestion type=text size=10 /><br />

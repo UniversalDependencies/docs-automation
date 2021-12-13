@@ -302,13 +302,14 @@ sub print_edeprel_form
     {
         die("Case enhancement '$config{edeprel}' not found in language '$config{lcode}'");
     }
-    my $hdeprel = htmlescape($config{edeprel});
+    my $show_exampleen = $config{lcode} ne 'en';
+    my $hedeprel = htmlescape($config{edeprel});
     my $hlanguage = htmlescape($lname_by_code{$config{lcode}});
-    print("  <h3>Permit or forbid $hdeprel</h3>\n");
+    print("  <h3>Permit or forbid $hedeprel</h3>\n");
     print <<EOF
   <form action="specify_edeprel.pl" method="post" enctype="multipart/form-data">
   <input name=lcode type=hidden value="$config{lcode}" />
-  <input name=edeprel type=hidden value="$config{edeprel}" />
+  <input name=edeprel type=hidden value="$hedeprel" />
   <p>Please tell us your Github user name:
     <input name=ghu type=text value="$config{ghu}" />
     Are you a robot? (one word) <input name=smartquestion type=text size=10 /><br />
@@ -324,18 +325,47 @@ EOF
     my %curfunctions;
     foreach my $f (@{$data->{$config{lcode}}{$config{edeprel}}{functions}})
     {
-        $curfunctions{$f->{function}}++;
+        $curfunctions{$f->{function}} = $f;
     }
     foreach my $f (@{$functions})
     {
+        print("    <tr>\n");
+        # Distinguish real functions from uncheckable comments.
+        my $isfunction = defined($f->[2]);
         my $indent = '&nbsp;&nbsp;&nbsp;&nbsp;' x $f->[0];
-        my $checkbox = '';
-        if(defined($f->[2]))
+        if($isfunction)
         {
-            my $checked = exists($curfunctions{$f->[2]}) ? ' checked' : '';
-            $checkbox = "<input type=\"checkbox\" id=\"permitted\" name=\"permitted\" value=\"1\"$checked />";
+            my $checked = '';
+            my $hexample = '';
+            my $hexampleen = '';
+            my $hcomment = '';
+            if(exists($curfunctions{$f->[2]}))
+            {
+                $checked = ' checked';
+                $hexample = htmlescape($curfunctions{$f->[2]}{example});
+                $hexampleen = htmlescape($curfunctions{$f->[2]}{exampleen});
+                $hcomment = htmlescape($curfunctions{$f->[2]}{comment});
+            }
+            my $checkbox = "<input type=\"checkbox\" id=\"permitted\" name=\"permitted\" value=\"1\"$checked />";
+            print("      <td>$indent$checkbox$f->[1]</td>\n");
+            print("      <td><input name=example1 type=text size=30 value=\"$hexample\" /></td>\n");
+            if($show_exampleen)
+            {
+                print("      <td><input name=exampleen1 type=text size=30 value=\"$hexampleen\" /></td>\n");
+            }
+            print("      <td><input name=comment1 type=text value=\"$hcomment\" /></td>\n");
         }
-        print("    <tr><td>$indent$checkbox$f->[1]</td></tr>\n");
+        else # no form controls for uncheckable comments
+        {
+            print("      <td>$indent$f->[1]</td>\n");
+            print("      <td></td>\n");
+            if($show_exampleen)
+            {
+                print("      <td></td>\n");
+            }
+            print("      <td></td>\n");
+        }
+        print("    </tr>\n");
     }
     print("  </table>\n");
     print("  <input name=save type=submit value=\"Save\" />\n");
