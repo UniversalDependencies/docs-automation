@@ -322,7 +322,8 @@ EOF
     print("  <ul>\n");
     foreach my $f (@{$functions})
     {
-        print("    <li>$f->[1]</li>\n");
+        my $indent = '&nbsp;&nbsp;' x $f->[0];
+        print("    <li>$indent$f->[1]</li>\n");
     }
     print("  </ul>\n");
     my $checked = $data->{$config{lcode}}{$config{edeprel}}{permitted} ? ' checked' : '';
