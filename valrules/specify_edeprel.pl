@@ -53,68 +53,68 @@ foreach my $lname (keys(%{$languages}))
 my @functions =
 (
     # Indent level in hierarchy; Verbose description; Case short code
-    [0, 'Location (locative)',                                             'Loc'],
-     [1, 'Point location (“at”, adessive)',                                'Ade'],
-     [1, 'Near location (“near”)',                                         'Prx'],
+    [0, 'Location (locative)',                                                  'Loc'],
+     [1, 'Point location (“at”, adessive)',                                     'Ade'],
+     [1, 'Near location (“near”, proximative)',                                 'Prx'],
      [1, 'In/surface/out', undef], # (we want to display this comment but not to make it selectable)
-      [2, 'Inside something (“in”, inessive)',                             'Ine'],
-      [2, 'On the surface of something (“on”, superessive)',               'Sup'],
-      [2, 'Outside something (“outside, out of, off”)',                    'Out'],
+      [2, 'Inside something (“in”, inessive)',                                  'Ine'],
+      [2, 'On the surface of something (“on”, superessive)',                    'Sup'],
+      [2, 'Outside something (“outside, out of, off”)',                         'Out'],
      [1, 'X axis', undef], # (we want to display this comment but not to make it selectable)
       [2, 'Beside something (“beside, aside, alongside, next to”, apudessive)', 'Apu'],
      [1, 'Y axis', undef], # (we want to display this comment but not to make it selectable)
-      [2, 'Above something (“above”, superessive)',                        'Spe'],
-      [2, 'Below something (“below, beneath, under”, subessive)',          'Sbe'],
+      [2, 'Above something (“above”, superessive)',                             'Spe'],
+      [2, 'Below something (“below, beneath, under”, subessive)',               'Sbe'],
      [1, 'Z axis', undef], # (we want to display this comment but not to make it selectable)
-      [2, 'In front of something (“in front of”)',                         'Frt'],
-      [2, 'Behind something (“behind, beyond, past”, postessive)',         'Pst'],
-     [1, 'Around something (“around, round”)',                             'Rnd'],
-     [1, 'Opposite something (“opposite”)',                                'Opp'],
-     [1, 'Across something (“across”)',                                    'Crs'],
-     [1, 'Along something (“along”)',                                      'Lng'],
-     [1, 'Between two or more points (“between, among, amid”, intrative)', 'Int'],
-     [1, 'Spread in an area (“throughout, over”)',                         'Tot'],
-    [0, 'Direction (directional)',                                         'Dir'],
-     [1, 'Focused on origin (“from”, ablative)',                           'Abl'],
-      [2, 'Origin inside something (elative)',                             'Ela'], # Wikipedia also lists inelative (INEL) but does not show the difference
-      [2, 'Origin on the surface of something (“off”, delative)',          'Del'],
-     [1, 'Focused on path (“through, via”, perlative)',                    'Per'],
-      [2, 'Ascending path (“up”)',                                         'Pup'],
-      [2, 'Descending path (“down”)',                                      'Pdn'],
-     [1, 'Focused on target (“to”, lative)',                               'Lat'],
-      [2, 'Target inside something (“into”, illative)',                    'Ill'],
-      [2, 'Target on the surface of something (“into”, sublative)',        'Sub'],
-    [0, 'Time (temporal)',                                                 'Tem'],
-     [1, 'Before a point (“before, prior to, till, until”, antessive)',    'Ant'],
-     [1, 'Around a point (“around, circa”)',                               'Trd'],
-     [1, 'At a point or period (“at, on, in, upon”)',                      'Tat'],
-     [1, 'During a period (“during, over, for, within, whilst”)',          'Tdg'],
-     [1, 'After a point or period (“after, since, from, following”)',      'Tps'],
-     [1, 'Between two points (“between”)',                                 'Tbt'],
+      [2, 'In front of something (“in front of”)',                              'Frt'],
+      [2, 'Behind something (“behind, beyond, past”, postessive)',              'Pst'],
+     [1, 'Around something (“around, round”)',                                  'Rnd'],
+     [1, 'Opposite something (“opposite”)',                                     'Opp'],
+     [1, 'Across something (“across”)',                                         'Crs'],
+     [1, 'Along something (“along”)',                                           'Lng'],
+     [1, 'Between two or more points (“between, among, amid”, intrative)',      'Int'],
+     [1, 'Spread in an area (“throughout, over”)',                              'Tot'],
+    [0, 'Direction (directional)',                                              'Dir'],
+     [1, 'Focused on origin (“from”, ablative)',                                'Abl'],
+      [2, 'Origin inside something (elative)',                                  'Ela'], # Wikipedia also lists inelative (INEL) but does not show the difference
+      [2, 'Origin on the surface of something (“off”, delative)',               'Del'],
+     [1, 'Focused on path (“through, via”, perlative)',                         'Per'],
+      [2, 'Ascending path (“up”)',                                              'Pup'],
+      [2, 'Descending path (“down”)',                                           'Pdn'],
+     [1, 'Focused on target (“to”, lative)',                                    'Lat'],
+      [2, 'Target inside something (“into”, illative)',                         'Ill'],
+      [2, 'Target on the surface of something (“into”, sublative)',             'Sub'],
+    [0, 'Time (temporal)',                                                      'Tem'],
+     [1, 'Before a point (“before, prior to, till, until”, antessive)',         'Ant'],
+     [1, 'Around a point (“around, circa”)',                                    'Trd'],
+     [1, 'At a point or period (“at, on, in, upon”)',                           'Tat'],
+     [1, 'During a period (“during, over, for, within, whilst”)',               'Tdg'],
+     [1, 'After a point or period (“after, since, from, following”)',           'Tps'],
+     [1, 'Between two points (“between”)',                                      'Tbt'],
     [0, 'Of/with/without', undef], # (we want to display this comment but not to make it selectable)
-     [1, 'Belonging to, composed of something (“of”, genitive)',           'Gen'],
-     [1, 'Together with something (“with”, comitative)',                   'Com'],
-     [1, 'Without something (“without”, abessive)',                        'Abe'],
-     [1, 'Including something (“including”)',                              'Inc'],
-     [1, 'Besides something (“besides”)',                                  'Bes'],
-     [1, 'Except something (“except”)',                                    'Exc'],
-     [1, 'Instead of something (“instead of, rather than”)',               'Isd'],
+     [1, 'Belonging to, composed of something (“of”, genitive)',                'Gen'],
+     [1, 'Together with something (“with”, comitative)',                        'Com'],
+     [1, 'Without something (“without”, abessive)',                             'Abe'],
+     [1, 'Including something (“including”)',                                   'Inc'],
+     [1, 'Besides something (“besides”)',                                       'Bes'],
+     [1, 'Except something (“except”)',                                         'Exc'],
+     [1, 'Instead of something (“instead of, rather than”)',                    'Isd'],
     [0, 'Like/unlike', undef], # (we want to display this comment but not to make it selectable)
-     [1, 'Temporary state (“as”, essive)',                                 'Ess'],
-     [1, 'Same as something (equative)',                                   'Equ'],
-     [1, 'Similar to something (“like”, semblative)',                      'Sem'],
-     [1, 'Dissimilar to something (“unlike”, dissemblative)',              'Dis'],
+     [1, 'Temporary state (“as”, essive)',                                      'Ess'],
+     [1, 'Same as something (equative)',                                        'Equ'],
+     [1, 'Similar to something (“like”, semblative)',                           'Sem'],
+     [1, 'Dissimilar to something (“unlike”, dissemblative)',                   'Dis'],
      [1, 'Better/worse/other than something (“than, as opposed to”, comparative)', 'Cmp'],
     [0, 'Cause/consequence/circumstance', undef], # (we want to display this comment but not to make it selectable)
      [1, 'Cause or purpose (“because of, due to, given, in order to, per”, causative)', 'Cau'],
-     [1, 'Ignoring circumstance (“regardless”)',                           'Rls'],
-     [1, 'Concession (“despite, notwithstanding”)',                        'Ccs'],
-     [1, 'Condition (“depending on, in case of”)',                         'Dep'],
-     [1, 'Topic (“about, concerning, regarding, as for, as to”)',          'Tpc'],
-     [1, 'Source of information (“according to”)',                         'Src'],
-     [1, 'Passive agent (“by”)',                                           'Agt'],
-     [1, 'Instrument (“with”, instrumental)',                              'Ins'],
-     [1, 'Beneficiary (“for”, benefactive)',                               'Ben']
+     [1, 'Ignoring circumstance (“regardless”)',                                'Rls'],
+     [1, 'Concession (“despite, notwithstanding”)',                             'Ccs'],
+     [1, 'Condition (“depending on, in case of”)',                              'Dep'],
+     [1, 'Topic (“about, concerning, regarding, as for, as to”)',               'Tpc'],
+     [1, 'Source of information (“according to”)',                              'Src'],
+     [1, 'Passive agent (“by”)',                                                'Agt'],
+     [1, 'Instrument (“with”, instrumental)',                                   'Ins'],
+     [1, 'Beneficiary (“for”, benefactive)',                                    'Ben']
 );
 # Sanity check: Did I specify a unique code for each function?
 my %fdesc;
@@ -387,14 +387,14 @@ EOF
                 $hexampleen = htmlescape($curfunctions{$f->[2]}{exampleen});
                 $hcomment = htmlescape($curfunctions{$f->[2]}{comment});
             }
-            my $checkbox = "<input type=\"checkbox\" id=\"permitted\" name=\"permitted\" value=\"1\"$checked />";
+            my $checkbox = "<input type=\"checkbox\" id=\"func$f->[2]\" name=\"func$f->[2]\" value=\"1\"$checked />";
             print("      <td>$indent$checkbox$f->[1]</td>\n");
-            print("      <td><input name=example1 type=text size=50 value=\"$hexample\" /></td>\n");
+            print("      <td><input name=example$f->[2] type=text size=50 value=\"$hexample\" /></td>\n");
             if($show_exampleen)
             {
-                print("      <td><input name=exampleen1 type=text size=50 value=\"$hexampleen\" /></td>\n");
+                print("      <td><input name=exampleen$f->[2] type=text size=50 value=\"$hexampleen\" /></td>\n");
             }
-            print("      <td><input name=comment1 type=text value=\"$hcomment\" /></td>\n");
+            print("      <td><input name=comment$f->[2] type=text value=\"$hcomment\" /></td>\n");
         }
         else # no form controls for uncheckable comments
         {
