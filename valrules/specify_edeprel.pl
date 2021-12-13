@@ -60,12 +60,12 @@ my @functions =
     [2, 'Inside something (“in”, inessive)', 'Ine'],
     [2, 'On the surface of something (“on”, superessive)', 'Sup'],
     [2, 'Outside something (“outside, out of, off”)', 'LocOut'],
-    # X axis (we want to display this comment but not to make it selectable)
+    [1, 'X axis', undef], # (we want to display this comment but not to make it selectable)
     [2, 'Beside something (“beside, aside, alongside, next to”, apudessive)', 'Apud'],
-    # Y axis (we want to display this comment but not to make it selectable)
+    [1, 'Y axis', undef], # (we want to display this comment but not to make it selectable)
     [2, 'Above something (“above”, superessive)', 'SupAbove'],
     [2, 'Below something (“below, beneath, under”, subessive)', 'Sube'],
-    # Z axis (we want to display this comment but not to make it selectable)
+    [1, 'Z axis', undef], # (we want to display this comment but not to make it selectable)
     [2, 'In front of something (“in front of”)', 'LocFront'],
     [2, 'Behind something (“behind, beyond, past”, postessive)', 'Poste'],
     [1, 'Around something (“around, round”)', 'LocAround'],
@@ -92,7 +92,7 @@ my @functions =
     [1, 'During a period (“during, over, for, within, whilst”)', 'TemDuring'],
     [1, 'After a point or period (“after, since, from, following”)', 'TemAfter'],
     [1, 'Between two points (“between”)', 'TemBetween'],
-    # Of/with/without (we want to display this comment but not to make it selectable)
+    [0, 'Of/with/without', undef], # (we want to display this comment but not to make it selectable)
     [1, 'Belonging to, composed of something (“of”, genitive)', 'Gen'],
     [1, 'Together with something (“with”, comitative)', 'Com'],
     [1, 'Without something (“without”, abessive)', 'Abe'],
@@ -100,13 +100,13 @@ my @functions =
     [1, 'Besides something (“besides”)', 'Besides'],
     [1, 'Except something (“except”)', 'Except'],
     [1, 'Instead of something (“instead of, rather than”)', 'Instead'],
-    # Like/unlike (we want to display this comment but not to make it selectable)
+    [0, 'Like/unlike', undef], # (we want to display this comment but not to make it selectable)
     [1, 'Temporary state (“as”, essive)', 'Ess'],
     [1, 'Same as something (equative)', 'Equ'],
     [1, 'Similar to something (“like”, semblative)', 'Semb'],
     [1, 'Dissimilar to something (“unlike”, dissemblative)', 'DisSemb'],
     [1, 'Better/worse/other than something (“than, as opposed to”, comparative)', 'Cmp'],
-    # Cause/consequence/circumstance (we want to display this comment but not to make it selectable)
+    [0, 'Cause/consequence/circumstance', undef], # (we want to display this comment but not to make it selectable)
     [1, 'Cause or purpose (“because of, due to, given, in order to, per”, causative)', 'Cau'],
     [1, 'Ignoring circumstance (“regardless”)', 'Regardless'],
     [1, 'Concession (“despite, notwithstanding”)', 'Despite'],
