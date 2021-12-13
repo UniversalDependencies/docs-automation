@@ -54,68 +54,68 @@ my @functions =
 (
     # Indent level in hierarchy; Verbose description; Case short code
     [0, 'Location', 'Loc'],
-    [1, 'Point location (“at”, adessive)', 'Ade'],
-    [1, 'Near location (“near”)', 'LocNear'],
-    [1, 'In/surface/out', undef], # (we want to display this comment but not to make it selectable)
-    [2, 'Inside something (“in”, inessive)', 'Ine'],
-    [2, 'On the surface of something (“on”, superessive)', 'Sup'],
-    [2, 'Outside something (“outside, out of, off”)', 'LocOut'],
-    [1, 'X axis', undef], # (we want to display this comment but not to make it selectable)
-    [2, 'Beside something (“beside, aside, alongside, next to”, apudessive)', 'Apud'],
-    [1, 'Y axis', undef], # (we want to display this comment but not to make it selectable)
-    [2, 'Above something (“above”, superessive)', 'SupAbove'],
-    [2, 'Below something (“below, beneath, under”, subessive)', 'Sube'],
-    [1, 'Z axis', undef], # (we want to display this comment but not to make it selectable)
-    [2, 'In front of something (“in front of”)', 'LocFront'],
-    [2, 'Behind something (“behind, beyond, past”, postessive)', 'Poste'],
-    [1, 'Around something (“around, round”)', 'LocAround'],
-    [1, 'Opposite something (“opposite”)', 'LocOppos'],
-    [1, 'Across something (“across”)', 'LocAcross'],
-    [1, 'Along something (“along”)', 'LocAlong'],
-    [1, 'Between two or more points (“between”)', 'LocBetween'],
-    [1, 'Among a group of entities (“among, amid”, intrative)', 'Itrt'],
-    [1, 'Spread in an area (“throughout, over”)', 'LocTot'],
+     [1, 'Point location (“at”, adessive)', 'Ade'],
+     [1, 'Near location (“near”)', 'LocNear'],
+     [1, 'In/surface/out', undef], # (we want to display this comment but not to make it selectable)
+      [2, 'Inside something (“in”, inessive)', 'Ine'],
+      [2, 'On the surface of something (“on”, superessive)', 'Sup'],
+      [2, 'Outside something (“outside, out of, off”)', 'LocOut'],
+     [1, 'X axis', undef], # (we want to display this comment but not to make it selectable)
+      [2, 'Beside something (“beside, aside, alongside, next to”, apudessive)', 'Apud'],
+     [1, 'Y axis', undef], # (we want to display this comment but not to make it selectable)
+      [2, 'Above something (“above”, superessive)', 'SupAbove'],
+      [2, 'Below something (“below, beneath, under”, subessive)', 'Sube'],
+     [1, 'Z axis', undef], # (we want to display this comment but not to make it selectable)
+      [2, 'In front of something (“in front of”)', 'LocFront'],
+      [2, 'Behind something (“behind, beyond, past”, postessive)', 'Poste'],
+     [1, 'Around something (“around, round”)', 'LocAround'],
+     [1, 'Opposite something (“opposite”)', 'LocOppos'],
+     [1, 'Across something (“across”)', 'LocAcross'],
+     [1, 'Along something (“along”)', 'LocAlong'],
+     [1, 'Between two or more points (“between”)', 'LocBetween'],
+     [1, 'Among a group of entities (“among, amid”, intrative)', 'Itrt'],
+     [1, 'Spread in an area (“throughout, over”)', 'LocTot'],
     [0, 'Direction', 'Dir'],
-    [1, 'Focused on origin (“from”, ablative)', 'Abl'],
-    [2, 'Origin inside something (elative)', 'Ela'], # Wikipedia also lists inelative (INEL) but does not show the difference
-    [2, 'Origin on the surface of something (“off”, delative)', 'Del'],
-    [1, 'Focused on path (“through, via”, perlative)', 'Per'],
-    [2, 'Ascending path (“up”)', 'PerUp'],
-    [2, 'Descending path (“down”)', 'PerDown'],
-    [1, 'Focused on target (“to”, lative)', 'Lat'],
-    [2, 'Target inside something (“into”, illative)', 'Ill'],
-    [2, 'Target on the surface of something (“into”, sublative)', 'Sub'],
+     [1, 'Focused on origin (“from”, ablative)', 'Abl'],
+      [2, 'Origin inside something (elative)', 'Ela'], # Wikipedia also lists inelative (INEL) but does not show the difference
+      [2, 'Origin on the surface of something (“off”, delative)', 'Del'],
+     [1, 'Focused on path (“through, via”, perlative)', 'Per'],
+      [2, 'Ascending path (“up”)', 'PerUp'],
+      [2, 'Descending path (“down”)', 'PerDown'],
+     [1, 'Focused on target (“to”, lative)', 'Lat'],
+      [2, 'Target inside something (“into”, illative)', 'Ill'],
+      [2, 'Target on the surface of something (“into”, sublative)', 'Sub'],
     [0, 'Time', 'Tem'],
-    [1, 'Before a point (“before, prior to, till, until”, antessive)', 'Ante'],
-    [1, 'Around a point (“around, circa”)', 'TemAround'],
-    [1, 'At a point or period (“at, on, in, upon”)', 'TemAt'],
-    [1, 'During a period (“during, over, for, within, whilst”)', 'TemDuring'],
-    [1, 'After a point or period (“after, since, from, following”)', 'TemAfter'],
-    [1, 'Between two points (“between”)', 'TemBetween'],
+     [1, 'Before a point (“before, prior to, till, until”, antessive)', 'Ante'],
+     [1, 'Around a point (“around, circa”)', 'TemAround'],
+     [1, 'At a point or period (“at, on, in, upon”)', 'TemAt'],
+     [1, 'During a period (“during, over, for, within, whilst”)', 'TemDuring'],
+     [1, 'After a point or period (“after, since, from, following”)', 'TemAfter'],
+     [1, 'Between two points (“between”)', 'TemBetween'],
     [0, 'Of/with/without', undef], # (we want to display this comment but not to make it selectable)
-    [1, 'Belonging to, composed of something (“of”, genitive)', 'Gen'],
-    [1, 'Together with something (“with”, comitative)', 'Com'],
-    [1, 'Without something (“without”, abessive)', 'Abe'],
-    [1, 'Including something (“including”)', 'Including'],
-    [1, 'Besides something (“besides”)', 'Besides'],
-    [1, 'Except something (“except”)', 'Except'],
-    [1, 'Instead of something (“instead of, rather than”)', 'Instead'],
+     [1, 'Belonging to, composed of something (“of”, genitive)', 'Gen'],
+     [1, 'Together with something (“with”, comitative)', 'Com'],
+     [1, 'Without something (“without”, abessive)', 'Abe'],
+     [1, 'Including something (“including”)', 'Including'],
+     [1, 'Besides something (“besides”)', 'Besides'],
+     [1, 'Except something (“except”)', 'Except'],
+     [1, 'Instead of something (“instead of, rather than”)', 'Instead'],
     [0, 'Like/unlike', undef], # (we want to display this comment but not to make it selectable)
-    [1, 'Temporary state (“as”, essive)', 'Ess'],
-    [1, 'Same as something (equative)', 'Equ'],
-    [1, 'Similar to something (“like”, semblative)', 'Semb'],
-    [1, 'Dissimilar to something (“unlike”, dissemblative)', 'DisSemb'],
-    [1, 'Better/worse/other than something (“than, as opposed to”, comparative)', 'Cmp'],
+     [1, 'Temporary state (“as”, essive)', 'Ess'],
+     [1, 'Same as something (equative)', 'Equ'],
+     [1, 'Similar to something (“like”, semblative)', 'Semb'],
+     [1, 'Dissimilar to something (“unlike”, dissemblative)', 'DisSemb'],
+     [1, 'Better/worse/other than something (“than, as opposed to”, comparative)', 'Cmp'],
     [0, 'Cause/consequence/circumstance', undef], # (we want to display this comment but not to make it selectable)
-    [1, 'Cause or purpose (“because of, due to, given, in order to, per”, causative)', 'Cau'],
-    [1, 'Ignoring circumstance (“regardless”)', 'Regardless'],
-    [1, 'Concession (“despite, notwithstanding”)', 'Despite'],
-    [1, 'Condition (“depending on, in case of”)', 'Depending'],
-    [1, 'Topic (“about, concerning, regarding, as for, as to”)', 'Topic'],
-    [1, 'Source of information (“according to”)', 'Source'],
-    [1, 'Passive agent (“by”)', 'Agent'],
-    [1, 'Instrument (“with”, instrumental)', 'Ins'],
-    [1, 'Beneficiary (“for”, benefactive)', 'Ben']
+     [1, 'Cause or purpose (“because of, due to, given, in order to, per”, causative)', 'Cau'],
+     [1, 'Ignoring circumstance (“regardless”)', 'Regardless'],
+     [1, 'Concession (“despite, notwithstanding”)', 'Despite'],
+     [1, 'Condition (“depending on, in case of”)', 'Depending'],
+     [1, 'Topic (“about, concerning, regarding, as for, as to”)', 'Topic'],
+     [1, 'Source of information (“according to”)', 'Source'],
+     [1, 'Passive agent (“by”)', 'Agent'],
+     [1, 'Instrument (“with”, instrumental)', 'Ins'],
+     [1, 'Beneficiary (“for”, benefactive)', 'Ben']
 );
 # We must set our own PATH even if we do not depend on it.
 # The system call may potentially use it, and the one from outside is considered insecure.
@@ -320,13 +320,19 @@ sub print_edeprel_form
 EOF
     ;
     print("  <table>\n");
+    # Collect the current function codes of the current case marker.
+    my %curfunctions;
+    foreach my $f (@{$data->{$config{lcode}}{$config{edeprel}}{functions}})
+    {
+        $curfunctions{$f->{function}}++;
+    }
     foreach my $f (@{$functions})
     {
         my $indent = '&nbsp;&nbsp;&nbsp;&nbsp;' x $f->[0];
-        my $checked = $data->{$config{lcode}}{$config{edeprel}}{permitted} ? ' checked' : '';
         my $checkbox = '';
         if(defined($f->[2]))
         {
+            my $checked = exists($curfunctions{$f->[2]}) ? ' checked' : '';
             $checkbox = "<input type=\"checkbox\" id=\"permitted\" name=\"permitted\" value=\"1\"$checked />";
         }
         print("    <tr><td>$indent$checkbox$f->[1]</td></tr>\n");

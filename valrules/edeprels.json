@@ -2,6 +2,6 @@
 
 "edeprels": {
 "en": {
-"above": {"extends": ["nmod", "obl"], "functions": [{"function": "", "example": "", "exampleen": "", "comment": ""}], "lastchanged": "", "lastchanger": ""}
+"in": {"extends": ["nmod", "obl"], "functions": [{"function": "Ine", "example": "My mother is sitting [in the little room].", "exampleen": "", "comment": ""}], "lastchanged": "", "lastchanger": ""}
 }
 }}
