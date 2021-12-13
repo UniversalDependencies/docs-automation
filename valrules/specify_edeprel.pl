@@ -450,16 +450,38 @@ sub process_form_data
     if($config{edeprel} ne '')
     {
         print("    <li>edeprel = '$config{edeprel}'</li>\n");
-        # Check that the edeprel is known and documented.
+        # Check that the edeprel is known.
         if(exists($data->{$config{lcode}}{$config{edeprel}}))
         {
-            if($data->{$config{lcode}}{$config{edeprel}}{permitted})
+            my %extends;
+            foreach my $deprel (@{$data->{$config{lcode}}{$config{edeprel}}{extends}})
             {
-                print("    <li style='color:purple'>No longer permitted</li>\n");
+                $extends{$deprel} = 1;
             }
-            else
+            foreach my $udeprel (qw('obl', 'nmod', 'advcl', 'acl'))
             {
-                print("    <li>No change: still not permitted</li>\n");
+                if($extends{$udeprel})
+                {
+                    if($config{'ext'.$udeprel})
+                    {
+                        print("    <li>No change: still permitted with '$udeprel'</li>\n");
+                    }
+                    else
+                    {
+                        print("    <li style='color:blue'>Now permitted with '$udeprel'</li>\n");
+                    }
+                }
+                else # not extended previously
+                {
+                    if($config{'ext'.$udeprel})
+                    {
+                        print("    <li style='color:purple'>No longer permitted with '$udeprel'</li>\n");
+                    }
+                    else
+                    {
+                        print("    <li>No change: still not permitted with '$udeprel'</li>\n");
+                    }
+                }
             }
         }
         else
@@ -490,7 +512,7 @@ sub process_form_data
         $ddata->{permitted} = $config{permitted};
    #     valdata::write_edeprels_json($data, "$path/edeprels.json");
         # Commit the changes to the repository and push them to Github.
-        system("/home/zeman/bin/git-push-docs-automation.sh '$config{ghu}' '$config{lcode}' > /dev/null");
+   #     system("/home/zeman/bin/git-push-docs-automation.sh '$config{ghu}' '$config{lcode}' > /dev/null");
         print <<EOF
   <form action="specify_edeprel.pl" method="post" enctype="multipart/form-data">
     <input name=lcode type=hidden value="$config{lcode}" />
