@@ -212,7 +212,7 @@ else
         print_edeprel_details(\%data);
         if(exists($data{$config{lcode}}{$config{edeprel}}))
         {
-            print_edeprel_form(\%data);
+            print_edeprel_form(\%data, \@functions);
         }
         print_all_edeprels(\%data, $languages);
     }
@@ -293,6 +293,7 @@ sub print_edeprel_details
 sub print_edeprel_form
 {
     my $data = shift;
+    my $functions = shift;
     if($config{edeprel} eq '')
     {
         die("Unknown edeprel");
@@ -318,6 +319,12 @@ sub print_edeprel_form
     user.</small></p>
 EOF
     ;
+    print("  <ul>\n");
+    foreach my $f (@{$functions})
+    {
+        print("    <li>$f->[1]</li>\n");
+    }
+    print("  </ul>\n");
     my $checked = $data->{$config{lcode}}{$config{edeprel}}{permitted} ? ' checked' : '';
     print("  <p>Check <input type=\"checkbox\" id=\"permitted\" name=\"permitted\" value=\"1\"$checked /> here\n");
     print("    if $hdeprel should be permitted in $hlanguage.</p>\n");
