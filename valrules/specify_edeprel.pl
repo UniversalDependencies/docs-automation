@@ -535,17 +535,17 @@ sub process_form_data
                     }
                     if($config{$ename})
                     {
-                        print("    <li style='color:red'>ERROR: Example '".htmlescape($config{ename})."' cannot be accepted when the function '$f->[2]' is not turned on</li>\n");
+                        print("    <li style='color:red'>ERROR: Example '".htmlescape($config{$ename})."' cannot be accepted when the function '$f->[2]' is not turned on</li>\n");
                         $error = 1;
                     }
                     if($config{$eename})
                     {
-                        print("    <li style='color:red'>ERROR: Example '".htmlescape($config{eename})."' cannot be accepted when the function '$f->[2]' is not turned on</li>\n");
+                        print("    <li style='color:red'>ERROR: Example '".htmlescape($config{$eename})."' cannot be accepted when the function '$f->[2]' is not turned on</li>\n");
                         $error = 1;
                     }
                     if($config{$cname})
                     {
-                        print("    <li style='color:red'>ERROR: Comment '".htmlescape($config{cname})."' cannot be accepted when the function '$f->[2]' is not turned on</li>\n");
+                        print("    <li style='color:red'>ERROR: Comment '".htmlescape($config{$cname})."' cannot be accepted when the function '$f->[2]' is not turned on</li>\n");
                         $error = 1;
                     }
                 }
