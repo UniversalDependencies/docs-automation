@@ -239,19 +239,23 @@ EOF
 sub print_edeprels_for_language
 {
     my $data = shift;
+    print("  <h2>Case markers for enhanced deprels</h2>\n");
     if(exists($data->{$config{lcode}}))
     {
         my $ldata = $data->{$config{lcode}};
         my @edeprels = sort(keys(%{$ldata}));
-        print("  <h2>Case markers for enhanced deprels</h2>\n");
         if(scalar(@edeprels) > 0)
         {
             print("  <p>".join(', ', map {"<a href=\"specify_deprel.pl?lcode=$config{lcode}&amp;edeprel=$_\">$_</a>"} (@edeprels))."</p>\n");
         }
+        else
+        {
+            print("  <p>No case enhancements have been specified so far.</p>\n");
+        }
     }
     else
     {
-        die("No information about dependency relations for language '$config{lcode}'");
+        print("  <p>No case enhancements have been specified so far.</p>\n");
     }
 }
 
