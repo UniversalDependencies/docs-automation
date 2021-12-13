@@ -785,6 +785,104 @@ sub get_parameters
             {
                 $config{$func} = 1;
             }
+            #--------------------------------------------------------------------------
+            # Example in the original language may contain letters (including Unicode
+            # letters), spaces, punctuation (including Unicode punctuation). Square
+            # brackets have a special meaning, they mark the word we focus on. We
+            # probably do not need < > & "" and we could ban them for safety (but
+            # it is not necessary if we make sure to always escape them when inserting
+            # them in HTML we generate). We may need the apostrophe in some languages,
+            # though.
+            my $ename = "example$f->[2]";
+            $config{$ename} = decode('utf8', $query->param($ename));
+            if(!defined($config{$ename}) || $config{$ename} =~ m/^\s*$/)
+            {
+                $config{$ename} = '';
+            }
+            else
+            {
+                # Remove duplicate, leading and trailing spaces.
+                $config{$ename} =~ s/^\s+//;
+                $config{$ename} =~ s/\s+$//;
+                $config{$ename} =~ s/\s+/ /sg;
+                if($config{$ename} !~ m/^[\pL\pM$zwj\pN\pP ]+$/)
+                {
+                    push(@errors, "Example '$config{$ename}' contains characters other than letters, numbers, punctuation and space");
+                }
+                elsif($config{$ename} =~ m/[<>&"]/) # "
+                {
+                    push(@errors, "Example '$config{$ename}' contains less-than, greater-than, ampersand or the ASCII quote");
+                }
+                # All characters that are allowed in a lemma must be allowed inside the square brackets.
+                # In addition, we now also allow the ZERO WIDTH JOINER.
+                elsif($config{$ename} !~ m/\[.+\]/) #'
+                {
+                    push(@errors, "Example '$config{$ename}' does not contain a sequence of characters enclosed in [square brackets]");
+                }
+                if($config{$ename} =~ m/^(.+)$/)
+                {
+                    $config{$ename} = $1;
+                }
+            }
+            #--------------------------------------------------------------------------
+            # English translation of the example is provided if the current language is
+            # not English. We can probably allow the same regular expressions as for
+            # the original example, although we typically do not need non-English
+            # letters in the English translation.
+            $ename = "exampleen$f->[2]";
+            $config{$ename} = decode('utf8', $query->param($ename));
+            if(!defined($config{$ename}) || $config{$ename} =~ m/^\s*$/)
+            {
+                $config{$ename} = '';
+            }
+            else
+            {
+                # Remove duplicate, leading and trailing spaces.
+                $config{$ename} =~ s/^\s+//;
+                $config{$ename} =~ s/\s+$//;
+                $config{$ename} =~ s/\s+/ /sg;
+                if($config{$ename} !~ m/^[\pL\pM$zwj\pN\pP ]+$/)
+                {
+                    push(@errors, "Example translation '$config{$ename}' contains characters other than letters, numbers, punctuation and space");
+                }
+                elsif($config{$ename} =~ m/[<>&"]/) # "
+                {
+                    push(@errors, "Example translation '$config{$ename}' contains less-than, greater-than, ampersand or the ASCII quote");
+                }
+                if($config{$ename} =~ m/^(.+)$/)
+                {
+                    $config{$ename} = $1;
+                }
+            }
+            #--------------------------------------------------------------------------
+            # Comment is an optional English text. Since it may contain a word from the
+            # language being documented, we should allow everything that is allowed in
+            # the example.
+            my $cname = "comment$f->[2]";
+            $config{$cname} = decode('utf8', $query->param($cname));
+            if(!defined($config{$cname}) || $config{$cname} =~ m/^\s*$/)
+            {
+                $config{$cname} = '';
+            }
+            else
+            {
+                # Remove duplicate, leading and trailing spaces.
+                $config{$cname} =~ s/^\s+//;
+                $config{$cname} =~ s/\s+$//;
+                $config{$cname} =~ s/\s+/ /sg;
+                if($config{$cname} !~ m/^[\pL\pM$zwj\pN\pP ]+$/)
+                {
+                    push(@errors, "Comment '$config{$cname}' contains characters other than letters, numbers, punctuation and space");
+                }
+                elsif($config{$cname} =~ m/[<>&"]/) # "
+                {
+                    push(@errors, "Comment '$config{$cname}' contains less-than, greater-than, ampersand or the ASCII quote");
+                }
+                if($config{$cname} =~ m/^(.+)$/)
+                {
+                    $config{$cname} = $1;
+                }
+            }
         }
     }
     #--------------------------------------------------------------------------
