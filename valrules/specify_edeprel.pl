@@ -56,7 +56,7 @@ my @functions =
     [0, 'Location', 'Loc'],
     [1, 'Point location (“at”, adessive)', 'Ade'],
     [1, 'Near location (“near”)', 'LocNear'],
-    # In/surface/out (we want to display this comment but not to make it selectable)
+    [1, 'In/surface/out', undef], # (we want to display this comment but not to make it selectable)
     [2, 'Inside something (“in”, inessive)', 'Ine'],
     [2, 'On the surface of something (“on”, superessive)', 'Sup'],
     [2, 'Outside something (“outside, out of, off”)', 'LocOut'],
@@ -324,7 +324,11 @@ EOF
     {
         my $indent = '&nbsp;&nbsp;&nbsp;&nbsp;' x $f->[0];
         my $checked = $data->{$config{lcode}}{$config{edeprel}}{permitted} ? ' checked' : '';
-        my $checkbox = "<input type=\"checkbox\" id=\"permitted\" name=\"permitted\" value=\"1\"$checked />";
+        my $checkbox = '';
+        if(defined($f->[2]))
+        {
+            $checkbox = "<input type=\"checkbox\" id=\"permitted\" name=\"permitted\" value=\"1\"$checked />";
+        }
         print("    <tr><td>$indent$checkbox$f->[1]</td></tr>\n");
     }
     print("  </table>\n");
