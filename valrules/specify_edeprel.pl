@@ -463,24 +463,23 @@ sub process_form_data
             }
             foreach my $deprel (qw(obl nmod advcl acl))
             {
-                if($extends{$deprel})
+                if($config{'ext'.$deprel})
                 {
-                    if($config{'ext'.$deprel})
+                    if($extends{$deprel})
                     {
                         print("    <li>No change: still permitted with '$deprel'</li>\n");
-                        push(@extends, $deprel);
                     }
                     else
                     {
-                        print("    <li style='color:purple'>No longer permitted with '$deprel'</li>\n");
-                    }
-                }
-                else # not extended previously
-                {
-                    if($config{'ext'.$deprel})
-                    {
                         print("    <li style='color:blue'>Now permitted with '$deprel'</li>\n");
-                        push(@extends, $deprel);
+                    }
+                    push(@extends, $deprel);
+                }
+                else
+                {
+                    if($extends{$deprel})
+                    {
+                        print("    <li style='color:purple'>No longer permitted with '$deprel'</li>\n");
                     }
                     else
                     {
@@ -493,20 +492,22 @@ sub process_form_data
             {
                 $curfunctions{$f->{function}} = $f;
             }
+            my @newfunctions = ();
             foreach my $f (@{$functions})
             {
-                my $ename = 'example'.$f->[2];
-                my $eename = 'exampleen'.$f->[2];
-                my $cname = 'comment'.$f->[2];
-                if($config{'func'.$f->[2]})
+                my $fcode = $f->[2];
+                my $ename = 'example'.$fcode;
+                my $eename = 'exampleen'.$fcode;
+                my $cname = 'comment'.$fcode;
+                if($config{'func'.$fcode})
                 {
-                    if($curfunctions{$f->[2]})
+                    if($curfunctions{$fcode})
                     {
-                        print("    <li>No change: still has the function '$f->[2]': '$f->[1]'</li>\n");
+                        print("    <li>No change: still has the function '$fcode': '$f->[1]'</li>\n");
                     }
                     else
                     {
-                        print("    <li style='color:blue'>Now has the function '$f->[2]': '$f->[1]'</li>\n");
+                        print("    <li style='color:blue'>Now has the function '$fcode': '$f->[1]'</li>\n");
                     }
                     if($config{$ename})
                     {
@@ -514,7 +515,7 @@ sub process_form_data
                     }
                     else
                     {
-                        print("    <li style='color:red'>ERROR: Missing example of '$f->[2]'</li>\n");
+                        print("    <li style='color:red'>ERROR: Missing example of '$fcode'</li>\n");
                         $error = 1;
                     }
                     if($config{$eename})
@@ -523,33 +524,34 @@ sub process_form_data
                     }
                     elsif($config{lcode} ne 'en')
                     {
-                        print("    <li style='color:red'>ERROR: Missing English translation of the example of '$f->[2]'</li>\n");
+                        print("    <li style='color:red'>ERROR: Missing English translation of the example of '$fcode'</li>\n");
                         $error = 1;
                     }
                     if($config{$cname} ne '')
                     {
                         print("    <li>Comment = '".htmlescape($config{$cname})."'</li>\n");
                     }
+                    push(@newfunctions, {'function' => $fcode, 'example' => $config{$ename}, 'exampleen' => $config{$eename}, 'comment' => $config{$cname}});
                 }
                 else
                 {
-                    if($curfunctions{$f->[2]})
+                    if($curfunctions{$fcode})
                     {
-                        print("    <li style='color:purple'>No longer has the function '$f->[2]': '$f->[1]'</li>\n");
+                        print("    <li style='color:purple'>No longer has the function '$fcode': '$f->[1]'</li>\n");
                     }
                     if($config{$ename})
                     {
-                        print("    <li style='color:red'>ERROR: Example '".htmlescape($config{$ename})."' cannot be accepted when the function '$f->[2]' is not turned on</li>\n");
+                        print("    <li style='color:red'>ERROR: Example '".htmlescape($config{$ename})."' cannot be accepted when the function '$fcode' is not turned on</li>\n");
                         $error = 1;
                     }
                     if($config{$eename})
                     {
-                        print("    <li style='color:red'>ERROR: Example '".htmlescape($config{$eename})."' cannot be accepted when the function '$f->[2]' is not turned on</li>\n");
+                        print("    <li style='color:red'>ERROR: Example '".htmlescape($config{$eename})."' cannot be accepted when the function '$fcode' is not turned on</li>\n");
                         $error = 1;
                     }
                     if($config{$cname})
                     {
-                        print("    <li style='color:red'>ERROR: Comment '".htmlescape($config{$cname})."' cannot be accepted when the function '$f->[2]' is not turned on</li>\n");
+                        print("    <li style='color:red'>ERROR: Comment '".htmlescape($config{$cname})."' cannot be accepted when the function '$fcode' is not turned on</li>\n");
                         $error = 1;
                     }
                 }
@@ -581,6 +583,7 @@ sub process_form_data
         $ddata->{lastchanged} = $timestamp;
         $ddata->{lastchanger} = $config{ghu};
         $ddata->{extends} = \@extends;
+        $ddata->{functions} = \@newfunctions;
         write_edeprels_json($data, "$path/edeprels.json");
         # Commit the changes to the repository and push them to Github.
         system("/home/zeman/bin/git-push-docs-automation.sh '$config{ghu}' '$config{lcode}' > /dev/null");
