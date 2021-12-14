@@ -960,6 +960,22 @@ sub get_parameters
     {
         push(@errors, "Unrecognized save button '$config{save}'");
     }
+    #--------------------------------------------------------------------------
+    # The parameter 'add' comes from the button that launches the form to add
+    # a new edeprel.
+    $config{add} = decode('utf8', $query->param('add'));
+    if(!defined($config{add}))
+    {
+        $config{add} = 0;
+    }
+    elsif($config{add} =~ m/^Add$/)
+    {
+        $config{add} = 1;
+    }
+    else
+    {
+        push(@errors, "Unrecognized add button '$config{add}'");
+    }
     return %config;
 }
 
