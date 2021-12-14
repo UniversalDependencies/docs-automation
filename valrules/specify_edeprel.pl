@@ -114,7 +114,8 @@ my @functions =
      [1, 'Source of information (“according to”)',                              'Src'],
      [1, 'Passive agent (“by”)',                                                'Agt'],
      [1, 'Instrument (“with”, instrumental)',                                   'Ins'],
-     [1, 'Beneficiary (“for”, benefactive)',                                    'Ben']
+     [1, 'Beneficiary (“for”, benefactive)',                                    'Ben'],
+     [1, 'Adversary (“against”, adversative)',                                  'Adv']
 );
 # Sanity check: Did I specify a unique code for each function?
 my %fdesc;
