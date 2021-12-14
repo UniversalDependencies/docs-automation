@@ -987,7 +987,7 @@ sub write_edeprels_json
         my @edeprels = sort(keys(%{$data->{$lcode}}));
         foreach my $e (@edeprels)
         {
-            my $ejson = '"'.valdata::escape_json_string($e).'": {';
+            my $ejson = '"'.valdata::escape_json_string($e).'": ';
             my @extends = sort(@{$data->{$lcode}{$e}{extends}});
             # Sort the existing functions following the global list of known functions.
             my %sortval;
@@ -1016,7 +1016,6 @@ sub write_edeprels_json
                 ['lastchanger' => $data->{$lcode}{$e}{lastchanger}]
             );
             $ejson .= valdata::encode_json(@record);
-            $ejson .= '}';
             push(@ejsons, $ejson);
         }
         $ljson .= join(",\n", @ejsons)."\n";
