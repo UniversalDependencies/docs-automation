@@ -450,6 +450,8 @@ sub process_form_data
     }
     # Save the basic deprels that can be enhanced with this case marker.
     my @extends = ();
+    # Save the functions of this case marker.
+    my @newfunctions = ();
     if($config{edeprel} ne '')
     {
         print("    <li>edeprel = '$config{edeprel}'</li>\n");
@@ -492,7 +494,6 @@ sub process_form_data
             {
                 $curfunctions{$f->{function}} = $f;
             }
-            my @newfunctions = ();
             foreach my $f (@{$functions})
             {
                 my $fcode = $f->[2];
