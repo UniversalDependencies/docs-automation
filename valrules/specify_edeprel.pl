@@ -228,11 +228,16 @@ else
         }
         print_all_edeprels(\%data, $languages);
     }
+    elsif($config{add})
+    {
+        summarize_guidelines();
+        print_edeprel_form(\%data, \@functions);
+        print_all_edeprels(\%data, $languages);
+    }
     else
     {
         summarize_guidelines();
         print_edeprels_for_language(\%data);
-        # Show all known edeprels so the user can compare. This and related languages first.
         print_all_edeprels(\%data, $languages);
     }
 }
@@ -268,6 +273,11 @@ sub print_edeprels_for_language
     {
         print("  <p>No case enhancements have been specified so far.</p>\n");
     }
+    print("  <form action=\"specify_edeprel.pl\" method=\"post\" enctype=\"multipart/form-data\">\n");
+    print("    <input name=lcode type=hidden value=\"$config{lcode}\" />\n");
+    print("    <input name=ghu type=hidden value=\"$config{ghu}\" />\n");
+    print("    <input name=add type=submit value=\"Add\" />\n");
+    print("  </form>\n");
 }
 
 
