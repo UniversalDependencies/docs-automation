@@ -316,13 +316,16 @@ sub print_edeprel_form
 {
     my $data = shift;
     my $functions = shift;
-    if($config{edeprel} eq '')
+    unless($config{add})
     {
-        die("Unknown edeprel");
-    }
-    if(!exists($data->{$config{lcode}}{$config{edeprel}}))
-    {
-        die("Case enhancement '$config{edeprel}' not found in language '$config{lcode}'");
+        if($config{edeprel} eq '')
+        {
+            die("Unknown edeprel");
+        }
+        if(!exists($data->{$config{lcode}}{$config{edeprel}}))
+        {
+            die("Case enhancement '$config{edeprel}' not found in language '$config{lcode}'");
+        }
     }
     my $show_exampleen = $config{lcode} ne 'en';
     my $hedeprel = htmlescape($config{edeprel});
