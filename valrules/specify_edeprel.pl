@@ -226,19 +226,19 @@ else
         {
             print_edeprel_form(\%data, \@functions);
         }
-        print_all_edeprels(\%data, $languages);
+        print_all_edeprels(\%data, $languages, \@functions);
     }
     elsif($config{add})
     {
         summarize_guidelines();
         print_edeprel_form(\%data, \@functions);
-        print_all_edeprels(\%data, $languages);
+        print_all_edeprels(\%data, $languages, \@functions);
     }
     else
     {
         summarize_guidelines();
         print_edeprels_for_language(\%data);
-        print_all_edeprels(\%data, $languages);
+        print_all_edeprels(\%data, $languages, \@functions);
     }
 }
 print <<EOF
@@ -664,59 +664,41 @@ sub print_all_edeprels
 {
     my $data = shift;
     my $languages = shift; # ref to hash read from YAML, indexed by names
+    my $functions = shift; # ref to global array
     # Print the data on the web page.
     print("  <h2>Permitted case enhancements for this and other languages</h2>\n");
     my @lcodes = langgraph::sort_lcodes_by_relatedness($languages, $config{lcode});
-    # Get the list of all known case markers.
-    my %edeprels;
-    foreach my $lcode (@lcodes)
-    {
-        my @edeprels = keys(%{$data->{$lcode}});
-        foreach my $e (@edeprels)
-        {
-            $edeprels{$e}++;
-        }
-    }
-    my @edeprels = sort(keys(%edeprels));
     print("  <table>\n");
     my $i = 0;
     foreach my $lcode (@lcodes)
     {
-        # Collect language-specific subtypes of relations.
-        my %subtypes;
-        foreach my $e (keys(%{$data->{$lcode}}))
-        {
-            if($e =~ m/^([a-z]+):([a-z]+)$/)
-            {
-                my $udep = $1;
-                my $lspec = $2;
-                $subtypes{$udep}{$lspec}++;
-            }
-        }
         # Repeat the headers every 20 rows.
         if($i % 20 == 0)
         {
             print("    <tr><th colspan=2>Language</th><th>Total</th>");
             my $j = 0;
-            foreach my $e (@edeprels)
+            foreach my $f (@{$functions})
             {
-                # Repeat the language every 12 columns.
+                next if(!defined($f->[2]));
+                # Repeat the language every 12 columns... but not in the header line.
                 if($j != 0 && $j % 12 == 0)
                 {
                     print('<th></th>');
                 }
                 $j++;
-                print("<th>$e</th>");
+                print("<th>$f->[2]</th>");
             }
             print("</tr>\n");
         }
         $i++;
         # Get the number of edeprels permitted in this language.
-        my $n = scalar(grep {exists($data->{$lcode}{$_})} (@edeprels));
+        my @edeprels = sort(keys(%{$data->{$lcode}}));
+        my $n = scalar(@edeprels);
         print("    <tr><td>$lname_by_code{$lcode}</td><td>$lcode</td><td>$n</td>");
         my $j = 0;
-        foreach my $e (@edeprels)
+        foreach my $f (@{$functions})
         {
+            next if(!defined($f->[2]));
             # Repeat the language every 12 columns.
             if($j != 0 && $j % 12 == 0)
             {
@@ -724,13 +706,7 @@ sub print_all_edeprels
             }
             $j++;
             print('<td>');
-            my $dp = '';
-            if(exists($data->{$lcode}{$e}))
-            {
-                $dp = $e;
-            }
-            my $s = '';
-            print($dp.$s);
+            print(join(' ', grep {my $x = $_; scalar(grep {$_->{function} eq $f->[2]} (@{$data->{$lcode}{$x}{functions}})) > 0} (@edeprels)));
             print('</td>');
         }
         print("</tr>\n");
