@@ -344,8 +344,9 @@ sub print_edeprel_form
     user.</small></p>
 EOF
     ;
-    print("  <strong>Lexical marker:</strong> <input name=edeprel type=text size=10 value=\"$hedeprel\" />");
-    print("  <strong>Morphological marker:</strong> NONE");
+    print("  <input name=origedeprel type=hidden size=10 value=\"$hedeprel\" />\n");
+    print("  <strong>Lexical marker:</strong> <input name=edeprel type=text size=10 value=\"$hedeprel\" />\n");
+    print("  <strong>Morphological marker:</strong> NONE\n");
     print("  <strong>Can be used with:</strong>\n");
     my %extchecked;
     foreach my $deprel (@{$data->{$config{lcode}}{$config{edeprel}}{extends}})
@@ -468,113 +469,131 @@ sub process_form_data
     if($config{edeprel} ne '')
     {
         print("    <li>edeprel = '$config{edeprel}'</li>\n");
-        # Check that the edeprel is known.
-        if(exists($data->{$config{lcode}}{$config{edeprel}}))
+        # If there is no origedeprel, we are adding a new edeprel.
+        # If there is origedeprel and it is different from edeprel, we are renaming the edeprel.
+        # If there is origedeprel and it matches edeprel, we are editing the edeprel without renaming it.
+        if($config{origedeprel} ne '')
         {
-            my %extends;
-            foreach my $deprel (@{$data->{$config{lcode}}{$config{edeprel}}{extends}})
+            if(exists($data->{$config{lcode}}{$config{origedeprel}}))
             {
-                $extends{$deprel} = 1;
-            }
-            foreach my $deprel (qw(obl nmod advcl acl))
-            {
-                if($config{'ext'.$deprel})
+                if($config{edeprel} ne $config{origedeprel})
                 {
-                    if($extends{$deprel})
+                    if(exists($data->{$config{lcode}}{$config{edeprel}}))
                     {
-                        print("    <li>No change: still permitted with '$deprel'</li>\n");
+                        print("    <li style='color:red'>ERROR: Cannot rename enhanced dependency relation '$config{origedeprel}' to '$config{edeprel}' because the target relation already exists</li>\n");
+                        $error = 1;
                     }
                     else
                     {
-                        print("    <li style='color:blue'>Now permitted with '$deprel'</li>\n");
+                        $data->{$config{lcode}}{$config{edeprel}} = $data->{$config{lcode}}{$config{origedeprel}};
+                        delete($data->{$config{lcode}}{$config{origedeprel}});
                     }
-                    push(@extends, $deprel);
+                }
+            }
+            else
+            {
+                print("    <li style='color:red'>ERROR: Unknown enhanced dependency relation '$config{origedeprel}' in language '$config{language}' cannot be renamed to '$config{edeprel}'</li>\n");
+                $error = 1;
+            }
+        }
+        my %extends;
+        foreach my $deprel (@{$data->{$config{lcode}}{$config{edeprel}}{extends}})
+        {
+            $extends{$deprel} = 1;
+        }
+        foreach my $deprel (qw(obl nmod advcl acl))
+        {
+            if($config{'ext'.$deprel})
+            {
+                if($extends{$deprel})
+                {
+                    print("    <li>No change: still permitted with '$deprel'</li>\n");
                 }
                 else
                 {
-                    if($extends{$deprel})
-                    {
-                        print("    <li style='color:purple'>No longer permitted with '$deprel'</li>\n");
-                    }
-                    else
-                    {
-                        print("    <li>No change: still not permitted with '$deprel'</li>\n");
-                    }
+                    print("    <li style='color:blue'>Now permitted with '$deprel'</li>\n");
                 }
+                push(@extends, $deprel);
             }
-            my %curfunctions;
-            foreach my $f (@{$data->{$config{lcode}}{$config{edeprel}}{functions}})
+            else
             {
-                $curfunctions{$f->{function}} = $f;
-            }
-            foreach my $f (@{$functions})
-            {
-                my $fcode = $f->[2];
-                my $ename = 'example'.$fcode;
-                my $eename = 'exampleen'.$fcode;
-                my $cname = 'comment'.$fcode;
-                if($config{'func'.$fcode})
+                if($extends{$deprel})
                 {
-                    if($curfunctions{$fcode})
-                    {
-                        print("    <li>No change: still has the function '$fcode': '$f->[1]'</li>\n");
-                    }
-                    else
-                    {
-                        print("    <li style='color:blue'>Now has the function '$fcode': '$f->[1]'</li>\n");
-                    }
-                    if($config{$ename})
-                    {
-                        print("    <li>Example = '".htmlescape($config{$ename})."'</li>\n");
-                    }
-                    else
-                    {
-                        print("    <li style='color:red'>ERROR: Missing example of '$fcode'</li>\n");
-                        $error = 1;
-                    }
-                    if($config{$eename})
-                    {
-                        print("    <li>Example = '".htmlescape($config{$eename})."'</li>\n");
-                    }
-                    elsif($config{lcode} ne 'en')
-                    {
-                        print("    <li style='color:red'>ERROR: Missing English translation of the example of '$fcode'</li>\n");
-                        $error = 1;
-                    }
-                    if($config{$cname} ne '')
-                    {
-                        print("    <li>Comment = '".htmlescape($config{$cname})."'</li>\n");
-                    }
-                    push(@newfunctions, {'function' => $fcode, 'example' => $config{$ename}, 'exampleen' => $config{$eename}, 'comment' => $config{$cname}});
+                    print("    <li style='color:purple'>No longer permitted with '$deprel'</li>\n");
                 }
                 else
                 {
-                    if($curfunctions{$fcode})
-                    {
-                        print("    <li style='color:purple'>No longer has the function '$fcode': '$f->[1]'</li>\n");
-                    }
-                    if($config{$ename})
-                    {
-                        print("    <li style='color:red'>ERROR: Example '".htmlescape($config{$ename})."' cannot be accepted when the function '$fcode' is not turned on</li>\n");
-                        $error = 1;
-                    }
-                    if($config{$eename})
-                    {
-                        print("    <li style='color:red'>ERROR: Example '".htmlescape($config{$eename})."' cannot be accepted when the function '$fcode' is not turned on</li>\n");
-                        $error = 1;
-                    }
-                    if($config{$cname})
-                    {
-                        print("    <li style='color:red'>ERROR: Comment '".htmlescape($config{$cname})."' cannot be accepted when the function '$fcode' is not turned on</li>\n");
-                        $error = 1;
-                    }
+                    print("    <li>No change: still not permitted with '$deprel'</li>\n");
                 }
             }
         }
-        else
+        my %curfunctions;
+        foreach my $f (@{$data->{$config{lcode}}{$config{edeprel}}{functions}})
         {
-            print("    <li style='color:red'>ERROR: Unknown dependency relation '$config{edeprel}' in language '$config{language}'</li>\n");
-            $error = 1;
+            $curfunctions{$f->{function}} = $f;
+        }
+        foreach my $f (@{$functions})
+        {
+            my $fcode = $f->[2];
+            my $ename = 'example'.$fcode;
+            my $eename = 'exampleen'.$fcode;
+            my $cname = 'comment'.$fcode;
+            if($config{'func'.$fcode})
+            {
+                if($curfunctions{$fcode})
+                {
+                    print("    <li>No change: still has the function '$fcode': '$f->[1]'</li>\n");
+                }
+                else
+                {
+                    print("    <li style='color:blue'>Now has the function '$fcode': '$f->[1]'</li>\n");
+                }
+                if($config{$ename})
+                {
+                    print("    <li>Example = '".htmlescape($config{$ename})."'</li>\n");
+                }
+                else
+                {
+                    print("    <li style='color:red'>ERROR: Missing example of '$fcode'</li>\n");
+                    $error = 1;
+                }
+                if($config{$eename})
+                {
+                    print("    <li>Example = '".htmlescape($config{$eename})."'</li>\n");
+                }
+                elsif($config{lcode} ne 'en')
+                {
+                    print("    <li style='color:red'>ERROR: Missing English translation of the example of '$fcode'</li>\n");
+                    $error = 1;
+                }
+                if($config{$cname} ne '')
+                {
+                    print("    <li>Comment = '".htmlescape($config{$cname})."'</li>\n");
+                }
+                push(@newfunctions, {'function' => $fcode, 'example' => $config{$ename}, 'exampleen' => $config{$eename}, 'comment' => $config{$cname}});
+            }
+            else
+            {
+                if($curfunctions{$fcode})
+                {
+                    print("    <li style='color:purple'>No longer has the function '$fcode': '$f->[1]'</li>\n");
+                }
+                if($config{$ename})
+                {
+                    print("    <li style='color:red'>ERROR: Example '".htmlescape($config{$ename})."' cannot be accepted when the function '$fcode' is not turned on</li>\n");
+                    $error = 1;
+                }
+                if($config{$eename})
+                {
+                    print("    <li style='color:red'>ERROR: Example '".htmlescape($config{$eename})."' cannot be accepted when the function '$fcode' is not turned on</li>\n");
+                    $error = 1;
+                }
+                if($config{$cname})
+                {
+                    print("    <li style='color:red'>ERROR: Comment '".htmlescape($config{$cname})."' cannot be accepted when the function '$fcode' is not turned on</li>\n");
+                    $error = 1;
+                }
+            }
         }
     }
     else
@@ -809,6 +828,23 @@ sub get_parameters
     else
     {
         push(@errors, "Edeprel '$config{edeprel}' does not have the form prescribed by the guidelines");
+    }
+    #--------------------------------------------------------------------------
+    # Origedeprel is the original name of the edeprel we were editing (we may
+    # have changed it in edeprel).
+    $config{origedeprel} = decode('utf8', $query->param('origedeprel'));
+    if(!defined($config{origedeprel}) || $config{origedeprel} =~ m/^\s*$/)
+    {
+        $config{origedeprel} = '';
+    }
+    # Forms of edeprels are prescribed in the UD guidelines.
+    elsif($config{origedeprel} =~ m/^([a-z]+(:[a-z]+)?)$/)
+    {
+        $config{origedeprel} = $1;
+    }
+    else
+    {
+        push(@errors, "Orig edeprel '$config{origedeprel}' does not have the form prescribed by the guidelines");
     }
     #--------------------------------------------------------------------------
     # What universal relations does this edeprel extend?
