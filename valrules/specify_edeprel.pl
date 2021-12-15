@@ -499,6 +499,12 @@ sub process_form_data
                 $error = 1;
             }
         }
+        print("    <li>morph = '$config{morph}'</li>\n");
+        if($config{morph} ne '' && $config{morph} !~ m/^(gen|dat|acc|loc|ins)$/)
+        {
+            print("    <li style='color:red'>ERROR: Unknown morphological marker '$config{morph}'</li>\n");
+            $error = 1;
+        }
         my %extends;
         foreach my $deprel (@{$data->{$config{lcode}}{$config{edeprel}}{extends}})
         {
@@ -618,6 +624,7 @@ sub process_form_data
         my $timestamp = sprintf("%04d-%02d-%02d-%02d-%02d-%02d", 1900+$year, 1+$mon, $mday, $hour, $min, $sec);
         $ddata->{lastchanged} = $timestamp;
         $ddata->{lastchanger} = $config{ghu};
+        $ddata->{morph} = $config{morph};
         $ddata->{extends} = \@extends;
         $ddata->{functions} = \@newfunctions;
         write_edeprels_json($data, "$path/edeprels.json");
@@ -832,6 +839,22 @@ sub get_parameters
     else
     {
         push(@errors, "Orig edeprel '$config{origedeprel}' does not have the form prescribed by the guidelines");
+    }
+    #--------------------------------------------------------------------------
+    # Morph is the morphological marker in the edeprel.
+    $config{morph} = decode('utf8', $query->param('morph'));
+    if(!defined($config{morph}) || $config{morph} =~ m/^\s*$/)
+    {
+        $config{morph} = '';
+    }
+    # Form of morph is prescribed in the UD guidelines.
+    elsif($config{morph} =~ m/^([a-z]+)*)$/)
+    {
+        $config{morph} = $1;
+    }
+    else
+    {
+        push(@errors, "Morphological marker '$config{morph}' does not have the form prescribed by the guidelines");
     }
     #--------------------------------------------------------------------------
     # What universal relations does this edeprel extend?
@@ -1063,7 +1086,7 @@ sub write_edeprels_json
             my @record =
             (
                 ['lex'         => $e],
-                ['morph'       => ''],
+                ['morph'       => $data->{$lcode}{$e}{morph}],
                 ['extends'     => \@extends, 'list'],
                 ['functions'   => \@frecords, 'list of structures'],
                 ['lastchanged' => $data->{$lcode}{$e}{lastchanged}],
