@@ -92,6 +92,7 @@ my @functions =
      [1, 'After a point or period (“after, since, from, following”)',           'Tps'],
      [1, 'Between two points (“between”)',                                      'Tbt'],
     [0, 'Of/with/without', undef], # (we want to display this comment but not to make it selectable)
+     [1, 'Complement/attribute (“that”)',                                       'Atr'],
      [1, 'Belonging to, composed of something (“of”, genitive)',                'Gen'],
      [1, 'Together with something (“with”, comitative)',                        'Com'],
      [1, 'Without something (“without”, abessive)',                             'Abe'],
