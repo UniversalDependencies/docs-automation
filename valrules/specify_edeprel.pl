@@ -1054,6 +1054,8 @@ sub write_edeprels_json
             }
             my @record =
             (
+                ['lex'         => $e],
+                ['morph'       => ''],
                 ['extends'     => \@extends, 'list'],
                 ['functions'   => \@frecords, 'list of structures'],
                 ['lastchanged' => $data->{$lcode}{$e}{lastchanged}],
