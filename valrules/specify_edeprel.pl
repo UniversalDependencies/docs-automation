@@ -348,8 +348,10 @@ sub print_edeprel_form
 EOF
     ;
     print("  <input name=origedeprel type=hidden size=10 value=\"$hedeprel\" />\n");
-    print("  <strong>Lexical marker:</strong> <input name=lex type=text size=10 value=\"$hedeprel\" />\n");
-    print("  <strong>Morphological marker:</strong> <select name=morph><option></option><option>gen</option><option>dat</option><option>acc</option><option>loc</option><option>ins</option></select>\n");
+    my $hlex = htmlescape($data->{$config{lcode}}{$config{edeprel}}{lex});
+    print("  <strong>Lexical marker:</strong> <input name=lex type=text size=10 value=\"$hlex\" />\n");
+    my $morphoptions = join('', map {my $s = $_ eq $data->{$config{lcode}}{$config{edeprel}}{morph} ? ' selected' : ''; "<option$s>$_</option>"} (qw(gen dat acc loc ins)));
+    print("  <strong>Morphological marker:</strong> <select name=morph>$morphoptions</select>\n");
     print("  <strong>Can be used with:</strong>\n");
     my %extchecked;
     foreach my $deprel (@{$data->{$config{lcode}}{$config{edeprel}}{extends}})
