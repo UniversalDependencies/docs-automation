@@ -679,6 +679,10 @@ sub print_all_edeprels
     my $i = 0;
     foreach my $lcode (@lcodes)
     {
+        # Get the number of edeprels permitted in this language.
+        my @edeprels = sort(keys(%{$data->{$lcode}}));
+        my $n = scalar(@edeprels);
+        next if($n==0);
         # Repeat the headers every 20 rows.
         if($i % 20 == 0)
         {
@@ -698,9 +702,6 @@ sub print_all_edeprels
             print("</tr>\n");
         }
         $i++;
-        # Get the number of edeprels permitted in this language.
-        my @edeprels = sort(keys(%{$data->{$lcode}}));
-        my $n = scalar(@edeprels);
         print("    <tr><td>$lname_by_code{$lcode}</td><td>$lcode</td><td>$n</td>");
         my $j = 0;
         foreach my $f (@{$functions})
