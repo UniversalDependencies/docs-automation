@@ -837,7 +837,7 @@ sub get_parameters
         $config{edeprel} = '';
     }
     # Forms of edeprels are prescribed in the UD guidelines.
-    elsif($config{edeprel} =~ m/^([\p{Ll}\p{Lm}\p{Lo}\p{M}]+(_[\p{Ll}\p{Lm}\p{Lo}\p{M}]+)*)$/)
+    elsif($config{edeprel} =~ m/^([\p{Ll}\p{Lm}\p{Lo}\p{M}]+(_[\p{Ll}\p{Lm}\p{Lo}\p{M}]+)*(:[a-z]+)?|[a-z]+)$/)
     {
         $config{edeprel} = $1;
     }
@@ -854,7 +854,7 @@ sub get_parameters
         $config{origedeprel} = '';
     }
     # Forms of edeprels are prescribed in the UD guidelines.
-    elsif($config{origedeprel} =~ m/^([\p{Ll}\p{Lm}\p{Lo}\p{M}]+(_[\p{Ll}\p{Lm}\p{Lo}\p{M}]+)*)$/)
+    elsif($config{origedeprel} =~ m/^([\p{Ll}\p{Lm}\p{Lo}\p{M}]+(_[\p{Ll}\p{Lm}\p{Lo}\p{M}]+)*(:[a-z]+)?|[a-z]+)$/)
     {
         $config{origedeprel} = $1;
     }
