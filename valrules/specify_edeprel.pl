@@ -642,6 +642,8 @@ EOF
 sub summarize_guidelines
 {
     # cat UD_English-{PUD,EWT,GUM}/*.conllu | udapy -T util.Filter mark=1 keep_tree_if_node='len(node.deps)>=1 and "advcl:if" in [x["deprel"] for x in node.deps]' | less -R
+    # This is faster because it can process the first file immediately after reading it:
+    # ( udapy -T read.Conllu files="`echo UD_Czech-{PUD,PDT,FicTree,CAC,CLTT}/*.conllu`" util.Filter mark=1 keep_tree_if_node='len(node.deps)>=1 and "advcl:aby" in [x["deprel"] for x in nodeeps]' | less -R ) 2>/dev/null
     print <<EOF
   <h1><img class=\"flag\" src=\"https://universaldependencies.org/flags/png/$languages->{$lname_by_code{$config{lcode}}}{flag}.png\" />
     Specify enhanced dependency relations for $lname_by_code{$config{lcode}}</h1>
@@ -655,9 +657,10 @@ sub summarize_guidelines
     <tt><a href="https://universaldependencies.org/u/feat/Case.html">Case</a></tt>
     feature), or a combination of both. The official UD validator will accept
     case markers that are documented here.</p>
-  <p><a href="https://udapi.github.io/">Udapi</a> can be used to find examples
+  <!--p><a href="https://udapi.github.io/">Udapi</a> can be used to find examples
     of enhanced dependency relation like this:
-    <pre>cat UD_English-{PUD,EWT,GUM}/*.conllu | udapy -T util.Filter mark=1 keep_tree_if_node='len(node.deps)&gt;=1 and "advcl:if" in [x["deprel"] for x in node.deps]' | less -R</pre></p>
+    <pre>cat UD_English-{PUD,EWT,GUM}/*.conllu | udapy -T util.Filter mark=1 keep_tree_if_node='len(node.deps)&gt;=1 and "advcl:if" in [x["deprel"] for x in node.deps]' | less -R</pre>
+    <pre>( udapy -T read.Conllu files="`echo UD_Czech-{PUD,PDT,FicTree,CAC,CLTT}/*.conllu`" util.Filter mark=1 keep_tree_if_node='len(node.deps)&gt;=1 and "advcl:aby" in [x["deprel"] for x in nodeeps]' | less -R ) 2&gt;/dev/null</pre></p-->
 EOF
     ;
 }
