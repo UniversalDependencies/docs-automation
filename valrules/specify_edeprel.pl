@@ -348,7 +348,7 @@ sub print_edeprel_form
 EOF
     ;
     print("  <input name=origedeprel type=hidden size=10 value=\"$hedeprel\" />\n");
-    print("  <strong>Lexical marker:</strong> <input name=edeprel type=text size=10 value=\"$hedeprel\" />\n");
+    print("  <strong>Lexical marker:</strong> <input name=lex type=text size=10 value=\"$hedeprel\" />\n");
     print("  <strong>Morphological marker:</strong> <select name=morph><option></option><option>gen</option><option>dat</option><option>acc</option><option>loc</option><option>ins</option></select>\n");
     print("  <strong>Can be used with:</strong>\n");
     my %extchecked;
@@ -499,6 +499,7 @@ sub process_form_data
                 $error = 1;
             }
         }
+        print("    <li>lex = '$config{lex}'</li>\n");
         print("    <li>morph = '$config{morph}'</li>\n");
         if($config{morph} ne '' && $config{morph} !~ m/^(gen|dat|acc|loc|ins)$/)
         {
@@ -624,6 +625,7 @@ sub process_form_data
         my $timestamp = sprintf("%04d-%02d-%02d-%02d-%02d-%02d", 1900+$year, 1+$mon, $mday, $hour, $min, $sec);
         $ddata->{lastchanged} = $timestamp;
         $ddata->{lastchanger} = $config{ghu};
+        $ddata->{lex} = $config{lex};
         $ddata->{morph} = $config{morph};
         $ddata->{extends} = \@extends;
         $ddata->{functions} = \@newfunctions;
@@ -841,7 +843,23 @@ sub get_parameters
         push(@errors, "Orig edeprel '$config{origedeprel}' does not have the form prescribed by the guidelines");
     }
     #--------------------------------------------------------------------------
-    # Morph is the morphological marker in the edeprel.
+    # Lex is the lexical case marker in the edeprel.
+    $config{lex} = decode('utf8', $query->param('lex'));
+    if(!defined($config{lex}) || $config{lex} =~ m/^\s*$/)
+    {
+        $config{lex} = '';
+    }
+    # Form of lex is prescribed in the UD guidelines.
+    elsif($config{lex} =~ m/^([\p{Ll}\p{Lm}\p{Lo}\p{M}]+(_[\p{Ll}\p{Lm}\p{Lo}\p{M}]+)*)$/)
+    {
+        $config{lex} = $1;
+    }
+    else
+    {
+        push(@errors, "Lexical marker '$config{lex}' does not have the form prescribed by the guidelines");
+    }
+    #--------------------------------------------------------------------------
+    # Morph is the morphological case marker in the edeprel.
     $config{morph} = decode('utf8', $query->param('morph'));
     if(!defined($config{morph}) || $config{morph} =~ m/^\s*$/)
     {
@@ -1085,7 +1103,7 @@ sub write_edeprels_json
             }
             my @record =
             (
-                ['lex'         => $e],
+                ['lex'         => $data->{$lcode}{$e}{lex}],
                 ['morph'       => $data->{$lcode}{$e}{morph}],
                 ['extends'     => \@extends, 'list'],
                 ['functions'   => \@frecords, 'list of structures'],
