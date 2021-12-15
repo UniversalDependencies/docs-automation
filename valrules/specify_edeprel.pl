@@ -349,7 +349,7 @@ EOF
     ;
     print("  <input name=origedeprel type=hidden size=10 value=\"$hedeprel\" />\n");
     print("  <strong>Lexical marker:</strong> <input name=edeprel type=text size=10 value=\"$hedeprel\" />\n");
-    print("  <strong>Morphological marker:</strong> NONE\n");
+    print("  <strong>Morphological marker:</strong> <select name=morph><option></option><option>gen</option><option>dat</option><option>acc</option><option>loc</option><option>ins</option></select>\n");
     print("  <strong>Can be used with:</strong>\n");
     my %extchecked;
     foreach my $deprel (@{$data->{$config{lcode}}{$config{edeprel}}{extends}})
