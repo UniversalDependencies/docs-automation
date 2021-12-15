@@ -848,7 +848,7 @@ sub get_parameters
         $config{morph} = '';
     }
     # Form of morph is prescribed in the UD guidelines.
-    elsif($config{morph} =~ m/^([a-z]+)*)$/)
+    elsif($config{morph} =~ m/^([a-z]+)$/)
     {
         $config{morph} = $1;
     }
