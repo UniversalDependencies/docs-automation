@@ -467,6 +467,24 @@ sub process_form_data
         print("    <li style='color:red'>ERROR: Unsatisfactory robotic response</li>\n");
         $error = 1;
     }
+    # The user can edit lexical and morphological case markers separately.
+    # Combine them into one marker now.
+    if($config{lex} ne '' && $config{morph} ne '')
+    {
+        $config{edeprel} = $config{lex}.':'.$config{morph};
+    }
+    elsif($config{lex} ne '')
+    {
+        $config{edeprel} = $config{lex};
+    }
+    elsif($config{morph} ne '')
+    {
+        $config{edeprel} = $config{morph};
+    }
+    else
+    {
+        $config{edeprel} = '';
+    }
     # Save the basic deprels that can be enhanced with this case marker.
     my @extends = ();
     # Save the functions of this case marker.
