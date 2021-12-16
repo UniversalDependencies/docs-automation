@@ -104,8 +104,8 @@ my @functions =
      [1, 'Temporary state (“as”, essive)',                                      'Ess'],
      [1, 'Same as something (equative)',                                        'Equ'],
      [1, 'Similar to something (“like”, semblative)',                           'Sem'],
-     [1, 'Dissimilar to something (“unlike”, dissemblative)',                   'Dis'],
-     [1, 'Better/worse/other than something (“than, as opposed to”, comparative)', 'Cmp'],
+     [1, 'Dissimilar to something (“unlike, as opposed to”, dissemblative)',    'Dis'],
+     [1, 'Better/worse/other than something (“than”, comparative)',             'Cmp'],
      [1, 'Comment (“whereas”)',                                                 'Cmt'], # I would argue that 'whereas' should be CCONJ but it is tagged SCONJ in the English corpora.
     [0, 'Cause/consequence/circumstance', undef], # (we want to display this comment but not to make it selectable)
      [1, 'Cause or purpose (“because of, due to, given, in order to, per”, causative)', 'Cau'],
