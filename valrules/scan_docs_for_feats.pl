@@ -78,6 +78,8 @@ my @deviations =
      'msg' => "The correct UD label for oblique case is 'Case=Acc'."},
     {'re'  => 'Case=(Cmpr|Comp(ar(ative)?)?)',
      'msg' => "The correct UD label for comparative case is 'Case=Cmp'."},
+    {'re'  => 'Case=(Ines(s(iv(e)?)?)?)',
+     'msg' => "The correct UD label for inessive case is 'Case=Ine'."},
     {'re'  => 'Case=(Temp(or(al(is)?)?)?)',
      'msg' => "The correct UD label for temporal case is 'Case=Tem'."},
     {'re'  => 'Aspect=Pro',
