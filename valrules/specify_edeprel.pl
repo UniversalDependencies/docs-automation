@@ -83,6 +83,7 @@ my @functions =
      [1, 'Focused on target (“to”, lative)',                                    'Lat'],
       [2, 'Target inside something (“into”, illative)',                         'Ill'],
       [2, 'Target atop or above something (“onto”, superlative)',               'Spl'],
+      [2, 'Target under or below something (“to under”, sublative)',            'Sbl'],
     [0, 'Time (temporal)',                                                      'Tem'],
      [1, 'Before a point (“before, prior to, till, until”, antessive)',         'Ant'],
      [1, 'Around a point (“around, circa”)',                                    'Trd'],
