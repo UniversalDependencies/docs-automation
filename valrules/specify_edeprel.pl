@@ -54,20 +54,19 @@ my @functions =
 (
     # Indent level in hierarchy; Verbose description; Case short code
     [0, 'Location (locative)',                                                  'Loc'],
-     [1, 'Point location (“at”, adessive)',                                     'Sup'],
-     [1, 'Near location (“near”, proximative)',                                 'Prx'],
      [1, 'In/surface/out', undef], # (we want to display this comment but not to make it selectable)
       [2, 'Inside something (“in”, inessive)',                                  'Ine'],
-      [2, 'At a point, on the surface/border of something (“at, on”)',          'Ade'],
+      [2, 'At a point, on the border of something (“at, on”, adessive)',        'Ade'],
       [2, 'Outside something (“outside, out of, off”)',                         'Out'],
      [1, 'X axis', undef], # (we want to display this comment but not to make it selectable)
       [2, 'Beside something (“beside, aside, alongside, next to”, apudessive)', 'Apu'],
      [1, 'Y axis', undef], # (we want to display this comment but not to make it selectable)
-      [2, 'Above or atop something (“above, atop”, superessive)',               'Spe'],
-      [2, 'Below something (“below, beneath, under”, subessive)',               'Sbe'],
+      [2, 'Above or atop something (“above, atop”, superessive)',               'Sup'],
+      [2, 'Below something (“below, beneath, under”, subessive)',               'Sub'],
      [1, 'Z axis', undef], # (we want to display this comment but not to make it selectable)
       [2, 'In front of something (“in front of”)',                              'Frt'],
       [2, 'Behind something (“behind, beyond, past”, postessive)',              'Pst'],
+     [1, 'Near location (“near”, proximative)',                                 'Prx'],
      [1, 'Around something (“around, round”)',                                  'Rnd'],
      [1, 'Opposite something (“opposite”)',                                     'Opp'],
      [1, 'Across something (“across”)',                                         'Crs'],
