@@ -63,7 +63,7 @@ my @functions =
      [1, 'X axis', undef], # (we want to display this comment but not to make it selectable)
       [2, 'Beside something (“beside, aside, alongside, next to”, apudessive)', 'Apu'],
      [1, 'Y axis', undef], # (we want to display this comment but not to make it selectable)
-      [2, 'Above something (“above”, superessive)',                             'Spe'],
+      [2, 'Above or atop something (“above, atop”, superessive)',               'Spe'],
       [2, 'Below something (“below, beneath, under”, subessive)',               'Sbe'],
      [1, 'Z axis', undef], # (we want to display this comment but not to make it selectable)
       [2, 'In front of something (“in front of”)',                              'Frt'],
