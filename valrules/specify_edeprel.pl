@@ -54,11 +54,11 @@ my @functions =
 (
     # Indent level in hierarchy; Verbose description; Case short code
     [0, 'Location (locative)',                                                  'Loc'],
-     [1, 'Point location (“at”, adessive)',                                     'Ade'],
+     [1, 'Point location (“at”, adessive)',                                     'Sup'],
      [1, 'Near location (“near”, proximative)',                                 'Prx'],
      [1, 'In/surface/out', undef], # (we want to display this comment but not to make it selectable)
       [2, 'Inside something (“in”, inessive)',                                  'Ine'],
-      [2, 'On the surface of something (“on”, superessive)',                    'Sup'],
+      [2, 'At a point, on the surface/border of something (“at, on”)',          'Ade'],
       [2, 'Outside something (“outside, out of, off”)',                         'Out'],
      [1, 'X axis', undef], # (we want to display this comment but not to make it selectable)
       [2, 'Beside something (“beside, aside, alongside, next to”, apudessive)', 'Apu'],
