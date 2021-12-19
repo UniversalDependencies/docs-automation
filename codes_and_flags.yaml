@@ -33,6 +33,11 @@ Ancient Greek:
   lcode: grc
   iso3: grc
   family: IE, Greek
+Ancient Hebrew:
+  flag: IL
+  lcode: hbo
+  iso3: hbo
+  family: Afro-Asiatic, Semitic
 Apurina:
   flag: BR
   lcode: apu
