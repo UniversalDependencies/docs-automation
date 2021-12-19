@@ -36,6 +36,9 @@ elsif($ENV{QUERY_STRING} =~ m/(UD_[A-Za-z_]+-[A-Za-z]+)/ && -f "log/$1.log")
 
 vypsat_html_zacatek();
 my $timer = get_timer('May 1, 2022 23:59:59');
+# We also need the time (UTC) when the page is generated to identify treebanks that have been neglected for too long.
+my ($sec, $min, $hour, $mday, $mon, $year, $wday, $yday) = gmtime($time);
+my $today = sprintf("%04d-%02d-%02d", $year+1900, $mon+1, $mday);
 print("<h1>Universal Dependencies Validation Report ($timer)</h1>\n");
 print(get_explanation());
 #print("<p>Hover the mouse pointer over a treebank name to see validation summary. Click on the “report” link to see the full output of the validation software.</p>\n");
@@ -64,11 +67,35 @@ while(<REPORT>)
     {
         $unexcept = " <span style='color:gray'>The following legacy exceptions are no longer needed: $1</span>";
     }
+    # If a validation exception has been active for too long, the treebank may
+    # be marked as NEGLECTED or ERROR in the underlying validation report.
+    # However, the treebank will not be automatically re-validated if it did
+    # not change and its dispensation expired, so the underlying report may be
+    # outdated. Hence we also check the expiration here.
+    if(m/LEGACY; (\d+)-(\d+)-(\d+)/)
+    {
+        my $exp1 = ($1+3)."-$2-$3";
+        my $exp2 = ($1+4)."-$2-$3";
+        if($exp2 lt $today)
+        {
+            s/LEGACY; \d+-\d+-\d+/ERROR; DISCARD/;
+        }
+        elsif($exp1 lt $today)
+        {
+            s/LEGACY/NEGLECTED/;
+        }
+    }
     my $color = 'black';
     if(m/ERROR/)
     {
         $color = 'red';
         $nerror++;
+    }
+    elsif(m/NEGLECTED/)
+    {
+        $color = 'purple;background:yellow';
+        $nlegacy++;
+        $languages_valid{$language}++;
     }
     elsif(m/LEGACY/)
     {
@@ -95,11 +122,11 @@ while(<REPORT>)
         {
             my $errorlist = '';
             my $reportlink = '';
-            if(s/(ERROR; DISCARD|ERROR; BACKUP \d+\.\d+|LEGACY(?:; \d+-\d+-\d+)?)(\s*\(.+?\))/$1/)
+            if(s/(ERROR; DISCARD|ERROR; BACKUP \d+\.\d+|(?:LEGACY|NEGLECTED)(?:; \d+-\d+-\d+)?)(\s*\(.+?\))/$1/)
             {
                 $errorlist = $2;
             }
-            if(m/(ERROR; DISCARD|ERROR; BACKUP \d+\.\d+|LEGACY(; \d+-\d+-\d+)?)/)
+            if(m/(ERROR; DISCARD|ERROR; BACKUP \d+\.\d+|(?:LEGACY|NEGLECTED)(; \d+-\d+-\d+)?)/)
             {
                 $reportlink = " (<a href=\"validation-report.pl?$folder\">report</a>)";
             }
@@ -166,13 +193,20 @@ sub get_explanation
     treebanks are not fine but we can still release them. They were considered
     valid at the time of a previous release and the only errors that are reported
     now are based on new tests that were not available when the treebank was
-    approved. Finally, if a treebank has the red <span style='color:red;font-weight:bold'>ERROR</span>
-    label, it cannot be released in this state. Either the treebank is new and
-    does not pass all currently available tests, or the treebank is not new
-    but new types of errors were introduced in it. New treebanks will only be
-    released when they are completely valid. If an old treebank contains new
-    errors, we will re-release its previous version and ignore the <tt>dev</tt>
-    branch.</p>
+    approved. However, the legacy status is not granted forever. After three
+    years since the oldest validation error the treebank will be marked as
+    <span style='color:purple;font-weight:bold;background:yellow'>NEGLECTED</span>.
+    This is a warning that the error must be fixed as soon as possible
+    (possibly after the treebank is adopted by a new maintainer). If there are
+    errors four or more years old, their dispensations will be removed, the
+    treebank will become invalid and will be excluded from the upcoming releases
+    until the errors are fixed. Treebanks with intollerable errors have the red
+    <span style='color:red;font-weight:bold'>ERROR</span> label and cannot be
+    released in this state. Besides errors that had been neglected for too long
+    this also includes newly introduced errors or new treebanks.
+    New treebanks will only be released when they are completely valid.
+    If an old treebank contains new errors, we will re-release its previous
+    version.</p>
 
     <p>See the <a href="https://universaldependencies.org/release_checklist.html">release
     checklist</a> for more information on treebank requirements and validation.</p>
