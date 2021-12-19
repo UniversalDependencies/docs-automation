@@ -84,8 +84,6 @@ while(<REPORT>)
         {
             s/LEGACY/NEGLECTED/;
         }
-        ###!!! DEBUG
-        $_ .= $exp1.' '.$exp2.' '.$today;
     }
     my $color = 'black';
     if(m/ERROR/)
