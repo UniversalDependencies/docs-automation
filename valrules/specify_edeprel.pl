@@ -50,6 +50,7 @@ foreach my $lname (keys(%{$languages}))
     }
     $languages->{$lname}{family} = 'Indo-European' if($languages->{$lname}{family} eq 'IE');
 }
+my @cases = ('nom', 'gen', 'dat', 'acc', 'loc', 'ins');
 my @functions =
 (
     # Indent level in hierarchy; Verbose description; Case short code
@@ -223,7 +224,7 @@ else
     # Perform an action according to the CGI parameters.
     if($config{save})
     {
-        process_form_data(\%data, $query, \@functions);
+        process_form_data(\%data, $query, \@cases, \@functions);
     }
     # If we are not saving but have received an edeprel, it means the edeprel should be edited.
     elsif($config{edeprel} ne '')
@@ -232,14 +233,14 @@ else
         print_edeprel_details(\%data);
         if(exists($data{$config{lcode}}{$config{edeprel}}))
         {
-            print_edeprel_form(\%data, \@functions);
+            print_edeprel_form(\%data, \@cases, \@functions);
         }
         print_all_edeprels(\%data, $languages, \@functions);
     }
     elsif($config{add})
     {
         summarize_guidelines();
-        print_edeprel_form(\%data, \@functions);
+        print_edeprel_form(\%data, \@cases, \@functions);
         print_all_edeprels(\%data, $languages, \@functions);
     }
     else
@@ -323,6 +324,7 @@ sub print_edeprel_details
 sub print_edeprel_form
 {
     my $data = shift;
+    my $cases = shift;
     my $functions = shift;
     unless($config{add})
     {
@@ -355,7 +357,7 @@ EOF
     print("  <input name=origedeprel type=hidden size=10 value=\"$hedeprel\" />\n");
     my $hlex = htmlescape($data->{$config{lcode}}{$config{edeprel}}{lex});
     print("  <strong>Lexical marker:</strong> <input name=lex type=text size=10 value=\"$hlex\" />\n");
-    my $morphoptions = join('', map {my $s = $_ eq $data->{$config{lcode}}{$config{edeprel}}{morph} ? ' selected' : ''; "<option$s>$_</option>"} ('', 'gen', 'dat', 'acc', 'loc', 'ins'));
+    my $morphoptions = join('', map {my $s = $_ eq $data->{$config{lcode}}{$config{edeprel}}{morph} ? ' selected' : ''; "<option$s>$_</option>"} ('', @{$cases}));
     print("  <strong>Morphological marker:</strong> <select name=morph>$morphoptions</select>\n");
     print("  <strong>Can be used with:</strong>\n");
     my %extchecked;
@@ -450,6 +452,7 @@ sub process_form_data
 {
     my $data = shift;
     my $query = shift;
+    my $cases = shift;
     my $functions = shift;
     my $error = 0;
     print("  <h2>This is a result of a Save button</h2>\n");
@@ -526,7 +529,8 @@ sub process_form_data
         }
         print("    <li>lex = '$config{lex}'</li>\n");
         print("    <li>morph = '$config{morph}'</li>\n");
-        if($config{morph} ne '' && $config{morph} !~ m/^(gen|dat|acc|loc|ins)$/)
+        my $casesre = join('|', @{$cases});
+        if($config{morph} ne '' && $config{morph} !~ m/^($casesre)$/)
         {
             print("    <li style='color:red'>ERROR: Unknown morphological marker '$config{morph}'</li>\n");
             $error = 1;
