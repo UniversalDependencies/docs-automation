@@ -114,7 +114,8 @@ my @functions =
      [1, 'Difference (“by how much”)',                                          'Dif'],
      [1, 'Comment (“whereas”)',                                                 'Cmt'], # I would argue that 'whereas' should be CCONJ but it is tagged SCONJ in the English corpora.
     [0, 'Cause/consequence/circumstance', undef], # (we want to display this comment but not to make it selectable)
-     [1, 'Cause or purpose (“because of, due to, given, in order to, per”, causative)', 'Cau'],
+     [1, 'Cause or purpose (“because of, due to, in order to”, causative)',     'Cau'],
+     [1, 'Taking circumstance into account (“given, considering, per”)',        'Cns'],
      [1, 'Ignoring circumstance (“regardless”)',                                'Rls'],
      [1, 'Concession (“despite, notwithstanding”)',                             'Ccs'],
      [1, 'Condition (“depending on, in case of”)',                              'Dep'],
