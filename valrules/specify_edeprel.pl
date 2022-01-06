@@ -678,6 +678,11 @@ sub process_form_data
             print("    <li style='color:red'>ERROR: At least one coordinating function and example must be provided if 'conj' is allowed</li>\n");
             $error = 1;
         }
+        if($ncdeprels>0 && $config{morph} ne '')
+        {
+            print("    <li style='color:red'>ERROR: Morphological case markers are not expected with 'conj'</li>\n");
+            $error = 1;
+        }
     }
     else
     {
