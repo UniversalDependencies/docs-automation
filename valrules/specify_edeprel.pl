@@ -124,7 +124,11 @@ my @functions =
      [1, 'Passive agent (“by”)',                                                'Agt'],
      [1, 'Instrument (“with”, instrumental)',                                   'Ins'],
      [1, 'Beneficiary (“for”, benefactive)',                                    'Ben'],
-     [1, 'Adversary (“against”, adversative)',                                  'Adv']
+     [1, 'Adversary (“against”, adversative)',                                  'Adv'],
+    [0, 'Paratactic relation', undef], # (we want to display this comment but not to make it selectable)
+     [1, 'Conjunction (“and”)',                                                'Conj'],
+     [1, 'Disjunction (“or”)',                                                 'Disj'],
+     [1, 'Adversative (“but”)',                                                'Advs']
 );
 # Sanity check: Did I specify a unique code for each function?
 my %fdesc;
@@ -370,6 +374,7 @@ EOF
     print("  <input type=\"checkbox\" id=\"extnmod\"  name=\"extnmod\"  value=\"1\"$extchecked{nmod} />&nbsp;<tt>nmod</tt>\n");
     print("  <input type=\"checkbox\" id=\"extadvcl\" name=\"extadvcl\" value=\"1\"$extchecked{advcl} />&nbsp;<tt>advcl</tt>\n");
     print("  <input type=\"checkbox\" id=\"extacl\"   name=\"extacl\"   value=\"1\"$extchecked{acl} />&nbsp;<tt>acl</tt>\n");
+    print("  <input type=\"checkbox\" id=\"extconj\"  name=\"extconj\"  value=\"1\"$extchecked{conj} />&nbsp;<tt>conj</tt>\n");
     print("  <table>\n");
     print("    <tr id=\"inputheader\">\n");
     print("      <td>Function</td>\n");
@@ -541,7 +546,7 @@ sub process_form_data
         {
             $extends{$deprel} = 1;
         }
-        foreach my $deprel (qw(obl nmod advcl acl))
+        foreach my $deprel (qw(obl nmod advcl acl conj))
         {
             if($config{'ext'.$deprel})
             {
@@ -906,7 +911,7 @@ sub get_parameters
     }
     #--------------------------------------------------------------------------
     # What universal relations does this edeprel extend?
-    foreach my $deprel (qw(obl nmod advcl acl))
+    foreach my $deprel (qw(obl nmod advcl acl conj))
     {
         my $extdeprel = 'ext'.$deprel;
         $config{$extdeprel} = decode('utf8', $query->param($extdeprel));
