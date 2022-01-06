@@ -546,10 +546,21 @@ sub process_form_data
         {
             $extends{$deprel} = 1;
         }
+        # Count the checked deprels. Separately: subordinating deprels (nmod, obl, acl, advcl) and coordinating deprels (conj).
+        my $nsdeprels = 0;
+        my $ncdeprels = 0;
         foreach my $deprel (qw(obl nmod advcl acl conj))
         {
             if($config{'ext'.$deprel})
             {
+                if($deprel eq 'conj')
+                {
+                    $ncdeprels++;
+                }
+                else
+                {
+                    $nsdeprels++;
+                }
                 if($extends{$deprel})
                 {
                     print("    <li>No change: still permitted with '$deprel'</li>\n");
@@ -572,12 +583,19 @@ sub process_form_data
                 }
             }
         }
+        if($nsdeprels+$ncdeprels==0)
+        {
+            print("    <li style='color:red'>ERROR: At least one basic deprel must be allowed</li>\n");
+            $error = 1;
+        }
         my %curfunctions;
         foreach my $f (@{$data->{$config{lcode}}{$config{edeprel}}{functions}})
         {
             $curfunctions{$f->{function}} = $f;
         }
-        my $nfunctions = 0;
+        # Count the checked functions. Separately: subordinating functions (nmod, obl, acl, advcl) and coordinating functions (conj).
+        my $nsfunctions = 0;
+        my $ncfunctions = 0;
         foreach my $f (@{$functions})
         {
             my $fcode = $f->[2];
@@ -586,7 +604,15 @@ sub process_form_data
             my $cname = 'comment'.$fcode;
             if($config{'func'.$fcode})
             {
-                $nfunctions++;
+                # Hack: coordinating functions have four-letter codes, subordinating three.
+                if(length($fcode)>3)
+                {
+                    $ncfunctions++;
+                }
+                else
+                {
+                    $nsfunctions++;
+                }
                 if($curfunctions{$fcode})
                 {
                     print("    <li>No change: still has the function '$fcode': '$f->[1]'</li>\n");
@@ -642,9 +668,14 @@ sub process_form_data
                 }
             }
         }
-        if($nfunctions==0)
+        if($nsdeprels>0 && $nsfunctions==0)
         {
-            print("    <li style='color:red'>ERROR: Missing function and example</li>\n");
+            print("    <li style='color:red'>ERROR: At least one subordinating function and example must be provided if 'nmod/obl/acl/advcl' is allowed</li>\n");
+            $error = 1;
+        }
+        if($ncdeprels>0 && $ncfunctions==0)
+        {
+            print("    <li style='color:red'>ERROR: At least one coordinating function and example must be provided if 'conj' is allowed</li>\n");
             $error = 1;
         }
     }
