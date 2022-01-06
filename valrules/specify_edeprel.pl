@@ -577,6 +577,7 @@ sub process_form_data
         {
             $curfunctions{$f->{function}} = $f;
         }
+        my $nfunctions = 0;
         foreach my $f (@{$functions})
         {
             my $fcode = $f->[2];
@@ -585,6 +586,7 @@ sub process_form_data
             my $cname = 'comment'.$fcode;
             if($config{'func'.$fcode})
             {
+                $nfunctions++;
                 if($curfunctions{$fcode})
                 {
                     print("    <li>No change: still has the function '$fcode': '$f->[1]'</li>\n");
@@ -639,6 +641,11 @@ sub process_form_data
                     $error = 1;
                 }
             }
+        }
+        if($nfunctions==0)
+        {
+            print("    <li style='color:red'>ERROR: Missing function and example</li>\n");
+            $error = 1;
         }
     }
     else
