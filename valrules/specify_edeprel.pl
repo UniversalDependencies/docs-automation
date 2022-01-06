@@ -129,7 +129,7 @@ my @functions =
      [1, 'Conjunction (“and”)',                                                'Conj'],
      [1, 'Negative conjunction (“neither … nor”)',                             'Nnor'],
      [1, 'Disjunction (“or”)',                                                 'Disj'],
-     [1, 'Adversative (“but”)',                                                'Advs']
+     [1, 'Adversative (“but, yet”)',                                           'Advs']
 );
 # Sanity check: Did I specify a unique code for each function?
 my %fdesc;
