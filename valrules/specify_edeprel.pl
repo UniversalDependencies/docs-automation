@@ -127,6 +127,7 @@ my @functions =
      [1, 'Adversary (“against”, adversative)',                                  'Adv'],
     [0, 'Paratactic relation', undef], # (we want to display this comment but not to make it selectable)
      [1, 'Conjunction (“and”)',                                                'Conj'],
+     [1, 'Negative conjunction (“neither … nor”)',                             'Nnor'],
      [1, 'Disjunction (“or”)',                                                 'Disj'],
      [1, 'Adversative (“but”)',                                                'Advs']
 );
