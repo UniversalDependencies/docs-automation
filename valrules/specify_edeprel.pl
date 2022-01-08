@@ -125,7 +125,7 @@ my @functions =
      [1, 'Instrument (“with”, instrumental)',                                   'Ins'],
      [1, 'Beneficiary (“for”, benefactive)',                                    'Ben'],
      [1, 'Adversary (“against”, adversative)',                                  'Adv'],
-    [0, 'Paratactic relation', undef], # (we want to display this comment but not to make it selectable)
+    [0, 'Paratactic relation (to be used with conj)', undef], # (we want to display this comment but not to make it selectable)
      [1, 'Conjunction (“and”)',                                                'Conj'],
      [1, 'Negative conjunction (“neither … nor”)',                             'Nnor'],
      [1, 'Disjunction (“or”)',                                                 'Disj'],
