@@ -68,6 +68,7 @@ my @functions =
       [2, 'In front of something (“in front of”)',                              'Frt'],
       [2, 'Behind something (“behind, beyond, past”, postessive)',              'Pst'],
      [1, 'Near location (“near”, proximative)',                                 'Prx'],
+     [1, 'Far from location (“far from”, distantive)',                          'Dst'],
      [1, 'Around something (“around, round”)',                                  'Rnd'],
      [1, 'Opposite something (“opposite”)',                                     'Opp'],
      [1, 'Across something (“across”)',                                         'Crs'],
@@ -99,10 +100,11 @@ my @functions =
     [0, 'Of/with/without', undef], # (we want to display this comment but not to make it selectable)
      [1, 'Complement/attribute (“that”)',                                       'Atr'],
      [1, 'Belonging to, composed of something (“of”, genitive)',                'Gen'],
+     [1, 'Per something (“per”, distributive)',                                 'Dis'],
      [1, 'Together with something (“with”, comitative)',                        'Com'],
      [1, 'Without something (“without”, abessive)',                             'Abe'],
      [1, 'Including something (“including”)',                                   'Inc'],
-     [1, 'Besides something (“besides”)',                                       'Bes'],
+     [1, 'Besides something (“besides, in addition to”)',                       'Bes'],
      [1, 'Except something (“except”)',                                         'Exc'],
      [1, 'Instead of something (“instead of, rather than”)',                    'Isd'],
     [0, 'Like/unlike', undef], # (we want to display this comment but not to make it selectable)
