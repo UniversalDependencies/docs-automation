@@ -111,7 +111,7 @@ my @functions =
      [1, 'Temporary state (“as”, essive)',                                      'Ess'],
      [1, 'Same as something (equative)',                                        'Equ'],
      [1, 'Similar to something (“like”, semblative)',                           'Sem'],
-     [1, 'Dissimilar to something (“unlike, as opposed to”, dissemblative)',    'Dis'],
+     [1, 'Dissimilar to something (“unlike, as opposed to”, dissemblative)',    'Dsm'],
      [1, 'Better/worse/other than something (“than”, comparative)',             'Cmp'],
      [1, 'Difference (“by how much”)',                                          'Dif'],
      [1, 'Comment (“whereas”)',                                                 'Cmt'], # I would argue that 'whereas' should be CCONJ but it is tagged SCONJ in the English corpora.
