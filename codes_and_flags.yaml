@@ -273,6 +273,11 @@ Guajajara:
   lcode: gub
   iso3: gub
   family: Tupian, Tupi-Guarani
+Guarani:
+  flag: PY
+  lcode: gn
+  iso3: gug
+  family: Tupian, Tupi-Guarani
 Hausa:
   flag: NG
   lcode: ha
