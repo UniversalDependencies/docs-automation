@@ -131,43 +131,35 @@ if __name__=="__main__":
     t_env.filters["contributor_filter"]=contributor_filter
     t_env.filters["stars_filter"]=stars_filter
 
-    tbanks={} # language -> [tbank,tbank,...]
-
+    tbanks={} # language -> [tbank, tbank, ...]
     for f_name in args.input:
         try:
             with open(f_name) as f:
-                tbank=json.load(f)
-                tbanks.setdefault(tbank["language_name"],[]).append(tbank)
+                tbank = json.load(f)
+                tbanks.setdefault(tbank['language_name'], []).append(tbank)
         except:
             print("Whoa, couldn't load", f_name, file=sys.stderr)
 
-    lang_template=t_env.get_template("language.md")
+    lang_template = t_env.get_template('language.md')
     for lang, lang_tbanks in sorted(tbanks.items()):
-        sum_counts=sum_dicts(list(tbank["counts"] for tbank in lang_tbanks))
-        union_genres=set()
-        for tb in lang_tbanks:
-            union_genres|=set(tb["meta"]["genre"])
-        union_genres=list(union_genres)
         ###!!! Experiment: Instead of skipping empty languages, skip those that have never been released.
         ###!!! In the long run, we should distinguish three kinds of treebanks:
         ###!!! - those that have valid data and have been officially released
         ###!!! - those that have data (valid or not) but have not been released yet
         ###!!! - those that are empty (we may want to hide these from the title page)
-        at_least_one_released = False
-        at_least_one_unreleased = False
-        for tbank in lang_tbanks:
-            if tbank['first_release']:
-                at_least_one_released = True
-            else:
-                at_least_one_unreleased = True
         # Skip empty means that we are printing only languages with released treebanks.
         if args.skip == 'empty':
             lang_tbanks = [t for t in lang_tbanks if t['first_release']]
         # Skip withdata means that we are printing only languages with unreleased treebanks.
-        if args.skip == 'withdata' and not at_least_one_unreleased:
+        if args.skip == 'withdata':
             lang_tbanks = [t for t in lang_tbanks if not t['first_release']]
         if len(lang_tbanks)==0:
             continue
+        sum_counts = sum_dicts(list(t['counts'] for t in lang_tbanks))
+        union_genres = set()
+        for t in lang_tbanks:
+            union_genres |= set(t['meta']['genre'])
+        union_genres = list(union_genres)
         # Sort treebanks by evaluation score (this is new) or by size (this is old; comment one of the two lines):
         #lang_tbanks.sort(key=lambda tb: tb["counts"]["word"],reverse=True)
         lang_tbanks.sort(key=lambda tb: tb['score'], reverse=True)
