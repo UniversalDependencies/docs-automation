@@ -142,7 +142,7 @@ if __name__=="__main__":
             print("Whoa, couldn't load", f_name, file=sys.stderr)
 
     lang_template=t_env.get_template("language.md")
-    for lang,lang_tbanks in sorted(tbanks.items()):
+    for lang, lang_tbanks in sorted(tbanks.items()):
         sum_counts=sum_dicts(list(tbank["counts"] for tbank in lang_tbanks))
         union_genres=set()
         for tb in lang_tbanks:
@@ -154,31 +154,32 @@ if __name__=="__main__":
         ###!!! - those that have data (valid or not) but have not been released yet
         ###!!! - those that are empty (we may want to hide these from the title page)
         at_least_one_released = False
+        at_least_one_unreleased = False
         for tbank in lang_tbanks:
             if tbank['first_release']:
                 at_least_one_released = True
-                break
-        if args.skip == 'empty' and not at_least_one_released:
+            else:
+                at_least_one_unreleased = True
+        # Skip empty means that we are printing only languages with released treebanks.
+        if args.skip == 'empty':
+            lang_tbanks = [t for t in lang_tbanks if t['first_release']]
+        # Skip withdata means that we are printing only languages with unreleased treebanks.
+        if args.skip == 'withdata' and not at_least_one_unreleased:
+            lang_tbanks = [t for t in lang_tbanks if not t['first_release']]
+        if len(lang_tbanks)==0:
             continue
-        if args.skip == 'withdata' and at_least_one_released:
-            continue
-        #if args.skip=="empty" and sum_counts["word"]==0:
-        #    continue
-        #if args.skip=="withdata" and sum_counts["word"]>0:
-        #    continue
         # Sort treebanks by evaluation score (this is new) or by size (this is old; comment one of the two lines):
         #lang_tbanks.sort(key=lambda tb: tb["counts"]["word"],reverse=True)
-        lang_tbanks.sort(key=lambda tb: tb["score"],reverse=True)
-        language_code=codes_flags[lang]["lcode"]
+        lang_tbanks.sort(key=lambda tb: tb['score'], reverse=True)
+        language_code = codes_flags[lang]['lcode']
         language_name_short = lang_tbanks[0]['language_name_short'] if len(lang_tbanks)>0 else lang
-        if os.path.exists(os.path.join(args.docs_dir,"_"+language_code,"index.md")):
-            language_hub="index.md"
+        if os.path.exists(os.path.join(args.docs_dir, '_'+language_code, 'index.md')):
+            language_hub = 'index.md'
         else:
-            language_hub=None
-        if os.path.exists(os.path.join(args.docs_dir,"treebanks",language_code+"-comparison.md")):
-            tbank_comparison=language_code+"-comparison.html"
+            language_hub = None
+        if os.path.exists(os.path.join(args.docs_dir, 'treebanks', language_code+'-comparison.md')):
+            tbank_comparison = language_code+'-comparison.html'
         else:
-            tbank_comparison=None
-
-        r=lang_template.render(flag=codes_flags[lang]["flag"],language_name=lang,language_name_short=language_name_short,language_code=language_code,language_hub=language_hub,tbank_comparison=tbank_comparison,counts=sum_counts,treebanks=lang_tbanks,genres=union_genres,language_family=codes_flags[lang]["family"])
+            tbank_comparison = None
+        r = lang_template.render(flag=codes_flags[lang]['flag'], language_name=lang, language_name_short=language_name_short, language_code=language_code, language_hub=language_hub, tbank_comparison=tbank_comparison, counts=sum_counts, treebanks=lang_tbanks, genres=union_genres, language_family=codes_flags[lang]['family'])
         print(r)
