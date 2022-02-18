@@ -79,6 +79,7 @@ my @functions =
      [1, 'Focused on origin (“from”, ablative)',                                'Abl'],
       [2, 'Origin inside something (elative)',                                  'Ela'], # Wikipedia also lists inelative (INEL) but does not show the difference
       [2, 'Origin on the surface of something (“off”, delative)',               'Del'],
+      [2, 'Origin atop or above something (“from above”, superelative)',        'Spe'],
       [2, 'Origin under or below something (“from under”, subelative)',         'Sbe'],
       [2, 'Origin behind something (“from behind”, postelative)',               'Pse'],
       [2, 'Origin between something (“from between”, intraelative)',            'Ite'],
