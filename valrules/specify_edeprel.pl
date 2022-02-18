@@ -81,6 +81,7 @@ my @functions =
       [2, 'Origin on the surface of something (“off”, delative)',               'Del'],
       [2, 'Origin under or below something (“from under”, subelative)',         'Sbe'],
       [2, 'Origin behind something (“from behind”, postelative)',               'Pse'],
+      [2, 'Origin between something (“from between”, intraelative)',            'Ite'],
      [1, 'Focused on path (“through, via”, perlative)',                         'Per'],
       [2, 'Ascending path (“up”)',                                              'Pup'],
       [2, 'Descending path (“down”)',                                           'Pdn'],
