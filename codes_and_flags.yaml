@@ -818,6 +818,11 @@ Tatar:
   lcode: tt
   iso3: tat
   family: Turkic, Northwestern
+Teko:
+  flag: FR
+  lcode: eme
+  iso3: eme
+  family: Tupian, Tupi-Guarani
 Telugu:
   flag: IN
   lcode: te

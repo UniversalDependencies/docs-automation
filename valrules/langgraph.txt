@@ -231,6 +231,7 @@ id----jv
 Tupi-Guarani--10--Munduruku
 Purubora-Ramarama----Munduruku
 Tupari----Purubora-Ramarama
+eme----urb
 urb----gub
 gub----tpn
 tpn----gun
