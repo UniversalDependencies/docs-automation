@@ -483,6 +483,11 @@ Macedonian:
   lcode: mk
   iso3: mkd
   family: IE, Slavic
+Madi:
+  flag: BR
+  lcode: jaa
+  iso3: jaa
+  family: Arawan
 Magahi:
   flag: IN
   lcode: mag
