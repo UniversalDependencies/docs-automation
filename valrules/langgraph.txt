@@ -37,9 +37,12 @@ Eskimo-Aleut--100--Hokan
 Hokan--100--Uto-Aztecan
 Uto-Aztecan----Mayan
 Mayan----Chibchan
-Arawakan--100--Chibchan
-Arawakan----Panoan
+Arawakan--10--Chibchan
 Arawakan----Tupian
+Arawakan----Arawan
+Arawakan----Panoan
+Arawan----Tupian
+Arawan----Panoan
 Tupian----Panoan
 Panoan----Quechuan
 Celtic--2--Germanic
