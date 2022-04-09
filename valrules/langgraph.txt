@@ -50,7 +50,7 @@ Celtic--2--Romance
 Germanic--2--Romance
 Germanic--2--Slavic
 Germanic--2--Baltic
-Romance--1--Latin
+Romance--1--Italic
 Romance--2--Slavic
 Baltic--1--Slavic
 Slavic--2--Albanian
@@ -116,6 +116,8 @@ fr--4--lij
 lij--4--it
 it----nap
 it--2--ro
+it--50--la
+la----xum
 fr--100--br
 en--100--cy
 ga----gd

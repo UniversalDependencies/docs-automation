@@ -442,7 +442,7 @@ Latin:
   flag: VA
   lcode: la
   iso3: lat
-  family: IE, Latin
+  family: IE, Italic
 Latvian:
   flag: LV
   lcode: lv
@@ -868,6 +868,11 @@ Ukrainian:
   lcode: uk
   iso3: ukr
   family: IE, Slavic
+Umbrian:
+  flag: IT-UMB
+  lcode: xum
+  iso3: xum
+  family: IE, Italic
 Upper Sorbian:
   flag: HSB
   lcode: hsb
