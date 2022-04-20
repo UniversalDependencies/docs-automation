@@ -655,28 +655,20 @@ sub process_form_data
     my %unique_functions;
     my $copula_among_functions = 0;
     my $deficient = '';
-    my $maxifun = 1;
+    my $maxifun;
     for(my $ifun = 1; exists($config{"function$ifun"}) && defined($config{"function$ifun"}) && $config{"function$ifun"} ne ''; $ifun++)
     {
         $maxifun = $ifun;
         my $fname = "function$ifun";
-        if($config{$fname} ne '')
+        print("    <li>function $ifun = '".htmlescape($config{$fname})."'</li>\n");
+        my $uf = $config{$fname};
+        $uf =~ s/^cop\..+$/cop/;
+        if(exists($unique_functions{$uf}))
         {
-            print("    <li>function $ifun = '".htmlescape($config{$fname})."'</li>\n");
-            my $uf = $config{$fname};
-            $uf =~ s/^cop\..+$/cop/;
-            if(exists($unique_functions{$uf}))
-            {
-                print("    <li style='color:red'>ERROR: Repeated function '$uf'</li>\n");
-                $error = 1;
-            }
-            $unique_functions{$uf}++;
-        }
-        else
-        {
-            print("    <li style='color:red'>ERROR: Missing function $ifun</li>\n");
+            print("    <li style='color:red'>ERROR: Repeated function '$uf'</li>\n");
             $error = 1;
         }
+        $unique_functions{$uf}++;
         my $rname = "rule$ifun";
         if($config{$rname} ne '')
         {
@@ -724,6 +716,11 @@ sub process_form_data
             print("    <li>comment $ifun = '".htmlescape($config{$cname})."'</li>\n");
         }
     } # loop over multiple functions
+    if(!defined($maxifun))
+    {
+        print("    <li style='color:red'>ERROR: Missing function</li>\n");
+        $error = 1;
+    }
     # Check whether there will be more than one copulas if we add this one to the data.
     # If there will, check that all of them (including the new one) have a distinct
     # explanation of its deficient paradigm.
