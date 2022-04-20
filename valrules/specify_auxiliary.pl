@@ -795,6 +795,20 @@ sub process_form_data
         }
         $record{status} = 'documented';
         $data->{$config{lcode}}{$config{lemma}} = \%record;
+        # Clean up the data. Because of a bug that lived in this script for years, there may be entries without any function specified.
+        # Remove such entries from the current language. They will have to be added anew, now including the functions.
+        foreach my $lemma (keys(%{$data->{$config{lcode}}}))
+        {
+            my @frecords = grep {$_->{function} ne ''} (@{$data->{$config{lcode}}{$lemma}{functions}});
+            if(scalar(@frecords) > 0)
+            {
+                $data->{$config{lcode}}{$lemma}{functions} = \@frecords;
+            }
+            else
+            {
+                delete($data->{$config{lcode}}{$lemma});
+            }
+        }
         write_data_json($data, "$path/data.json");
         # Commit the changes to the repository and push them to Github.
         system("/home/zeman/bin/git-push-docs-automation.sh '$config{ghu}' '$config{lcode}' > /dev/null");
