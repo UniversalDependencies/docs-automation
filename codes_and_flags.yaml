@@ -533,6 +533,11 @@ Mbya Guarani:
   lcode: gun
   iso3: gun
   family: Tupian, Tupi-Guarani
+Middle French:
+  flag: FR-ROYAL
+  lcode: frm
+  iso3: frm
+  family: IE, Romance
 Middle Irish:
   flag: IE-FOUR
   lcode: mga
