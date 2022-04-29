@@ -75,7 +75,8 @@ my @functions =
     ['Modal auxiliary: necessitative (“must, should”)', 'Mood=Nec'],
     ['Modal auxiliary: potential (“can, might”)', 'Mood=Pot'],
     ['Modal auxiliary: desiderative (“want”)', 'Mood=Des'],
-    ['Politeness auxiliary: formal', 'Polite=Form']
+    ['Politeness auxiliary: formal', 'Polite=Form'],
+    ['Politeness auxiliary: informal', 'Polite=Infm']
 );
 # We must set our own PATH even if we do not depend on it.
 # The system call may potentially use it, and the one from outside is considered insecure.
