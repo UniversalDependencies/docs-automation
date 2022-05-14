@@ -293,7 +293,8 @@ sub get_changes_in_treebank_list
         ['2.1', 'UD_Vietnamese',    '2.2', 'UD_Vietnamese-VTB'],
         ['2.3', 'UD_Polish-SZ',     '2.4', 'UD_Polish-PDB'],
         ['2.7', 'UD_Old_Russian-RNC', '2.8', 'UD_Old_East_Slavic-RNC'],
-        ['2.7', 'UD_Old_Russian-TOROT', '2.8', 'UD_Old_East_Slavic-TOROT']
+        ['2.7', 'UD_Old_Russian-TOROT', '2.8', 'UD_Old_East_Slavic-TOROT'],
+        ['2.8', 'UD_French-Spoken', '2.9', 'UD_French-ParisStories']
     );
     # Save name changes with the releases.
     foreach my $r (@releases)
