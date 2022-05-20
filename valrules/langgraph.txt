@@ -150,7 +150,9 @@ kfm----soj
 kfm----nyq
 nyq----soj
 kfm--10--fa
-fa--100--ur
+fa--10--bal
+bal--100--ur
+bal--100--sd
 ur----hi
 ur--2--sd
 hi--2--pra

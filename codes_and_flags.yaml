@@ -73,6 +73,11 @@ Babungo:
   lcode: bav
   iso3: bav
   family: Niger-Congo, Bantoid
+Balochi:
+  flag: PK
+  lcode: bal
+  iso3: bal
+  family: IE, Iranian
 Bambara:
   flag: ML
   lcode: bm
