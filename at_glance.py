@@ -4,6 +4,7 @@ import jinja2
 import json
 import argparse
 import yaml
+from yaml.loader import SafeLoader
 import sys
 import functools
 import os.path
@@ -116,7 +117,7 @@ if __name__=="__main__":
     args=opt_parser.parse_args()
 
     with open(args.codes_flags) as f:
-        codes_flags=yaml.load(f)
+        codes_flags=yaml.load(f, Loader=SafeLoader)
 
     with open(args.genre_symbols) as f:
         genre_symbols=json.load(f)
