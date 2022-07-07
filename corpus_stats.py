@@ -7,6 +7,7 @@ import re
 import json
 import os
 import yaml
+from yaml.loader import SafeLoader
 
 
 
@@ -331,7 +332,7 @@ if __name__=="__main__":
 
         if args.codes_flags:
             with open(args.codes_flags) as f:
-                codes_flags=yaml.load(f)
+                codes_flags=yaml.load(f, Loader=SafeLoader)
             stats.language_code=codes_flags[stats.language_name]["lcode"]
             stats.treebank_lcode_code=stats.language_code
             if stats.treebank_code:
