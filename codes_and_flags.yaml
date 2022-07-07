@@ -263,6 +263,11 @@ German:
   lcode: de
   iso3: deu
   family: IE, Germanic
+Gheg:
+  flag: AL
+  lcode: aln
+  iso3: aln
+  family: IE, Albanian
 Gothic:
   flag: BYZ
   lcode: got
