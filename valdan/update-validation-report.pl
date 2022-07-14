@@ -83,7 +83,12 @@ foreach my $d (sort(keys(%{$dispensations})))
         }
     }
 }
-system("cd $folder ; (git pull --no-edit >/dev/null 2>&1) ; cd ..");
+# We had >/dev/null 2>&1 here, to make the log more compact and nicer. But then
+# we unfortunately did not see what happened when the repo did not get updated.
+# Note that this script is typically called from githook.pl and its STDOUT +
+# STDERR is saved in log/validation.log.
+#system("cd $folder ; (git pull --no-edit >/dev/null 2>&1) ; cd ..");
+system("cd $folder ; git pull --no-edit ; cd ..");
 my $record = get_ud_files_and_codes($folder);
 # The $record contains a language code guessed from the file names; however, the
 # file names can be wrong. We will use the official code from YAML instead.

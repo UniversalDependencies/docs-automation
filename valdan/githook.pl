@@ -71,6 +71,7 @@ if(defined($result))
         # If this is a new repository, we do not have its clone yet.
         if(-d $folder)
         {
+            # The update-validation-report.pl script will call git pull on the $folder.
             system("perl update-validation-report.pl $folder >>$valilog 2>&1");
         }
         else
