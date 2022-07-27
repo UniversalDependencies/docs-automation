@@ -993,6 +993,8 @@ sub get_parameters
     $config{errors} = \@errors;
     # Certain characters are not letters but they are used regularly between
     # letters in certain writing systems, hence they must be permitted.
+    # ZERO WIDTH NON-JOINER (\x{200C}) is category C (other); used in Persian, for instance.
+    my $zwnj = "\x{200C}";
     # ZERO WIDTH JOINER (\x{200D}) is category C (other); used in Devanagari, for instance.
     my $zwj = "\x{200D}";
     #--------------------------------------------------------------------------
@@ -1162,7 +1164,7 @@ sub get_parameters
             $config{$ename} =~ s/^\s+//;
             $config{$ename} =~ s/\s+$//;
             $config{$ename} =~ s/\s+/ /sg;
-            if($config{$ename} !~ m/^[\pL\pM$zwj\pN\pP ]+$/)
+            if($config{$ename} !~ m/^[\pL\pM$zwj$zwnj\pN\pP ]+$/)
             {
                 push(@errors, "Example '$config{$ename}' contains characters other than letters, numbers, punctuation and space");
             }
@@ -1171,8 +1173,8 @@ sub get_parameters
                 push(@errors, "Example '$config{$ename}' contains less-than, greater-than, ampersand or the ASCII quote");
             }
             # All characters that are allowed in a lemma must be allowed inside the square brackets.
-            # In addition, we now also allow the ZERO WIDTH JOINER.
-            elsif($config{$ename} !~ m/\[[-\pL\pM$zwj']+\]/) #'
+            # In addition, we now also allow the ZERO WIDTH JOINER and ZERO WIDTH NON-JOINER.
+            elsif($config{$ename} !~ m/\[[-\pL\pM$zwj$zwnj']+\]/) #'
             {
                 push(@errors, "Example '$config{$ename}' does not contain a sequence of letters enclosed in [square brackets]");
             }
@@ -1198,7 +1200,7 @@ sub get_parameters
             $config{$ename} =~ s/^\s+//;
             $config{$ename} =~ s/\s+$//;
             $config{$ename} =~ s/\s+/ /sg;
-            if($config{$ename} !~ m/^[\pL\pM$zwj\pN\pP ]+$/)
+            if($config{$ename} !~ m/^[\pL\pM$zwj$zwnj\pN\pP ]+$/)
             {
                 push(@errors, "Example translation '$config{$ename}' contains characters other than letters, numbers, punctuation and space");
             }
@@ -1227,7 +1229,7 @@ sub get_parameters
             $config{$cname} =~ s/^\s+//;
             $config{$cname} =~ s/\s+$//;
             $config{$cname} =~ s/\s+/ /sg;
-            if($config{$cname} !~ m/^[\pL\pM$zwj\pN\pP ]+$/)
+            if($config{$cname} !~ m/^[\pL\pM$zwj$zwnj\pN\pP ]+$/)
             {
                 push(@errors, "Comment '$config{$cname}' contains characters other than letters, numbers, punctuation and space");
             }
