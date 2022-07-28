@@ -155,6 +155,9 @@ bal--100--ur
 bal--100--sd
 ur----hi
 ur--2--sd
+sd--2--gu
+gu--2--mr
+gu--2--hi
 hi--2--pra
 hi--2--xnr
 hi--2--mjl

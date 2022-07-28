@@ -288,6 +288,11 @@ Guarani:
   lcode: gn
   iso3: gug
   family: Tupian, Tupi-Guarani
+Gujarati:
+  flag: IN
+  lcode: gu
+  iso3: guj
+  family: IE, Indic
 Hausa:
   flag: NG
   lcode: ha
