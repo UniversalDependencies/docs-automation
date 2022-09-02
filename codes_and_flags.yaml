@@ -938,6 +938,11 @@ Wolof:
   lcode: wo
   iso3: wol
   family: Niger-Congo, Northern Atlantic
+Xavante:
+  flag: BR
+  lcode: xav
+  iso3: xav
+  family: Macro-Je
 Xibe:
   flag: CN
   lcode: sjo
