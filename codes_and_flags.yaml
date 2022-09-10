@@ -282,12 +282,12 @@ Guajajara:
   flag: BR
   lcode: gub
   iso3: gub
-  family: Tupian, Tupi-Guarani
+  family: Tupian, Maweti-Guarani
 Guarani:
   flag: PY
   lcode: gn
   iso3: gug
-  family: Tupian, Tupi-Guarani
+  family: Tupian, Maweti-Guarani
 Gujarati:
   flag: IN
   lcode: gu
@@ -362,7 +362,7 @@ Kaapor:
   flag: BR
   lcode: urb
   iso3: urb
-  family: Tupian, Tupi-Guarani
+  family: Tupian, Maweti-Guarani
 Kabyle:
   flag: DZ
   lcode: kab
@@ -387,7 +387,7 @@ Karo:
   flag: BR
   lcode: arr
   iso3: arr
-  family: Tupian, Purubora-Ramarama
+  family: Tupian, Ramarama
 Kazakh:
   flag: KZ
   lcode: kk
@@ -547,7 +547,7 @@ Mbya Guarani:
   flag: PY
   lcode: gun
   iso3: gun
-  family: Tupian, Tupi-Guarani
+  family: Tupian, Maweti-Guarani
 Middle French:
   flag: FR-ROYAL
   lcode: frm
@@ -613,6 +613,11 @@ Nepali:
   lcode: ne
   iso3: nep
   family: IE, Indic
+Nheengatu:
+  flag: BR
+  lcode: yrl
+  iso3: yrl
+  family: Tupian, Maweti-Guarani
 Nkore:
   flag: UG
   lcode: nyn
@@ -847,7 +852,7 @@ Teko:
   flag: FR
   lcode: eme
   iso3: eme
-  family: Tupian, Tupi-Guarani
+  family: Tupian, Maweti-Guarani
 Telugu:
   flag: IN
   lcode: te
@@ -872,7 +877,7 @@ Tupinamba:
   flag: BR
   lcode: tpn
   iso3: tpn
-  family: Tupian, Tupi-Guarani
+  family: Tupian, Maweti-Guarani
 Turkish:
   flag: TR
   lcode: tr
