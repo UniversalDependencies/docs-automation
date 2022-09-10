@@ -249,7 +249,8 @@ gub----tpn
 tpn----gun
 tpn----yrl
 yrl----eme
-gun--100--aqz
+gun----gn
+gn--100--aqz
 aqz----mpu
 aqz--100--arr
 arr--100--myu
