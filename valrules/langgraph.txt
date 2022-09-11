@@ -216,6 +216,7 @@ ar--10--kab
 cop--10--kab
 cop--50--bej
 kab--50--ha
+ha----say
 Southwestern----Southeastern
 Southeastern----Northeastern
 Northeastern----Northwestern
