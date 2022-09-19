@@ -292,13 +292,15 @@ sub get_lemma_links_to_edit
         # For a safe URL we assume that the lemma contains only letters. That should not be a problem normally.
         # We must also allow the hyphen, needed in Skolt Sami "i-ǥõl". (Jack Rueter: It is written with a hyphen. Historically it might be traced to a combination of the AUX:NEG ij and a reduced ǥõl stem derived from what is now the verb õlggâd ʹhave toʹ. The word-initial g has been retained in the fossilized contraction as ǥ, but that same word-initial letter has been lost in the standard verb.)
         # We must also allow the apostrophe, needed in Mbya Guarani "nda'ei" and "nda'ipoi".
+        # We must also allow whitespace, needed in Vietnamese "có thể".
         my $lemma = $lemma0;
-        $lemma =~ s/[^-\pL\pM']//g; #'
+        $lemma =~ s/[^-\pL\pM' ]//g; #'
         my $alert = '';
         if($lemma ne $lemma0)
         {
             $alert = " <span style='color:red'>ERROR: Lemma must consist only of letters but stripping non-letters from '".htmlescape($lemma0)."' yields '$lemma'!</span>";
         }
+        $lemma =~ s/\s+/%20/g;
         my $href = "<a href=\"specify_auxiliary.pl?ghu=$config{ghu}&amp;lcode=$config{lcode}&amp;lemma=$lemma\">$lemma</a>$alert";
         push(@hrefs, $href);
     }
