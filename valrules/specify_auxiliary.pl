@@ -1060,7 +1060,8 @@ sub get_parameters
     # An example of a mark: U+94D DEVANAGARI SIGN VIRAMA.
     # We must also allow the hyphen, needed in Skolt Sami "i-ǥõl". (Jack Rueter: It is written with a hyphen. Historically it might be traced to a combination of the AUX:NEG ij and a reduced ǥõl stem derived from what is now the verb õlggâd ʹhave toʹ. The word-initial g has been retained in the fossilized contraction as ǥ, but that same word-initial letter has been lost in the standard verb.)
     # We must also allow the apostrophe, needed in Mbya Guarani "nda'ei" and "nda'ipoi".
-    elsif($config{lemma} =~ m/^\s*([-\pL\pM']+)\s*$/) #'
+    # We must also allow whitespace, needed in Vietnamese "có thể".
+    elsif($config{lemma} =~ m/^\s*([\pL\pM]+([-' ][\pL\pM]+)?)\s*$/) #'
     {
         $config{lemma} = $1;
     }
@@ -1175,7 +1176,7 @@ sub get_parameters
             }
             # All characters that are allowed in a lemma must be allowed inside the square brackets.
             # In addition, we now also allow the ZERO WIDTH JOINER and ZERO WIDTH NON-JOINER.
-            elsif($config{$ename} !~ m/\[[-\pL\pM$zwj$zwnj']+\]/) #'
+            elsif($config{$ename} !~ m/\[[\pL\pM$zwj$zwnj]+([-' ][\pL\pM$zwj$zwnj]+)?\]/) #'
             {
                 push(@errors, "Example '$config{$ename}' does not contain a sequence of letters enclosed in [square brackets]");
             }
