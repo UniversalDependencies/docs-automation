@@ -300,8 +300,9 @@ sub get_lemma_links_to_edit
         {
             $alert = " <span style='color:red'>ERROR: Lemma must consist only of letters but stripping non-letters from '".htmlescape($lemma0)."' yields '$lemma'!</span>";
         }
-        $lemma =~ s/\s+/%20/g;
-        my $href = "<a href=\"specify_auxiliary.pl?ghu=$config{ghu}&amp;lcode=$config{lcode}&amp;lemma=$lemma\">$lemma</a>$alert";
+        my $urllemma = $lemma;
+        $urllemma =~ s/\s+/%20/g;
+        my $href = "<a href=\"specify_auxiliary.pl?ghu=$config{ghu}&amp;lcode=$config{lcode}&amp;lemma=$urllemma\">$lemma</a>$alert";
         push(@hrefs, $href);
     }
     return join(' ', @hrefs);
