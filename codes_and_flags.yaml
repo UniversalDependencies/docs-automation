@@ -377,7 +377,7 @@ Kannada:
   flag: IN
   lcode: kn
   iso3: kan
-  family: Dravidian, Southern
+  family: Dravidian
 Karelian:
   flag: RU-KR
   lcode: krl
@@ -518,6 +518,11 @@ Makurap:
   lcode: mpu
   iso3: mpu
   family: Tupian, Tupari
+Malayalam:
+  flag: IN
+  lcode: ml
+  iso3: mal
+  family: Dravidian
 Maltese:
   flag: MT
   lcode: mt
@@ -842,7 +847,7 @@ Tamil:
   flag: IN
   lcode: ta
   iso3: tam
-  family: Dravidian, Southern
+  family: Dravidian
 Tatar:
   flag: RU-TA
   lcode: tt
@@ -857,7 +862,7 @@ Telugu:
   flag: IN
   lcode: te
   iso3: tel
-  family: Dravidian, South Central
+  family: Dravidian
 Thai:
   flag: TH
   lcode: th
