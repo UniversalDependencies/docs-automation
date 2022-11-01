@@ -60,6 +60,12 @@ my @functions =
     ['Periphrastic aspect: durative', 'Aspect=Dur'],
     ['Periphrastic aspect: progressive', 'Aspect=Prog'],
     ['Periphrastic aspect: prospective', 'Aspect=Prosp'],
+    # Inchoative aspect marks beginning of a state or action. It should not be
+    # routinely used for verbs like "start" and "begin" unless their equivalents
+    # pass language-specific tests for auxiliary verbs. This is the case e.g. in
+    # Nahuatl, but the English construction "to start to do something" should be
+    # annotated using "xcomp".
+    ['Periphrastic aspect: inchoative', 'Aspect=Inch'],
     ['Periphrastic aspect: iterative', 'Aspect=Iter'],
     ['Periphrastic tense: past', 'Tense=Past'],
     ['Periphrastic tense: present', 'Tense=Pres'],
