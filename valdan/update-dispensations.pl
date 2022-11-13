@@ -68,9 +68,15 @@ foreach my $d (sort(keys(%{$dispensations})))
         }
         push(@newlist, $t) unless($remove);
     }
-    @{$dispensations->{$d}{treebanks}} = @newlist;
+    if(scalar(@newlist) > 0)
+    {
+        @{$dispensations->{$d}{treebanks}} = @newlist;
+    }
+    else
+    {
+        delete($dispensations->{$d});
+    }
 }
-#+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 # Write the JSON file.
 my $json = "{\n";
 $json .= '"dispensations": {'."\n";
