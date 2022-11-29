@@ -113,6 +113,11 @@ Bhojpuri:
   lcode: bho
   iso3: bho
   family: IE, Indic
+Bororo:
+  flag: BR
+  lcode: bor
+  iso3: bor
+  family: Macro-Je
 Breton:
   flag: FR-BRE
   lcode: br

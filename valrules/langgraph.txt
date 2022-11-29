@@ -267,3 +267,5 @@ aqz----mpu
 aqz--100--arr
 arr--100--myu
 myu--100--urb
+aqz--1000--xav
+xav--100--bor
