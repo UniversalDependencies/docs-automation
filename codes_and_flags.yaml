@@ -818,6 +818,11 @@ Spanish:
   lcode: es
   iso3: spa
   family: IE, Romance
+Spanish English:
+  flag: ES
+  lcode: qee
+  iso3: qee
+  family: Code switching
 Sumerian:
   flag: IQ
   lcode: sux
