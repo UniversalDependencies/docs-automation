@@ -342,6 +342,8 @@ if __name__=="__main__":
         stats.language_name_short = stats.language_name
         if stats.language_name_short == 'Western Sierra Puebla Nahuatl':
             stats.language_name_short = 'Western S.P. Nahuatl'
+        if stats.language_name_short == 'Highland Puebla Nahuatl':
+            stats.language_name_short = 'Highland P. Nahuatl'
 
     # We may want to get rid of the argument and test the branch ourselves by calling
     # git branch | grep '*' | sed 's/^\*\s*//'
