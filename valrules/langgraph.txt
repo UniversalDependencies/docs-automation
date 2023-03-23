@@ -252,6 +252,10 @@ tl----ceb
 hil----ceb
 hil--100--id
 id----jv
+nhi----azz
+nhi--2--nci
+azz--2--nci
+nci--100--quc
 Maweti-Guarani--10--Munduruku
 Ramarama----Munduruku
 Tupari----Ramarama

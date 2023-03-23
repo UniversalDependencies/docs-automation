@@ -173,6 +173,11 @@ Classical Chinese:
   lcode: lzh
   iso3: lzh
   family: Sino-Tibetan
+Classical Nahuatl:
+  flag: MX-NEWSPAIN
+  lcode: nci
+  iso3: nci
+  family: Uto-Aztecan
 Coptic:
   flag: COP
   lcode: cop
@@ -308,6 +313,11 @@ Hebrew:
   lcode: he
   iso3: heb
   family: Afro-Asiatic, Semitic
+Highland Puebla Nahuatl:
+  flag: MX
+  lcode: azz
+  iso3: azz
+  family: Uto-Aztecan
 Hiligaynon:
   flag: PH
   lcode: hil
