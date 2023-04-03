@@ -88,7 +88,7 @@ while(<REPORT>)
         }
     }
     # Collect counts for the summary.
-    if(m/((SAPLING|CURRENT|RETIRED)\s*(EMPTY|ERROR|VALID)\s*?(WARNING|LEGACY|NEGLECTED|DISCARD|BACKUP)?)/)
+    if(m/((SAPLING|CURRENT|RETIRED)\s+(EMPTY|ERROR|VALID)(?:\s+(WARNING|LEGACY|NEGLECTED|DISCARD|BACKUP))?)/)
     {
         $nt{$1}++;
     }
