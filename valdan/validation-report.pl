@@ -85,33 +85,60 @@ while(<REPORT>)
             s/LEGACY/NEGLECTED/;
         }
     }
-    my $color = 'black';
-    if(m/ERROR/)
+    # The default black color is used for empty saplings.
+    my $color = 'Black';
+    if(m/EMPTY/)
     {
-        $color = 'red';
-        $nerror++;
+        $nempty++;
     }
-    elsif(m/NEGLECTED/)
+    elsif(m/(SAPLING|RETIRED) VALID/)
     {
-        $color = 'purple;background:yellow';
-        $nlegacy++;
-        $languages_valid{$language}++;
-    }
-    elsif(m/LEGACY/)
-    {
-        $color = 'purple';
-        $nlegacy++;
+        $color = 'Chartreuse';
+        $nvalid++;
         $languages_valid{$language}++;
     }
     elsif(m/VALID/)
     {
-        $color = 'green';
+        $color = 'Green';
         $nvalid++;
         $languages_valid{$language}++;
     }
-    elsif(m/EMPTY/)
+    elsif(m/RETIRED/)
     {
-        $nempty++;
+        $color = 'LightGray';
+        $nerror++;
+    }
+    elsif(m/SAPLING ERROR/)
+    {
+        $color = 'LightCoral';
+        $nerror++;
+    }
+    elsif(m/LEGACY/)
+    {
+        $color = 'Purple';
+        $nlegacy++;
+        $languages_valid{$language}++;
+    }
+    elsif(m/NEGLECTED/)
+    {
+        $color = 'Purple;background:Yellow';
+        $nlegacy++;
+        $languages_valid{$language}++;
+    }
+    elsif(m/DISCARD/)
+    {
+        $color = 'Red;background:Yellow';
+        $nerror++;
+    }
+    elsif(m/BACKUP/)
+    {
+        $color = 'Red;background:PaleGreen';
+        $nerror++;
+    }
+    elsif(m/ERROR/)
+    {
+        $color = 'red';
+        $nerror++;
     }
     if(m/^(UD_.+?):/)
     {
