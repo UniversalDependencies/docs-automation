@@ -228,25 +228,36 @@ sub get_explanation
 
     <p>The report on this page is an important indicator whether the current
     contents of the <tt>dev</tt> branch can be released when the release time
-    comes. The treebanks with the green <span style='color:green;font-weight:bold'>VALID</span>
-    label are fine and ready to go. The purple <span style='color:purple;font-weight:bold'>LEGACY</span>
+    comes. The treebanks with the green
+    <span style='color:green;font-weight:bold'>VALID</span>
+    label are fine and ready to go. So are treebanks with the blue
+    <span style='color:blue;font-weight:bold'>VALID WARNING</span>
+    label. The purple
+    <span style='color:purple;font-weight:bold'>ERROR LEGACY</span>
     treebanks are not fine but we can still release them. They were considered
     valid at the time of a previous release and the only errors that are reported
     now are based on new tests that were not available when the treebank was
     approved. However, the legacy status is not granted forever. After three
     years since the oldest validation error the treebank will be marked as
-    <span style='color:purple;font-weight:bold;background:yellow'>NEGLECTED</span>.
+    <span style='color:purple;font-weight:bold;background:yellow'>ERROR NEGLECTED</span>.
     This is a warning that the error must be fixed as soon as possible
     (possibly after the treebank is adopted by a new maintainer). If there are
     errors four or more years old, their dispensations will be removed, the
-    treebank will become invalid and will be excluded from the upcoming releases
-    until the errors are fixed. Treebanks with intollerable errors have the red
-    <span style='color:red;font-weight:bold'>ERROR</span> label and cannot be
-    released in this state. Besides errors that had been neglected for too long
-    this also includes newly introduced errors or new treebanks.
-    New treebanks will only be released when they are completely valid.
-    If an old treebank contains new errors, we will re-release its previous
-    version.</p>
+    treebank will become invalid and labeled
+    <span style='color:red;font-weight:bold;background:yellow'>ERROR DISCARD</span>.
+    It will be excluded from the upcoming releases until the errors are fixed.
+    If a treebank was valid in the previous release and now it contains newly
+    introduced errors, it will be labeled
+    <span style='color:red;font-weight:bold;background:PaleGreen'>ERROR BACKUP</span>,
+    meaning that we will re-release its previous version if the errors are not
+    fixed in time. This also applies to treebanks that have the legacy status,
+    provided that none of their validation exceptions have expired.
+    Treebanks that were released in the past but excluded from the most recent
+    release are labeled as
+    <span style='color:LightGray;font-weight:bold'>RETIRED</span>.
+    Treebanks that were never released before are labeled
+    <span style='font-weight:bold'>SAPLING</span>.
+    New treebanks will only be released when they are completely valid.</p>
 
     <p>See the <a href="https://universaldependencies.org/release_checklist.html">release
     checklist</a> for more information on treebank requirements and validation.</p>
