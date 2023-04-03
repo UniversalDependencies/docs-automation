@@ -166,7 +166,7 @@ while(<REPORT>)
             {
                 $errorlist = $1;
             }
-            if(!m/(VALID|EMPTY)/)
+            if(!m/(VALID|EMPTY)/ || m/WARNING/)
             {
                 $reportlink = " (<a href=\"validation-report.pl?$folder\">report</a>)";
             }
