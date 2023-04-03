@@ -158,25 +158,16 @@ sub get_treebank_message
     my $treebank_message = "$folder: ";
     my @error_types = sort(keys(%{$error_stats}));
     my @testids = map {my @f = split(/\s+/, $_); $f[2]} (@error_types);
-    if($folder_success)
+    $treebank_message .= get_legacy_status($folder, \@testids, $releases, $dispensations);
+    if(scalar(@error_types) > 0)
     {
-        $treebank_message .= 'VALID';
-    }
-    else
-    {
-        my $legacy_status = 'ERROR';
-        if(scalar(@error_types) > 0)
+        my $total = 0;
+        foreach my $error_type (@error_types)
         {
-            my $total = 0;
-            foreach my $error_type (@error_types)
-            {
-                $total += $error_stats->{$error_type};
-            }
-            $legacy_status = get_legacy_status($folder, \@testids, $releases, $dispensations);
-            # Error types include level, class, and test id, e.g., "L3 Syntax leaf-mark-case".
-            $legacy_status .= ' ('.join('; ', ("TOTAL $total", map {"$_ $error_stats->{$_}"} (@error_types))).')';
+            $total += $error_stats->{$error_type};
         }
-        $treebank_message .= $legacy_status;
+        # Error types include level, class, and test id, e.g., "L3 Syntax leaf-mark-case".
+        $treebank_message .= ' ('.join('; ', ("TOTAL $total", map {"$_ $error_stats->{$_}"} (@error_types))).')';
     }
     # List dispensations that are no longer needed (this can follow any state, VALID or ERROR).
     my @unused = get_unused_exceptions($folder, \@testids, $dispensations);
@@ -203,34 +194,73 @@ sub get_legacy_status
     my $releases = shift; # hash ref
     my $dispensations = shift; # hash ref
     my @error_types = @{$error_types};
+    # If this treebank has not yet been released, it is SAPLING. It can be EMPTY, ERROR, or VALID. If VALID, it will be released next time.
+    # If this treebank has been released, i.e., it was VALID at some point in time w.r.t. the then used version of the validator:
+    # Specifically, if the treebank was included in the most recent release:
+    #   It is VALID now. It can be released again.
+    #   It is EMPTY now. Strange situation which should not occur.
+    #   It is ERROR now.
+    #     All types of errors are newly introduced errors that the treebank did not have in the last release: BACKUP.
+    #     All types of errors are forgivable, i.e., the treebank has dispensations for them, and they are less than 3 years old: LEGACY.
+    #     Some errors are newly introduced and some errors have dispensations less than 3 years old: BACKUP (or explicitly BACKUP+LEGACY?)
+    #     Some dispensations are less than 4 but more than 3 years old: NEGLECTED.
+    #     Some dispensations are more than 4 years old: INVALID. It will not be released again unless the errors are fixed.
+    # If the treebank was not included in the most recent release, it is treated like a SAPLING but maybe it should use a different label so people see it is not new.
+    #
+    # Hence we have:
+    #
+    # Novelty: SAPLING (never released) / CURRENT (released last time) / RETIRED (released in the past but not last time)
+    # Validity: VALID (no errors) / ERROR (there are errors) / EMPTY (there is no data)
+    # Acceptability: VALID (good to go next time) / LEGACY (acceptable) / NEGLECTED (last year of acceptability is running) / DISCARD (not acceptable any more) / BACKUP (current data not acceptable but previously released data can be used as a backup)
     my @release_numbers = sort_release_numbers(keys(%{$releases}));
-    my $backup_release;
-    foreach my $t (@{$releases->{$release_numbers[-1]}{treebanks}})
+    # If the treebank has been released, find the number of its last release.
+    my $last_release_number;
+    my $current = 0;
+    for(my $i = $#release_numbers; $i >= 0; $i--)
     {
-        if($t eq $folder)
+        my $rn = $release_numbers[$i];
+        my $found = 0;
+        foreach my $t (@{$releases->{$rn}{treebanks}})
         {
-            $backup_release = $release_numbers[-1];
+            if($t eq $folder)
+            {
+                $found = 1;
+                last;
+            }
+        }
+        if($found)
+        {
+            $last_release_number = $rn;
+            $current = 1 if($i == $#release_numbers);
             last;
         }
     }
-    if(scalar(@error_types) == 0)
+    my $novelty = $current ? 'CURRENT' : defined($last_release_number) ? 'RETIRED' : 'SAPLING';
+    my $validity = scalar(@error_types) == 0 ? 'VALID' : 'ERROR'; ###!!! We cannot detect EMPTY here.
+    # The various shades of (in)acceptability are interesting only for current treebanks with errors.
+    my $acceptability;
+    if($current && scalar(@error_types) > 0)
     {
-        return 'VALID';
-    }
-    my @unforgivable = ();
-    my $date_oldest_dispensation;
-    foreach my $error_type (@error_types)
-    {
-        if(exists($dispensations->{$error_type}))
+        my @unforgivable = ();
+        my $date_oldest_dispensation;
+        foreach my $error_type (@error_types)
         {
-            # Some treebanks have dispensations for this error type. Is our treebank among them?
-            if(grep {$_ eq $folder} (@{$dispensations->{$error_type}{treebanks}}))
+            if(exists($dispensations->{$error_type}))
             {
-                if(!defined($date_oldest_dispensation) || $dispensations->{$error_type}{date} lt $date_oldest_dispensation)
+                # Some treebanks have dispensations for this error type. Is our treebank among them?
+                if(grep {$_ eq $folder} (@{$dispensations->{$error_type}{treebanks}}))
                 {
-                    $date_oldest_dispensation = $dispensations->{$error_type}{date};
+                    if(!defined($date_oldest_dispensation) || $dispensations->{$error_type}{date} lt $date_oldest_dispensation)
+                    {
+                        $date_oldest_dispensation = $dispensations->{$error_type}{date};
+                    }
+                    print STDERR ("Forgivable exception '$error_type'\n");
                 }
-                print STDERR ("Forgivable exception '$error_type'\n");
+                else
+                {
+                    push(@unforgivable, $error_type);
+                    print STDERR ("Unforgivable error '$error_type'\n");
+                }
             }
             else
             {
@@ -238,33 +268,50 @@ sub get_legacy_status
                 print STDERR ("Unforgivable error '$error_type'\n");
             }
         }
+        if(scalar(@unforgivable) == 0)
+        {
+            # We need the time (UTC) when the script is run to identify treebanks that have been neglected for too long.
+            my ($sec, $min, $hour, $mday, $mon, $year, $wday, $yday) = gmtime(time());
+            my $today = sprintf("%04d-%02d-%02d", $year+1900, $mon+1, $mday);
+            if($date_oldest_dispensation =~ m/^(\d+)-(\d+)-(\d+)$/)
+            {
+                my $exp1 = ($1+3)."-$2-$3";
+                my $exp2 = ($1+4)."-$2-$3";
+                if($exp2 lt $today)
+                {
+                    $acceptability = 'DISCARD';
+                }
+                elsif($exp1 lt $today)
+                {
+                    $acceptability = "NEGLECTED; $date_oldest_dispensation";
+                }
+                else
+                {
+                    $acceptability = "LEGACY; $date_oldest_dispensation";
+                }
+            }
+            else
+            {
+                # If we are here, the date of the oldest dispensation is in a wrong format.
+                $acceptability = "LEGACY; $date_oldest_dispensation";
+            }
+        }
         else
         {
-            push(@unforgivable, $error_type);
-            print STDERR ("Unforgivable error '$error_type'\n");
+            # If we are here, there are new errors that prevent the data from being released.
+            # But maybe there is an older release that could be re-released.
+            ###!!! Backing up to the last release may not solve it. If this is a new
+            ###!!! error type, the previously released data probably have it, too. For
+            ###!!! really new tests in the validator, we will probably add a new
+            ###!!! dispensation and then this treebank will get the legacy status. But
+            ###!!! it is also possible that someone simply disallowed a feature for this
+            ###!!! language. It is not easy to recognize such situation.
+            ###!!! Also note that the BACKUP label may hide the fact that the treebank
+            ###!!! is also NEGLECTED.
+            $acceptability = "BACKUP $last_release_number";
         }
     }
-    if(scalar(@unforgivable) == 0)
-    {
-        return "LEGACY; $date_oldest_dispensation";
-    }
-    # If we are here, there are new errors that prevent the data from being released.
-    # But maybe there is an older release that could be re-released.
-    # Only 2.* releases can be used as backup. Discard Japanese KTC, which was last valid in 1.4.
-    ###!!! Backing up to the last release may not solve it. If this is a new
-    ###!!! error type, the previously released data probably have it, too. For
-    ###!!! really new tests in the validator, we will probably add a new
-    ###!!! dispensation and then this treebank will get the legacy status. But
-    ###!!! it is also possible that someone simply disallowed a feature for this
-    ###!!! language. It is not easy to recognize such situation.
-    if(defined($backup_release) && $backup_release =~ m/^2\.\d+$/)
-    {
-        return "ERROR; BACKUP $backup_release";
-    }
-    else
-    {
-        return 'ERROR; DISCARD';
-    }
+    return defined($acceptability) ? "$novelty $validity $acceptability" : "$novelty $validity";
 }
 
 
