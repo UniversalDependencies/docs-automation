@@ -71,31 +71,16 @@ else
     $dispfile = "$libpath/docs-automation/valdan/dispensations.json";
 }
 my $dispensations = json_file_to_perl($dispfile)->{dispensations};
-my @exceptions;
-foreach my $d (sort(keys(%{$dispensations})))
-{
-    foreach my $t (@{$dispensations->{$d}{treebanks}})
-    {
-        if($t eq $folder)
-        {
-            push(@exceptions, $d);
-            last;
-        }
-    }
-}
 # We had >/dev/null 2>&1 here, to make the log more compact and nicer. But then
 # we unfortunately did not see what happened when the repo did not get updated.
 # Note that this script is typically called from githook.pl and its STDOUT +
 # STDERR is saved in log/validation.log.
 #system("cd $folder ; (git pull --no-edit >/dev/null 2>&1) ; cd ..");
 system("cd $folder ; git pull --no-edit ; cd ..");
-my $record = get_ud_files_and_codes($folder);
-# The $record contains a language code guessed from the file names; however, the
-# file names can be wrong. We will use the official code from YAML instead.
+my @files = get_conllu_file_list($folder);
 my $lcode = $languages_from_yaml->{$record->{lname}}{lcode};
 my $treebank_message;
-my %error_stats;
-if(scalar(@{$record->{files}}) > 0)
+if(scalar(@files) > 0)
 {
     my $folder_success = 1;
     system("date > log/$folder.log 2>&1");
@@ -106,38 +91,15 @@ if(scalar(@{$record->{files}}) > 0)
     my $result = saferun("perl -I perllib/lib/perl5 -I perllib/lib/perl5/x86_64-linux-gnu-thread-multi $command >> log/$folder.log 2>&1");
     $folder_success = $folder_success && $result;
     # Check individual data files. Check them all in one validator run.
-    if(scalar(@{$record->{files}}) > 0)
-    {
-        my $files = join(' ', map {"$folder/$_"} (@{$record->{files}}));
-        $command = "./validate.sh --lang $lcode --max-err 0 $files";
-        print STDERR ("$command\n");
-        system("echo $command >> log/$folder.log");
-        $result = saferun("$command >> log/$folder.log 2>&1");
-        $folder_success = $folder_success && $result;
-    }
+    my $files = join(' ', map {"$folder/$_"} (@files));
+    $command = "./validate.sh --lang $lcode --max-err 0 $files";
+    print STDERR ("$command\n");
+    system("echo $command >> log/$folder.log");
+    $result = saferun("$command >> log/$folder.log 2>&1");
+    $folder_success = $folder_success && $result;
+    my %error_stats;
     count_error_types("log/$folder.log", \%error_stats);
-    my @error_types = sort(keys(%error_stats));
-    my @testids = map {my @f = split(/\s+/, $_); $f[2]} (@error_types);
-    my $error_stats = '';
-    my $legacy_status = 'ERROR';
-    if(scalar(@error_types) > 0)
-    {
-        my $total = 0;
-        foreach my $error_type (@error_types)
-        {
-            $total += $error_stats{$error_type};
-        }
-        # Error types include level, class, and test id, e.g., "L3 Syntax leaf-mark-case".
-        $error_stats = ' ('.join('; ', ("TOTAL $total", map {"$_ $error_stats{$_}"} (@error_types))).')';
-        $legacy_status = get_legacy_status($folder, \@testids, $backup_release, $dispensations);
-    }
-    $treebank_message = "$folder: ";
-    $treebank_message .= $folder_success ? 'VALID' : $legacy_status.$error_stats;
-    my @unused = get_unused_exceptions($folder, \@testids, \@exceptions);
-    if(scalar(@unused) > 0)
-    {
-        $treebank_message .= ' UNEXCEPT '.join(' ', @unused);
-    }
+    $treebank_message = get_treebank_message($folder, $folder_success, \%error_stats, $backup_release, $dispensations);
 }
 else
 {
@@ -171,28 +133,6 @@ close(REPORT);
 
 
 #------------------------------------------------------------------------------
-# Reads the output of the validator and counts the occurrences of each type of
-# error. Adds the counts to a hash provided by the caller.
-#------------------------------------------------------------------------------
-sub count_error_types
-{
-    my $logfilename = shift;
-    my $stats = shift; # hash ref
-    open(LOG, $logfilename) or die("Cannot read $logfilename: $!");
-    while(<LOG>)
-    {
-        if(m/\[(L\d \w+ [-a-z0-9]+)\]/)
-        {
-            my $error_type = $1;
-            $stats->{$error_type}++;
-        }
-    }
-    close(LOG);
-}
-
-
-
-#------------------------------------------------------------------------------
 # Sort release numbers.
 #------------------------------------------------------------------------------
 sub sort_release_numbers
@@ -221,6 +161,64 @@ sub sort_release_numbers
         $r
     }
     (@_);
+}
+
+
+
+#------------------------------------------------------------------------------
+# Reads the output of the validator and counts the occurrences of each type of
+# error. Adds the counts to a hash provided by the caller.
+#------------------------------------------------------------------------------
+sub count_error_types
+{
+    my $logfilename = shift;
+    my $stats = shift; # hash ref
+    open(LOG, $logfilename) or die("Cannot read $logfilename: $!");
+    while(<LOG>)
+    {
+        if(m/\[(L\d \w+ [-a-z0-9]+)\]/)
+        {
+            my $error_type = $1;
+            $stats->{$error_type}++;
+        }
+    }
+    close(LOG);
+}
+
+
+
+#------------------------------------------------------------------------------
+# Generates a treebank status message based on the validation result.
+#------------------------------------------------------------------------------
+sub get_treebank_message
+{
+    my $folder = shift;
+    my $folder_success = shift;
+    my $error_stats = shift;
+    my $backup_release = shift;
+    my $dispensations = shift;
+    my $treebank_message = "$folder: ";
+    my @error_types = sort(keys(%{$error_stats}));
+    my @testids = map {my @f = split(/\s+/, $_); $f[2]} (@error_types);
+    my $legacy_status = 'ERROR';
+    if(scalar(@error_types) > 0)
+    {
+        my $total = 0;
+        foreach my $error_type (@error_types)
+        {
+            $total += $error_stats{$error_type};
+        }
+        $legacy_status = get_legacy_status($folder, \@testids, $backup_release, $dispensations);
+        # Error types include level, class, and test id, e.g., "L3 Syntax leaf-mark-case".
+        $legacy_status .= ' ('.join('; ', ("TOTAL $total", map {"$_ $error_stats{$_}"} (@error_types))).')';
+    }
+    $treebank_message .= $folder_success ? 'VALID' : $legacy_status;
+    my @unused = get_unused_exceptions($folder, \@testids, $dispensations);
+    if(scalar(@unused) > 0)
+    {
+        $treebank_message .= ' UNEXCEPT '.join(' ', @unused);
+    }
+    return $treebank_message;
 }
 
 
@@ -298,14 +296,21 @@ sub get_unused_exceptions
 {
     my $folder = shift;
     my $error_types = shift; # array ref
-    my $exceptions = shift; # array ref
+    my $dispensations = shift; # hash ref
     my @error_types = @{$error_types};
     my @unused = ();
-    foreach my $exception (@{$exceptions})
+    foreach my $d (sort(keys(%{$dispensations})))
     {
-        unless(grep {$_ eq $exception} (@error_types))
+        foreach my $t (@{$dispensations->{$d}{treebanks}})
         {
-            push(@unused, $exception);
+            if($t eq $folder)
+            {
+                unless(grep {$_ eq $d} (@error_types))
+                {
+                    push(@unused, $d);
+                }
+                last;
+            }
         }
     }
     return @unused;
@@ -369,6 +374,22 @@ sub saferun
 # modified the functions here and they are no longer equivalent to the original
 # in udlib.pm.
 #==============================================================================
+
+
+
+#------------------------------------------------------------------------------
+# Scans a UD folder for CoNLL-U files and returns their list.
+#------------------------------------------------------------------------------
+sub get_conllu_file_list
+{
+    my $folder = shift;
+    my $record = get_ud_files_and_codes($folder);
+    # The calling code also needs the language code and the $record has one,
+    # guessed from the file names; however, the file names can be wrong, so
+    # we will not pass the code up. They will have to obtain the official code
+    # from YAML instead.
+    return @{$record->{files}};
+}
 
 
 
