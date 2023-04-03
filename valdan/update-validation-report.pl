@@ -170,11 +170,11 @@ sub get_treebank_message
             my $total = 0;
             foreach my $error_type (@error_types)
             {
-                $total += $error_stats{$error_type};
+                $total += $error_stats->{$error_type};
             }
             $legacy_status = get_legacy_status($folder, \@testids, $releases, $dispensations);
             # Error types include level, class, and test id, e.g., "L3 Syntax leaf-mark-case".
-            $legacy_status .= ' ('.join('; ', ("TOTAL $total", map {"$_ $error_stats{$_}"} (@error_types))).')';
+            $legacy_status .= ' ('.join('; ', ("TOTAL $total", map {"$_ $error_stats->{$_}"} (@error_types))).')';
         }
         $treebank_message .= $legacy_status;
     }
