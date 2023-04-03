@@ -122,11 +122,12 @@ while(<REPORT>)
         {
             my $errorlist = '';
             my $reportlink = '';
-            if(s/(ERROR; DISCARD|ERROR; BACKUP \d+\.\d+|(?:LEGACY|NEGLECTED)(?:; \d+-\d+-\d+)?)(\s*\(.+?\))/$1/)
+            # Anything in parentheses is an error list. Exclude it from color-highlighting.
+            if(s/(\s*\(.+?\))//)
             {
-                $errorlist = $2;
+                $errorlist = $1;
             }
-            if(m/(ERROR; DISCARD|ERROR; BACKUP \d+\.\d+|(?:LEGACY|NEGLECTED)(; \d+-\d+-\d+)?)/)
+            if(!m/(VALID|EMPTY)/)
             {
                 $reportlink = " (<a href=\"validation-report.pl?$folder\">report</a>)";
             }
