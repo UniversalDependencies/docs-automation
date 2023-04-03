@@ -156,8 +156,8 @@ sub get_treebank_message
     my @error_types = sort(keys(%{$error_stats}));
     # Error types include level, class, and test id, e.g., "L3 Syntax leaf-mark-case".
     my @error_types_3 = map {my @f = split(/\s+/, $_); \@f} (@error_types);
-    my @warning_testids = map {$_[2]} (grep {$_[1] eq 'Warning'} (@error_types_3));
-    my @error_testids = map {$_[2]} (grep {$_[1] ne 'Warning'} (@error_types_3));
+    my @warning_testids = map {$_->[2]} (grep {$_->[1] eq 'Warning'} (@error_types_3));
+    my @error_testids = map {$_->[2]} (grep {$_->[1] ne 'Warning'} (@error_types_3));
     # Sanity check: If validation scripts returned success, there can be warnings but no errors.
     # From now on, we will look at the list of errors but not at the success flag.
     if($folder_success && scalar(@error_testids) > 0)
