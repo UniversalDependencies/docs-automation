@@ -221,7 +221,7 @@ my $nltotal = scalar(keys(%languages));
 my $nlerror = $nltotal-$nlvalid;
 print("Total $n, valid $nvalid, legacy $nlegacy, error $nerror, empty $nempty.<br />\n");
 print("Total $nltotal languages, valid/legacy $nlvalid, error/empty $nlerror.<br />\n");
-print("<table>\n");
+print("<table style='font-size:small;'>\n");
 print("  <tr><td></td><td>TBK</td><td>LNG</td></tr>\n");
 foreach my $key (sort(keys(%nt)))
 {
