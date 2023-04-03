@@ -70,10 +70,11 @@ my $dispensations = json_file_to_perl($dispfile)->{dispensations};
 #system("cd $folder ; (git pull --no-edit >/dev/null 2>&1) ; cd ..");
 system("cd $folder ; git pull --no-edit ; cd ..");
 my @files = get_conllu_file_list($folder);
-my $treebank_message;
-if(scalar(@files) > 0)
+my $folder_empty = scalar(@files) == 0;
+my $folder_success = 1;
+my %error_stats;
+if(!$folder_empty)
 {
-    my $folder_success = 1;
     system("date > log/$folder.log 2>&1");
     # Check list of files and metadata in README.
     my $command = "tools/check_files.pl $folder";
@@ -88,15 +89,9 @@ if(scalar(@files) > 0)
     system("echo $command >> log/$folder.log");
     $result = saferun("$command >> log/$folder.log 2>&1");
     $folder_success = $folder_success && $result;
-    my %error_stats;
     count_error_types("log/$folder.log", \%error_stats);
-    $treebank_message = get_treebank_message($folder, $folder_success, \%error_stats, $releases, $dispensations);
 }
-else
-{
-    $treebank_message = "$folder: EMPTY";
-}
-print STDERR ("$treebank_message\n");
+print STDERR (get_treebank_message($folder, $folder_empty, $folder_success, \%error_stats, $releases, $dispensations), "\n");
 # Update the validation report that comprises all treebanks.
 my %valreps;
 open(REPORT, "validation-report.txt");
@@ -151,6 +146,7 @@ sub count_error_types
 sub get_treebank_message
 {
     my $folder = shift;
+    my $empty = shift;
     my $folder_success = shift;
     my $error_stats = shift;
     my $releases = shift;
@@ -158,7 +154,7 @@ sub get_treebank_message
     my $treebank_message = "$folder: ";
     my @error_types = sort(keys(%{$error_stats}));
     my @testids = map {my @f = split(/\s+/, $_); $f[2]} (@error_types);
-    $treebank_message .= get_legacy_status($folder, \@testids, $releases, $dispensations);
+    $treebank_message .= get_legacy_status($folder, $empty, \@testids, $releases, $dispensations);
     if(scalar(@error_types) > 0)
     {
         my $total = 0;
@@ -190,6 +186,7 @@ sub get_treebank_message
 sub get_legacy_status
 {
     my $folder = shift;
+    my $empty = shift;
     my $error_types = shift; # array ref
     my $releases = shift; # hash ref
     my $dispensations = shift; # hash ref
@@ -236,8 +233,10 @@ sub get_legacy_status
         }
     }
     my $novelty = $current ? 'CURRENT' : defined($last_release_number) ? 'RETIRED' : 'SAPLING';
-    my $validity = scalar(@error_types) == 0 ? 'VALID' : 'ERROR'; ###!!! We cannot detect EMPTY here.
+    my $validity = $empty ? 'EMPTY' : scalar(@error_types) == 0 ? 'VALID' : 'ERROR';
     # The various shades of (in)acceptability are interesting only for current treebanks with errors.
+    ###!!! (Or current treebanks that suddenly became empty again, but we currently do not address this option.)
+    ###!!! For RETIRED treebanks, we may also want to display the number of their last release.
     my $acceptability;
     if($current && scalar(@error_types) > 0)
     {
