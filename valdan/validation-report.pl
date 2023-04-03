@@ -93,7 +93,7 @@ while(<REPORT>)
     }
     elsif(m/(SAPLING|RETIRED) VALID/)
     {
-        $color = 'Blue';
+        $color = 'White;background:Green';
         $nvalid++;
         $languages_valid{$language}++;
     }
