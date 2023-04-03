@@ -92,6 +92,10 @@ while(<REPORT>)
     {
         $nt{$1}++;
     }
+    if(m/(VALID|BACKUP|LEGACY|NEGLECTED)/)
+    {
+        $nt{'TOTAL VALID/BACKUP/LEGACY/NEGLECTED'}++;
+    }
     # The default black color is used for empty saplings.
     my $color = 'Black';
     if(m/EMPTY/)
