@@ -154,8 +154,19 @@ sub get_treebank_message
     my $dispensations = shift;
     my $treebank_message = "$folder: ";
     my @error_types = sort(keys(%{$error_stats}));
-    my @testids = map {my @f = split(/\s+/, $_); $f[2]} (@error_types);
-    $treebank_message .= get_legacy_status($folder, $empty, \@testids, $releases, $dispensations);
+    # Error types include level, class, and test id, e.g., "L3 Syntax leaf-mark-case".
+    my @error_types_3 = map {my @f = split(/\s+/, $_); \@f} (@error_types);
+    my @warning_testids = map {$_[2]} (grep {$_[1] eq 'Warning'} (@error_types_3));
+    my @error_testids = map {$_[2]} (grep {$_[1] ne 'Warning'} (@error_types_3));
+    # Sanity check: If validation scripts returned success, there can be warnings but no errors.
+    # From now on, we will look at the list of errors but not at the success flag.
+    if($folder_success && scalar(@error_testids) > 0)
+    {
+        push(@error_types, 'LX INTERNAL VALIDATION-SUCCESS-BUT-STILL-ERRORS');
+        push(@error_testids, 'VALIDATION-SUCCESS-BUT-STILL-ERRORS');
+    }
+    $treebank_message .= get_legacy_status($folder, $empty, \@error_testids, \@warning_testids, $releases, $dispensations);
+    # Add the list of errors and warnings to the message.
     if(scalar(@error_types) > 0)
     {
         my $total = 0;
@@ -167,7 +178,7 @@ sub get_treebank_message
         $treebank_message .= ' ('.join('; ', ("TOTAL $total", map {"$_ $error_stats->{$_}"} (@error_types))).')';
     }
     # List dispensations that are no longer needed (this can follow any state, VALID or ERROR).
-    my @unused = get_unused_exceptions($folder, \@testids, $dispensations);
+    my @unused = get_unused_exceptions($folder, \@error_testids, $dispensations);
     if(scalar(@unused) > 0)
     {
         $treebank_message .= ' UNEXCEPT '.join(' ', @unused);
@@ -189,13 +200,16 @@ sub get_legacy_status
     my $folder = shift;
     my $empty = shift;
     my $error_types = shift; # array ref
+    my $warning_types = shift; # array ref
     my $releases = shift; # hash ref
     my $dispensations = shift; # hash ref
     my @error_types = @{$error_types};
+    my @warning_types = @{$warning_types};
     # If this treebank has not yet been released, it is SAPLING. It can be EMPTY, ERROR, or VALID. If VALID, it will be released next time.
     # If this treebank has been released, i.e., it was VALID at some point in time w.r.t. the then used version of the validator:
     # Specifically, if the treebank was included in the most recent release:
     #   It is VALID now. It can be released again.
+    #     This includes treebanks for which the validator issues warnings but not real errors.
     #   It is EMPTY now. Strange situation which should not occur.
     #   It is ERROR now.
     #     All types of errors are newly introduced errors that the treebank did not have in the last release: BACKUP.
@@ -209,7 +223,7 @@ sub get_legacy_status
     #
     # Novelty: SAPLING (never released) / CURRENT (released last time) / RETIRED (released in the past but not last time)
     # Validity: VALID (no errors) / ERROR (there are errors) / EMPTY (there is no data)
-    # Acceptability: VALID (good to go next time) / LEGACY (acceptable) / NEGLECTED (last year of acceptability is running) / DISCARD (not acceptable any more) / BACKUP (current data not acceptable but previously released data can be used as a backup)
+    # Acceptability: VALID (good to go next time) / WARNING (still good to go) / LEGACY (acceptable) / NEGLECTED (last year of acceptability is running) / DISCARD (not acceptable any more) / BACKUP (current data not acceptable but previously released data can be used as a backup)
     my @release_numbers = sort_release_numbers(keys(%{$releases}));
     # If the treebank has been released, find the number of its last release.
     my $last_release_number;
@@ -235,11 +249,15 @@ sub get_legacy_status
     }
     my $novelty = $current ? 'CURRENT' : defined($last_release_number) ? 'RETIRED' : 'SAPLING';
     my $validity = $empty ? 'EMPTY' : scalar(@error_types) == 0 ? 'VALID' : 'ERROR';
-    # The various shades of (in)acceptability are interesting only for current treebanks with errors.
+    # The various shades of (in)acceptability are interesting only for current treebanks with errors and for valid treebanks with warnings.
     ###!!! (Or current treebanks that suddenly became empty again, but we currently do not address this option.)
     ###!!! For RETIRED treebanks, we may also want to display the number of their last release.
     my $acceptability;
-    if($current && scalar(@error_types) > 0)
+    if($validity eq 'VALID' && scalar(@warning_types) > 0)
+    {
+        $acceptability = 'WARNING';
+    }
+    elsif($current && scalar(@error_types) > 0)
     {
         my @unforgivable = ();
         my $date_oldest_dispensation;

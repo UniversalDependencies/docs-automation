@@ -91,9 +91,21 @@ while(<REPORT>)
     {
         $nempty++;
     }
+    elsif(m/(SAPLING|RETIRED) VALID WARNING/)
+    {
+        $color = 'White;background:Blue';
+        $nvalid++;
+        $languages_valid{$language}++;
+    }
     elsif(m/(SAPLING|RETIRED) VALID/)
     {
         $color = 'White;background:Green';
+        $nvalid++;
+        $languages_valid{$language}++;
+    }
+    elsif(m/VALID WARNING/)
+    {
+        $color = 'Blue';
         $nvalid++;
         $languages_valid{$language}++;
     }
