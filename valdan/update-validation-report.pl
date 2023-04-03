@@ -282,15 +282,7 @@ sub get_legacy_status
                 {
                     $acceptability = 'DISCARD';
                 }
-                elsif($exp1 lt $today)
-                {
-                    $acceptability = "NEGLECTED; $date_oldest_dispensation";
-                }
-                elsif(scalar(@unforgivable) == 0)
-                {
-                    $acceptability = "LEGACY; $date_oldest_dispensation";
-                }
-                else
+                elsif(scalar(@unforgivable) > 0)
                 {
                     # If we are here, there are new errors that prevent the data from being released.
                     # But there is an older release that could be re-released.
@@ -301,6 +293,14 @@ sub get_legacy_status
                     ###!!! it is also possible that someone simply disallowed a feature for this
                     ###!!! language. It is not easy to recognize such situation.
                     $acceptability = "BACKUP $last_release_number";
+                }
+                elsif($exp1 lt $today)
+                {
+                    $acceptability = "NEGLECTED; $date_oldest_dispensation";
+                }
+                else
+                {
+                    $acceptability = "LEGACY; $date_oldest_dispensation";
                 }
             }
             else
