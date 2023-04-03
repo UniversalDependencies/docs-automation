@@ -72,13 +72,13 @@ while(<REPORT>)
     # However, the treebank will not be automatically re-validated if it did
     # not change and its dispensation expired, so the underlying report may be
     # outdated. Hence we also check the expiration here.
-    if(m/LEGACY; (\d+)-(\d+)-(\d+)/)
+    if(m/(?:LEGACY|NEGLECTED); (\d+)-(\d+)-(\d+)/)
     {
         my $exp1 = ($1+3)."-$2-$3";
         my $exp2 = ($1+4)."-$2-$3";
         if($exp2 lt $today)
         {
-            s/LEGACY; \d+-\d+-\d+/ERROR; DISCARD/;
+            s/(LEGACY|NEGLECTED); \d+-\d+-\d+/DISCARD/;
         }
         elsif($exp1 lt $today)
         {

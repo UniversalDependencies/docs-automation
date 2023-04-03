@@ -268,7 +268,8 @@ sub get_legacy_status
                 print STDERR ("Unforgivable error '$error_type'\n");
             }
         }
-        if(scalar(@unforgivable) == 0)
+        # If there are expired dispensations, no backup is possible and unforgivable errors do not matter.
+        if(defined($date_oldest_dispensation))
         {
             # We need the time (UTC) when the script is run to identify treebanks that have been neglected for too long.
             my ($sec, $min, $hour, $mday, $mon, $year, $wday, $yday) = gmtime(time());
@@ -285,9 +286,21 @@ sub get_legacy_status
                 {
                     $acceptability = "NEGLECTED; $date_oldest_dispensation";
                 }
-                else
+                elsif(scalar(@unforgivable) == 0)
                 {
                     $acceptability = "LEGACY; $date_oldest_dispensation";
+                }
+                else
+                {
+                    # If we are here, there are new errors that prevent the data from being released.
+                    # But there is an older release that could be re-released.
+                    ###!!! Backing up to the last release may not solve it. If this is a new
+                    ###!!! error type, the previously released data probably have it, too. For
+                    ###!!! really new tests in the validator, we will probably add a new
+                    ###!!! dispensation and then this treebank will get the legacy status. But
+                    ###!!! it is also possible that someone simply disallowed a feature for this
+                    ###!!! language. It is not easy to recognize such situation.
+                    $acceptability = "BACKUP $last_release_number";
                 }
             }
             else
@@ -296,18 +309,16 @@ sub get_legacy_status
                 $acceptability = "LEGACY; $date_oldest_dispensation";
             }
         }
-        else
+        elsif(scalar(@unforgivable) > 0)
         {
             # If we are here, there are new errors that prevent the data from being released.
-            # But maybe there is an older release that could be re-released.
+            # But there is an older release that could be re-released.
             ###!!! Backing up to the last release may not solve it. If this is a new
             ###!!! error type, the previously released data probably have it, too. For
             ###!!! really new tests in the validator, we will probably add a new
             ###!!! dispensation and then this treebank will get the legacy status. But
             ###!!! it is also possible that someone simply disallowed a feature for this
             ###!!! language. It is not easy to recognize such situation.
-            ###!!! Also note that the BACKUP label may hide the fact that the treebank
-            ###!!! is also NEGLECTED.
             $acceptability = "BACKUP $last_release_number";
         }
     }
