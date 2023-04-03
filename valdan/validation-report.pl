@@ -91,10 +91,12 @@ while(<REPORT>)
     if(m/((SAPLING|CURRENT|RETIRED)\s+(EMPTY|ERROR|VALID)(?:\s+(WARNING|LEGACY|NEGLECTED|DISCARD|BACKUP))?)/)
     {
         $nt{$1}++;
+        $nl{$1}{$language}++;
     }
     if(m/(VALID|BACKUP|LEGACY|NEGLECTED)/)
     {
         $nt{'TOTAL VALID/BACKUP/LEGACY/NEGLECTED'}++;
+        $nl{'TOTAL VALID/BACKUP/LEGACY/NEGLECTED'}{$language}++;
     }
     # The default black color is used for empty saplings.
     my $color = 'Black';
@@ -222,7 +224,8 @@ print("Total $nltotal languages, valid/legacy $nlvalid, error/empty $nlerror.<br
 print("<table>\n");
 foreach my $key (sort(keys(%nt)))
 {
-    print("  <tr><td>$key</td><td align=right>$nt{$key}</td></tr>\n");
+    my $nl = scalar(keys(%{$nl{$key}}));
+    print("  <tr><td>$key</td><td align=right>$nt{$key}</td><td align=right>$nl</td></tr>\n");
 }
 print("</table>\n");
 vypsat_html_konec();
