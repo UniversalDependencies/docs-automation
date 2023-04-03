@@ -50,6 +50,8 @@ my $nerror = 0;
 my $nempty = 0;
 my %languages;
 my %languages_valid;
+my %nt; # treebank counts
+my %nl; # language counts
 open(REPORT, "validation-report.txt") or die("Cannot read validation-report.txt: $!");
 while(<REPORT>)
 {
@@ -84,6 +86,11 @@ while(<REPORT>)
         {
             s/LEGACY/NEGLECTED/;
         }
+    }
+    # Collect counts for the summary.
+    if(m/((SAPLING|CURRENT|RETIRED)\s*(EMPTY|ERROR|VALID)\s*(WARNING|LEGACY|NEGLECTED|DISCARD|BACKUP)?)/)
+    {
+        $nt{$1}++;
     }
     # The default black color is used for empty saplings.
     my $color = 'Black';
@@ -208,6 +215,12 @@ my $nltotal = scalar(keys(%languages));
 my $nlerror = $nltotal-$nlvalid;
 print("Total $n, valid $nvalid, legacy $nlegacy, error $nerror, empty $nempty.<br />\n");
 print("Total $nltotal languages, valid/legacy $nlvalid, error/empty $nlerror.<br />\n");
+print("<table>\n");
+foreach my $key (sort(keys(%nt)))
+{
+    print("  <tr><td>$key</td><td align=right>$nt{$key}</td></tr>\n");
+}
+print("</table>\n");
 vypsat_html_konec();
 
 
