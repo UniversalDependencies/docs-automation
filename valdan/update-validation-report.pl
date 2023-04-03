@@ -50,16 +50,6 @@ else
     $relfile = "$libpath/docs-automation/valdan/releases.json";
 }
 my $releases = json_file_to_perl($relfile)->{releases};
-my @release_numbers = sort_release_numbers(keys(%{$releases}));
-my $backup_release;
-foreach my $t (@{$releases->{$release_numbers[-1]}{treebanks}})
-{
-    if($t eq $folder)
-    {
-        $backup_release = $release_numbers[-1];
-        last;
-    }
-}
 # Get the list of validation dispensations for this treebank.
 my $dispfile;
 if(-f 'dispensations.json')
@@ -99,7 +89,7 @@ if(scalar(@files) > 0)
     $folder_success = $folder_success && $result;
     my %error_stats;
     count_error_types("log/$folder.log", \%error_stats);
-    $treebank_message = get_treebank_message($folder, $folder_success, \%error_stats, $backup_release, $dispensations);
+    $treebank_message = get_treebank_message($folder, $folder_success, \%error_stats, $releases, $dispensations);
 }
 else
 {
@@ -133,39 +123,6 @@ close(REPORT);
 
 
 #------------------------------------------------------------------------------
-# Sort release numbers.
-#------------------------------------------------------------------------------
-sub sort_release_numbers
-{
-    return sort
-    {
-        my $amaj = $a;
-        my $amin = 0;
-        my $bmaj = $b;
-        my $bmin = 0;
-        if($a =~ m/^(\d+)\.(\d+)$/)
-        {
-            $amaj = $1;
-            $amin = $2;
-        }
-        if($b =~ m/^(\d+)\.(\d+)$/)
-        {
-            $bmaj = $1;
-            $bmin = $2;
-        }
-        my $r = $amaj <=> $bmaj;
-        unless($r)
-        {
-            $r = $amin <=> $bmin;
-        }
-        $r
-    }
-    (@_);
-}
-
-
-
-#------------------------------------------------------------------------------
 # Reads the output of the validator and counts the occurrences of each type of
 # error. Adds the counts to a hash provided by the caller.
 #------------------------------------------------------------------------------
@@ -195,24 +152,32 @@ sub get_treebank_message
     my $folder = shift;
     my $folder_success = shift;
     my $error_stats = shift;
-    my $backup_release = shift;
+    my $releases = shift;
     my $dispensations = shift;
     my $treebank_message = "$folder: ";
     my @error_types = sort(keys(%{$error_stats}));
     my @testids = map {my @f = split(/\s+/, $_); $f[2]} (@error_types);
-    my $legacy_status = 'ERROR';
-    if(scalar(@error_types) > 0)
+    if($folder_success)
     {
-        my $total = 0;
-        foreach my $error_type (@error_types)
-        {
-            $total += $error_stats{$error_type};
-        }
-        $legacy_status = get_legacy_status($folder, \@testids, $backup_release, $dispensations);
-        # Error types include level, class, and test id, e.g., "L3 Syntax leaf-mark-case".
-        $legacy_status .= ' ('.join('; ', ("TOTAL $total", map {"$_ $error_stats{$_}"} (@error_types))).')';
+        $treebank_message .= 'VALID';
     }
-    $treebank_message .= $folder_success ? 'VALID' : $legacy_status;
+    else
+    {
+        my $legacy_status = 'ERROR';
+        if(scalar(@error_types) > 0)
+        {
+            my $total = 0;
+            foreach my $error_type (@error_types)
+            {
+                $total += $error_stats{$error_type};
+            }
+            $legacy_status = get_legacy_status($folder, \@testids, $releases, $dispensations);
+            # Error types include level, class, and test id, e.g., "L3 Syntax leaf-mark-case".
+            $legacy_status .= ' ('.join('; ', ("TOTAL $total", map {"$_ $error_stats{$_}"} (@error_types))).')';
+        }
+        $treebank_message .= $legacy_status;
+    }
+    # List dispensations that are no longer needed (this can follow any state, VALID or ERROR).
     my @unused = get_unused_exceptions($folder, \@testids, $dispensations);
     if(scalar(@unused) > 0)
     {
@@ -234,9 +199,19 @@ sub get_legacy_status
 {
     my $folder = shift;
     my $error_types = shift; # array ref
-    my $backup_release = shift;
+    my $releases = shift; # hash ref
     my $dispensations = shift; # hash ref
     my @error_types = @{$error_types};
+    my @release_numbers = sort_release_numbers(keys(%{$releases}));
+    my $backup_release;
+    foreach my $t (@{$releases->{$release_numbers[-1]}{treebanks}})
+    {
+        if($t eq $folder)
+        {
+            $backup_release = $release_numbers[-1];
+            last;
+        }
+    }
     if(scalar(@error_types) == 0)
     {
         return 'VALID';
@@ -275,6 +250,12 @@ sub get_legacy_status
     # If we are here, there are new errors that prevent the data from being released.
     # But maybe there is an older release that could be re-released.
     # Only 2.* releases can be used as backup. Discard Japanese KTC, which was last valid in 1.4.
+    ###!!! Backing up to the last release may not solve it. If this is a new
+    ###!!! error type, the previously released data probably have it, too. For
+    ###!!! really new tests in the validator, we will probably add a new
+    ###!!! dispensation and then this treebank will get the legacy status. But
+    ###!!! it is also possible that someone simply disallowed a feature for this
+    ###!!! language. It is not easy to recognize such situation.
     if(defined($backup_release) && $backup_release =~ m/^2\.\d+$/)
     {
         return "ERROR; BACKUP $backup_release";
@@ -314,6 +295,39 @@ sub get_unused_exceptions
         }
     }
     return @unused;
+}
+
+
+
+#------------------------------------------------------------------------------
+# Sort release numbers.
+#------------------------------------------------------------------------------
+sub sort_release_numbers
+{
+    return sort
+    {
+        my $amaj = $a;
+        my $amin = 0;
+        my $bmaj = $b;
+        my $bmin = 0;
+        if($a =~ m/^(\d+)\.(\d+)$/)
+        {
+            $amaj = $1;
+            $amin = $2;
+        }
+        if($b =~ m/^(\d+)\.(\d+)$/)
+        {
+            $bmaj = $1;
+            $bmin = $2;
+        }
+        my $r = $amaj <=> $bmaj;
+        unless($r)
+        {
+            $r = $amin <=> $bmin;
+        }
+        $r
+    }
+    (@_);
 }
 
 
