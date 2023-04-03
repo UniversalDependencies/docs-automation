@@ -91,7 +91,8 @@ if(!$folder_empty)
     $folder_success = $folder_success && $result;
     count_error_types("log/$folder.log", \%error_stats);
 }
-print STDERR (get_treebank_message($folder, $folder_empty, $folder_success, \%error_stats, $releases, $dispensations), "\n");
+my $treebank_message = get_treebank_message($folder, $folder_empty, $folder_success, \%error_stats, $releases, $dispensations);
+print STDERR ("$treebank_message\n");
 # Update the validation report that comprises all treebanks.
 my %valreps;
 open(REPORT, "validation-report.txt");
