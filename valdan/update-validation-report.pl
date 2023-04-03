@@ -38,6 +38,8 @@ my $folder = $ARGV[0];
 exit if(!defined($folder));
 $folder =~ s:/$::;
 $folder =~ s:^\./::;
+my ($lname, $tname) = udlib::decompose_repo_name($folder);
+my $lcode = $languages_from_yaml->{$lname}{lcode};
 # Get the list of previous releases. If the treebank is invalid but there was
 # a valid version in the previous release, we can use it as a backup.
 my $relfile;
@@ -68,7 +70,6 @@ my $dispensations = json_file_to_perl($dispfile)->{dispensations};
 #system("cd $folder ; (git pull --no-edit >/dev/null 2>&1) ; cd ..");
 system("cd $folder ; git pull --no-edit ; cd ..");
 my @files = get_conllu_file_list($folder);
-my $lcode = $languages_from_yaml->{$record->{lname}}{lcode};
 my $treebank_message;
 if(scalar(@files) > 0)
 {
