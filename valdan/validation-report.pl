@@ -42,7 +42,7 @@ EOF
         s/</&lt;/g;
         s/>/&gt;/g;
         # Highlight line numbers.
-        s/ Line ([0-9]+) / Line <span style="color:red;font-weight:bold">$1</span> /;
+        s/ Line ([0-9]+) / Line <span style="color:red;font-weight:bold">$1<\/span> /;
         print;
     }
     close(REPORT);
