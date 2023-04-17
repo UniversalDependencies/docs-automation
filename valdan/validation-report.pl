@@ -44,6 +44,8 @@ EOF
         s/>/&gt;/g;
         # Highlight line numbers.
         s/ Line ([0-9]+) / Line <span style="color:red;font-weight:bold">$1<\/span> /;
+        # Highlight lists of other nodes (such as multiple subjects).
+        s/(\[[0-9]+(, [0-9]+)*\])/<span style="color:red;font-weight:bold">$1<\/span>/g;
         print;
     }
     close(REPORT);
