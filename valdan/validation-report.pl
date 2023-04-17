@@ -24,13 +24,33 @@ if($ENV{QUERY_STRING} =~ m/text_only/)
 # We may be also asked for the validation log of a particular treebank.
 elsif($ENV{QUERY_STRING} =~ m/(UD_[A-Za-z_]+-[A-Za-z]+)/ && -f "log/$1.log")
 {
-    print("Content-type: text/plain; charset=utf-8\n\n");
+    print("Content-type: text/html; charset=utf-8\n\n");
+    print <<EOF
+<html xmlns="http://www.w3.org/TR/REC-html40">
+<head>
+<meta http-equiv="content-type" content="text/html; charset=utf-8">
+<title>UD Validation Report</title>
+</head>
+<body>
+EOF
+    ;
     open(REPORT, "log/$1.log") or die("Cannot read log/$1.log: $!");
     while(<REPORT>)
     {
+        # Escape special characters.
+        s/&/&amp;/g;
+        s/</&lt;/g;
+        s/>/&gt;/g;
+        # Highlight line numbers.
+        s/ Line ([0-9]+) / Line <span style="color:red;font-weight:bold">$1</span> /;
         print;
     }
     close(REPORT);
+    print <<EOF
+</body>
+</html>
+EOF
+    ;
     exit();
 }
 
