@@ -24,18 +24,25 @@ if($ENV{QUERY_STRING} =~ m/text_only/)
 # We may be also asked for the validation log of a particular treebank.
 elsif($ENV{QUERY_STRING} =~ m/(UD_[A-Za-z_]+-[A-Za-z]+)/ && -f "log/$1.log")
 {
+    my $folder = $1;
     print("Content-type: text/html; charset=utf-8\n\n");
     print <<EOF
 <html xmlns="http://www.w3.org/TR/REC-html40">
 <head>
 <meta http-equiv="content-type" content="text/html; charset=utf-8">
-<title>UD Validation Report</title>
+<title>$folder Validation Report</title>
+<style>
+.highlight {
+  color: red;
+  font-weight: bold;
+}
+</style>
 </head>
 <body>
 <pre>
 EOF
     ;
-    open(REPORT, "log/$1.log") or die("Cannot read log/$1.log: $!");
+    open(REPORT, "log/$folder.log") or die("Cannot read log/$folder.log: $!");
     while(<REPORT>)
     {
         # Escape special characters.
@@ -43,9 +50,9 @@ EOF
         s/</&lt;/g;
         s/>/&gt;/g;
         # Highlight line numbers.
-        s/ Line ([0-9]+) / Line <span style="color:red;font-weight:bold">$1<\/span> /;
+        s/ Line ([0-9]+) / Line <span class="highlight">$1<\/span> /;
         # Highlight lists of other nodes (such as multiple subjects).
-        s/(\[[0-9]+(, [0-9]+)*\])/<span style="color:red;font-weight:bold">$1<\/span>/g;
+        s/(\[[0-9]+(, [0-9]+)*\])/<span class="highlight">$1<\/span>/g;
         print;
     }
     close(REPORT);
