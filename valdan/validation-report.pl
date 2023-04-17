@@ -32,6 +32,7 @@ elsif($ENV{QUERY_STRING} =~ m/(UD_[A-Za-z_]+-[A-Za-z]+)/ && -f "log/$1.log")
 <title>UD Validation Report</title>
 </head>
 <body>
+<pre>
 EOF
     ;
     open(REPORT, "log/$1.log") or die("Cannot read log/$1.log: $!");
@@ -47,6 +48,7 @@ EOF
     }
     close(REPORT);
     print <<EOF
+</pre>
 </body>
 </html>
 EOF
