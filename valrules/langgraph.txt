@@ -195,6 +195,8 @@ fi--2--et
 et--1000--lv
 fi--2--krl
 krl----olo
+krl--2--vep
+olo--2--vep
 krl--100--koi
 krl--100--myv
 koi----kpv

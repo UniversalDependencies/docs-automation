@@ -938,6 +938,11 @@ Uyghur:
   lcode: ug
   iso3: uig
   family: Turkic, Southeastern
+Veps:
+  flag: RU-VEPS
+  lcode: vep
+  iso3: vep
+  family: Uralic, Finnic
 Vietnamese:
   flag: VN
   lcode: vi
