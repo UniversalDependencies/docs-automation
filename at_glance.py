@@ -123,7 +123,9 @@ if __name__=="__main__":
     with open(args.releases) as f:
         releases = json.load(f)['releases']
     # The database of releases is a dictionary but the keys should be already sorted.
-    last_release_number = releases.keys()[-1]
+    release_numbers = [r for r in releases.keys()]
+    last_release_number = release_numbers[-1]
+    print("Last release number = %s" % last_release_number)
     last_release_treebanks = releases[last_release_number]['treebanks']
 
     with open(args.genre_symbols) as f:
