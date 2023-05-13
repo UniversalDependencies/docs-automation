@@ -157,7 +157,7 @@ if __name__=="__main__":
         elif args.subset == 'sapling':
             lang_tbanks = [t for t in lang_tbanks if not t['first_release']]
         elif args.subset == 'retired':
-            lang_tbanks = [t for t in lang_tbanks if t['first_release']]
+            lang_tbanks = [t for t in lang_tbanks if t['first_release'] and not t['repo_name'] in last_release_treebanks]
         if len(lang_tbanks)==0:
             continue
         sum_counts = sum_dicts(list(t['counts'] for t in lang_tbanks))
