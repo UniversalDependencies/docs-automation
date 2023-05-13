@@ -125,7 +125,7 @@ if __name__=="__main__":
     # The database of releases is a dictionary but the keys should be already sorted.
     release_numbers = [r for r in releases.keys()]
     last_release_number = release_numbers[-1]
-    print("Last release number = %s" % last_release_number)
+    print("Last release number = %s" % last_release_number, file=sys.stderr)
     last_release_treebanks = releases[last_release_number]['treebanks']
 
     with open(args.genre_symbols) as f:
