@@ -109,21 +109,27 @@ def stars_filter(scorestars):
 
 if __name__=="__main__":
     opt_parser = argparse.ArgumentParser(description='Generates the index page table')
-    opt_parser.add_argument('--codes-flags', help="Language code and flag file")
-    opt_parser.add_argument('--genre-symbols', help="Json with genre symbols")
-    opt_parser.add_argument('--skip', default=None, action="store", help="'empty' or 'withdata' or nothing to keep all")
+    opt_parser.add_argument('--codes-flags', help="YAML file with language codes and flags.")
+    opt_parser.add_argument('--releases', help="JSON file with release descriptions.")
+    opt_parser.add_argument('--genre-symbols', help="JSON file with genre symbols.")
+    opt_parser.add_argument('--subset', default=None, action='store', help="Default: print all. Optionally select one of 'current', 'sapling', 'retired'.")
     opt_parser.add_argument('--docs-dir', default="docs-src", action="store", help="Docs dir so we can check for existence of files. Default '%(default)s'.")
     opt_parser.add_argument('input', nargs='+', help='Input corpus stat json files')
     args=opt_parser.parse_args()
 
     with open(args.codes_flags) as f:
-        codes_flags=yaml.load(f, Loader=SafeLoader)
+        codes_flags = yaml.load(f, Loader=SafeLoader)
+
+    with open(args.releases) as f:
+        releases = json.load(f)['releases']
+    # The database of releases is a dictionary but the keys should be already sorted.
+    last_release_number = releases.keys()[-1]
+    last_release_treebanks = releases[last_release_number]['treebanks']
 
     with open(args.genre_symbols) as f:
-        genre_symbols=json.load(f)
+        genre_symbols = json.load(f)
 
-    t_env=jinja2.Environment(loader=jinja2.PackageLoader('at_glance','templates'),
-                             autoescape=True)
+    t_env = jinja2.Environment(loader=jinja2.PackageLoader('at_glance','templates'), autoescape=True)
     t_env.filters["tsepk"]=thousand_sep_filter
     t_env.filters["tag_filter"]=tag_filter
     t_env.filters["annotation_filter"]=annotation_filter
@@ -143,17 +149,13 @@ if __name__=="__main__":
 
     lang_template = t_env.get_template('language.md')
     for lang, lang_tbanks in sorted(tbanks.items()):
-        ###!!! Experiment: Instead of skipping empty languages, skip those that have never been released.
-        ###!!! In the long run, we should distinguish three kinds of treebanks:
-        ###!!! - those that have valid data and have been officially released
-        ###!!! - those that have data (valid or not) but have not been released yet
-        ###!!! - those that are empty (we may want to hide these from the title page)
-        # Skip empty means that we are printing only languages with released treebanks.
-        if args.skip == 'empty':
-            lang_tbanks = [t for t in lang_tbanks if t['first_release']]
-        # Skip withdata means that we are printing only languages with unreleased treebanks.
-        if args.skip == 'withdata':
+        # Select the required subset of treebanks. If no subset is required, all treebanks will be output.
+        if args.subset == 'current':
+            lang_tbanks = [t for t in lang_tbanks if t['repo_name'] in last_release_treebanks]
+        elif args.subset == 'sapling':
             lang_tbanks = [t for t in lang_tbanks if not t['first_release']]
+        elif args.subset == 'retired':
+            lang_tbanks = [t for t in lang_tbanks if t['first_release']]
         if len(lang_tbanks)==0:
             continue
         sum_counts = sum_dicts(list(t['counts'] for t in lang_tbanks))
