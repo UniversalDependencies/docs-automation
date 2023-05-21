@@ -698,6 +698,11 @@ Old Turkish:
   lcode: otk
   iso3: otk
   family: Turkic, Northeastern
+Pashto:
+  flag: PK
+  lcode: ps
+  iso3: pst
+  family: IE, Iranian
 Persian:
   flag: IR
   lcode: fa
