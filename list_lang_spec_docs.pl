@@ -9,12 +9,23 @@ binmode(STDIN, ':utf8');
 binmode(STDOUT, ':utf8');
 binmode(STDERR, ':utf8');
 use YAML qw(LoadFile);
+use Getopt::Long;
 
-my $udpath = '.';
-my $langyaml = $udpath.'/docs-automation/codes_and_flags.yaml';
+my $langyaml = 'codes_and_flags.yaml'; # provide path on command line if not in current folder
+my $docspath = '../docs';
+GetOptions
+(
+    'codes=s'    => \$langyaml,
+    'docs-dir=s' => \$docspath
+);
+
 if(! -f $langyaml)
 {
     die("Cannot find file '$langyaml'");
+}
+if(! -d $docspath)
+{
+    die("Cannot find folder '$docspath'");
 }
 my $languages = LoadFile($langyaml);
 # The $languages hash is indexed by language names. Create a mapping from families and genera.
@@ -22,7 +33,7 @@ my %fglanguages;
 foreach my $lname (keys(%{$languages}))
 {
     # We are only interested in languages that already have some documentation.
-    my $langdoc = "$udpath/docs/_$languages->{$lname}{lcode}/index.md";
+    my $langdoc = "$docspath/_$languages->{$lname}{lcode}/index.md";
     next if(! -f $langdoc);
     my $family_genus = $languages->{$lname}{family};
     if($family_genus =~ m/^(.+),\s*(.+)$/)
