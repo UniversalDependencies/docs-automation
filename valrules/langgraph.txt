@@ -152,6 +152,9 @@ kfm----nyq
 nyq----soj
 kfm--10--fa
 fa--10--bal
+fa--10--ps
+ps--2--bal
+ps--100--ur
 bal--100--ur
 bal--100--sd
 ur----hi
