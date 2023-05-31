@@ -77,6 +77,7 @@ my @functions =
     ['Periphrastic mood: imperative', 'Mood=Imp'],
     ['Periphrastic mood: benefactive', 'Mood=Ben'],
     ['Periphrastic mood: irrealis', 'Mood=Irr'],
+    ['Cross-reference of core argument(s) without additional TAMVE features', 'agr'],
     ['Needed in negative clauses (like English “do”, not like “not”)', 'neg'],
     ['Needed in interrogative clauses (like English “do”)', 'int'],
     ['Modal auxiliary: necessitative (“must, should”)', 'Mood=Nec'],
