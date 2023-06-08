@@ -508,6 +508,11 @@ Low Saxon:
   lcode: nds
   iso3: nds
   family: IE, Germanic
+Luxembourgish:
+  flag: LU
+  lcode: lb
+  iso3: ltz
+  family: IE, Germanic
 Macedonian:
   flag: MK
   lcode: mk

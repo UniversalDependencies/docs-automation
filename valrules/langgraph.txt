@@ -87,6 +87,7 @@ bg--10--cu
 cs--100--de
 pl--100--de
 de--2--nds
+de----lb
 de----gsw
 nds----osx
 nds----fy
