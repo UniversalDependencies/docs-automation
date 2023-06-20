@@ -168,6 +168,11 @@ Chukchi:
   lcode: ckt
   iso3: ckt
   family: Chukotko-Kamchatkan
+Classical Armenian:
+  flag: AM-ARSACID
+  lcode: xcl
+  iso3: xcl
+  family: IE, Armenian
 Classical Chinese:
   flag: CN-QING
   lcode: lzh

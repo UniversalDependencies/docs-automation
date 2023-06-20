@@ -145,6 +145,8 @@ grc--100--hit
 hit--100--hyw
 hit--1000--tr
 hyw----hy
+hyw----xcl
+hy----xcl
 kmr--100--hy
 kmr--100--hit
 kmr--10--kfm
