@@ -708,6 +708,11 @@ Old Turkish:
   lcode: otk
   iso3: otk
   family: Turkic, Northeastern
+Papiamento:
+  flag: AW
+  lcode: pap
+  iso3: pap
+  family: Creole
 Pashto:
   flag: PK
   lcode: ps
