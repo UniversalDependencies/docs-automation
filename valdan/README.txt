@@ -1,12 +1,11 @@
-This is Dan's alternative and experimental implementation of the
-automatic validation of UD data. The scripts should ideally lie in
-a CGI-accessible folder so that Github web hook can invoke them
-upon push to a UD repository. At the same time, all UD data
-repositories should be cloned as subfolders of that CGI folder.
-That poses a problem for versioning of the scripts themselves (we
-want to avoid nested git folders). Therefore I recommend to have
-this repository (docs-automation) checked out as a sibling to the
-UD data repositories, and to symlink from the CGI folder down here
+This is Dan's implementation of the automatic validation of UD data.
+The scripts should ideally lie in a CGI-accessible folder so that
+Github web hook can invoke them upon push to a UD repository. At
+the same time, all UD data repositories should be cloned as subfolders
+of that CGI folder. That poses a problem for versioning of the scripts
+themselves (we want to avoid nested git folders). Therefore I recommend
+to have this repository (docs-automation) checked out as a sibling to
+the UD data repositories, and to symlink from the CGI folder down here
 to the real (and versioned) implementation of the scripts; the same
 can be done with other important files including this README.
 
@@ -141,6 +140,22 @@ first, as there are hard-coded paths in it.
 
 
 
+# Git Configuration
+
+Newer versions of git will by default report an error if a git folder
+is owned by a user other than the parent folder, as it is seen as a
+security risk. However, the contents of our repository is typically
+updated by two users (me and www-data), with file/folder ownership
+alternating depending on who fetched the object first. Assuming that
+the validation is running on a dedicated virtual server with its own
+file system, the security risk is not significant, so we can turn the
+git rule off. We have to do it system-wide, so that it also applies
+to user www-data.
+
+  sudo git config --system --add safe.directory '*'
+
+
+
 # Perl and Python Libraries
 
 The validation server uses Perl and Python with certain libraries
@@ -160,6 +175,11 @@ directly from CPAN:
 
   sudo cpan JSON::Parse
   sudo cpan YAML
+
+Additionally, the infrastructure for registering language-specific
+features, relation subtypes, auxiliaries etc. needs the module CGI.
+
+  sudo cpan CGI
 
 If we do not have superuser access to the server, we can install
 them to the user-writable space, then copy them to the cgi folder
