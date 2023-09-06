@@ -245,8 +245,12 @@ Northeastern----Northwestern
 Northwestern----Southwestern
 tr--1000--lzz
 tr--100--kk
+kk----ky
 kk----tt
 kk--100--ug
+kk--90--uz
+ky--90--uz
+ug----uz
 ug--100--otk
 otk----sah
 ug--1000--sjo

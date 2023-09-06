@@ -958,6 +958,11 @@ Uyghur:
   lcode: ug
   iso3: uig
   family: Turkic, Southeastern
+Uzbek:
+  flag: UZ
+  lcode: uz
+  iso3: uzb
+  family: Turkic, Southeastern
 Veps:
   flag: RU-VEPS
   lcode: vep
