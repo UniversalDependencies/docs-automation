@@ -36,7 +36,9 @@ Chukotko-Kamchatkan--100--Tungusic
 Chukotko-Kamchatkan----Eskimo-Aleut
 Eskimo-Aleut--100--Hokan
 Hokan--100--Uto-Aztecan
-Uto-Aztecan----Mayan
+Uto-Aztecan--10--Oto-Manguean
+Oto-Manguean----Huavean
+Oto-Manguean--10--Mayan
 Mayan----Chibchan
 Arawakan--10--Chibchan
 Arawakan----Tupian
@@ -267,10 +269,13 @@ tl----ceb
 hil----ceb
 hil--100--id
 id----jv
+Yuman----Seri
+mov----sei
 nhi----azz
 nhi--2--nci
 azz--2--nci
 nci--100--quc
+quc----usp
 Maweti-Guarani--10--Munduruku
 Ramarama----Munduruku
 Tupari----Ramarama

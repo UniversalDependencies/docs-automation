@@ -193,6 +193,11 @@ Croatian:
   lcode: hr
   iso3: hrv
   family: IE, Slavic
+Cuicatec:
+  flag: MX
+  lcode: cux
+  iso3: cux
+  family: Oto-Manguean
 Cusco Quechua:
   flag: PE
   lcode: quz
@@ -343,6 +348,11 @@ Hittite:
   lcode: hit
   iso3: hit
   family: IE, Anatolian
+Huave:
+  flag: MX
+  lcode: huv
+  iso3: huv
+  family: Huavean
 Hungarian:
   flag: HU
   lcode: hu
@@ -597,7 +607,7 @@ Mojave:
   flag: US-AZ
   lcode: mov
   iso3: mov
-  family: Hokan
+  family: Hokan, Yuman
 Moksha:
   flag: RU-MOKSHA
   lcode: mdf
@@ -793,6 +803,11 @@ Serbian:
   lcode: sr
   iso3: srp
   family: IE, Slavic
+Seri:
+  flag: MX
+  lcode: sei
+  iso3: sei
+  family: Hokan, Seri
 Shipibo Konibo:
   flag: PE
   lcode: shp
@@ -953,6 +968,11 @@ Urdu:
   lcode: ur
   iso3: urd
   family: IE, Indic
+Uspanteko:
+  flag: GT-QC
+  lcode: usp
+  iso3: usp
+  family: Mayan
 Uyghur:
   flag: CN
   lcode: ug
