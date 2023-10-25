@@ -245,8 +245,9 @@ Southwestern----Southeastern
 Southeastern----Northeastern
 Northeastern----Northwestern
 Northwestern----Southwestern
-tr--1000--lzz
+tr----ota
 tr--100--kk
+tr--1000--lzz
 kk----ky
 kk----tt
 kk--100--ug

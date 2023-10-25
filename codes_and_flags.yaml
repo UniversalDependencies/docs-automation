@@ -718,6 +718,11 @@ Old Turkish:
   lcode: otk
   iso3: otk
   family: Turkic, Northeastern
+Ottoman Turkish:
+  flag: TR
+  lcode: ota
+  iso3: ota
+  family: Turkic, Southwestern
 Papiamento:
   flag: AW
   lcode: pap
