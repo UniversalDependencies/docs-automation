@@ -127,6 +127,7 @@ it--2--ro
 it--50--la
 la----xum
 fr--100--br
+fr--1000--ht
 en--100--cy
 ga----gd
 ga----gv

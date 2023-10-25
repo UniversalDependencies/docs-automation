@@ -313,6 +313,11 @@ Gujarati:
   lcode: gu
   iso3: guj
   family: IE, Indic
+Haitian Creole:
+  flag: HT
+  lcode: ht
+  iso3: hat
+  family: Creole
 Hausa:
   flag: NG
   lcode: ha
