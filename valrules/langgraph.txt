@@ -91,7 +91,9 @@ cs--100--de
 pl--100--de
 de--2--nds
 de----lb
-de----gsw
+de--2--gsw
+de--2--bar
+bar----gsw
 nds----osx
 nds----fy
 fy--2--nl

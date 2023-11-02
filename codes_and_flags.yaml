@@ -93,6 +93,11 @@ Batad Ifugao:
   lcode: ifb
   iso3: ifb
   family: Austronesian, Northern Luzon
+Bavarian:
+  flag: DE-BY
+  lcode: bar
+  iso3: bar
+  family: IE, Germanic
 Beja:
   flag: SD
   lcode: bej
