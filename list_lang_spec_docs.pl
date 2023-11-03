@@ -62,12 +62,17 @@ foreach my $f (sort(keys(%fglanguages)))
         {
             print("<h3>$g</h3>\n");
         }
-        print("<ul>\n");
+        # Style: no bullets, there will be flags instead.
+        print("<ul style=\"list-style-type: none; padding: 0\">\n");
         foreach my $l (sort(keys(%{$fglanguages{$f}{$g}})))
         {
             # We want to define the following style in CSS:
             # img.flag { vertical-align: middle; border: solid grey 1px; height: 1em; }
-            print("  <li><img class=\"flag\" src=\"/flags/png/$fglanguages{$f}{$g}{$l}{flag}.png\"><a href=\"/$fglanguages{$f}{$g}{$l}{lcode}/index.html\">$l</a></li>\n");
+            # However, more styles are needed to make the text left-aligned while keeping the aspect ratio of the flags.
+            # <li> padding-left: 55px makes sure the text starts after even the widest flag.
+            # <img> absolute position left: 0 makes sure the flag ignores the padding (but the absolute position is still relative with respect to <li>).
+            # <li> could also have line-height: 1.5;
+            print("  <li style=\"display: flex; align-items: center; position: relative; padding-left: 55px\"><img class=\"flag\" style=\"position: absolute; left: 0\" src=\"/flags/png/$fglanguages{$f}{$g}{$l}{flag}.png\"><a href=\"/$fglanguages{$f}{$g}{$l}{lcode}/index.html\">$l</a></li>\n");
         }
         print("</ul>\n");
     }
