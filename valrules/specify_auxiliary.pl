@@ -67,6 +67,11 @@ my @functions =
     # annotated using "xcomp".
     ['Periphrastic aspect: inchoative', 'Aspect=Inch'],
     ['Periphrastic aspect: iterative', 'Aspect=Iter'],
+    # Momentane aspect is a term from the Finnish grammar (https://en.wikipedia.org/wiki/Momentane)
+    # but we need it because of Nahuatl (mail from Robert Pugh 2023-10-09). It
+    # follows the verb X (like other auxiliaries in Nahuatl) and adds the meaning
+    # "to suddenly/quickly do X".
+    ['Periphrastic aspect: momentane', 'Aspect=Mmnt'],
     ['Periphrastic tense: past', 'Tense=Past'],
     ['Periphrastic tense: present', 'Tense=Pres'],
     ['Periphrastic tense: future', 'Tense=Fut'],
