@@ -249,12 +249,16 @@ sub get_legacy_status
     }
     my $novelty = $current ? 'CURRENT' : defined($last_release_number) ? 'RETIRED' : 'SAPLING';
     my $validity = $empty ? 'EMPTY' : scalar(@error_types) == 0 ? 'VALID' : 'ERROR';
-    # The various shades of (in)acceptability are interesting only for current treebanks with errors and for valid treebanks with warnings.
-    ###!!! (Or current treebanks that suddenly became empty again, but we currently do not address this option.)
+    # The various shades of (in)acceptability are interesting only for current treebanks with errors,
+    # for valid treebanks with warnings, or current treebanks that suddenly became empty again.
     my $acceptability;
     if($validity eq 'VALID' && scalar(@warning_types) > 0)
     {
         $acceptability = 'WARNING';
+    }
+    elsif($current && $validity eq 'EMPTY')
+    {
+        $acceptability = "BACKUP $last_release_number";
     }
     elsif($current && scalar(@error_types) > 0)
     {
