@@ -133,7 +133,7 @@ while(<REPORT>)
     my $color = 'Black';
     if(m/EMPTY BACKUP/)
     {
-        $color = 'background:PaleGreen';
+        $color = 'Black;background:PaleGreen';
         $nempty++;
     }
     elsif(m/EMPTY/)
