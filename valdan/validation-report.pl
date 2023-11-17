@@ -131,7 +131,12 @@ while(<REPORT>)
     }
     # The default black color is used for empty saplings.
     my $color = 'Black';
-    if(m/EMPTY/)
+    if(m/EMPTY BACKUP/)
+    {
+        $color = 'background:PaleGreen';
+        $nempty++;
+    }
+    elsif(m/EMPTY/)
     {
         $nempty++;
     }
