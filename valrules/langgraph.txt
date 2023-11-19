@@ -244,6 +244,9 @@ cop--10--kab
 cop--50--bej
 kab--50--ha
 ha----say
+abq----ab
+ab--1000--ka
+ka----lzz
 Southwestern----Southeastern
 Southeastern----Northeastern
 Northeastern----Northwestern

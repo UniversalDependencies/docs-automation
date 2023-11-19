@@ -3,6 +3,11 @@ Abaza:
   lcode: abq
   iso3: abq
   family: Northwest Caucasian
+Abkhaz:
+  flag: GE-AB
+  lcode: ab
+  iso3: abk
+  family: Northwest Caucasian
 Afrikaans:
   flag: ZA
   lcode: af
