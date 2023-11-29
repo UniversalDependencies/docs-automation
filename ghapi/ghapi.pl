@@ -3,6 +3,13 @@
 # Copyright © 2023 Dan Zeman <zeman@ufal.mff.cuni.cz>
 # License: GNU GPL
 
+# Prerequisity: Download and install gh (GitHub command line interface, https://cli.github.com/).
+# I currently have it on my Windows laptop but not on the Linux network.
+# Once it is installed (visible in PATH), populate the GH_TOKEN environment variable with my GitHub access token. Then run
+#   gh auth login
+# I am not sure how often I will have to call this. The credentials seem to stay valid for some time (I have not closed the command line window).
+# Run gh --help to learn more. And visit https://docs.github.com/en/rest?apiVersion=2022-11-28 to learn about the API (gh api).
+
 use utf8;
 use open ':utf8';
 binmode(STDIN, ':utf8');
