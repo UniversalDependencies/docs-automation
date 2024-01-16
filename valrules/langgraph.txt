@@ -247,10 +247,11 @@ ha----say
 Northern Atlantic----Northern-Central Gur
 Northern-Central Gur----Defoid
 Defoid----Bantoid
-sw--2--ndg
-bav--2--cgg
-bav--2--ndg
+bav--10--cgg
+bav--10--nyn
 cgg----nyn
+nyn--2--sw
+sw--2--ndg
 sw--2--tn
 abq----ab
 ab--1000--ka
