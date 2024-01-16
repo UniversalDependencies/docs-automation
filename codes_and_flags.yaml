@@ -948,6 +948,11 @@ Tigrinya:
   lcode: ti
   iso3: tir
   family: Afro-Asiatic, Semitic
+Tswana:
+  flag: BW
+  lcode: tn
+  iso3: tsn
+  family: Niger-Congo, Bantoid
 Tunisian Arabic:
   flag: TN
   lcode: aeb
