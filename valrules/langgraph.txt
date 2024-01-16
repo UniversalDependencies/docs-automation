@@ -244,6 +244,14 @@ cop--10--kab
 cop--50--bej
 kab--50--ha
 ha----say
+Northern Atlantic----Northern-Central Gur
+Northern-Central Gur----Defoid
+Defoid----Bantoid
+sw--2--ndg
+bav--2--cgg
+bav--2--ndg
+cgg----nyn
+sw--2--tn
 abq----ab
 ab--1000--ka
 ka----lzz
