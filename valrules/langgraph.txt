@@ -241,6 +241,7 @@ ar--2--aii
 aii----akk
 ar--10--cop
 ar--10--kab
+cop----egy
 cop--10--kab
 cop--50--bej
 kab--50--ha

@@ -233,6 +233,11 @@ Dutch:
   lcode: nl
   iso3: nld
   family: IE, Germanic
+Egyptian:
+  flag: EG
+  lcode: egy
+  iso3: egy
+  family: Afro-Asiatic, Egyptian
 English:
   flag: GB
   lcode: en
