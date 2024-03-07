@@ -27,7 +27,6 @@
 # git checkout -b dev
 # git push --all --set-upstream
 
-
 # Use this command to get the JSON descriptions of all teams defined in the UniversalDependencies organization.
 # gh api https://api.github.com/orgs/UniversalDependencies/teams
 # It will tell us that the id of the Contributors team is 951065 and its URL is
@@ -43,24 +42,41 @@ use open ':utf8';
 binmode(STDIN, ':utf8');
 binmode(STDOUT, ':utf8');
 binmode(STDERR, ':utf8');
+use Carp;
 use Getopt::Long;
 use JSON::Parse 'parse_json';
 
 sub usage
 {
+    print STDERR ("perl ghapi.pl --create UD_Ancient_Greek-PROIEL\n");
+    print STDERR ("    ... This will create treebank repository UD_Ancient_Greek-PROIEL, clone it and initialize up to the point where README.md should be edited manually.\n");
+    print STDERR ("perl ghapi.pl --finalize UD_Ancient_Greek-PROIEL\n");
+    print STDERR ("    ... This will finalize the creation of the treebank repository UD_Ancient_Greek-PROIEL after README.md has been edited manually (finalization includes protection).\n");
     print STDERR ("perl ghapi.pl --protect UD_Ancient_Greek-PROIEL\n");
     print STDERR ("    ... This will protect the master and dev branches of UD_Ancient_Greek-PROIEL the way we do it for UD treebank repositories.\n");
 }
 
-my $repo; # name of the repository to protect
+my $create_repo; # name of the repository to create
+my $finalize_repo; # name of the repository to finalize (including protection)
+my $protect_repo; # name of the repository to protect
 GetOptions
 (
-    'protect=s' => \$repo
+    'create=s'   => \$create_repo,
+    'finalize=s' => \$finalize_repo,
+    'protect=s'  => \$protect_repo
 );
-if(!defined($repo) || $repo !~ m/^UD_[-A-Za-z_]+$/)
+my $create = defined($create_repo) && $create_repo =~ m/^UD_[-A-Za-z_]+$/;
+my $finalize = defined($finalize_repo) && $finalize_repo =~ m/^UD_[-A-Za-z_]+$/;
+my $protect = defined($protect_repo) && $protect_repo =~ m/^UD_[-A-Za-z_]+$/;
+if($create && $protect || $finalize && $protect || $create && $finalize)
 {
     usage();
-    die("Missing name of UD treebank repository to protect");
+    confess("Cannot create, finalize and protect at the same time");
+}
+if(!$create && !$finalize && !$protect)
+{
+    usage();
+    confess("Need a repository name to either create or finalize or protect");
 }
 
 # Create JSON with protection settings for a 'master' branch.
@@ -96,8 +112,19 @@ my $dev_protection_json = <<EOF
 EOF
 ;
 
-protect_branch($repo, 'master');
-protect_branch($repo, 'dev');
+if($create)
+{
+    create_repository($create_repo);
+}
+elsif($finalize)
+{
+    finalize_repository($finalize_repo);
+}
+elsif($protect)
+{
+    protect_branch($protect_repo, 'master');
+    protect_branch($protect_repo, 'dev');
+}
 
 # We could obtain the list of known repositories and protect them all.
 # But now this script is intended to protect one particular repository
@@ -113,6 +140,45 @@ protect_branch($repo, 'dev');
 #    print STDERR ("Test: Protect branch dev of $repo->{name}...\n");
 #    protect_branch($repo->{name}, 'dev');
 #}
+
+
+
+#------------------------------------------------------------------------------
+# Creates a UD treebank repository, clones it to the local disk and performs
+# the initialization up to the point where README.md must be edited manually.
+# Requires gh and git (with credentials for Github).
+#------------------------------------------------------------------------------
+sub create_repository
+{
+    my $repo = shift;
+    confess("Wrong repo name '$repo'") unless($repo =~ m/^UD_[-A-Za-z_]+$/);
+    saferun("gh repo create UniversalDependencies/$repo --public --add-readme --team Contributors") or confess();
+    saferun("git clone git\@github.com:UniversalDependencies/$repo.git") or confess();
+    chdir($repo) or confess("Cannot change to folder '$repo': $!");
+    copy_file('../UD_ZZZ-Template/README.md', './README.md');
+    copy_file('../UD_ZZZ-Template/CONTRIBUTING.md', './CONTRIBUTING.md');
+    copy_file('../UD_ZZZ-Template/LICENSE.txt', './LICENSE.txt');
+    saferun("git add CONTRIBUTING.md LICENSE.txt") or confess();
+}
+
+
+
+#------------------------------------------------------------------------------
+# Finalizes the creation of a new treebank repository after the README.md file
+# has been edited (typically we need to modify at least Contributors and
+# Contact).
+#------------------------------------------------------------------------------
+sub finalize_repository
+{
+    my $repo = shift;
+    confess("Wrong repo name '$repo'") unless($repo =~ m/^UD_[-A-Za-z_]+$/);
+    chdir($repo) or confess("Cannot change to folder '$repo': $!");
+    saferun('git commit -a -m "Initialization and the last commit to the master branch; switching to dev now."') or confess();
+    saferun('git checkout -b dev') or confess();
+    saferun('git push --all --set-upstream') or confess();
+    protect_branch($repo, 'master');
+    protect_branch($repo, 'dev');
+}
 
 
 
@@ -163,8 +229,8 @@ sub protect_branch
     my $apicall = "repos/UniversalDependencies/$repo/branches/$branch/protection -X PUT --input $json_file_name";
     my $response = ghapi($apicall);
     ###!!! Debugging: Print the resulting setting of allow_force_pushes.
-    print STDERR ("allow_force_pushes = '$response->{allow_force_pushes}{enabled}'\n");
-    unlink($json_file_name) or die("Cannot remove $json_file_name: $!");
+    #print STDERR ("allow_force_pushes = '$response->{allow_force_pushes}{enabled}'\n");
+    unlink($json_file_name) or confess("Cannot remove $json_file_name: $!");
 }
 
 
@@ -175,5 +241,74 @@ sub protect_branch
 sub ghapi
 {
     my $apicall = shift;
+    print STDERR ("Executing in shell: gh api $apicall\n");
     return parse_json(`gh api $apicall`);
+}
+
+
+
+#------------------------------------------------------------------------------
+# Copies a text file. We use Perl input/output functions to avoid shell-
+# specific commands.
+#------------------------------------------------------------------------------
+sub copy_file
+{
+    my $inpath = shift;
+    my $outpath = shift;
+    # Make sure that line breaks will be LF even if we are running on Windows.
+    # Set the output record separator to LF.
+    local $\ = "\n";
+    confess("Unknown input file") if(!defined($inpath));
+    confess("Unknown output file") if(!defined($outpath));
+    open(IN, '<', $inpath) or confess("Cannot read '$inpath': $!");
+    open(OUT, '>', $outpath) or confess("Cannot write '$outpath': $!");
+    while(<IN>)
+    {
+        print OUT;
+    }
+}
+
+
+
+#------------------------------------------------------------------------------
+# Calls an external program. Uses system(). In addition, echoes the command
+# line to the standard error output, and returns true/false according to
+# whether the call was successful and the external program returned 0 (success)
+# or non-zero (error).
+#
+# Typically called as follows:
+#     saferun($command) or die;
+#------------------------------------------------------------------------------
+sub saferun
+{
+    my $command = join(' ', @_);
+    print STDERR ("Executing in shell: $command\n");
+    # bash may not be available
+    #system('bash', '-c', $command);
+    system($command);
+    # The external program does not exist, is not executable or the execution failed for other reasons.
+    if($?==-1)
+    {
+        die("ERROR: Failed to execute: $command\n  $!\n");
+    }
+    # We were able to start the external program but its execution failed.
+    elsif($? & 127)
+    {
+        printf STDERR ("ERROR: Execution of: $command\n  died with signal %d, %s coredump\n",
+            ($? & 127), ($? & 128) ? 'with' : 'without');
+        die;
+    }
+    # The external program ended "successfully" (this still does not guarantee
+    # that the external program returned zero!)
+    else
+    {
+        my $exitcode = $? >> 8;
+        print STDERR ("Exit code: $exitcode\n") if($exitcode);
+        # Return false if the program returned a non-zero value.
+        # It is up to the caller how they will handle the return value.
+        # (The easiest is to always write:
+        # saferun($command) or die;
+        # )
+        return ! $exitcode;
+    }
 }
