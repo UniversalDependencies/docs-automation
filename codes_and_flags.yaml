@@ -973,6 +973,11 @@ Turkish German:
   lcode: qtd
   iso3: qtd
   family: Code switching
+Tuwari:
+  flag: PG
+  lcode: tww
+  iso3: tww
+  family: Sepik
 Ukrainian:
   flag: UA
   lcode: uk

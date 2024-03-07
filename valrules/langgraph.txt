@@ -21,7 +21,8 @@ Sino-Tibetan----Tai-Kadai
 Austro-Asiatic----Sino-Tibetan
 Austro-Asiatic--10--Austronesian
 Austronesian--10--Sino-Tibetan
-Austronesian--10--Pama-Nyungan
+Austronesian--10--Sepik
+Sepik--10--Pama-Nyungan
 Pama-Nyungan----Tangkic
 Afro-Asiatic--10--Sumerian
 Afro-Asiatic--10--Turkic
