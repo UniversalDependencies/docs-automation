@@ -10,12 +10,58 @@
 # I am not sure how often I will have to call this. The credentials seem to stay valid for some time (I have not closed the command line window).
 # Run gh --help to learn more. And visit https://docs.github.com/en/rest?apiVersion=2022-11-28 to learn about the API (gh api).
 
+# gh repo create UniversalDependencies/UD_Tuwari-Autogramm --public --add-readme --team Contributors
+###!!! It would be possible to add a "--clone" option to the above and immediately clone the new repository in one step.
+###!!! But it will clone the repository using an https://-based URL while we may need a ssh://-based one (otherwise we may not be able to push).
+###!!! So we better clone it separately, stating explicitly the ssh URL (set GIT_SSH==C:\Program Files\PuTTY\plink.exe may be needed first).
+# git clone git@github.com:UniversalDependencies/UD_Tuwari-Autogramm.git
+# cd UD_Tuwari-Autogramm
+# copy ..\UD_ZZZ-Template\README.md .
+# copy ..\UD_ZZZ-Template\CONTRIBUTING.md .
+# copy ..\UD_ZZZ-Template\LICENSE.txt .
+# git add CONTRIBUTING.md LICENSE.txt
+
+# Manually edit the README.md (at least Contributors and Contact). When done, run the following:
+
+# git commit -a -m "Initialization and the last commit to the master branch; switching to dev now."
+# git checkout -b dev
+# git push --all --set-upstream
+
+
+# Use this command to get the JSON descriptions of all teams defined in the UniversalDependencies organization.
+# gh api https://api.github.com/orgs/UniversalDependencies/teams
+# It will tell us that the id of the Contributors team is 951065 and its URL is
+# https://api.github.com/organizations/7457237/team/951065
+
+# Something like this should grant the write permission for the Contributors team to the UD_Tuwari-Autogramm repository.
+# https://api.github.com/teams/951065/repos/UniversalDependencies/UD_Tuwari-Autogramm
+# PUT -d
+# {"permission": "write"}
+
 use utf8;
 use open ':utf8';
 binmode(STDIN, ':utf8');
 binmode(STDOUT, ':utf8');
 binmode(STDERR, ':utf8');
+use Getopt::Long;
 use JSON::Parse 'parse_json';
+
+sub usage
+{
+    print STDERR ("perl ghapi.pl --protect UD_Ancient_Greek-PROIEL\n");
+    print STDERR ("    ... This will protect the master and dev branches of UD_Ancient_Greek-PROIEL the way we do it for UD treebank repositories.\n");
+}
+
+my $repo; # name of the repository to protect
+GetOptions
+(
+    'protect=s' => \$repo
+);
+if(!defined($repo) || $repo !~ m/^UD_[-A-Za-z_]+$/)
+{
+    usage();
+    die("Missing name of UD treebank repository to protect");
+}
 
 # Create JSON with protection settings for a 'master' branch.
 # https://docs.github.com/en/rest/branches/branch-protection?apiVersion=2022-11-28#update-branch-protection
@@ -50,17 +96,23 @@ my $dev_protection_json = <<EOF
 EOF
 ;
 
-print STDERR ("Fetching the list of UD treebank repositories from Github...\n");
-my @repos = list_treebank_repos();
-my $n = scalar(@repos);
-my $npriv = scalar(grep {$_->{visibility} eq 'private'} (@repos));
-print STDERR ("Found $n repositories ($npriv private).\n");
+protect_branch($repo, 'master');
+protect_branch($repo, 'dev');
+
+# We could obtain the list of known repositories and protect them all.
+# But now this script is intended to protect one particular repository
+# whose name was given as the --protect option.
+#print STDERR ("Fetching the list of UD treebank repositories from Github...\n");
+#my @repos = list_treebank_repos();
+#my $n = scalar(@repos);
+#my $npriv = scalar(grep {$_->{visibility} eq 'private'} (@repos));
+#print STDERR ("Found $n repositories ($npriv private).\n");
 # Protect dev branches of all repos.
-foreach my $repo (@repos)
-{
-    print STDERR ("Test: Protect branch dev of $repo->{name}...\n");
-    protect_branch($repo->{name}, 'dev');
-}
+#foreach my $repo (@repos)
+#{
+#    print STDERR ("Test: Protect branch dev of $repo->{name}...\n");
+#    protect_branch($repo->{name}, 'dev');
+#}
 
 
 
