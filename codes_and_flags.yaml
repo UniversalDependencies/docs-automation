@@ -743,6 +743,11 @@ Ottoman Turkish:
   lcode: ota
   iso3: ota
   family: Turkic, Southwestern
+Palenquero:
+  flag: CO
+  lcode: pln
+  iso3: pln
+  family: Creole
 Papiamento:
   flag: AW
   lcode: pap
