@@ -168,9 +168,11 @@ fa--10--bal
 fa--10--ps
 ps--2--bal
 ps--100--ur
+ps--90--trw
 bal--100--ur
 bal--100--sd
 ur----hi
+ur--2--trw
 ur--2--sd
 sd--2--gu
 gu--2--mr

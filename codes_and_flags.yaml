@@ -958,6 +958,11 @@ Tigrinya:
   lcode: ti
   iso3: tir
   family: Afro-Asiatic, Semitic
+Torwali:
+  flag: PK
+  lcode: trw
+  iso3: trw
+  family: IE, Indic
 Tswana:
   flag: BW
   lcode: tn
