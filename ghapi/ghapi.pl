@@ -255,15 +255,15 @@ sub copy_file
 {
     my $inpath = shift;
     my $outpath = shift;
-    # Make sure that line breaks will be LF even if we are running on Windows.
-    # Set the output record separator to LF.
-    local $\ = "\n";
     confess("Unknown input file") if(!defined($inpath));
     confess("Unknown output file") if(!defined($outpath));
     open(IN, '<', $inpath) or confess("Cannot read '$inpath': $!");
-    open(OUT, '>', $outpath) or confess("Cannot write '$outpath': $!");
+    # Open the file for writing with :raw layer to disable line-ending translation (LF should not be translated to CRLF on Windows).
+    open(OUT, '>:raw', $outpath) or confess("Cannot write '$outpath': $!");
     while(<IN>)
     {
+        $_ =~ s/\r?\n$//;
+        $_ .= "\n";
         print OUT;
     }
 }
