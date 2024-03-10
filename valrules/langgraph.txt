@@ -215,10 +215,12 @@ fi--2--krl
 krl----olo
 krl--2--vep
 olo--2--vep
-krl--100--koi
+krl--100--kv
 krl--100--myv
+kv--2--koi
+kv--2--kpv
 koi----kpv
-koi--100--myv
+kv--100--myv
 myv----mdf
 mdf--1000--ru
 Semitic----Cushitic
