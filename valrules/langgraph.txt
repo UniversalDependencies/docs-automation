@@ -174,14 +174,17 @@ bal--100--sd
 ur----hi
 ur--2--trw
 ur--2--sd
+ur--2--pa
 sd--2--gu
 gu--2--mr
 gu--2--hi
+hi--2--pa
 hi--2--pra
 hi--2--xnr
 hi--2--mjl
 hi--2--bho
 hi--2--mag
+pa--2--xnr
 pra----sa
 xnr----mjl
 xnr----ne
