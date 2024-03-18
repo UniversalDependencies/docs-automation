@@ -80,6 +80,7 @@ my @functions =
     ['Periphrastic mood: conditional', 'Mood=Cnd'],
     ['Periphrastic mood: subjunctive', 'Mood=Sub'],
     ['Periphrastic mood: imperative', 'Mood=Imp'],
+    ['Periphrastic mood: optative', 'Mood=Opt'],
     ['Periphrastic mood: benefactive', 'Mood=Ben'],
     ['Periphrastic mood: irrealis', 'Mood=Irr'],
     ['Cross-reference of core argument(s) without additional TAMVE features', 'agr'],
