@@ -768,6 +768,11 @@ Persian:
   lcode: fa
   iso3: fas
   family: IE, Iranian
+Phrygian:
+  flag: TR
+  lcode: xpg
+  iso3: xpg
+  family: IE, Greek
 Pnar:
   flag: IN
   lcode: pbv
