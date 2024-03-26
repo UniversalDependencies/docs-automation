@@ -718,6 +718,11 @@ Old East Slavic:
   lcode: orv
   iso3: orv
   family: IE, Slavic
+Old English:
+  flag: GB-ENG
+  lcode: ang
+  iso3: ang
+  family: IE, Germanic
 Old French:
   flag: FR-ROYAL
   lcode: fro

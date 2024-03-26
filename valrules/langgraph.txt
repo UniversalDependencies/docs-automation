@@ -107,6 +107,7 @@ sv----no
 no--5--fo
 fo----is
 sv--10--got
+en----ang
 en--100--fr
 en--1000--pcm
 bg--100--ro
