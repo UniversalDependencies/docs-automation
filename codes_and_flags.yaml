@@ -698,6 +698,11 @@ North Sami:
   lcode: sme
   iso3: sme
   family: Uralic, Sami
+Northwest Gbaya:
+  flag: CF
+  lcode: gya
+  iso3: gya
+  family: Niger-Congo, Gbaya-Manza-Ngbaka
 Norwegian:
   flag: 'NO'
   lcode: 'no'

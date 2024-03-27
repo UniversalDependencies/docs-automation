@@ -262,6 +262,7 @@ cop--50--bej
 kab--50--ha
 ha----say
 Northern Atlantic----Northern-Central Gur
+Northern-Central Gur----Gbaya-Manza-Ngbaka
 Northern-Central Gur----Defoid
 Defoid----Bantoid
 bav--10--cgg
