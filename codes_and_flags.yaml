@@ -508,6 +508,11 @@ Lango:
   lcode: laj
   iso3: laj
   family: Eastern Sudanic, Nilotic
+Latgalian:
+  flag: LV-LTG
+  lcode: ltg
+  iso3: ltg
+  family: IE, Baltic
 Latin:
   flag: VA
   lcode: la

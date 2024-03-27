@@ -90,6 +90,11 @@ orv--10--cu
 bg--10--cu
 cs--100--de
 pl--100--de
+pl--100--lt
+ru--100--lv
+lv----ltg
+lv--2--lt
+ltg--2--lt
 de--2--nds
 de----lb
 de--2--gsw
