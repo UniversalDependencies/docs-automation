@@ -344,3 +344,10 @@ xav--100--bor
 pap--2--pln
 pap--8--ht
 ht--10--pcm
+qhe----qte
+qhe--2--qee
+qee--10--qaf
+qee--10--qfn
+qee--10--qtd
+qaf--5--qtd
+qfn--10--qtd
