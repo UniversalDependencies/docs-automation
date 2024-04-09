@@ -4,6 +4,7 @@ Indo-European--10--Dravidian
 Indo-European--10--Afro-Asiatic
 Indo-European--10--Basque
 Indo-European--2--Creole
+Indo-European--2--Code switching
 Kartvelian--100--Basque
 Kartvelian----Northwest Caucasian
 Kartvelian----Nakh-Daghestanian
@@ -104,9 +105,12 @@ bar----gsw
 nds----osx
 nds----fy
 fy--2--nl
+fy--1000--qfn
+nl--1000--qfn
 nl----af
 nl--10--en
 de--10--da
+de--1000--qtd
 da----sv
 da----no
 sv----no
@@ -116,6 +120,9 @@ sv--10--got
 en----ang
 en--100--fr
 en--1000--pcm
+en--1000--qee
+en--1000--qhe
+en--1000--qte
 bg--100--ro
 sl--100--it
 pt--3--gl
@@ -125,6 +132,7 @@ es--10--ca
 es--3--gl
 es----lad
 es--1000--pln
+es--1000--qee
 ca--3--oc
 oc--3--fr
 fr--2--frm
@@ -139,6 +147,7 @@ it--50--la
 la----xum
 fr--100--br
 fr--1000--ht
+fr--1000--qaf
 en--100--cy
 ga----gd
 ga----gv
@@ -192,6 +201,7 @@ hi--2--xnr
 hi--2--mjl
 hi--2--bho
 hi--2--mag
+hi--1000--qhe
 pa--2--xnr
 pra----sa
 xnr----mjl
@@ -209,6 +219,7 @@ mr--10--si
 mr--1000--te
 si--1000--ta
 te----kn
+te--1000--qte
 kn--2--ml
 kn--2--ta
 ml----ta
@@ -257,6 +268,7 @@ ar--2--aii
 aii----akk
 ar--10--cop
 ar--10--kab
+ar--1000--qaf
 cop----egy
 cop--10--kab
 cop--50--bej
@@ -282,6 +294,7 @@ Northwestern----Southwestern
 tr----ota
 tr--100--kk
 tr--1000--lzz
+tr--1000--qtd
 kk----ky
 kk----tt
 kk--100--ug

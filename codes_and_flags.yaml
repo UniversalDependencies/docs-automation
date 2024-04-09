@@ -973,6 +973,11 @@ Telugu:
   lcode: te
   iso3: tel
   family: Dravidian
+Telugu English:
+  flag: IN
+  lcode: qte
+  iso3: qte
+  family: Code switching
 Thai:
   flag: TH
   lcode: th
