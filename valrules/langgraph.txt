@@ -36,7 +36,8 @@ Khoe-Kwadi----Niger-Congo
 Chukotko-Kamchatkan--100--Turkic
 Chukotko-Kamchatkan--100--Tungusic
 Chukotko-Kamchatkan----Eskimo-Aleut
-Eskimo-Aleut--100--Hokan
+Eskimo-Aleut--10--Na-Dene
+Na-Dene--100--Hokan
 Hokan--100--Uto-Aztecan
 Uto-Aztecan--10--Oto-Manguean
 Oto-Manguean----Huavean
@@ -292,6 +293,7 @@ Southeastern----Northeastern
 Northeastern----Northwestern
 Northwestern----Southwestern
 tr----ota
+tr--2--az
 tr--100--kk
 tr--1000--lzz
 tr--1000--qtd
@@ -305,7 +307,6 @@ ug--100--otk
 otk----sah
 ug--1000--sjo
 sah--1000--ckt
-ckt--1000--ess
 Northern Luzon----Central Philippine
 Central Philippine--10--Malayo-Sumbawan
 Malayo-Sumbawan----Javanese
@@ -317,6 +318,8 @@ tl----ceb
 hil----ceb
 hil--100--id
 id----jv
+ckt--1000--ess
+ess--1000--gwi
 Yuman----Seri
 mov----sei
 nhi----azz
@@ -324,6 +327,7 @@ nhi--2--nci
 azz--2--nci
 nci--100--quc
 quc----usp
+jaa----pad
 Maweti-Guarani--10--Munduruku
 Ramarama----Munduruku
 Tupari----Ramarama

@@ -73,6 +73,11 @@ Assyrian:
   lcode: aii
   iso3: aii
   family: Afro-Asiatic, Semitic
+Azerbaijani:
+  flag: AZ
+  lcode: az
+  iso3: aze
+  family: Turkic, Southwestern
 Babungo:
   flag: CM
   lcode: bav
@@ -328,6 +333,11 @@ Gujarati:
   lcode: gu
   iso3: guj
   family: IE, Indic
+Gwichin:
+  flag: CA
+  lcode: gwi
+  iso3: gwi
+  family: Na-Dene
 Haitian Creole:
   flag: HT
   lcode: ht
@@ -778,6 +788,11 @@ Pashto:
   lcode: ps
   iso3: pst
   family: IE, Iranian
+Paumari:
+  flag: BR
+  lcode: pad
+  iso3: pad
+  family: Arawan
 Persian:
   flag: IR
   lcode: fa
