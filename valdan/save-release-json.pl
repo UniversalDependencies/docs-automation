@@ -245,6 +245,7 @@ sub get_changes_in_treebank_list
                 delete($treebanks{$t});
             }
         }
+        print STDERR ("--------------------------------------------------\n");
     }
     ###!!! I am temporarily hard-coding here what this function found.
     ###!!! Later we will want to save it in the JSON file somehow.
