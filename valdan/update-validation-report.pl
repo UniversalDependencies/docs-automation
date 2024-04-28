@@ -51,7 +51,7 @@ else
 {
     $relfile = "$libpath/docs-automation/valdan/releases.json";
 }
-my $releases = json_file_to_perl($relfile)->{releases};
+my $treebank_history = udlib::get_treebank_history($relfile);
 # Get the list of validation dispensations for this treebank.
 my $dispfile;
 if(-f 'dispensations.json')
@@ -91,7 +91,7 @@ if(!$folder_empty)
     $folder_success = $folder_success && $result;
     count_error_types("log/$folder.log", \%error_stats);
 }
-my $treebank_message = get_treebank_message($folder, $folder_empty, $folder_success, \%error_stats, $releases, $dispensations);
+my $treebank_message = get_treebank_message($folder, $folder_empty, $folder_success, \%error_stats, $treebank_history, $dispensations);
 print STDERR ("$treebank_message\n");
 # Update the validation report that comprises all treebanks.
 my %valreps;
@@ -150,7 +150,7 @@ sub get_treebank_message
     my $empty = shift;
     my $folder_success = shift;
     my $error_stats = shift;
-    my $releases = shift;
+    my $treebank_history = shift;
     my $dispensations = shift;
     my $treebank_message = "$folder: ";
     my @error_types = sort(keys(%{$error_stats}));
@@ -165,7 +165,7 @@ sub get_treebank_message
         push(@error_types, 'LX INTERNAL VALIDATION-SUCCESS-BUT-STILL-ERRORS');
         push(@error_testids, 'VALIDATION-SUCCESS-BUT-STILL-ERRORS');
     }
-    $treebank_message .= get_legacy_status($folder, $empty, \@error_testids, \@warning_testids, $releases, $dispensations);
+    $treebank_message .= get_legacy_status($folder, $empty, \@error_testids, \@warning_testids, $treebank_history, $dispensations);
     # Add the list of errors and warnings to the message.
     if(scalar(@error_types) > 0)
     {
@@ -201,7 +201,7 @@ sub get_legacy_status
     my $empty = shift;
     my $error_types = shift; # array ref
     my $warning_types = shift; # array ref
-    my $releases = shift; # hash ref
+    my $treebank_history = shift; # hash ref
     my $dispensations = shift; # hash ref
     my @error_types = @{$error_types};
     my @warning_types = @{$warning_types};
@@ -224,28 +224,13 @@ sub get_legacy_status
     # Novelty: SAPLING (never released) / CURRENT (released last time) / RETIRED (released in the past but not last time)
     # Validity: VALID (no errors) / ERROR (there are errors) / EMPTY (there is no data)
     # Acceptability: VALID (good to go next time) / WARNING (still good to go) / LEGACY (acceptable) / NEGLECTED (last year of acceptability is running) / DISCARD (not acceptable any more) / BACKUP (current data not acceptable but previously released data can be used as a backup)
-    my @release_numbers = sort_release_numbers(keys(%{$releases}));
     # If the treebank has been released, find the number of its last release.
     my $last_release_number;
     my $current = 0;
-    for(my $i = $#release_numbers; $i >= 0; $i--)
+    if(exists($treebank_history->{$folder}))
     {
-        my $rn = $release_numbers[$i];
-        my $found = 0;
-        foreach my $t (@{$releases->{$rn}{treebanks}})
-        {
-            if($t eq $folder)
-            {
-                $found = 1;
-                last;
-            }
-        }
-        if($found)
-        {
-            $last_release_number = $rn;
-            $current = 1 if($i == $#release_numbers);
-            last;
-        }
+        $last_release_number = $treebank_history->{$folder}{lastrel};
+        $current = 1 if($last_release_number eq $treebank_history->{relnums}[-1]);
     }
     my $novelty = $current ? 'CURRENT' : defined($last_release_number) ? 'RETIRED' : 'SAPLING';
     my $validity = $empty ? 'EMPTY' : scalar(@error_types) == 0 ? 'VALID' : 'ERROR';
