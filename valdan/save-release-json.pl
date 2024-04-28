@@ -119,7 +119,10 @@ $json .= '"releases": {'."\n";
 @rjsons = ();
 # Order the releases by their release numbers.
 my @sorted = sort_release_numbers(keys(%{$releases}));
-get_changes_in_treebank_list($releases, @sorted);
+# If a treebank is renamed between two releases, it must be entered manually in
+# the JSON file in "renamed_after_release". This function could be run to verify
+# that we know about all name changes, otherwise it is no longer needed.
+#get_changes_in_treebank_list($releases, @sorted);
 my $lastrnum;
 my $lastdate;
 foreach my $r (@sorted)
@@ -132,17 +135,6 @@ foreach my $r (@sorted)
     $lastrnum = $r;
     $lastdate = $releases->{$r}{date};
     my $rjson = '"'.$r.'": '.encode_json(['date', $releases->{$r}{date}], ['treebanks', $releases->{$r}{treebanks}, 'list']);
-    if(defined($releases->{$r}{renamed}) && scalar(@{$releases->{$r}{renamed}}) > 0)
-    {
-        my @rnmjsons;
-        foreach my $rnm (@{$releases->{$r}{renamed}})
-        {
-            push(@rnmjsons, '["'.escape_json_string($rnm->[0]).'", "'.escape_json_string($rnm->[1]).'"]');
-        }
-        my $rnmjson = '['.join(', ', @rnmjsons).']'; #{{
-        $rjson =~ s/\}$/, /;
-        $rjson .= '"renamed": '.$rnmjson.'}';
-    }
     push(@rjsons, $rjson);
 }
 $json .= join(",\n", @rjsons)."\n";
@@ -207,7 +199,10 @@ sub sort_release_numbers
 #------------------------------------------------------------------------------
 # Iterates over the known releases. Looks for treebanks that have disappeared
 # and treebanks that newly appeared. This may help to find the rare cases when
-# a treebank was renamed.
+# a treebank was renamed. Note that name changes are now stored in a separate
+# structure in the JSON file and that structure must be edited manually when
+# a new name change occurs. This function is thus normally not needed but it
+# may be used to verify that the manual list of changes reflects the reality.
 #------------------------------------------------------------------------------
 sub get_changes_in_treebank_list
 {
@@ -246,92 +241,6 @@ sub get_changes_in_treebank_list
             }
         }
         print STDERR ("--------------------------------------------------\n");
-    }
-    ###!!! I am temporarily hard-coding here what this function found.
-    ###!!! Later we will want to save it in the JSON file somehow.
-    my @name_changes =
-    (
-        ['1.2',  'UD_Latin-ITT',     '1.3', 'UD_Latin-ITTB'],
-        ['1.4',  'UD_Norwegian',     '2.0', 'UD_Norwegian-Bokmaal'],
-        ['2.1',  'UD_Afrikaans',     '2.2', 'UD_Afrikaans-AfriBooms'],
-        ['2.1',  'UD_Ancient_Greek', '2.2', 'UD_Ancient_Greek-Perseus'],
-        ['2.1',  'UD_Arabic',        '2.2', 'UD_Arabic-PADT'],
-        ['2.1',  'UD_Basque',        '2.2', 'UD_Basque-BDT'],
-        ['2.1',  'UD_Belarusian',    '2.2', 'UD_Belarusian-HSE'],
-        ['2.1',  'UD_Bulgarian',     '2.2', 'UD_Bulgarian-BTB'],
-        ['2.1',  'UD_Buryat',        '2.2', 'UD_Buryat-BDT'],
-        ['2.1',  'UD_Cantonese',     '2.2', 'UD_Cantonese-HK'],
-        ['2.1',  'UD_Catalan',       '2.2', 'UD_Catalan-AnCora'],
-        ['2.1',  'UD_Chinese',       '2.2', 'UD_Chinese-GSD'],
-        ['2.1',  'UD_Coptic',        '2.2', 'UD_Coptic-Scriptorium'],
-        ['2.1',  'UD_Croatian',      '2.2', 'UD_Croatian-SET'],
-        ['2.1',  'UD_Czech',         '2.2', 'UD_Czech-PDT'],
-        ['2.1',  'UD_Danish',        '2.2', 'UD_Danish-DDT'],
-        ['2.1',  'UD_Dutch',         '2.2', 'UD_Dutch-Alpino'],
-        ['2.1',  'UD_English',       '2.2', 'UD_English-EWT'],
-        ['2.1',  'UD_Estonian',      '2.2', 'UD_Estonian-EDT'],
-        ['2.1',  'UD_Finnish',       '2.2', 'UD_Finnish-TDT'],
-        ['2.1',  'UD_French',        '2.2', 'UD_French-GSD'],
-        ['2.1',  'UD_Galician',      '2.2', 'UD_Galician-CTG'],
-        ['2.1',  'UD_German',        '2.2', 'UD_German-GSD'],
-        ['2.1',  'UD_Gothic',        '2.2', 'UD_Gothic-PROIEL'],
-        ['2.1',  'UD_Greek',         '2.2', 'UD_Greek-GDT'],
-        ['2.1',  'UD_Hebrew',        '2.2', 'UD_Hebrew-HTB'],
-        ['2.1',  'UD_Hindi',         '2.2', 'UD_Hindi-HDTB'],
-        ['2.1',  'UD_Hungarian',     '2.2', 'UD_Hungarian-Szeged'],
-        ['2.1',  'UD_Indonesian',    '2.2', 'UD_Indonesian-GSD'],
-        ['2.1',  'UD_Irish',         '2.2', 'UD_Irish-IDT'],
-        ['2.1',  'UD_Italian',       '2.2', 'UD_Italian-ISDT'],
-        ['2.1',  'UD_Japanese',      '2.2', 'UD_Japanese-GSD'],
-        ['2.1',  'UD_Kazakh',        '2.2', 'UD_Kazakh-KTB'],
-        ['2.1',  'UD_Korean',        '2.2', 'UD_Korean-GSD'],
-        ['2.1',  'UD_Kurmanji',      '2.2', 'UD_Kurmanji-MG'],
-        ['2.1',  'UD_Latin',         '2.2', 'UD_Latin-Perseus'],
-        ['2.1',  'UD_Latvian',       '2.2', 'UD_Latvian-LVTB'],
-        ['2.1',  'UD_Lithuanian',    '2.2', 'UD_Lithuanian-HSE'],
-        ['2.1',  'UD_Marathi',       '2.2', 'UD_Marathi-UFAL'],
-        ['2.1',  'UD_North_Sami',    '2.2', 'UD_North_Sami-Giella'],
-        ['2.1',  'UD_Old_Church_Slavonic', '2.2', 'UD_Old_Church_Slavonic-PROIEL'],
-        ['2.1',  'UD_Persian',       '2.2', 'UD_Persian-Seraji'],
-        ['2.1',  'UD_Polish',        '2.2', 'UD_Polish-SZ'],
-        ['2.1',  'UD_Portuguese',    '2.2', 'UD_Portuguese-Bosque'],
-        ['2.1',  'UD_Portuguese-BR', '2.2', 'UD_Portuguese-GSD'],
-        ['2.1',  'UD_Romanian',      '2.2', 'UD_Romanian-RRT'],
-        ['2.1',  'UD_Russian',       '2.2', 'UD_Russian-GSD'],
-        ['2.1',  'UD_Sanskrit',      '2.2', 'UD_Sanskrit-UFAL'],
-        ['2.1',  'UD_Serbian',       '2.2', 'UD_Serbian-SET'],
-        ['2.1',  'UD_Slovak',        '2.2', 'UD_Slovak-SNK'],
-        ['2.1',  'UD_Slovenian',     '2.2', 'UD_Slovenian-SSJ'],
-        ['2.1',  'UD_Spanish',       '2.2', 'UD_Spanish-GSD'],
-        ['2.1',  'UD_Swedish',       '2.2', 'UD_Swedish-Talbanken'],
-        ['2.1',  'UD_Swedish_Sign_Language', '2.2', 'UD_Swedish_Sign_Language-SSLC'],
-        ['2.1',  'UD_Tamil',         '2.2', 'UD_Tamil-TTB'],
-        ['2.1',  'UD_Telugu',        '2.2', 'UD_Telugu-MTG'],
-        ['2.1',  'UD_Turkish',       '2.2', 'UD_Turkish-IMST'],
-        ['2.1',  'UD_Ukrainian',     '2.2', 'UD_Ukrainian-IU'],
-        ['2.1',  'UD_Upper_Sorbian', '2.2', 'UD_Upper_Sorbian-UFAL'],
-        ['2.1',  'UD_Urdu',          '2.2', 'UD_Urdu-UDTB'],
-        ['2.1',  'UD_Uyghur',        '2.2', 'UD_Uyghur-UDT'],
-        ['2.1',  'UD_Vietnamese',    '2.2', 'UD_Vietnamese-VTB'],
-        ['2.3',  'UD_Polish-SZ',         '2.4',  'UD_Polish-PDB'],
-        ['2.7',  'UD_Old_Russian-RNC',   '2.8',  'UD_Old_East_Slavic-RNC'],
-        ['2.7',  'UD_Old_Russian-TOROT', '2.8',  'UD_Old_East_Slavic-TOROT'],
-        ['2.8',  'UD_French-Spoken',     '2.9',  'UD_French-ParisStories'],
-        ['2.12', 'UD_Old_French-SRCMF',  '2.13', 'UD_Old_French-PROFITEROLE']
-    );
-    # Save name changes with the releases.
-    foreach my $r (@releases)
-    {
-        my @rchanges;
-        foreach my $nc (@name_changes)
-        {
-            # Is this release where the new name appeared for the first time?
-            if($nc->[2] eq $r)
-            {
-                push(@rchanges, [$nc->[1], $nc->[3]]);
-            }
-        }
-        $releases->{$r}{renamed} = \@rchanges;
     }
 }
 
