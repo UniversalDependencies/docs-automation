@@ -1,6 +1,6 @@
 #!/usr/bin/env perl
 # Updates the validation report line of a particular treebank.
-# Copyright © 2018-2021 Dan Zeman <zeman@ufal.mff.cuni.cz>
+# Copyright © 2018-2021, 2024 Dan Zeman <zeman@ufal.mff.cuni.cz>
 # License: GNU GPL
 
 use utf8;
