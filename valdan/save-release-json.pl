@@ -1,8 +1,9 @@
 #!/usr/bin/env perl
 # Creates a list of treebanks that are included in a UD release and saves the
-# list in a JSON file. For various maintenance tasks, we need to know which
+# list in a JSON file (while preserving the older releases that were saved in
+# the JSON file earlier). For various maintenance tasks, we need to know which
 # treebank was released when.
-# Copyright © 2021 Dan Zeman <zeman@ufal.mff.cuni.cz>
+# Copyright © 2021, 2024 Dan Zeman <zeman@ufal.mff.cuni.cz>
 # License: GNU GPL
 
 use utf8;
@@ -92,9 +93,12 @@ print STDERR ("List of treebanks   = ".join(', ', @treebanks)."\n");
 
 # If the JSON file already exists, read its current contents.
 my $releases = [];
+my $renames = {}; # changes of treebank names after a release (release number is the key)
 if(-f $jsonfile)
 {
-    $releases = json_file_to_perl($jsonfile)->{releases};
+    my $from_json = json_file_to_perl($jsonfile);
+    $releases = $from_json->{releases};
+    $renames = $from_json->{renamed_after_release};
     my $n = scalar(keys(%{$releases}));
     print STDERR ("The file '$jsonfile' already exists and contains $n releases.\n");
     # Does the file already contain the current release?
@@ -142,7 +146,24 @@ foreach my $r (@sorted)
     push(@rjsons, $rjson);
 }
 $json .= join(",\n", @rjsons)."\n";
-$json .= "}\n"; # end of releases
+$json .= "},\n"; # end of releases
+# Print changes of treebank names after releases.
+@rjsons = ();
+@sorted = sort_release_numbers(keys(%{$renames}));
+foreach my $r (@sorted)
+{
+    my $rjson = '"'.$r.'": ';
+    my @rnmjsons;
+    foreach my $rnm (@{$renames->{$r}})
+    {
+        push(@rnmjsons, '["'.escape_json_string($rnm->[0]).'", "'.escape_json_string($rnm->[1]).'"]');
+    }
+    my $rnmjson = '['.join(', ', @rnmjsons).']';
+    push(@rjsons, $rnmjson);
+}
+$json .= '"renamed_after_release": {'."\n";
+$json .= join(",\n", @rjsons)."\n";
+$json .= "}\n"; # end of renames
 $json .= "}\n"; # end of JSON
 open(JSON, ">$jsonfile") or die("Cannot write '$jsonfile': $!");
 print JSON ($json);
@@ -229,7 +250,7 @@ sub get_changes_in_treebank_list
     ###!!! Later we will want to save it in the JSON file somehow.
     my @name_changes =
     (
-        ['1.3',  'UD_Latin-ITT',     '1.4', 'UD_Latin-ITTB'],
+        ['1.2',  'UD_Latin-ITT',     '1.3', 'UD_Latin-ITTB'],
         ['1.4',  'UD_Norwegian',     '2.0', 'UD_Norwegian-Bokmaal'],
         ['2.1',  'UD_Afrikaans',     '2.2', 'UD_Afrikaans-AfriBooms'],
         ['2.1',  'UD_Ancient_Greek', '2.2', 'UD_Ancient_Greek-Perseus'],
