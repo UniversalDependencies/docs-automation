@@ -158,7 +158,7 @@ foreach my $r (@sorted)
     {
         push(@rnmjsons, '["'.escape_json_string($rnm->[0]).'", "'.escape_json_string($rnm->[1]).'"]');
     }
-    my $rnmjson = '['.join(', ', @rnmjsons).']';
+    my $rnmjson = '"'.$r.'": ['.join(', ', @rnmjsons).']';
     push(@rjsons, $rnmjson);
 }
 $json .= '"renamed_after_release": {'."\n";
