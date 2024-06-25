@@ -310,6 +310,7 @@ sah--1000--ckt
 Northern Luzon----Central Philippine
 Central Philippine--10--Malayo-Sumbawan
 Malayo-Sumbawan----Javanese
+Malayo-Sumbawan--10--Central Malayo-Polynesian
 zh--1000--ifb
 vi--1000--ifb
 ifb--100--tl
@@ -318,6 +319,7 @@ tl----ceb
 hil----ceb
 hil--100--id
 id----jv
+id--100--tdt
 ckt--1000--ess
 ess--1000--gwi
 Yuman----Seri

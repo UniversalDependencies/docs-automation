@@ -993,6 +993,11 @@ Telugu English:
   lcode: qte
   iso3: qte
   family: Code switching
+Tetun:
+  flag: TL
+  lcode: tdt
+  iso3: tdt
+  family: Austronesian, Central Malayo-Polynesian
 Thai:
   flag: TH
   lcode: th
