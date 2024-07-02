@@ -71,7 +71,7 @@ my @deviations =
     {'re'  => '(Dem|Distance)=.*',
      'msg' => "Did you mean 'Deixis=Prox|Med|Remt|...'?"},
     {'re'  => 'Deixis=Mid',
-     'msg' => "Did you mean 'Deixis=Med'?"},
+     'msg' => "The correct UD label for medial deixis is 'Deixis=Med'?"},
     {'re'  => 'NumForm=Letter',
      'msg' => "Did you mean 'NumForm=Word'?"},
     {'re'  => '(Gender|Animacy|NounClass)(\[[a-z]+\])?=Nonhum',
@@ -110,6 +110,8 @@ my @deviations =
      'msg' => "The correct UD label for finite verbs is 'VerbForm=Fin'."},
     {'re'  => 'VerbForm=Trans',
      'msg' => "The correct UD v2 label for transgressive/converb is 'VerbForm=Conv'."}, # this was renamed between v1 and v2 guidelines
+    {'re'  => 'ExtPos=(?!(NOUN|PROPN|PRON|ADJ|DET|NUM|VERB|AUX|ADV|ADP|SCONJ|CCONJ|PART|INTJ|SYM|PUNCT|X))',
+     'msg' => "Only defined UPOS tags can be used as values of 'ExtPos'."},
     {'re'  => '.*=(None|Unsp(ec(ified)?)?)',
      'msg' => "If a feature does not apply to a word, UD simply omits the feature."}
 );
