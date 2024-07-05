@@ -140,7 +140,7 @@ if __name__=="__main__":
             family_genera[codes_flags[l]['family']][codes_flags[l]['genus']] = True
     # Replace the dictionary of genera with the number of genera.
     for f in family_genera:
-        family_genera[f] = len(keys(family_genera[f]))
+        family_genera[f] = len(list(family_genera[f]))
 
     with open(args.releases) as f:
         releases = json.load(f)['releases']
