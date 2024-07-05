@@ -804,6 +804,12 @@ Neapolitan:
   iso3: nap
   family: IE
   genus: Romance
+Nenets:
+  flag: RU-NEN
+  lcode: yrk
+  iso3: yrk
+  family: Uralic
+  genus: Samoyedic
 Nepali:
   flag: NP
   lcode: ne

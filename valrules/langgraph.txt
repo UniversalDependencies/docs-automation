@@ -228,6 +228,7 @@ Sami----Finnic
 Finnic--2--Mordvin
 Finnic--2--Permic
 Mordvin----Permic
+Permic----Samoyedic
 Permic--10--Ugric
 sms--1000--no
 sms----sme
@@ -243,6 +244,7 @@ krl--100--myv
 kv--2--koi
 kv--2--kpv
 koi----kpv
+kv--100--yrk
 kv--100--myv
 myv----mdf
 mdf--1000--ru
