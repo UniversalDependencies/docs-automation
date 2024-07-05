@@ -78,7 +78,9 @@ def family_filter(language_family_genus):
     classification = language_family_genus[0]
     if len(language_family_genus) > 1 and language_family_genus[1]:
         # Shorten genera that are too long for the accordion.
-        genus = re.sub(r' Pama-Nyungan$', r'', language_family_genus[1]) # e.g. Western Pama-Nyungan
+        genus = language_family_genus[1]
+        genus = re.sub(r'^Central Malayo-Polynesian$', r'Malayo-Polynesian', genus)
+        genus = re.sub(r' Pama-Nyungan$', r'', genus) # e.g. Western Pama-Nyungan
         classification += ', ' + genus
     return classification
 
