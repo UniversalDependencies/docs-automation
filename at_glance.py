@@ -202,7 +202,7 @@ if __name__=="__main__":
         else:
             tbank_comparison = None
         language_genus = None
-        if 'genus' in codes_flags[lang] and family_genera[codes_flags[lang][family]] > 1:
+        if 'genus' in codes_flags[lang] and family_genera[codes_flags[lang]['family']] > 1:
             language_genus = codes_flags[lang]['genus']
         r = lang_template.render(
             flag=codes_flags[lang]['flag'],
