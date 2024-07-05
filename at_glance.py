@@ -60,13 +60,24 @@ def annotation_filter(metadata):
     else:
         return '<span class="hint--top hint--info" data-hint="Unknown">?</span>'
 
-def genre_filter(genres,genre_symbols={}):
-    """Used from the template to produce the genre symbols"""
-    genres=sorted(set(genres))
-    span='<i class="fa fa-%s"></i>'
-    symbols=" ".join(genres)
-    spans="".join(span%genre_symbols.get(g,"file-o") for g in genres)
+def genre_filter(genres, genre_symbols={}):
+    """
+    Used from the template to produce the genre symbols.
+    """
+    genres = sorted(set(genres))
+    span = '<i class="fa fa-%s"></i>'
+    symbols = ' '.join(genres)
+    spans = ''.join(span%genre_symbols.get(g,"file-o") for g in genres)
     return '<span class="hint--top hint--info" data-hint="%s">%s</span>'%(symbols,spans)
+
+def family_filter(language_family, language_genus=None):
+    """
+    Used from the template to produce language family with genre if present.
+    """
+    classification = language_family
+    if language_genus:
+        classification += ', ' + language_genus
+    return classification
 
 def license_filter(lic):
     """Used from the template to produce the license logo"""
@@ -131,14 +142,15 @@ if __name__=="__main__":
     with open(args.genre_symbols) as f:
         genre_symbols = json.load(f)
 
-    t_env = jinja2.Environment(loader=jinja2.PackageLoader('at_glance','templates'), autoescape=True)
-    t_env.filters["tsepk"]=thousand_sep_filter
-    t_env.filters["tag_filter"]=tag_filter
-    t_env.filters["annotation_filter"]=annotation_filter
-    t_env.filters["genre_filter"]=functools.partial(genre_filter,genre_symbols=genre_symbols)
-    t_env.filters["license_filter"]=license_filter
-    t_env.filters["contributor_filter"]=contributor_filter
-    t_env.filters["stars_filter"]=stars_filter
+    t_env = jinja2.Environment(loader=jinja2.PackageLoader('at_glance', 'templates'), autoescape=True)
+    t_env.filters['tsepk'] = thousand_sep_filter
+    t_env.filters['tag_filter'] = tag_filter
+    t_env.filters['annotation_filter'] = annotation_filter
+    t_env.filters['genre_filter'] = functools.partial(genre_filter,genre_symbols=genre_symbols)
+    t_enf.filters['family_filter'] = family_filter
+    t_env.filters['license_filter'] = license_filter
+    t_env.filters['contributor_filter'] = contributor_filter
+    t_env.filters['stars_filter'] = stars_filter
 
     tbanks={} # language -> [tbank, tbank, ...]
     for f_name in args.input:
@@ -178,5 +190,16 @@ if __name__=="__main__":
             tbank_comparison = language_code+'-comparison.html'
         else:
             tbank_comparison = None
-        r = lang_template.render(flag=codes_flags[lang]['flag'], language_name=lang, language_name_short=language_name_short, language_code=language_code, language_hub=language_hub, tbank_comparison=tbank_comparison, counts=sum_counts, treebanks=lang_tbanks, genres=union_genres, language_family=codes_flags[lang]['family'])
+        r = lang_template.render(
+            flag=codes_flags[lang]['flag'],
+            language_name=lang,
+            language_name_short=language_name_short,
+            language_code=language_code,
+            language_hub=language_hub,
+            tbank_comparison=tbank_comparison,
+            counts=sum_counts,
+            treebanks=lang_tbanks,
+            genres=union_genres,
+            language_family=codes_flags[lang]['family'],
+            language_genus=codes_flags[lang]['genus'])
         print(r)

@@ -6,7 +6,7 @@
     <span class="widespan"><span class="hint--top hint--info" data-hint="{{counts.token|tsepk}} tokens {{counts.word|tsepk}} words {{counts.tree|tsepk}} sentences">{{counts.word|tsepk(use_k=true)}}</span></span>
     <!-- English has so many genres that they no longer fit in doublewidespan. -->
     <span class="triplewidespan">{{genres|genre_filter|safe}}</span>
-    <span class="triplewidespan">{{language_family}}</span>
+    <span class="triplewidespan">{{(language_family,language_genus)|family_filter|safe}}</span>
   </div> <!-- end of {{language_name}} accordion row -->
 
   <div class="ui-accordion-content ui-helper-reset ui-widget-content ui-corner-bottom" style="" role="tabpanel"> <!-- start of {{language_name}} accordion body -->
