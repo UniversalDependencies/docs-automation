@@ -130,6 +130,17 @@ if __name__=="__main__":
 
     with open(args.codes_flags) as f:
         codes_flags = yaml.load(f, Loader=SafeLoader)
+    # Get the list of used genera for each language family.
+    # We will only display the genus if we have languages from multiple genera of that family.
+    family_genera = {}
+    for l in codes_flags:
+        if not codes_flags[l]['family'] in family_genera:
+            family_genera[codes_flags[l]['family']] = {}
+        if 'genus' in codes_flags[l]:
+            family_genera[codes_flags[l]['family']][codes_flags[l]['genus']] = True
+    # Replace the dictionary of genera with the number of genera.
+    for f in family_genera:
+        family_genera[f] = len(keys(family_genera[f]))
 
     with open(args.releases) as f:
         releases = json.load(f)['releases']
@@ -191,7 +202,7 @@ if __name__=="__main__":
         else:
             tbank_comparison = None
         language_genus = None
-        if 'genus' in codes_flags[lang]:
+        if 'genus' in codes_flags[lang] and family_genera[codes_flags[lang][family]] > 1:
             language_genus = codes_flags[lang]['genus']
         r = lang_template.render(
             flag=codes_flags[lang]['flag'],
