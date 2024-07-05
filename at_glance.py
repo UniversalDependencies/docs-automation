@@ -8,6 +8,7 @@ from yaml.loader import SafeLoader
 import sys
 import functools
 import os.path
+import re
 
 def sum_dicts(dicts):
     #dicts is a bunch of dicts with int values, for all keys sums all values
@@ -76,7 +77,9 @@ def family_filter(language_family_genus):
     """
     classification = language_family_genus[0]
     if len(language_family_genus) > 1 and language_family_genus[1]:
-        classification += ', ' + language_family_genus[1]
+        # Shorten genera that are too long for the accordion.
+        genus = re.sub(r' Pama-Nyungan$', r'', language_family_genus[1]) # e.g. Western Pama-Nyungan
+        classification += ', ' + genus
     return classification
 
 def license_filter(lic):
