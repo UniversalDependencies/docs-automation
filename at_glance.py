@@ -70,13 +70,13 @@ def genre_filter(genres, genre_symbols={}):
     spans = ''.join(span%genre_symbols.get(g,"file-o") for g in genres)
     return '<span class="hint--top hint--info" data-hint="%s">%s</span>'%(symbols,spans)
 
-def family_filter(language_family, language_genus=None):
+def family_filter(language_family_genus):
     """
     Used from the template to produce language family with genre if present.
     """
-    classification = language_family
-    if language_genus:
-        classification += ', ' + language_genus
+    classification = language_family_genus[0]
+    if len(language_family_genus) > 1:
+        classification += ', ' + language_family_genus[1]
     return classification
 
 def license_filter(lic):
