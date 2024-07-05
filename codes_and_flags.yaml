@@ -710,6 +710,12 @@ Mandyali:
   iso3: mjl
   family: IE
   genus: Indic
+Mansi:
+  flag: RU-KHM
+  lcode: mns
+  iso3: mns
+  family: Uralic
+  genus: Ugric
 Manx:
   flag: IM
   lcode: gv

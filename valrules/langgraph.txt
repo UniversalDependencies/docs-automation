@@ -246,8 +246,10 @@ kv--2--kpv
 koi----kpv
 kv--100--yrk
 kv--100--myv
+kv--200--mns
 myv----mdf
-mdf--1000--ru
+mns--10--hu
+mns--1000--ru
 Semitic----Cushitic
 Semitic----Egyptian
 Egyptian----Berber
