@@ -35,16 +35,13 @@ foreach my $lname (keys(%{$languages}))
     # We are only interested in languages that already have some documentation.
     my $langdoc = "$docspath/_$languages->{$lname}{lcode}/index.md";
     next if(! -f $langdoc);
-    my $family_genus = $languages->{$lname}{family};
-    if($family_genus =~ m/^(.+),\s*(.+)$/)
+    if(exists($languages->{$lname}{genus}) && $languages->{$lname}{genus} ne '')
     {
-        $languages->{$lname}{familygenus} = $family_genus;
-        $languages->{$lname}{family} = $1;
-        $languages->{$lname}{genus} = $2;
+        $languages->{$lname}{familygenus} = "$languages->{$lname}{family}, $languages->{$lname}{genus}";
     }
     else
     {
-        $languages->{$lname}{familygenus} = $family_genus;
+        $languages->{$lname}{familygenus} = $languages->{$lname}{family};
         $languages->{$lname}{genus} = '';
     }
     $languages->{$lname}{family} = 'Indo-European' if($languages->{$lname}{family} eq 'IE');
