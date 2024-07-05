@@ -75,7 +75,7 @@ def family_filter(language_family_genus):
     Used from the template to produce language family with genre if present.
     """
     classification = language_family_genus[0]
-    if len(language_family_genus) > 1:
+    if len(language_family_genus) > 1 and language_family_genus[1]:
         classification += ', ' + language_family_genus[1]
     return classification
 
