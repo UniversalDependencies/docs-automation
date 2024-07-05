@@ -190,6 +190,9 @@ if __name__=="__main__":
             tbank_comparison = language_code+'-comparison.html'
         else:
             tbank_comparison = None
+        language_genus = None
+        if 'genus' in codes_flags[lang]:
+            language_genus = codes_flags[lang]['genus']
         r = lang_template.render(
             flag=codes_flags[lang]['flag'],
             language_name=lang,
@@ -201,5 +204,5 @@ if __name__=="__main__":
             treebanks=lang_tbanks,
             genres=union_genres,
             language_family=codes_flags[lang]['family'],
-            language_genus=codes_flags[lang]['genus'])
+            language_genus=language_genus)
         print(r)
