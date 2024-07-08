@@ -992,6 +992,11 @@ Punjabi:
   iso3: pan
   family: IE
   genus: Indic
+Puno Quechua:
+  flag: PE
+  lcode: qxp
+  iso3: qxp
+  family: Quechuan
 Purki:
   flag: IN
   lcode: prx
