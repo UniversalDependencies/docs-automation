@@ -50,6 +50,7 @@ Arawakan----Panoan
 Arawan--10--Tupian
 Arawan--10--Panoan
 Tupian--10--Panoan
+Tupian--2--Guaicuruan
 Tupian--2--Macro-Je
 Macro-Je----Bororoan
 Panoan----Quechuan

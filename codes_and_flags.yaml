@@ -502,6 +502,12 @@ Kabyle:
   iso3: kab
   family: Afro-Asiatic
   genus: Berber
+Kadiweu:
+  flag: BR
+  lcode: kbc
+  iso3: kbc
+  family: Guaicuruan
+  genus: Kadiweu
 Kangri:
   flag: IN
   lcode: xnr
