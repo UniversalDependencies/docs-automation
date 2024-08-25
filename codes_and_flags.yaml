@@ -1122,6 +1122,11 @@ Spanish English:
   lcode: qee
   iso3: qee
   family: Code switching
+Spanish Sign Language:
+  flag: ES
+  lcode: ssp
+  iso3: ssp
+  family: Sign Language
 Sumerian:
   flag: IQ
   lcode: sux
