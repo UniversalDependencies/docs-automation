@@ -345,6 +345,12 @@ Galician:
   iso3: glg
   family: IE
   genus: Romance
+Gedeo:
+  flag: ET
+  lcode: drs
+  iso3: drs
+  family: Afro-Asiatic
+  genus: Cushitic
 Georgian:
   flag: GE
   lcode: ka

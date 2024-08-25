@@ -279,6 +279,7 @@ cop----egy
 cop--10--kab
 cop--50--bej
 kab--50--ha
+bej----drs
 ha----say
 Northern Atlantic----Northern-Central Gur
 Northern-Central Gur----Gbaya-Manza-Ngbaka
