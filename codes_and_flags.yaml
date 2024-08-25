@@ -1161,6 +1161,12 @@ Swiss German:
   iso3: gsw
   family: IE
   genus: Germanic
+Tagabawa:
+  flag: PH
+  lcode: bgs
+  iso3: bgs
+  family: Austronesian
+  genus: Central Philippine
 Tagalog:
   flag: PH
   lcode: tl
