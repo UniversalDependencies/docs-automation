@@ -336,6 +336,8 @@ nhi--2--nci
 azz--2--nci
 nci--100--quc
 quc----usp
+Pesh----Western Isthmic Chibchan
+pay--100--bzd
 jaa----pad
 Maweti-Guarani--10--Munduruku
 Ramarama----Munduruku

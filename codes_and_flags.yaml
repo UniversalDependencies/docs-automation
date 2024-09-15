@@ -956,6 +956,12 @@ Persian:
   iso3: fas
   family: IE
   genus: Iranian
+Pesh:
+  flag: HN
+  lcode: pay
+  iso3: pay
+  family: Chibchan
+  genus: Pesh
 Phrygian:
   flag: TR
   lcode: xpg
