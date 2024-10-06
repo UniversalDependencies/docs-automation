@@ -160,6 +160,7 @@ ga----mga
 mga----sga
 sga----pgl
 sr--100--sq
+sq----aln
 sq--100--el
 mk--100--el
 bg--100--el
@@ -179,6 +180,7 @@ hy----xcl
 kmr--100--hy
 kmr--100--hit
 kmr--10--kfm
+kmr----ckb
 kfm----soj
 kfm----nyq
 nyq----soj
