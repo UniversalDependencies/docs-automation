@@ -62,7 +62,7 @@ Germanic--2--Baltic
 Romance----Italic
 Romance--2--Slavic
 Slavic----Baltic
-Slavic--4--Albanian
+Slavic--4000--Albanian
 Slavic--4--Greek
 Albanian----Greek
 Greek--4--Anatolian
