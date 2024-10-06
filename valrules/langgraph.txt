@@ -62,10 +62,10 @@ Germanic--2--Baltic
 Romance--1--Italic
 Romance--2--Slavic
 Baltic--1--Slavic
-Slavic--2--Albanian
-Slavic--2--Greek
+Slavic--3--Albanian
+Slavic--3--Greek
 Albanian--1--Greek
-Greek--2--Anatolian
+Greek--3--Anatolian
 Anatolian--2--Armenian
 Armenian--2--Iranian
 Iranian--2--Indic
