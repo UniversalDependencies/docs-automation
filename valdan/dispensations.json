@@ -4,8 +4,8 @@
 "goeswith-lemma": {"date": "2022-02-19", "commit": "5c3805e7", "treebanks": ["UD_Kiche-IU", "UD_Persian-PerDT"]},
 "goeswith-missing-typo": {"date": "2022-02-19", "commit": "c59997ec", "treebanks": ["UD_Kiche-IU", "UD_Mbya_Guarani-Dooley", "UD_Persian-PerDT"]},
 "goeswith-upos": {"date": "2022-02-19", "commit": "5c3805e7", "treebanks": ["UD_Kiche-IU", "UD_Mbya_Guarani-Dooley", "UD_Persian-PerDT"]},
-"too-many-subjects": {"date": "2022-05-31", "commit": "109e7e20b9", "treebanks": ["UD_Amharic-ATT", "UD_Ancient_Greek-Perseus", "UD_Arabic-PADT", "UD_Chinese-GSD", "UD_Chinese-GSDSimp", "UD_Galician-CTG", "UD_German-HDT", "UD_Hindi-HDTB", "UD_Khunsari-AHA", "UD_Kiche-IU", "UD_Korean-GSD", "UD_Korean-Kaist", "UD_Korean-PUD", "UD_Lithuanian-ALKSNIS", "UD_Nayini-AHA", "UD_Old_French-SRCMF", "UD_Persian-PerDT", "UD_Persian-Seraji", "UD_Romanian-Nonstandard", "UD_Tamil-MWTT", "UD_Tamil-TTB", "UD_Urdu-UDTB", "UD_Wolof-WTB", "UD_Xibe-XDT", "UD_Yoruba-YTB"]},
+"too-many-subjects": {"date": "2022-05-31", "commit": "109e7e20b9", "treebanks": ["UD_Amharic-ATT", "UD_Ancient_Greek-Perseus", "UD_Arabic-PADT", "UD_Chinese-GSD", "UD_Chinese-GSDSimp", "UD_Galician-CTG", "UD_Hindi-HDTB", "UD_Khunsari-AHA", "UD_Kiche-IU", "UD_Korean-GSD", "UD_Korean-Kaist", "UD_Korean-PUD", "UD_Lithuanian-ALKSNIS", "UD_Nayini-AHA", "UD_Old_French-SRCMF", "UD_Persian-PerDT", "UD_Persian-Seraji", "UD_Romanian-Nonstandard", "UD_Tamil-MWTT", "UD_Tamil-TTB", "UD_Urdu-UDTB", "UD_Wolof-WTB", "UD_Xibe-XDT", "UD_Yoruba-YTB"]},
 "treebank-size": {"date": "2021-12-19", "commit": "ab7ed835", "treebanks": ["UD_Khunsari-AHA", "UD_Nayini-AHA", "UD_Neapolitan-RB", "UD_Soi-AHA"]},
-"unknown-edeprel": {"date": "2021-12-18", "commit": "d208b7c8", "treebanks": ["UD_Arabic-PADT", "UD_Lithuanian-ALKSNIS", "UD_Tamil-TTB"]}
+"unknown-edeprel": {"date": "2021-12-18", "commit": "d208b7c8", "treebanks": ["UD_Tamil-TTB"]}
 }
 }
