@@ -98,6 +98,11 @@ Babungo:
   iso3: bav
   family: Niger-Congo
   genus: Bantoid
+Balatipone:
+  flag: BR
+  lcode: umo
+  iso3: umo
+  family: Bororoan
 Balochi:
   flag: PK
   lcode: bal

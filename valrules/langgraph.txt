@@ -358,6 +358,7 @@ arr--100--myu
 myu--100--urb
 aqz--1000--xav
 xav--100--bor
+bor----umo
 quz----qxp
 pap--2--pln
 pap--8--ht
