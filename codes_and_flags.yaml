@@ -782,12 +782,6 @@ Moksha:
   iso3: mdf
   family: Uralic
   genus: Mordvin
-Moldovan:
-  flag: MD
-  lcode: mo
-  iso3: mol
-  family: IE
-  genus: Romance
 Mongolian:
   flag: MN
   lcode: mn

@@ -145,7 +145,6 @@ fr--4--lij
 lij--4--it
 it----nap
 it--2--ro
-ro----mo
 it--50--la
 la----xum
 fr--100--br
