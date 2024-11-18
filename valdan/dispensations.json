@@ -4,6 +4,7 @@
 "goeswith-lemma": {"date": "2022-02-19", "commit": "5c3805e7", "treebanks": ["UD_Kiche-IU", "UD_Persian-PerDT"]},
 "goeswith-missing-typo": {"date": "2022-02-19", "commit": "c59997ec", "treebanks": ["UD_Kiche-IU", "UD_Mbya_Guarani-Dooley", "UD_Persian-PerDT"]},
 "goeswith-upos": {"date": "2022-02-19", "commit": "5c3805e7", "treebanks": ["UD_Kiche-IU", "UD_Mbya_Guarani-Dooley", "UD_Persian-PerDT"]},
+"readme": {"date": "2024-11-12", "commit": "82e63789", "treebanks": ["UD_Portuguese-CINTIL"]},
 "rel-upos-advmod": {"date": "2024-11-18", "commit": "cd5cf284", "treebanks": ["UD_Portuguese-Bosque", "UD_Portuguese-GSD"]},
 "rel-upos-case": {"date": "2024-11-18", "commit": "cd5cf284", "treebanks": ["UD_Portuguese-Bosque"]},
 "rel-upos-det": {"date": "2024-11-18", "commit": "cd5cf284", "treebanks": ["UD_French-Sequoia", "UD_Portuguese-Bosque", "UD_Portuguese-GSD"]},
