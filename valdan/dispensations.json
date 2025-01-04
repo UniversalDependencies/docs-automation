@@ -1,5 +1,6 @@
 {
 "dispensations": {
+"aux-lemma": {"date": "2025-01-02", "commit": "4f74c009", "treebanks": ["UD_Greek-GDT"]},
 "goeswith-feats": {"date": "2022-02-19", "commit": "5c3805e7", "treebanks": ["UD_Mbya_Guarani-Dooley", "UD_Persian-PerDT"]},
 "goeswith-lemma": {"date": "2022-02-19", "commit": "5c3805e7", "treebanks": ["UD_Kiche-IU", "UD_Persian-PerDT"]},
 "goeswith-missing-typo": {"date": "2022-02-19", "commit": "c59997ec", "treebanks": ["UD_Kiche-IU", "UD_Mbya_Guarani-Dooley", "UD_Persian-PerDT"]},
