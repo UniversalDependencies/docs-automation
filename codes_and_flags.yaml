@@ -303,6 +303,11 @@ Erzya:
   iso3: myv
   family: Uralic
   genus: Mordvin
+Esperanto:
+  flag: ESPERANTO
+  lcode: eo
+  iso3: epo
+  family: Constructed
 Estonian:
   flag: EE
   lcode: et

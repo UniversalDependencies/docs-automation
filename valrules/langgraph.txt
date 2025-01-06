@@ -5,6 +5,7 @@ Indo-European--10--Afro-Asiatic
 Indo-European--10--Basque
 Indo-European--2--Creole
 Indo-European--2--Code switching
+Indo-European--2--Constructed
 Kartvelian--100--Basque
 Kartvelian----Northwest Caucasian
 Kartvelian----Nakh-Daghestanian
