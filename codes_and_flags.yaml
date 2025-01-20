@@ -208,6 +208,12 @@ Cebuano:
   iso3: ceb
   family: Austronesian
   genus: Central Philippine
+Central Romani:
+  flag: ROMANI
+  lcode: rmc
+  iso3: rmc
+  family: IE
+  genus: Indic
 Chinese:
   flag: CN
   lcode: zh
