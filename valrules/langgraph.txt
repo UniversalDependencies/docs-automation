@@ -343,7 +343,11 @@ azz--2--nci
 nci--100--quc
 quc----usp
 Pesh----Western Isthmic Chibchan
+Western Isthmic Chibchan----Guaymiic
+Guaymiic----Arhuacic
 pay--100--bzd
+bzd--100--sab
+sab--100--arh
 jaa----pad
 Maweti-Guarani--10--Munduruku
 Ramarama----Munduruku

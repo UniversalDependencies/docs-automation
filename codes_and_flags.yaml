@@ -156,6 +156,12 @@ Bhojpuri:
   iso3: bho
   family: IE
   genus: Indic
+Bokota:
+  flag: PA
+  lcode: sab
+  iso3: sab
+  family: Chibchan
+  genus: Guaymiic
 Bororo:
   flag: BR
   lcode: bor
@@ -483,6 +489,12 @@ Icelandic:
   iso3: isl
   family: IE
   genus: Germanic
+Ika:
+  flag: CO
+  lcode: arh
+  iso3: arh
+  family: Chibchan
+  genus: Arhuacic
 Indonesian:
   flag: ID
   lcode: id
