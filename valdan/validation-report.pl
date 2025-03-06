@@ -383,6 +383,7 @@ Content-type: text/html; charset=utf-8
 <head>
 <meta http-equiv="content-type" content="text/html; charset=utf-8">
 <title>UD Validation Report</title>
+<link rel="icon" href="https://universaldependencies.org/logos/logo-ud.png" type="image/png">
 <!-- from https://stackoverflow.com/questions/29485224/displaying-text-using-onmouseover-javascript-html -->
 <style>
 body {
