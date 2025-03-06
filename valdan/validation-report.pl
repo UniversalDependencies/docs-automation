@@ -31,6 +31,7 @@ elsif($ENV{QUERY_STRING} =~ m/(UD_[A-Za-z_]+-[A-Za-z]+)/ && -f "log/$1.log")
 <head>
 <meta http-equiv="content-type" content="text/html; charset=utf-8">
 <title>$folder Validation Report</title>
+<link rel="icon" href="https://universaldependencies.org/logos/logo-ud.png" type="image/png">
 <style>
 .highlight {
   color: red;

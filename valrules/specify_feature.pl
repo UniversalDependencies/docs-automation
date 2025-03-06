@@ -70,6 +70,7 @@ print <<EOF
 <head>
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
   <title>Specify features in UD</title>
+  <link rel="icon" href="https://universaldependencies.org/logos/logo-ud.png" type="image/png">
   <style type="text/css">
     img {border: none;}
     img.flag {
