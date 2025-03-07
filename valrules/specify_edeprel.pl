@@ -50,7 +50,7 @@ foreach my $lname (keys(%{$languages}))
     }
     $languages->{$lname}{family} = 'Indo-European' if($languages->{$lname}{family} eq 'IE');
 }
-my @cases = ('nom', 'gen', 'par', 'dat', 'acc', 'ins', 'loc', 'ill');
+my @cases = ('nom', 'gen', 'par', 'dat', 'acc', 'ins', 'com', 'loc', 'ill');
 my @functions =
 (
     # Indent level in hierarchy; Verbose description; Case short code
