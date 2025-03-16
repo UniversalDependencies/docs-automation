@@ -124,6 +124,7 @@ en----ang
 en--100--fr
 en--1000--pcm
 en--1000--qee
+en--1000--qti
 en--1000--qhe
 en--1000--qte
 bg--100--ro
@@ -309,6 +310,7 @@ tr--2--az
 tr--100--kk
 tr--1000--lzz
 tr--1000--qtd
+tr--1000--qti
 kk----ky
 kk----tt
 kk--100--ug
@@ -372,7 +374,9 @@ pap--2--pln
 pap--8--ht
 ht--10--pcm
 qhe----qte
-qhe--2--qee
+qhe--2--qti
+qti--2--qee
+qti----qtd
 qee--10--qaf
 qee--10--qfn
 qee--10--qtd

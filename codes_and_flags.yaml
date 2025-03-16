@@ -1282,6 +1282,11 @@ Turkish:
   iso3: tur
   family: Turkic
   genus: Southwestern
+Turkish English:
+  flag: TR
+  lcode: qti
+  iso3: qti
+  family: Code switching
 Turkish German:
   flag: TR
   lcode: qtd
