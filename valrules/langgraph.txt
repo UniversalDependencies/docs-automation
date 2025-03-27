@@ -326,7 +326,9 @@ Bodic--2--Kuki-Chin
 Kuki-Chin----Tangkhul-Maring
 zh--2--yue
 yue----lzh
-yue--100--nmf
+yue--100--prx
+prx--100--lus
+lus--50--nmf
 Northern Luzon----Central Philippine
 Central Philippine--10--Malayo-Sumbawan
 Malayo-Sumbawan----Javanese
