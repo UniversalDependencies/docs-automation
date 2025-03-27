@@ -827,6 +827,12 @@ Muruwari:
   iso3: zmu
   family: Pama-Nyungan
   genus: Southeastern Pama-Nyungan
+Naga:
+  flag: IN
+  lcode: nmf
+  iso3: nmf
+  family: Sino-Tibetan
+  genus: Tangkhul-Maring
 Naija:
   flag: NG
   lcode: pcm

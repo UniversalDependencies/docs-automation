@@ -321,6 +321,10 @@ ug--100--otk
 otk----sah
 ug--1000--sjo
 sah--1000--ckt
+Chinese----Tangkhul-Maring
+zh--2--yue
+yue----lzh
+yue--100--nmf
 Northern Luzon----Central Philippine
 Central Philippine--10--Malayo-Sumbawan
 Malayo-Sumbawan----Javanese
