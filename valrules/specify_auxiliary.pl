@@ -80,6 +80,7 @@ my @functions =
     ['Periphrastic mood: conditional', 'Mood=Cnd'],
     ['Periphrastic mood: subjunctive', 'Mood=Sub'],
     ['Periphrastic mood: imperative', 'Mood=Imp'],
+    ['Periphrastic mood: jussive', 'Mood=Jus'],
     ['Periphrastic mood: optative', 'Mood=Opt'],
     ['Periphrastic mood: benefactive', 'Mood=Ben'],
     ['Periphrastic mood: irrealis', 'Mood=Irr'],
