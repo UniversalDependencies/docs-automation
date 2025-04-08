@@ -90,6 +90,8 @@ my @functions =
     ['Modal auxiliary: necessitative (“must, should”)', 'Mood=Nec'],
     ['Modal auxiliary: potential (“can, might”)', 'Mood=Pot'],
     ['Modal auxiliary: desiderative (“want”)', 'Mood=Des'],
+    ['Evidential auxiliary: firsthand', 'Evident=Fh'],
+    ['Evidential auxiliary: non-firsthand', 'Evident=Nfh'],
     ['Politeness auxiliary: formal', 'Polite=Form'],
     ['Politeness auxiliary: informal', 'Polite=Infm']
 );
