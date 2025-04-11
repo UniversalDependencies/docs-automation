@@ -1403,6 +1403,12 @@ Yakut:
   iso3: sah
   family: Turkic
   genus: Northeastern
+Yiddish:
+  flag: YIDDISH
+  lcode: yi
+  iso3: yid
+  family: IE
+  genus: Germanic
 Yoruba:
   flag: NG
   lcode: yo
