@@ -102,6 +102,7 @@ lv--2--lt
 ltg--2--lt
 de--2--nds
 de----lb
+de----yi
 de--2--gsw
 de--2--bar
 bar----gsw
