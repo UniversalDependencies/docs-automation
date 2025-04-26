@@ -32,6 +32,12 @@ Albanian:
   iso3: sqi
   family: IE
   genus: Albanian
+Alemannic:
+  flag: CH
+  lcode: gsw
+  iso3: gsw
+  family: IE
+  genus: Germanic
 Amharic:
   flag: ET
   lcode: am
@@ -1195,12 +1201,6 @@ Swedish Sign Language:
   lcode: swl
   iso3: swl
   family: Sign Language
-Swiss German:
-  flag: CH
-  lcode: gsw
-  iso3: gsw
-  family: IE
-  genus: Germanic
 Tagabawa:
   flag: PH
   lcode: bgs
