@@ -161,9 +161,9 @@ if __name__=="__main__":
         rename_dict = {}
         for rename in renames[last_release_number]:
             rename_dict[rename[0]] = rename[1]
-        for treebank in last_release_treebanks:
-            if treebank in rename_dict:
-                treebank = rename_dict[treebank]
+            print(f"Renamed {rename[0]} to {rename[1]}", file=sys.stderr)
+        last_release_treebanks_renamed = [rename_dict[x] if x in rename_dict else x for x in last_release_treebanks]
+        last_release_treebanks = last_release_treebanks_renamed
 
     with open(args.genre_symbols) as f:
         genre_symbols = json.load(f)
@@ -193,7 +193,7 @@ if __name__=="__main__":
         if args.subset == 'current':
             lang_tbanks = [t for t in lang_tbanks if t['repo_name'] in last_release_treebanks]
         elif args.subset == 'sapling':
-            lang_tbanks = [t for t in lang_tbanks if not t['first_release']]
+            lang_tbanks = [t for t in lang_tbanks if not t['first_release'] and not t['repo_name'] in last_release_treebanks]
         elif args.subset == 'retired':
             lang_tbanks = [t for t in lang_tbanks if t['first_release'] and not t['repo_name'] in last_release_treebanks]
         if len(lang_tbanks)==0:
