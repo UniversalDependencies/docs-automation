@@ -1103,6 +1103,12 @@ Seri:
   iso3: sei
   family: Hokan
   genus: Seri
+Shanghainese:
+  flag: CN
+  lcode: wuu
+  iso3: wuu
+  family: Sino-Tibetan
+  genus: Chinese
 Shipibo Konibo:
   flag: PE
   lcode: shp
