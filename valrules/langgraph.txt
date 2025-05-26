@@ -48,13 +48,13 @@ Chibchan--100--Arawakan
 Chibchan--100--Cariban
 Arawakan----Cariban
 Arawakan--10--Arawan
-Arawakan--10--Panoan
+Arawakan--10--Pano-Tacanan
 Arawakan--10--Tupian
 Cariban--10--Tupian
-Panoan----Quechuan
+Pano-Tacanan----Quechuan
 Arawan--10--Tupian
-Arawan--10--Panoan
-Tupian--10--Panoan
+Arawan--10--Pano-Tacanan
+Tupian--10--Pano-Tacanan
 Tupian--2--Guaicuruan
 Tupian--2--Macro-Je
 Macro-Je----Bororoan
