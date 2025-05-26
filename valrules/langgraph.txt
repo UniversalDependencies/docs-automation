@@ -47,9 +47,12 @@ Mayan----Chibchan
 Arawakan--10--Chibchan
 Arawakan--10--Tupian
 Arawakan----Arawan
+Arawakan----Cariban
 Arawakan----Panoan
 Arawan--10--Tupian
 Arawan--10--Panoan
+Cariban--10--Chibchan
+Cariban--10--Tupian
 Tupian--10--Panoan
 Tupian--2--Guaicuruan
 Tupian--2--Macro-Je
