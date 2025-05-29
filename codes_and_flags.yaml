@@ -791,6 +791,12 @@ Mbya Guarani:
   iso3: gun
   family: Tupian
   genus: Maweti-Guarani
+Middle Armenian:
+  flag: AM-RUBENID
+  lcode: axm
+  iso3: axm
+  family: IE
+  genus: Armenian
 Middle French:
   flag: FR-ROYAL
   lcode: frm
