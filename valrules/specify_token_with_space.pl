@@ -469,7 +469,12 @@ sub print_all_expressions
         my $ldata = $data->{$lcode};
         my @expressions = sort(keys(%{$ldata}));
         my $n = scalar(@expressions);
+        next unless($n > 0);
         print("    <tr><td>$lname_by_code{$lcode}</td><td>$lcode</td><td>$n</td>");
+        foreach my $expression (@expressions)
+        {
+            print("<td><pre>".htmlescape($expression)."</pre></td>");
+        }
         print("</tr>\n");
     }
     print("  </table>\n");
