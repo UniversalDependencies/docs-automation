@@ -172,11 +172,11 @@ sub print_edit_add_menu
     my @ndcop = ();
     if(exists($data->{$config{lcode}}))
     {
-        my @lemmas = sort(keys(%{$data->{$config{lcode}}}));
-        my $hrefs = get_expression_links_to_edit(@lemmas);
+        my @expressions = sort(keys(%{$data->{$config{lcode}}}));
+        my $hrefs = get_expression_links_to_edit(@expressions);
         print("  <p>$hrefs</p>\n");
     }
-    print("  <form action=\"specify_auxiliary.pl\" method=\"post\" enctype=\"multipart/form-data\">\n");
+    print("  <form action=\"specify_token_with_space.pl\" method=\"post\" enctype=\"multipart/form-data\">\n");
     print("    <input name=lcode type=hidden value=\"$config{lcode}\" />\n");
     print("    <input name=ghu type=hidden value=\"$config{ghu}\" />\n");
     print("    <input name=add type=submit value=\"Add\" />\n");
@@ -593,36 +593,36 @@ sub get_parameters
 
 
 #------------------------------------------------------------------------------
-# Reads the data about auxiliaries from the JSON file.
+# Reads the regular expressions from the JSON file.
 #------------------------------------------------------------------------------
 sub read_data_json
 {
     my %data;
-    my $datafile = "$path/data.json";
+    my $datafile = "$path/tospace.json";
     my $json = json_file_to_perl($datafile);
-    # The $json structure should contain two items, 'WARNING' and 'auxiliaries';
+    # The $json structure should contain two items, 'WARNING' and 'expressions';
     # the latter should be a reference to an hash of arrays of hashes.
-    if(exists($json->{auxiliaries}) && ref($json->{auxiliaries}) eq 'HASH')
+    if(exists($json->{expressions}) && ref($json->{expressions}) eq 'HASH')
     {
-        my @lcodes = keys(%{$json->{auxiliaries}});
+        my @lcodes = keys(%{$json->{expressions}});
         foreach my $lcode (@lcodes)
         {
             if(!exists($lname_by_code{$lcode}))
             {
                 die("Unknown language code '$lcode' in the JSON file");
             }
-            my @lemmas = keys(%{$json->{auxiliaries}{$lcode}});
-            foreach my $lemma (@lemmas)
+            my @expressions = keys(%{$json->{expressions}{$lcode}});
+            foreach my $expression (@expressions)
             {
                 # We do not have to copy the data item by item to a new record.
                 # We can simply copy the reference to the record.
-                $data{$lcode}{$lemma} = $json->{auxiliaries}{$lcode}{$lemma};
+                $data{$lcode}{$expression} = $json->{expressions}{$lcode}{$expression};
             }
         }
     }
     else
     {
-        die("No auxiliaries found in the JSON file");
+        die("No expressions found in the JSON file");
     }
     return %data;
 }
