@@ -195,7 +195,7 @@ sub get_expression_links_to_edit
     foreach my $expression (@expressions)
     {
         # The expression may contain various special characters which must be escaped in a URL.
-        my $urlexpression = uri_escape_utf8($expression0);
+        my $urlexpression = uri_escape_utf8($expression);
         my $href = "<a href=\"specify_token_with_space.pl?ghu=$config{ghu}&amp;lcode=$config{lcode}&amp;expression=$urlexpression\">$expression</a>";
         push(@hrefs, $href);
     }
@@ -463,8 +463,7 @@ sub print_all_auxiliaries
         print("<td>".join(' ', sort(keys(%necessitative)))."</td>");
         print("<td>".join(' ', sort(keys(%potential)))."</td>");
         print("<td>".join(' ', sort(keys(%desiderative)))."</td>");
-        print("<td>".join(' ', sort(keys(%other)))."</td>");
-        print("<td>".join(' ', sort(keys(%undocumented)))."</td></tr>\n");
+        print("<td>".join(' ', sort(keys(%other)))."</td></tr>\n");
     }
     print("  </table>\n");
 }
@@ -679,7 +678,6 @@ sub write_data_json
             my $jsonlemma = '"'.valdata::escape_json_string($lemma).'": ';
             my @record =
             (
-                ['functions'   => \@frecords, 'list of structures'],
                 ['status'      => $data->{$lcode}{$lemma}{status}],
                 ['lastchanged' => $data->{$lcode}{$lemma}{lastchanged}],
                 ['lastchanger' => $data->{$lcode}{$lemma}{lastchanger}]
