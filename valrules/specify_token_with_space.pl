@@ -607,7 +607,7 @@ sub get_parameters
         $config{$ename} =~ s/^\s+//;
         $config{$ename} =~ s/\s+$//;
         $config{$ename} =~ s/\s+/ /sg;
-        if($config{$ename} !~ m/^[\pL\pM∑$zwj$zwnj\pN\pP<=>\/ ]+$/)
+        if($config{$ename} !~ m/^[\pL\pM∑$zwj$zwnj\pN\pP<=>\/\+ ]+$/)
         {
             push(@errors, "Example '$config{$ename}' contains characters other than letters, numbers, punctuation and space");
         }
@@ -633,7 +633,7 @@ sub get_parameters
         $config{$ename} =~ s/^\s+//;
         $config{$ename} =~ s/\s+$//;
         $config{$ename} =~ s/\s+/ /sg;
-        if($config{$ename} !~ m/^[\pL\pM∑$zwj$zwnj\pN\pP<=>\/ ]+$/)
+        if($config{$ename} !~ m/^[\pL\pM∑$zwj$zwnj\pN\pP<=>\/\+ ]+$/)
         {
             push(@errors, "Example translation '$config{$ename}' contains characters other than letters, numbers, punctuation and space");
         }
