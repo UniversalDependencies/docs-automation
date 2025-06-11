@@ -535,19 +535,25 @@ sub get_parameters
     {
         $config{expression} = '';
     }
-    ###############!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! ADAPT
-    # Lemma can contain letters (L) and marks (M).
+    # Expression contains at least one space.
+    # Besides that, it can contain letters (L) and marks (M).
     # An example of a mark: U+94D DEVANAGARI SIGN VIRAMA.
-    # We must also allow the hyphen, needed in Skolt Sami "i-ǥõl". (Jack Rueter: It is written with a hyphen. Historically it might be traced to a combination of the AUX:NEG ij and a reduced ǥõl stem derived from what is now the verb õlggâd ʹhave toʹ. The word-initial g has been retained in the fossilized contraction as ǥ, but that same word-initial letter has been lost in the standard verb.)
-    # We must also allow the apostrophe, needed in Mbya Guarani "nda'ei" and "nda'ipoi".
-    # We must also allow whitespace, needed in Vietnamese "có thể".
-    elsif($config{lemma} =~ m/^\s*([\pL\pM]+([-' ][\pL\pM]+)?)\s*$/) #'
+    elsif($config{expression} =~ m/^\s*([\pL\pM]+([-' ][\pL\pM]+)?)\s*$/) #'
     {
-        $config{lemma} = $1;
+        $config{expression} = $1;
+        # First primitive adjustments of the expression.
+        $config{expression} =~ s/\\s/ /g;
+        $config{expression} =~ s/^ +//;
+        $config{expression} =~ s/ +$//;
+        $config{expression} =~ s/ +/ /g;
+        if($config{expression} !~ m/ /)
+        {
+            push(@errors, "Expression '$config{expression}' does not contain the space character");
+        }
     }
     else
     {
-        push(@errors, "Lemma '$config{lemma}' contains non-letter characters");
+        push(@errors, "Expression '$config{expression}' contains non-letter characters");
     }
     #--------------------------------------------------------------------------
     # The parameter 'save' comes from the Save button which submitted the form.
