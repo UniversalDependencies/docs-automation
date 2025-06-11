@@ -215,10 +215,7 @@ sub print_expression_form
     my $record;
     if($config{expression} eq '')
     {
-        $record =
-        {
-            'status'    => 'new'
-        };
+        $record = {};
     }
     elsif(exists($data->{$config{lcode}}{$config{expression}}))
     {
@@ -268,14 +265,14 @@ EOF
         print("<input name=expression type=text size=10 />");
     }
     print("</td>\n");
-    my $hexample = '';
+    my $hexample = htmlescape($record->{example} // '');
     print("      <td><input name=example type=text size=30 value=\"$hexample\" /></td>\n");
     if($show_exampleen)
     {
-        my $hexampleen = '';
+        my $hexampleen = htmlescape($record->{exampleen} // '');
         print("      <td><input name=exampleen type=text size=30 value=\"$hexampleen\" /></td>\n");
     }
-    my $hcomment = '';
+    my $hcomment = htmlescape($record->{comment} // '');
     print("      <td><input name=comment type=text value=\"$hcomment\" /></td>\n");
     print("    </tr>\n");
     #--------------------------------------------------------------------------
