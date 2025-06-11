@@ -535,14 +535,16 @@ sub get_parameters
     {
         $config{expression} = '';
     }
-    # Expression contains at least one space.
+    # Expression contains at least one space. Besides that, it can contain the following:
+    # - special characters in regular expression syntax: [-](|)?+*
+    # - the escaping backslash (although we will later eliminate it): \
     # Besides that, it can contain letters (L) and marks (M).
     # An example of a mark: U+94D DEVANAGARI SIGN VIRAMA.
-    elsif($config{expression} =~ m/^\s*([\pL\pM]+([-' ][\pL\pM]+)?)\s*$/) #'
+    elsif($config{expression} =~ m/^([-\[\]\(\)\|\?\+\*\\\pL\pM]+)$/)
     {
         $config{expression} = $1;
         # First primitive adjustments of the expression.
-        $config{expression} =~ s/\\s/ /g;
+        $config{expression} =~ s/\\[strn]/ /g;
         $config{expression} =~ s/^ +//;
         $config{expression} =~ s/ +$//;
         $config{expression} =~ s/ +/ /g;
@@ -553,7 +555,7 @@ sub get_parameters
     }
     else
     {
-        push(@errors, "Expression '$config{expression}' contains non-letter characters");
+        push(@errors, "Expression '$config{expression}' contains unexpected characters");
     }
     #--------------------------------------------------------------------------
     # The parameter 'save' comes from the Save button which submitted the form.
