@@ -473,7 +473,7 @@ sub print_all_expressions
         print("    <tr><td>$lname_by_code{$lcode}</td><td>$lcode</td><td>$n</td>");
         foreach my $expression (@expressions)
         {
-            print("<td><pre>".htmlescape($expression)."</pre></td>");
+            print("<td>".htmlescape($expression)."</td>");
         }
         print("</tr>\n");
     }
