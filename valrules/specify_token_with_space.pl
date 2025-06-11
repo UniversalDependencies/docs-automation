@@ -345,27 +345,27 @@ sub process_form_data
     my $ename = "example";
     if($config{$ename} ne '')
     {
-        print("    <li>example $ifun = '".htmlescape($config{$ename})."'</li>\n");
+        print("    <li>example = '".htmlescape($config{$ename})."'</li>\n");
     }
     else
     {
-        print("    <li style='color:red'>ERROR: Missing example $ifun</li>\n");
+        print("    <li style='color:red'>ERROR: Missing example</li>\n");
         $error = 1;
     }
     $ename = "exampleen";
     if($config{$ename} ne '')
     {
-        print("    <li>exampleen $ifun = '".htmlescape($config{$ename})."'</li>\n");
+        print("    <li>exampleen = '".htmlescape($config{$ename})."'</li>\n");
     }
     elsif($config{lcode} ne 'en')
     {
-        print("    <li style='color:red'>ERROR: Missing English translation of the example $ifun</li>\n");
+        print("    <li style='color:red'>ERROR: Missing English translation of the example</li>\n");
         $error = 1;
     }
     my $cname = "comment";
     if($config{$cname} ne '')
     {
-        print("    <li>comment $ifun = '".htmlescape($config{$cname})."'</li>\n");
+        print("    <li>comment = '".htmlescape($config{$cname})."'</li>\n");
     }
     print("  </ul>\n");
     if($error)
@@ -780,7 +780,7 @@ sub write_data_json
                 ['expression'  => $expression],
                 ['example'     => $data->{$lcode}{$expression}{example}],
                 ['exampleen'   => $data->{$lcode}{$expression}{exampleen}],
-                ['comment'     => $data->{$lcode}{$expression}{comment}]
+                ['comment'     => $data->{$lcode}{$expression}{comment}],
                 ['lastchanged' => $data->{$lcode}{$expression}{lastchanged}],
                 ['lastchanger' => $data->{$lcode}{$expression}{lastchanger}]
             );
