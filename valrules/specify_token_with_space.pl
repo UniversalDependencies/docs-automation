@@ -169,7 +169,6 @@ sub print_edit_add_menu
 {
     my $data = shift;
     print("  <h2>Edit or add regular expressions</h2>\n");
-    my @ndcop = ();
     if(exists($data->{$config{lcode}}))
     {
         my @expressions = sort(keys(%{$data->{$config{lcode}}}));
