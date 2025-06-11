@@ -270,14 +270,14 @@ EOF
     }
     print("</td>\n");
     my $hexample = '';
-    print("      <td><input name=example1 type=text size=30 value=\"$hexample\" /></td>\n");
+    print("      <td><input name=example type=text size=30 value=\"$hexample\" /></td>\n");
     if($show_exampleen)
     {
         my $hexampleen = '';
-        print("      <td><input name=exampleen1 type=text size=30 value=\"$hexampleen\" /></td>\n");
+        print("      <td><input name=exampleen type=text size=30 value=\"$hexampleen\" /></td>\n");
     }
     my $hcomment = '';
-    print("      <td><input name=comment1 type=text value=\"$hcomment\" /></td>\n");
+    print("      <td><input name=comment type=text value=\"$hcomment\" /></td>\n");
     print("    </tr>\n");
     #--------------------------------------------------------------------------
     # Buttons
@@ -341,6 +341,31 @@ sub process_form_data
     {
         print("    <li style='color:red'>ERROR: Missing expression</li>\n");
         $error = 1;
+    }
+    my $ename = "example";
+    if($config{$ename} ne '')
+    {
+        print("    <li>example $ifun = '".htmlescape($config{$ename})."'</li>\n");
+    }
+    else
+    {
+        print("    <li style='color:red'>ERROR: Missing example $ifun</li>\n");
+        $error = 1;
+    }
+    $ename = "exampleen";
+    if($config{$ename} ne '')
+    {
+        print("    <li>exampleen $ifun = '".htmlescape($config{$ename})."'</li>\n");
+    }
+    elsif($config{lcode} ne 'en')
+    {
+        print("    <li style='color:red'>ERROR: Missing English translation of the example $ifun</li>\n");
+        $error = 1;
+    }
+    my $cname = "comment";
+    if($config{$cname} ne '')
+    {
+        print("    <li>comment $ifun = '".htmlescape($config{$cname})."'</li>\n");
     }
     print("  </ul>\n");
     if($error)
@@ -559,6 +584,98 @@ sub get_parameters
         push(@errors, "Expression '$config{expression}' contains unexpected characters");
     }
     #--------------------------------------------------------------------------
+    # Example in the original language may contain letters (including Unicode
+    # letters), spaces, punctuation (including Unicode punctuation). Square
+    # brackets have a special meaning, they mark the word we focus on. We
+    # probably do not need < > & "" and we could ban them for safety (but
+    # it is not necessary if we make sure to always escape them when inserting
+    # them in HTML we generate). We may need the apostrophe in some languages,
+    # though.
+    my $ename = "example";
+    $config{$ename} = decode('utf8', $query->param($ename));
+    if(!defined($config{$ename}) || $config{$ename} =~ m/^\s*$/)
+    {
+        $config{$ename} = '';
+    }
+    else
+    {
+        # Remove duplicate, leading and trailing spaces.
+        $config{$ename} =~ s/^\s+//;
+        $config{$ename} =~ s/\s+$//;
+        $config{$ename} =~ s/\s+/ /sg;
+        if($config{$ename} !~ m/^[\pL\pM$zwj$zwnj\pN\pP ]+$/)
+        {
+            push(@errors, "Example '$config{$ename}' contains characters other than letters, numbers, punctuation and space");
+        }
+        elsif($config{$ename} =~ m/[<>&"]/) # "
+        {
+            push(@errors, "Example '$config{$ename}' contains less-than, greater-than, ampersand or the ASCII quote");
+        }
+        if($config{$ename} =~ m/^(.+)$/)
+        {
+            $config{$ename} = $1;
+        }
+    }
+    #--------------------------------------------------------------------------
+    # English translation of the example is provided if the current language is
+    # not English. We can probably allow the same regular expressions as for
+    # the original example, although we typically do not need non-English
+    # letters in the English translation.
+    $ename = "exampleen";
+    $config{$ename} = decode('utf8', $query->param($ename));
+    if(!defined($config{$ename}) || $config{$ename} =~ m/^\s*$/)
+    {
+        $config{$ename} = '';
+    }
+    else
+    {
+        # Remove duplicate, leading and trailing spaces.
+        $config{$ename} =~ s/^\s+//;
+        $config{$ename} =~ s/\s+$//;
+        $config{$ename} =~ s/\s+/ /sg;
+        if($config{$ename} !~ m/^[\pL\pM$zwj$zwnj\pN\pP ]+$/)
+        {
+            push(@errors, "Example translation '$config{$ename}' contains characters other than letters, numbers, punctuation and space");
+        }
+        elsif($config{$ename} =~ m/[<>&"]/) # "
+        {
+            push(@errors, "Example translation '$config{$ename}' contains less-than, greater-than, ampersand or the ASCII quote");
+        }
+        if($config{$ename} =~ m/^(.+)$/)
+        {
+            $config{$ename} = $1;
+        }
+    }
+    #--------------------------------------------------------------------------
+    # Comment is an optional English text. Since it may contain a word from the
+    # language being documented, we should allow everything that is allowed in
+    # the example.
+    my $cname = "comment";
+    $config{$cname} = decode('utf8', $query->param($cname));
+    if(!defined($config{$cname}) || $config{$cname} =~ m/^\s*$/)
+    {
+        $config{$cname} = '';
+    }
+    else
+    {
+        # Remove duplicate, leading and trailing spaces.
+        $config{$cname} =~ s/^\s+//;
+        $config{$cname} =~ s/\s+$//;
+        $config{$cname} =~ s/\s+/ /sg;
+        if($config{$cname} !~ m/^[\pL\pM$zwj$zwnj\pN\pP ]+$/)
+        {
+            push(@errors, "Comment '$config{$cname}' contains characters other than letters, numbers, punctuation and space");
+        }
+        elsif($config{$cname} =~ m/[<>&"]/) # "
+        {
+            push(@errors, "Comment '$config{$cname}' contains less-than, greater-than, ampersand or the ASCII quote");
+        }
+        if($config{$cname} =~ m/^(.+)$/)
+        {
+            $config{$cname} = $1;
+        }
+    }
+    #--------------------------------------------------------------------------
     # The parameter 'save' comes from the Save button which submitted the form.
     $config{save} = decode('utf8', $query->param('save'));
     if(!defined($config{save}))
@@ -661,6 +778,9 @@ sub write_data_json
             my @record =
             (
                 ['expression'  => $expression],
+                ['example'     => $data->{$lcode}{$expression}{example}],
+                ['exampleen'   => $data->{$lcode}{$expression}{exampleen}],
+                ['comment'     => $data->{$lcode}{$expression}{comment}]
                 ['lastchanged' => $data->{$lcode}{$expression}{lastchanged}],
                 ['lastchanger' => $data->{$lcode}{$expression}{lastchanger}]
             );
