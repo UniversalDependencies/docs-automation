@@ -552,6 +552,7 @@ sub get_parameters
         {
             push(@errors, "Expression '$config{expression}' does not contain the space character");
         }
+        $config{expression} =~ s/\\d/[0-9]/g;
     }
     else
     {
