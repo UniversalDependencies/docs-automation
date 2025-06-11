@@ -660,7 +660,7 @@ sub write_data_json
             my $jsonexpression = '"'.valdata::escape_json_string($expression).'": ';
             my @record =
             (
-                ['status'      => $data->{$lcode}{$expression}{status}],
+                ['expression'  => $expression],
                 ['lastchanged' => $data->{$lcode}{$expression}{lastchanged}],
                 ['lastchanger' => $data->{$lcode}{$expression}{lastchanger}]
             );
