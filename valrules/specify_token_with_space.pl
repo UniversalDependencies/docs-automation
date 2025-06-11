@@ -199,7 +199,7 @@ sub get_expression_links_to_edit
         my $href = "<a href=\"specify_token_with_space.pl?ghu=$config{ghu}&amp;lcode=$config{lcode}&amp;expression=$urlexpression\">$expression</a>";
         push(@hrefs, $href);
     }
-    return join(' ', @hrefs);
+    return join(' | ', @hrefs);
 }
 
 
