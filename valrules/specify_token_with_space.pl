@@ -572,14 +572,14 @@ sub get_parameters
         push(@errors, "Unrecognized save button '$config{save}'");
     }
     #--------------------------------------------------------------------------
-    # The parameter 'add' comes from the buttons that launch the form to add
-    # a new auxiliary (separate buttons for copula and other auxiliaries).
+    # The parameter 'add' comes from the button that launches the form to add
+    # a new expression.
     $config{add} = decode('utf8', $query->param('add'));
     if(!defined($config{add}))
     {
         $config{add} = 0;
     }
-    elsif($config{add} =~ m/^Add (other|non-copula)$/) ###########################!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+    elsif($config{add} =~ m/^Add$/)
     {
         $config{add} = 1;
     }
