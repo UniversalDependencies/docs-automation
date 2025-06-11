@@ -137,20 +137,20 @@ else
     {
         summarize_guidelines();
         print_expression_form(\%data);
-        print_all_auxiliaries(\%data, $languages);
+        print_all_expressions(\%data, $languages);
     }
     elsif($config{add})
     {
         summarize_guidelines();
         print_expression_form(\%data);
-        print_all_auxiliaries(\%data, $languages);
+        print_all_expressions(\%data, $languages);
     }
     else
     {
         summarize_guidelines();
         print_edit_add_menu(\%data);
         # Show all known auxiliaries so the user can compare. This and related languages first.
-        print_all_auxiliaries(\%data, $languages);
+        print_all_expressions(\%data, $languages);
     }
 }
 print <<EOF
@@ -417,6 +417,9 @@ sub summarize_guidelines
     <li>The operators <tt>?</tt>, <tt>*</tt>, and <tt>+</tt> can be applied to
       a string enclosed in round brackets. For example, <tt>(yes)+</tt> matches
       “yes”, “yesyes” etc.</li>
+    <li>Vertical bar inside round brackets means disjunction of strings. Thus
+      <tt>(yes|no)+</tt> matches “yes”, “no”, “yesyes”, “yesno”, “nono”,
+      “noyes”, “yesyesyes” etc.</li>
   </ul>
 EOF
     ;
@@ -427,7 +430,7 @@ EOF
 #------------------------------------------------------------------------------
 # Prints auxiliaries of all languages, this and related languages first.
 #------------------------------------------------------------------------------
-sub print_all_auxiliaries
+sub print_all_expressions
 {
     my $data = shift;
     my $languages = shift; # ref to hash read from YAML, indexed by names
@@ -435,35 +438,14 @@ sub print_all_auxiliaries
     print("  <h2>Known auxiliaries for this and other languages</h2>\n");
     my @lcodes = langgraph::sort_lcodes_by_relatedness($languages, $config{lcode});
     print("  <table>\n");
-    print("    <tr><th colspan=2>Language</th><th>Total</th><th>Copula</th><th>Perfect</th><th>Past</th><th>Future</th><th>Passive</th><th>Conditional</th><th>Necessitative</th><th>Potential</th><th>Desiderative</th><th>Other</th><th>Undocumented</th></tr>\n");
+    print("    <tr><th colspan=2>Language</th><th>Total</th></tr>\n");
     foreach my $lcode (@lcodes)
     {
         my $ldata = $data->{$lcode};
-        my @lemmas = sort(keys(%{$ldata}));
-        my $n = scalar(@lemmas);
-        # Collect lemmas that shall appear in individual columns. Some lemmas
-        # may appear in multiple columns.
-        my %copula;
-        my %perfect;
-        my %past;
-        my %future;
-        my %passive;
-        my %conditional;
-        my %necessitative;
-        my %potential;
-        my %desiderative;
-        my %other;
+        my @expressions = sort(keys(%{$ldata}));
+        my $n = scalar(@expressions);
         print("    <tr><td>$lname_by_code{$lcode}</td><td>$lcode</td><td>$n</td>");
-        print("<td>".join(' ', sort(keys(%copula)))."</td>");
-        print("<td>".join(' ', sort(keys(%perfect)))."</td>");
-        print("<td>".join(' ', sort(keys(%past)))."</td>");
-        print("<td>".join(' ', sort(keys(%future)))."</td>");
-        print("<td>".join(' ', sort(keys(%passive)))."</td>");
-        print("<td>".join(' ', sort(keys(%conditional)))."</td>");
-        print("<td>".join(' ', sort(keys(%necessitative)))."</td>");
-        print("<td>".join(' ', sort(keys(%potential)))."</td>");
-        print("<td>".join(' ', sort(keys(%desiderative)))."</td>");
-        print("<td>".join(' ', sort(keys(%other)))."</td></tr>\n");
+        print("</tr>\n");
     }
     print("  </table>\n");
 }
@@ -545,12 +527,15 @@ sub get_parameters
         push(@errors, "Unsatisfactory robotic response :-)");
     }
     #--------------------------------------------------------------------------
-    # Lemma identifies the auxiliary that we are editing or going to edit.
-    $config{lemma} = decode('utf8', $query->param('lemma'));
-    if(!defined($config{lemma}) || $config{lemma} =~ m/^\s*$/)
+    # Expression is the regular expression describing one type of words with
+    # spaces. We should be careful and allow only a subset of Perl RE syntax,
+    # excluding anything that can lead to execution of arbitrary code.
+    $config{expression} = decode('utf8', $query->param('expression'));
+    if(!defined($config{expression}) || $config{expression} =~ m/^\s*$/)
     {
-        $config{lemma} = '';
+        $config{expression} = '';
     }
+    ###############!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! ADAPT
     # Lemma can contain letters (L) and marks (M).
     # An example of a mark: U+94D DEVANAGARI SIGN VIRAMA.
     # We must also allow the hyphen, needed in Skolt Sami "i-ǥõl". (Jack Rueter: It is written with a hyphen. Historically it might be traced to a combination of the AUX:NEG ij and a reduced ǥõl stem derived from what is now the verb õlggâd ʹhave toʹ. The word-initial g has been retained in the fossilized contraction as ǥ, but that same word-initial letter has been lost in the standard verb.)
@@ -593,20 +578,10 @@ sub get_parameters
     if(!defined($config{add}))
     {
         $config{add} = 0;
-        $config{addcop} = 0;
-        $config{addnoncop} = 0;
     }
-    elsif($config{add} =~ m/^Add copula$/)
+    elsif($config{add} =~ m/^Add (other|non-copula)$/) ###########################!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
     {
-        $config{addcop} = 1;
         $config{add} = 1;
-        $config{addnoncop} = 0;
-    }
-    elsif($config{add} =~ m/^Add (other|non-copula)$/)
-    {
-        $config{addnoncop} = 1;
-        $config{add} = 1;
-        $config{addcop} = 0;
     }
     else
     {
@@ -659,33 +634,31 @@ sub read_data_json
 #------------------------------------------------------------------------------
 sub write_data_json
 {
-    # Initially, the data is read from the Python code.
-    # This will change in the future and we will read the JSON file instead!
     my $data = shift;
     my $filename = shift;
-    my $json = '{"WARNING": "Please do not edit this file manually. Such edits will be overwritten without notice. Go to http://quest.ms.mff.cuni.cz/udvalidator/cgi-bin/unidep/langspec/specify_auxiliary.pl instead.",'."\n\n";
-    $json .= '"auxiliaries": {'."\n";
+    my $json = '{"WARNING": "Please do not edit this file manually. Such edits will be overwritten without notice. Go to http://quest.ms.mff.cuni.cz/udvalidator/cgi-bin/unidep/langspec/specify_token_with_space.pl instead.",'."\n\n";
+    $json .= '"expressions": {'."\n";
     my @jsonlanguages = ();
     # Sort the list so that git diff is informative when we investigate changes.
     my @lcodes = sort(keys(%{$data}));
     foreach my $lcode (@lcodes)
     {
         my $jsonlanguage = '"'.$lcode.'"'.": {\n";
-        my @jsonlemmas = ();
-        my @lemmas = sort(keys(%{$data->{$lcode}}));
-        foreach my $lemma (@lemmas)
+        my @jsonexpressions = ();
+        my @expressions = sort(keys(%{$data->{$lcode}}));
+        foreach my $expression (@expressions)
         {
-            my $jsonlemma = '"'.valdata::escape_json_string($lemma).'": ';
+            my $jsonexpression = '"'.valdata::escape_json_string($expression).'": ';
             my @record =
             (
                 ['status'      => $data->{$lcode}{$lemma}{status}],
                 ['lastchanged' => $data->{$lcode}{$lemma}{lastchanged}],
                 ['lastchanger' => $data->{$lcode}{$lemma}{lastchanger}]
             );
-            $jsonlemma .= valdata::encode_json(@record);
-            push(@jsonlemmas, $jsonlemma);
+            $jsonexpression .= valdata::encode_json(@record);
+            push(@jsonexpressions, $jsonexpression);
         }
-        $jsonlanguage .= join(",\n", @jsonlemmas)."\n";
+        $jsonlanguage .= join(",\n", @jsonexpressions)."\n";
         $jsonlanguage .= '}';
         push(@jsonlanguages, $jsonlanguage);
     }
