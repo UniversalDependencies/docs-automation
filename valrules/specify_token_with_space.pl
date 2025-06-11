@@ -570,9 +570,9 @@ sub get_parameters
     # - the escaping backslash (although we will later eliminate it): \
     # - the European digits: 0-9
     # - period: . (do we want to allow it as a placeholder for any character, or do we require that it be escaped as "\."?)
-    # - other punctuation without special meaning in regular expressions: ,
+    # - other punctuation without special meaning in regular expressions: ,<=>
     # - letters (L) and marks (M). An example of a mark: U+94D DEVANAGARI SIGN VIRAMA.
-    elsif($config{expression} =~ m/^([-\[\]\(\)\|\?\+\*\\0-9\.,\pL\pM ]+)$/)
+    elsif($config{expression} =~ m/^([-\[\]\(\)\|\?\+\*\\0-9\.,<=>\pL\pM ]+)$/)
     {
         $config{expression} = $1;
         # First primitive adjustments of the expression.
@@ -610,13 +610,9 @@ sub get_parameters
         $config{$ename} =~ s/^\s+//;
         $config{$ename} =~ s/\s+$//;
         $config{$ename} =~ s/\s+/ /sg;
-        if($config{$ename} !~ m/^[\pL\pM$zwj$zwnj\pN\pP ]+$/)
+        if($config{$ename} !~ m/^[\pL\pM$zwj$zwnj\pN\pP<=> ]+$/)
         {
             push(@errors, "Example '$config{$ename}' contains characters other than letters, numbers, punctuation and space");
-        }
-        elsif($config{$ename} =~ m/[<>&"]/) # "
-        {
-            push(@errors, "Example '$config{$ename}' contains less-than, greater-than, ampersand or the ASCII quote");
         }
         if($config{$ename} =~ m/^(.+)$/)
         {
@@ -640,13 +636,9 @@ sub get_parameters
         $config{$ename} =~ s/^\s+//;
         $config{$ename} =~ s/\s+$//;
         $config{$ename} =~ s/\s+/ /sg;
-        if($config{$ename} !~ m/^[\pL\pM$zwj$zwnj\pN\pP ]+$/)
+        if($config{$ename} !~ m/^[\pL\pM$zwj$zwnj\pN\pP<=> ]+$/)
         {
             push(@errors, "Example translation '$config{$ename}' contains characters other than letters, numbers, punctuation and space");
-        }
-        elsif($config{$ename} =~ m/[<>&"]/) # "
-        {
-            push(@errors, "Example translation '$config{$ename}' contains less-than, greater-than, ampersand or the ASCII quote");
         }
         if($config{$ename} =~ m/^(.+)$/)
         {
@@ -669,13 +661,9 @@ sub get_parameters
         $config{$cname} =~ s/^\s+//;
         $config{$cname} =~ s/\s+$//;
         $config{$cname} =~ s/\s+/ /sg;
-        if($config{$cname} !~ m/^[\pL\pM$zwj$zwnj\pN\pP ]+$/)
+        if($config{$cname} !~ m/^[\pL\pM$zwj$zwnj\pN\pP<=> ]+$/)
         {
             push(@errors, "Comment '$config{$cname}' contains characters other than letters, numbers, punctuation and space");
-        }
-        elsif($config{$cname} =~ m/[<>&"]/) # "
-        {
-            push(@errors, "Comment '$config{$cname}' contains less-than, greater-than, ampersand or the ASCII quote");
         }
         if($config{$cname} =~ m/^(.+)$/)
         {
