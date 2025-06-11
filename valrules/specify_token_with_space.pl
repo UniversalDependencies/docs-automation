@@ -387,6 +387,7 @@ sub process_form_data
         $record{expression} = $config{expression};
         $record{example} = $config{example};
         $record{exampleen} = $config{exampleen};
+        $record{comment} = $config{comment};
         $data->{$config{lcode}}{$config{expression}} = \%record;
         write_data_json($data, "$path/tospace.json");
         # Commit the changes to the repository and push them to Github.
