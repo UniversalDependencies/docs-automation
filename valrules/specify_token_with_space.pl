@@ -262,7 +262,7 @@ EOF
     }
     else
     {
-        print("<input name=expression type=text size=10 />");
+        print("<input name=expression type=text size=30 />");
     }
     print("</td>\n");
     my $hexample = htmlescape($record->{example} // '');
@@ -273,7 +273,7 @@ EOF
         print("      <td><input name=exampleen type=text size=30 value=\"$hexampleen\" /></td>\n");
     }
     my $hcomment = htmlescape($record->{comment} // '');
-    print("      <td><input name=comment type=text value=\"$hcomment\" /></td>\n");
+    print("      <td><input name=comment type=text size=30 value=\"$hcomment\" /></td>\n");
     print("    </tr>\n");
     #--------------------------------------------------------------------------
     # Buttons
