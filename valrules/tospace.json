@@ -18,7 +18,17 @@
 "šeš [^ ]+( [0-9]+ mē)?": {"example": "šeš šūši", "exampleen": "šeš šūši", "comment": "", "lastchanged": "2025-06-12-11-16-31", "lastchanger": "dan-zeman"}
 },
 "br": {
-"[0-9]+ [0-9]+": {"example": "898 000", "exampleen": "898,000", "comment": "Making long numbers readable.", "lastchanged": "2025-06-12-12-12-36", "lastchanger": "dan-zeman"}
+"[0-9]+ %": {"example": "15 %", "exampleen": "15%", "comment": "", "lastchanged": "2025-06-12-12-16-04", "lastchanger": "dan-zeman"},
+"[0-9]+ [0-9]+": {"example": "898 000", "exampleen": "898,000", "comment": "Making long numbers readable.", "lastchanged": "2025-06-12-12-12-36", "lastchanger": "dan-zeman"},
+"[Aa]m eus": {"example": "am eus", "exampleen": "I have", "comment": "", "lastchanged": "2025-06-12-12-25-37", "lastchanger": "dan-zeman"},
+"[Aa]r (pezh|pezh a|re all)": {"example": "ar pezh", "exampleen": "which", "comment": "", "lastchanged": "2025-06-12-12-26-36", "lastchanger": "dan-zeman"},
+"[Bb]anelloù hent": {"example": "banelloù hent", "exampleen": "road signs", "comment": "", "lastchanged": "2025-06-12-12-28-02", "lastchanger": "dan-zeman"},
+"[Bb]ro [lL]eon": {"example": "Bro Leon", "exampleen": "Bro Leon", "comment": "", "lastchanged": "2025-06-12-12-30-39", "lastchanger": "dan-zeman"},
+"[Ee]m (boa|eus)": {"example": "em eus", "exampleen": "I have", "comment": "", "lastchanged": "2025-06-12-12-31-47", "lastchanger": "dan-zeman"},
+"[Ee]n (deus|doa|un|ur)": {"example": "en deus", "exampleen": "he has", "comment": "", "lastchanged": "2025-06-12-12-33-10", "lastchanger": "dan-zeman"},
+"[Ee]r maez": {"example": "er maez", "exampleen": "out", "comment": "", "lastchanged": "2025-06-12-12-34-10", "lastchanger": "dan-zeman"},
+"[Ee]z eus": {"example": "ez eus", "exampleen": "there are", "comment": "", "lastchanged": "2025-06-12-12-35-09", "lastchanger": "dan-zeman"},
+"[Hh]e (deus|devoa|do)": {"example": "he deus", "exampleen": "she has", "comment": "", "lastchanged": "2025-06-12-12-36-05", "lastchanger": "dan-zeman"}
 },
 "lt": {
 "([0-9]+ *)?[-\\.] *[0-9]+": {"example": "70 - 2630", "exampleen": "70 - 2630", "comment": "", "lastchanged": "2025-06-11-23-08-35", "lastchanger": "dan-zeman"},
