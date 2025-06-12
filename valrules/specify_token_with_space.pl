@@ -563,13 +563,13 @@ sub get_parameters
         $config{expression} = '';
     }
     # Expression contains at least one space. Besides that, it can contain the following:
-    # - special characters in regular expression syntax: [-](|)?+*
+    # - special characters in regular expression syntax: [-^](|)?+*
     # - the escaping backslash (although we will later eliminate it): \
     # - the European digits: 0-9
     # - period: . (do we want to allow it as a placeholder for any character, or do we require that it be escaped as "\."?)
     # - other punctuation without special meaning in regular expressions: ,<=>/
     # - letters (L) and marks (M). An example of a mark: U+94D DEVANAGARI SIGN VIRAMA.
-    elsif($config{expression} =~ m/^([-\[\]\(\)\|\?\+\*\\0-9\.,<=>\/\pL\pM∑ ]+)$/)
+    elsif($config{expression} =~ m/^([-^\[\]\(\)\|\?\+\*\\0-9\.,<=>\/\pL\pM∑ ]+)$/)
     {
         $config{expression} = $1;
         # First primitive adjustments of the expression.
