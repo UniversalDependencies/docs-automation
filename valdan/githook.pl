@@ -118,7 +118,7 @@ if(defined($result))
                     my $ltcode = $2;
                     $changed{$ltcode}++;
                 }
-                elsif($file =~ m/^data\/(data|feats|deprels|edeprels)\.json$/ && $commit->{message} =~ m/Updated data specific for ([a-z]{2,3})\./)
+                elsif($file =~ m/^data\/(data|feats|deprels|edeprels|tospace)\.json$/ && $commit->{message} =~ m/Updated data specific for ([a-z]{2,3})\./)
                 {
                     my $ltcode = $1;
                     $changed{$ltcode}++;
