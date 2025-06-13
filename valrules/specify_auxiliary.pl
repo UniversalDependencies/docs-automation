@@ -21,6 +21,7 @@ use charnames ();
 # access the data).
 my $path; BEGIN {$path = '/usr/lib/cgi-bin/unidep/docs-automation/valrules';}
 use lib $path;
+use common;
 use valdata;
 use langgraph;
 
@@ -110,31 +111,7 @@ if ( exists($ENV{HTTP_X_FORWARDED_FOR}) && $ENV{HTTP_X_FORWARDED_FOR} =~ m/^(\d+
 my %config = get_parameters($query, \%lname_by_code, \@functions);
 $query->charset('utf-8'); # makes the charset explicitly appear in the headers
 print($query->header());
-print <<EOF
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "DTD/xhtml1-strict.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
-<head>
-  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-  <title>Specify auxiliaries in UD</title>
-  <link rel="icon" href="https://universaldependencies.org/logos/logo-ud.png" type="image/png">
-  <style type="text/css">
-    img {border: none;}
-    img.flag {
-      vertical-align: middle;
-      border: solid grey 1px;
-      height: 1em;
-    }
-  </style>
-</head>
-<body>
-  <p style="position: absolute; right: 10px; font-size:0.8em">
-    <a href="specify_auxiliary.pl">a</a>
-    <a href="specify_feature.pl">f</a>
-    <a href="specify_deprel.pl">d</a>
-    <a href="specify_edeprel.pl">e</a>
-  </p>
-EOF
-;
+print(common::generate_html_start('auxiliaries'));
 #------------------------------------------------------------------------------
 # If there were low-level errors in the parameters, print the error messages
 # and exit.

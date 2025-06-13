@@ -1,5 +1,6 @@
-# Functions to read and write JSON files with UD validation data. There are two
-# scripts that need to access feats.json: scan_docs_for_feats.pl and specify_feature.pl.
+# Functions to read and write JSON files with UD validation data. There are
+# several scripts that need to access various JSON files with features,
+# dependency relations etc.
 # Copyright © 2020 Dan Zeman <zeman@ufal.mff.cuni.cz>
 # License: GNU GPL
 
