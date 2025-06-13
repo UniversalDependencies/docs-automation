@@ -235,7 +235,8 @@ EOF
     if($config{expression} ne '')
     {
         my $hexpression = htmlescape($config{expression});
-        print("<strong>$hexpression</strong><input name=expression type=hidden size=10 value=\"$hexpression\" />");
+        print("<input name=expression type=text size=30 value=\"$hexpression\" />");
+        print("<input name=expression0 type=hidden value=\"$hexpression\" />");
     }
     else
     {
@@ -362,6 +363,13 @@ sub process_form_data
         $record{exampleen} = $config{exampleen};
         $record{comment} = $config{comment};
         $data->{$config{lcode}}{$config{expression}} = \%record;
+        # If we were editing a pre-existing expression and we modified the expression
+        # itself (not just examples and comments), we must now remove the record
+        # of the old expression.
+        if($config{expression0} && $config{expression0} ne $config{expression})
+        {
+            delete($data->{$config{lcode}}{$config{expression0}});
+        }
         write_data_json($data, "$path/tospace.json");
         # Commit the changes to the repository and push them to Github.
         system("/home/zeman/bin/git-push-docs-automation.sh '$config{ghu}' '$config{lcode}' > /dev/null");
@@ -563,6 +571,32 @@ sub get_parameters
     else
     {
         push(@errors, "Expression '$config{expression}' contains unexpected characters");
+    }
+    #--------------------------------------------------------------------------
+    # If we edited a previously stored expression, the original expression is
+    # provided in expression 0.
+    $config{expression0} = decode('utf8', $query->param('expression0'));
+    if(!defined($config{expression0}) || $config{expression0} =~ m/^\s*$/)
+    {
+        $config{expression0} = '';
+    }
+    elsif($config{expression0} =~ m/^([-^\[\]\(\)\|\?\+\*\\0-9\.,<=>\/\%'’:&·–\pL\pM∑ ]+)$/) #'
+    {
+        $config{expression0} = $1;
+        # First primitive adjustments of the expression.
+        $config{expression0} =~ s/\\[strn]/ /g;
+        $config{expression0} =~ s/^ +//;
+        $config{expression0} =~ s/ +$//;
+        $config{expression0} =~ s/ +/ /g;
+        if($config{expression0} !~ m/ /)
+        {
+            push(@errors, "Expression0 '$config{expression0}' does not contain the space character");
+        }
+        $config{expression0} =~ s/\\d/[0-9]/g;
+    }
+    else
+    {
+        push(@errors, "Expression0 '$config{expression0}' contains unexpected characters");
     }
     #--------------------------------------------------------------------------
     # Example in the original language may contain letters (including Unicode
