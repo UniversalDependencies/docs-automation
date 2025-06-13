@@ -235,12 +235,12 @@ EOF
     if($config{expression} ne '')
     {
         my $hexpression = htmlescape($config{expression});
-        print("<input name=expression type=text size=30 value=\"$hexpression\" />");
+        print("<input name=expression type=text size=50 value=\"$hexpression\" />");
         print("<input name=expression0 type=hidden value=\"$hexpression\" />");
     }
     else
     {
-        print("<input name=expression type=text size=30 />");
+        print("<input name=expression type=text size=50 />");
     }
     print("</td>\n");
     my $hexample = htmlescape($record->{example} // '');
