@@ -15,7 +15,7 @@ export LC_ALL=en_US.utf8
 # home: ~/.local/lib/python2.7/site-packages. However, user www-data will not
 # find the packages there. Hence we assume that ~/.local/lib/python2.7 has been
 # recursively copied to the pythonlib subfolder of the current folder.
-export PYTHONPATH=pythonlib/python3.4/site-packages
+export PYTHONPATH=pythonlib/python3.4/site-packages:/usr/lib/cgi-bin/unidep/udapi-python
 
 # Finally, we assume that validate.py itself resides in a local clone of the
 # tools repository from UD Github.
