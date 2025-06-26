@@ -77,7 +77,7 @@ my %error_stats;
 if(!$folder_empty)
 {
     system("date > log/$folder.log 2>&1");
-    system("date >&2");
+    system("echo `date` $folder START >&2");
     my $start_time = [gettimeofday];
     # Check list of files and metadata in README.
     my $command = "tools/check_files.pl $folder";
@@ -94,7 +94,7 @@ if(!$folder_empty)
     $folder_success = $folder_success && $result;
     count_error_types("log/$folder.log", \%error_stats);
     my $elapsed = tv_interval($start_time);  # in seconds, as a float
-    # Convert to milliseconds
+    system("echo `date` $folder END >&2");
     printf STDERR ("Elapsed time: %.3f seconds\n", $elapsed);
 }
 my $treebank_message = get_treebank_message($folder, $folder_empty, $folder_success, \%error_stats, $treebank_history, $dispensations);
