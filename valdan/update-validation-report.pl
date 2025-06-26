@@ -97,11 +97,11 @@ if(!$folder_empty)
     $result = saferun("$command >> log/$folder.log 2>&1");
     $folder_success = $folder_success && $result;
     count_error_types("log/$folder.log", \%error_stats);
-    my $elapsed = tv_interval($start_time);  # in seconds, as a float
 }
 my $treebank_message = get_treebank_message($folder, $folder_empty, $folder_success, \%error_stats, $treebank_history, $dispensations);
 print STDERR ("$treebank_message\n");
 system("echo `date` $folder END >&2");
+my $elapsed = tv_interval($start_time);  # in seconds, as a float
 # Two line breaks after this last line we are sending to STDERR (to make the global log more readable).
 printf STDERR ("Elapsed time: %.3f seconds\n\n", $elapsed);
 # Update the validation report that comprises all treebanks.
