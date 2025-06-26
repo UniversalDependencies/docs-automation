@@ -9,6 +9,7 @@ binmode(STDIN, ':utf8');
 binmode(STDOUT, ':utf8');
 binmode(STDERR, ':utf8');
 use JSON::Parse 'json_file_to_perl';
+use Time::HiRes qw(gettimeofday tv_interval);
 # We need to tell Perl where to find our udlib module.
 BEGIN
 {
@@ -76,6 +77,8 @@ my %error_stats;
 if(!$folder_empty)
 {
     system("date > log/$folder.log 2>&1");
+    system("date >&2");
+    my $start_time = [gettimeofday];
     # Check list of files and metadata in README.
     my $command = "tools/check_files.pl $folder";
     print STDERR ("$command\n");
@@ -90,6 +93,9 @@ if(!$folder_empty)
     $result = saferun("$command >> log/$folder.log 2>&1");
     $folder_success = $folder_success && $result;
     count_error_types("log/$folder.log", \%error_stats);
+    my $elapsed = tv_interval($start_time);  # in seconds, as a float
+    # Convert to milliseconds
+    printf STDERR ("Elapsed time: %.3f milliseconds\n", $elapsed * 1000);
 }
 my $treebank_message = get_treebank_message($folder, $folder_empty, $folder_success, \%error_stats, $treebank_history, $dispensations);
 print STDERR ("$treebank_message\n");
