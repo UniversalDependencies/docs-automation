@@ -10,6 +10,9 @@
 # will throw an exception if this is the case.
 export LC_ALL=en_US.utf8
 
+echo `date` validating $*
+START=$(date +%s.%N)
+
 # Validate.py depends the regex module that may not be installed system-wide.
 # In addition, in June 2025 I am experimenting with making it dependent on
 # Udapi, which itself is dependent on colorama and termcolor. The on-line
@@ -25,3 +28,7 @@ export PYTHONPATH=/usr/lib/cgi-bin/unidep/udapi-python
 # Finally, we assume that validate.py itself resides in a local clone of the
 # tools repository from UD GitHub.
 python3 tools/validate.py $*
+
+END=$(date +%s.%N)
+ELAPSED=$(echo "$END - $START" | bc)
+echo "Elapsed time: ${ELAPSED} seconds"
