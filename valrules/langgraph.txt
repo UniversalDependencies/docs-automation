@@ -306,6 +306,8 @@ sw--2--tn
 abq----ab
 ab--1000--ka
 ka----lzz
+ka----oge
+ka--2--xmf
 Southwestern----Southeastern
 Southeastern----Northeastern
 Northeastern----Northwestern

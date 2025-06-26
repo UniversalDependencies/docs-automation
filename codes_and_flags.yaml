@@ -791,6 +791,11 @@ Mbya Guarani:
   iso3: gun
   family: Tupian
   genus: Maweti-Guarani
+Megrelian:
+  flag: GE
+  lcode: xmf
+  iso3: xmf
+  family: Kartvelian
 Middle Armenian:
   flag: AM-RUBENID
   lcode: axm
@@ -951,6 +956,11 @@ Old French:
   iso3: fro
   family: IE
   genus: Romance
+Old Georgian:
+  flag: GE
+  lcode: oge
+  iso3: oge
+  family: Kartvelian
 Old Irish:
   flag: IE-FOUR
   lcode: sga
