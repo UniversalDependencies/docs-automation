@@ -1,7 +1,12 @@
 #!/usr/bin/env perl
 # Updates the validation report line of a particular treebank.
-# Copyright © 2018-2021, 2024 Dan Zeman <zeman@ufal.mff.cuni.cz>
+# Copyright © 2018-2021, 2024, 2025 Dan Zeman <zeman@ufal.mff.cuni.cz>
 # License: GNU GPL
+
+# This script prints progress report, as well as validation result, to STDERR.
+# Besides, it creates a log file for each treebank folder processed, e.g.,
+# log/UD_Czech-PUD.log. Finally, it also updates validation.txt, which is the
+# overview of most recent validation results for all treebanks.
 
 use utf8;
 use open ':utf8';
@@ -25,7 +30,6 @@ BEGIN
         $libpath = getcwd();
         chdir($currentpath);
     }
-    #print STDERR ("libpath=$libpath\n");
 }
 # We assume that a copy of this script is invoked that resides above all UD repositories, including tools.
 use lib "$libpath/tools";
@@ -70,6 +74,8 @@ my $dispensations = json_file_to_perl($dispfile)->{dispensations};
 # STDERR is saved in log/validation.log.
 #system("cd $folder ; (git pull --no-edit >/dev/null 2>&1) ; cd ..");
 system("cd $folder ; git pull --no-edit ; cd ..");
+system("echo `date` $folder START >&2");
+my $start_time = [gettimeofday];
 my @files = get_conllu_file_list($folder);
 my $folder_empty = scalar(@files) == 0;
 my $folder_success = 1;
@@ -77,8 +83,6 @@ my %error_stats;
 if(!$folder_empty)
 {
     system("date > log/$folder.log 2>&1");
-    system("echo `date` $folder START >&2");
-    my $start_time = [gettimeofday];
     # Check list of files and metadata in README.
     my $command = "tools/check_files.pl $folder";
     print STDERR ("$command\n");
@@ -94,11 +98,12 @@ if(!$folder_empty)
     $folder_success = $folder_success && $result;
     count_error_types("log/$folder.log", \%error_stats);
     my $elapsed = tv_interval($start_time);  # in seconds, as a float
-    system("echo `date` $folder END >&2");
-    printf STDERR ("Elapsed time: %.3f seconds\n", $elapsed);
 }
 my $treebank_message = get_treebank_message($folder, $folder_empty, $folder_success, \%error_stats, $treebank_history, $dispensations);
 print STDERR ("$treebank_message\n");
+system("echo `date` $folder END >&2");
+# Two line breaks after this last line we are sending to STDERR (to make the global log more readable).
+printf STDERR ("Elapsed time: %.3f seconds\n\n", $elapsed);
 # Update the validation report that comprises all treebanks.
 my %valreps;
 open(REPORT, "validation-report.txt");

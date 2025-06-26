@@ -1,6 +1,6 @@
 This is Dan's implementation of the automatic validation of UD data.
 The scripts should ideally lie in a CGI-accessible folder so that
-Github web hook can invoke them upon push to a UD repository. At
+GitHub web hook can invoke them upon push to a UD repository. At
 the same time, all UD data repositories should be cloned as subfolders
 of that CGI folder. That poses a problem for versioning of the scripts
 themselves (we want to avoid nested git folders). Therefore I recommend
@@ -21,9 +21,15 @@ cgi/unidep
 
 You must configure your web server to follow symlinks for this to
 work. Otherwise the server will send '403 Forbidden' back to
-Github, and it will not invoke the script. If you cannot configure
+GitHub, and it will not invoke the script. If you cannot configure
 your web server, maybe you have to use a hard link or just a copy
-of the script.
+of the script. (In fact, a hard link is probably not much better than
+a copy, because when such a file changes on GitHub, a git pull in
+docs-automation will first unlink the versioned file, then create
+a new one, hence the file in the main folder will become independent
+and outdated. Calling the script docs-automation/valdan/lnquest.sh
+will re-connect the files again, but at this point we could as well
+call a script that copies the files instead of hardlinking them.)
 
 Other than the above, the main cgi folder should contain only log
 files in the 'log' subfolder, and the folders 'perllib' and
@@ -37,39 +43,32 @@ versioned.
 User www-data must have write access to all treebank folders, to
 the 'docs' and 'tools' repos, to the 'log' folder, and to all files
 and subfolders of these folders. Furthermore, the mask must be set
-so that any new files I create (e.g. via git pull) will
-automatically grant access to user www-data. Similarly, the mask of
-user www-data must ensure that any files created by that user will
-be writable by me. All this can be achieved with the setfacl
-command (access control lists). See the script clone_one.sh for how
-it is done when cloning a new UD treebank.
+so that any new files I create (e.g. via git pull) will automatically
+grant access to user www-data. Similarly, the mask of user www-data
+must ensure that any files created by that user will be writable by me.
+All this can be achieved with the setfacl command (access control lists).
+See the script clone_one.sh for how it is done when cloning a new UD
+treebank.
 
 The UD data repositories must be cloned via the HTTPS protocol (as
 opposed to SSH) because the CGI scripts run under the user www-data
-and cannot use my personal SSH key to sign in to Github. Their
-files and subfolders must grant rwx permissions to the user
-www-data. We cannot use chmod to change the permissions because git
-would consider it a local change of the files and would refuse to
-pull new revisions before the local changes are committed. However,
-we can use the extended rights management with access control lists
-(setfacl). The following scripts can be used to clone the
-repositories.
+and cannot use my personal SSH key to sign in to GitHub. Their
+files and subfolders must grant rwx permissions to the user www-data.
+We cannot use chmod to change the permissions because git would consider
+it a local change of the files and would refuse to pull new revisions before
+the local changes are committed. However, we can use the extended rights
+management with access control lists (setfacl). The following script can
+be used to clone the repositories.
 
   clone_one.sh UD_Afrikaans
-  clone_all.sh
-  ud-treebank-list.txt # used by clone_all.sh
-
-(Update: I usually use just clone_one.sh. The file
-ud-treebank-list.txt has not been updated for a long time, and on
-2019-12-11 I removed it from the repository.)
 
 Note that the clone_one.sh script modifies default rights for newly
 created files so that both the users 'www-data' and 'zeman' get
 full access. If the www-data adds new files by git pull, I still
-want to be able to remove them when necessary. If you are
-installing this infrastructure on your server, you probably want to
-change 'zeman' to your username. And you may want to verify that
-the CGI scripts indeed run as user 'www-data' on your system.
+want to be able to remove them when necessary. If you are installing
+this infrastructure on your server, you probably want to change 'zeman'
+to your username. And you may want to verify that the CGI scripts indeed
+run as user 'www-data' on your system.
 
 Private repositories must be excluded from automatic validation
 because they require authentication even for git pull via HTTPS.
@@ -98,25 +97,23 @@ reside directly in the main cgi folder:
 
 The main script that must be symlinked or copied to cgi/unidep is
 githook.pl. This script will be invoked by a POST request from
-Github when a user pushes to a UD repository. The URL of the script
-must be registered with the Universal- Dependencies organization on
-Github:
+GitHub when a user pushes to a UD repository. The URL of the script
+must be registered with the UniversalDependencies organization on
+GitHub:
 
 https://github.com/organizations/UniversalDependencies/settings/hooks
 
 Currently, the URL pointing to Dan's installation is
 
-http://quest.ms.mff.cuni.cz/cgi-bin/zeman/unidep/githook.pl
-http://quest.ms.mff.cuni.cz/udvalidator/cgi-bin/unidep/githook.pl (moving here
-  on 2019-12-11)
+http://quest.ms.mff.cuni.cz/udvalidator/cgi-bin/unidep/githook.pl
 
-Github shows a list of recent "payloads" sent to the githook
+GitHub shows a list of recent "payloads" sent to the githook
 script. If it shows a red icon and a warning that the payload could
 not be delivered before timeout, it does not necessarily mean that
 the process was really unsuccessful. We need a lot of time to get
 the updated data and process them, and Apache will not send the
-output of the githook script (i.e., our response to Github) before
-we are done. Github may thus think that we are not responding
+output of the githook script (i.e., our response to GitHub) before
+we are done. GitHub may thus think that we are not responding
 despite everything being OK at our end.
 
 
@@ -202,11 +199,11 @@ modules. The tool is available as a package for Ubuntu:
 
   sudo apt-get install python3-pip
 
-Once we have pip3, we can install the module 'regex'. If we do it
-with sudo, it should by installed system-wide and thus usable by
-the user www-data. Without sudo it will be installed in our home
-folder and we will have to copy the installation to the folder
-'pythonlib' in the cgi folder.
+Once we have pip3, we can install the modules 'regex', 'colorama',
+'termcolor', and 'udapi'. If we do it with sudo, it should by installed
+system-wide and thus usable by the user www-data. Without sudo it will
+be installed in our home folder and we will have to copy the installation
+to the folder 'pythonlib' in the cgi folder.
 
   sudo pip3 install regex
 
