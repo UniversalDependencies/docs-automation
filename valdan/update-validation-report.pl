@@ -95,7 +95,7 @@ if(!$folder_empty)
     count_error_types("log/$folder.log", \%error_stats);
     my $elapsed = tv_interval($start_time);  # in seconds, as a float
     # Convert to milliseconds
-    printf STDERR ("Elapsed time: %.3f milliseconds\n", $elapsed * 1000);
+    printf STDERR ("Elapsed time: %.3f seconds\n", $elapsed);
 }
 my $treebank_message = get_treebank_message($folder, $folder_empty, $folder_success, \%error_stats, $treebank_history, $dispensations);
 print STDERR ("$treebank_message\n");
