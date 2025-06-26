@@ -30,5 +30,5 @@ export PYTHONPATH=/usr/lib/cgi-bin/unidep/udapi-python
 python3 tools/validate.py $*
 
 END=$(date +%s.%N)
-ELAPSED=$(echo "$END - $START" | bc)
+ELAPSED=$(echo "$END - $START" | perl -pe '$_=eval($_).qq(\n)')
 echo "Elapsed time: ${ELAPSED} seconds"
