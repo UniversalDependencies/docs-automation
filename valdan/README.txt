@@ -254,3 +254,40 @@ the server:
   sudo service apache2 reload
 
 Now we can test the new behavior in the browser.
+
+
+
+# Validation Wrapper Scripts
+
+* `tools/validate.py` is the official validator. We do not call it directly.
+  Instead, we use wrapper scripts that can be found in `docs-automation/valdan`
+  and that are described below.
+* `validate.sh` sets `PYTHONPATH`, activates the virtual environment and calls
+  `validate.py`. The arguments are CoNLL-U files of one treebank.
+* `update-validation-report.pl` is applied to one or more treebanks (its
+  arguments are treebank names). For each treebank it first updates its local
+  clone using `git pull`, then it runs `validate.sh` on it. Finally it
+  interprets the validation result and updates `validation-report.txt`, which
+  contains the most recent validation results of all treebanks. This script
+  also makes sure that the validator's output is saved in <treebank-name>.log,
+  e.g., log/UD_Czech-PUD.log. A shorter summary is printed together with other
+  progress reports to STDERR. When invoked by git hook, STDERR of this script
+  is typically redirected to the global log `log/validation.log`.
+* `queue_validate.pl` is a wrapper around `update-validation-report.pl`. It
+  maintains a queue of treebanks to be validated in the file `queue.txt`. If
+  another process is already validating treebanks from the queue, it will only
+  add the new treebanks to the queue and exit. Otherwise it will create the
+  queue and start validating the treebanks. This helps with two issues:
+  * If we make, within a short time span, two changes that result in
+    revalidating all treebanks (which may take several hours to complete), the
+    validator will not process every treebank twice. When the second change is
+    detected, only the treebanks processed so far will be re-introduced to the
+    queue.
+  * We do not want two validation processes running on the same treebank at the
+    same time. That would result in a corrupt validation report (with both
+    processes attempting to write to the same log file).
+* `validate_all.pl` runs `queue_validate.pl` for all treebanks, or all
+  treebanks of given languages (their codes can be given as arguments).
+* `githook.pl` is called by the web hook registered on GitHub. It analyzes the
+  changes on GitHub, decides which treebanks must be revalidated and calls
+  either `validate_all.pl`, or directly `queue_validate.pl`.
