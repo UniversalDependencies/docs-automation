@@ -77,6 +77,7 @@ if($n_processed)
 print STDERR ("No other process is working on the queue, I am going to do it (pid=$$).\n");
 while(scalar(@q))
 {
+    printf STDERR ("%d treebanks in the queue, picking %s\n", scalar(@q), $q[0][0]);
     $timestamp = time();
     $q[0][2] = $timestamp;
     $q[0][3] = $$;
