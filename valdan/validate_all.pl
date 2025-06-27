@@ -60,12 +60,14 @@ else
     print("Validating treebanks of all languages.\n");
 }
 my $n = scalar(@folders);
-for(my $i = 1; $i <= $n; $i++)
-{
-    my $folder = $folders[$i-1];
-    print("$folder ($i/$n)\n");
-    system("perl update-validation-report.pl $folder");
-}
+#for(my $i = 1; $i <= $n; $i++)
+#{
+#    my $folder = $folders[$i-1];
+#    print("$folder ($i/$n)\n");
+#    system("perl update-validation-report.pl $folder");
+#}
+my $folders_to_validate = join(' ', @folders);
+system("perl queue_validate.pl $folders_to_validate");
 
 
 
