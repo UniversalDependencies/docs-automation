@@ -72,7 +72,10 @@ if(defined($result))
         if(-d $folder)
         {
             # The update-validation-report.pl script will call git pull on the $folder.
-            system("perl update-validation-report.pl $folder >>$valilog 2>&1");
+            # The queue_validate.pl script is a wrapper around update-validation-report.pl,
+            # which tries to make sure that two validators do not process the same treebank
+            # at the same time.
+            system("perl queue_validate.pl $folder >>$valilog 2>&1");
         }
         else
         {
