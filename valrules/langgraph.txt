@@ -186,8 +186,9 @@ hy--2--axm
 axm----xcl
 kmr--100--hy
 kmr--100--hit
-kmr--10--kfm
 kmr----ckb
+ckb----sdh
+sdh--10--kfm
 kfm----soj
 kfm----nyq
 nyq----soj

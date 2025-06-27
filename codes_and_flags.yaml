@@ -1184,6 +1184,12 @@ Sorani:
   iso3: ckb
   family: IE
   genus: Iranian
+Southern Kurdish:
+  flag: IQ-KRD
+  lcode: sdh
+  iso3: sdh
+  family: IE
+  genus: Iranian
 South Levantine Arabic:
   flag: JO
   lcode: ajp
