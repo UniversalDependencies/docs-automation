@@ -424,7 +424,7 @@ sub get_commit_info
     my $commit_id;
     my $author;
     my $timestamp;
-    my $command = "cd $folder ; (git log --date=iso | head -3 1>&2)";
+    my $command = "cd $folder ; (git log --date=iso | head -3 2>&1)";
     open(GIT, "$command|") or die("Cannot pipe from '$command': $!");
     while(<GIT>)
     {
