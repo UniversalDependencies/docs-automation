@@ -100,6 +100,11 @@ if(!$folder_empty)
 }
 my $treebank_message = get_treebank_message($folder, $folder_empty, $folder_success, \%error_stats, $treebank_history, $dispensations);
 print STDERR ("$treebank_message\n");
+# Log all validation runs with git repository versions in a form in which we can later search them.
+my $json = get_json_log($treebank, $treebank_message);
+open(JSON, ">>validation-runs.json") or die("Cannot append to 'validation-runs.json': $!");
+print JSON ("$json\n");
+close(JSON);
 system("echo `date` $folder END >&2");
 my $elapsed = tv_interval($start_time);  # in seconds, as a float
 # Two line breaks after this last line we are sending to STDERR (to make the global log more readable).
@@ -404,6 +409,108 @@ sub sort_release_numbers
         $r
     }
     (@_);
+}
+
+
+
+#------------------------------------------------------------------------------
+# Gets the last commit information from a git repository. This does not have to
+# be the most recent version of that repo; this function is simply used to
+# document the version that has been used for a particular action.
+#------------------------------------------------------------------------------
+sub get_commit_info
+{
+    my $folder = shift;
+    my $commit_id;
+    my $author;
+    my $timestamp;
+    my $command = "cd $folder ; (git log --date=iso | head -3 1>&2)";
+    open(GIT, "$command|") or die("Cannot pipe from '$command': $!");
+    while(<GIT>)
+    {
+        s/\r?\n$//;
+        if(m/commit\s+([0-9a-z]+)/)
+        {
+            $commit_id = $1;
+        }
+        elsif(m/Author:\s+(.+)/)
+        {
+            $author = $1;
+        }
+        elsif(m/Date:\s+(.+)/)
+        {
+            $timestamp = $1;
+            # The format of the output probably depends on the locale and/or on
+            # the configuration of git.
+        }
+    }
+    close(GIT);
+    if(!defined($commit_id))
+    {
+        die("Cannot obtain commit information from '$folder'");
+    }
+    my %record =
+    (
+        'id' => $commit_id,
+        'author' => $author,
+        'timestamp' => $timestamp
+    );
+}
+
+
+
+#------------------------------------------------------------------------------
+# Creates a one-line JSON representation of the validation run, including the
+# versions of the relevant git repositories.
+#------------------------------------------------------------------------------
+sub get_json_log
+{
+    my $treebank = shift; # the name of the treebank folder
+    # Treebank message is a long string that starts with the keywords CURRENT
+    # VALID / ERROR etc. and continues with the list of errors, warnings and
+    # their counts. In the future we will want to save individual data instead
+    # of the serialized string.
+    my $treebank_message = shift;
+    my @cijsons;
+    foreach my $repo ($folder, 'docs', 'docs-automation', 'tools')
+    {
+        my $ci = get_commit_info($repo);
+        my $cijson = '"'.escape_json_string($repo).'": {';
+        $cijson .= '"commit": "'.escape_json_string($ci->{id}).'", ';
+        $cijson .= '"author": "'.escape_json_string($ci->{author}).'", ';
+        $cijson .= '"timestamp": "'.escape_json_string($ci->{timestamp}).'"';
+        $cijson .= '}';
+        push(@cijsons, $cijson);
+    }
+    my $json = '{"treebank": "'.escape_json_string($treebank).'", "message": "'.escape_json_string($treebank_message).'", ';
+    $json .= '"version": {'.join(', ', @cijsons).'}';
+    $json .= '}';
+    return $json;
+}
+
+
+
+#------------------------------------------------------------------------------
+# Takes a string and escapes characters that would prevent it from being used
+# in JSON. (For control characters, it throws a fatal exception instead of
+# escaping them because they should not occur in anything we export in this
+# block.)
+#------------------------------------------------------------------------------
+sub escape_json_string
+{
+    my $string = shift;
+    # https://www.ietf.org/rfc/rfc4627.txt
+    # The only characters that must be escaped in JSON are the following:
+    # \ " and control codes (anything less than U+0020)
+    # Escapes can be written as \uXXXX where XXXX is UTF-16 code.
+    # There are a few shortcuts, too: \\ \"
+    $string =~ s/\\/\\\\/g; # escape \
+    $string =~ s/"/\\"/g; # escape " # "
+    if($string =~ m/[\x{00}-\x{1F}]/)
+    {
+        log_fatal("The string must not contain control characters.");
+    }
+    return $string;
 }
 
 
