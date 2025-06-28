@@ -101,7 +101,7 @@ if(!$folder_empty)
 my $treebank_message = get_treebank_message($folder, $folder_empty, $folder_success, \%error_stats, $treebank_history, $dispensations);
 print STDERR ("$treebank_message\n");
 # Log all validation runs with git repository versions in a form in which we can later search them.
-my $json = get_json_log($treebank, $treebank_message);
+my $json = get_json_log($folder, $treebank_message);
 open(JSON, ">>validation-runs.json") or die("Cannot append to 'validation-runs.json': $!");
 print JSON ("$json\n");
 close(JSON);
