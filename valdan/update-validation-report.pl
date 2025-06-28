@@ -428,6 +428,7 @@ sub get_commit_info
     open(GIT, "$command|") or die("Cannot pipe from '$command': $!");
     while(<GIT>)
     {
+        print STDERR ("GIT: $_");
         s/\r?\n$//;
         if(m/commit\s+([0-9a-z]+)/)
         {
