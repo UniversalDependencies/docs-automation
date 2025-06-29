@@ -201,11 +201,11 @@ sub summarize_error_types
     {
         if($item->[1] eq 'Warning')
         {
-            $n_warnings++;
+            $n_warnings += $item->[3];
         }
         else
         {
-            $n_errors++;
+            $n_errors += $item->[3];
         }
     }
     unshift(@error_types_4, ['TOTAL', 'WARNING', '', $n_warnings]);
