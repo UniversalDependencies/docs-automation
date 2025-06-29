@@ -115,7 +115,7 @@ my @unused = get_unused_exceptions($folder, \@error_testids, $dispensations);
 my $treebank_message = get_treebank_message($folder, $legacy_status, \@error_types_4, \@unused);
 print STDERR ("$treebank_message\n");
 # Log all validation runs with git repository versions in a form in which we can later search them.
-my $json = get_json_log($folder, $treebank_message, \@error_types_4);
+my $json = get_json_log($folder, $legacy_status, \@error_types_4); ###!!! should we also save the list of @unused?
 open(JSON, ">>validation-runs.json") or die("Cannot append to 'validation-runs.json': $!");
 print JSON ("$json\n");
 close(JSON);
