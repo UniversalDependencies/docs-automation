@@ -97,11 +97,17 @@ if(!$folder_empty)
     $result = saferun("$command >> log/$folder.log 2>&1");
     $folder_success = $folder_success && $result;
     count_error_types("log/$folder.log", \%error_stats);
+    # Make sure that the success flag corresponds to what we consider success in the error statistics.
+    $folder_success = compare_folder_success_with_error_stats($folder_success, \%error_stats);
+    # From now on, we can focus on %error_stats and forget $folder_success (i.e., updating it on the previous line was not really necessary).
 }
-my $treebank_message = get_treebank_message($folder, $folder_empty, $folder_success, \%error_stats, $treebank_history, $dispensations);
+# Convert the hash of error types to the list of quadruples [$level, $class, $testid, $count].
+# The first two elements are always totals of errors and warnings, respectively.
+my @error_types_4 = summarize_error_types(\%error_stats);
+my $treebank_message = get_treebank_message($folder, $folder_empty, \@error_types_4, $treebank_history, $dispensations);
 print STDERR ("$treebank_message\n");
 # Log all validation runs with git repository versions in a form in which we can later search them.
-my $json = get_json_log($folder, $treebank_message);
+my $json = get_json_log($folder, $treebank_message, \@error_types_4);
 open(JSON, ">>validation-runs.json") or die("Cannot append to 'validation-runs.json': $!");
 print JSON ("$json\n");
 close(JSON);
@@ -158,40 +164,76 @@ sub count_error_types
 
 
 #------------------------------------------------------------------------------
+# Sanity check: If validation scripts returned success, there can be warnings
+# but no errors. If there is a discrepancy, add an internal error to the stats
+# and return false.
+#------------------------------------------------------------------------------
+sub compare_folder_success_with_error_stats
+{
+    my $folder_success = shift;
+    my $error_stats = shift;
+    my @error_types = sort(keys(%{$error_stats}));
+    my $n_errors = scalar(grep {$_->[1] ne 'Warning'} (map {my @f = split(/\s+/, $_); \@f} (@error_types)));
+    if($folder_success && $n_errors > 0)
+    {
+        $error_stats->{'LX INTERNAL VALIDATION-SUCCESS-BUT-NONZERO-ERRORS'}++;
+        return 0;
+    }
+    return 1;
+}
+
+
+
+#------------------------------------------------------------------------------
+# Takes the error statistics of a treebank. Counts errors and warnings of
+# different types.
+#------------------------------------------------------------------------------
+sub summarize_error_types
+{
+    my $error_stats = shift;
+    my @error_types = sort(keys(%{$error_stats}));
+    # Error types include level, class, and test id, e.g., "L3 Syntax leaf-mark-case".
+    # Items of @error_types_4 are quadruples (arrays) where these three things are separate, and followed by the count of the error.
+    my @error_types_4 = map {my @f = split(/\s+/, $_); push(@f, $error_stats->{$_}); \@f} (@error_types);
+    my $n_errors = 0;
+    my $n_warnings = 0;
+    foreach my $item (@error_types_4)
+    {
+        if($item->[1] eq 'Warning')
+        {
+            $n_warnings++;
+        }
+        else
+        {
+            $n_errors++;
+        }
+    }
+    unshift(@error_types_4, ['TOTAL', 'WARNING', '', $n_warnings]);
+    unshift(@error_types_4, ['TOTAL', 'ERROR',   '', $n_errors]);
+    return @error_types_4;
+}
+
+
+
+#------------------------------------------------------------------------------
 # Generates a treebank status message based on the validation result.
 #------------------------------------------------------------------------------
 sub get_treebank_message
 {
     my $folder = shift;
     my $empty = shift;
-    my $folder_success = shift;
-    my $error_stats = shift;
+    my $error_types_4 = shift;
     my $treebank_history = shift;
     my $dispensations = shift;
     my $treebank_message = "$folder: ";
-    my @error_types = sort(keys(%{$error_stats}));
-    # Error types include level, class, and test id, e.g., "L3 Syntax leaf-mark-case".
-    my @error_types_3 = map {my @f = split(/\s+/, $_); \@f} (@error_types);
-    my @warning_testids = map {$_->[2]} (grep {$_->[1] eq 'Warning'} (@error_types_3));
-    my @error_testids = map {$_->[2]} (grep {$_->[1] ne 'Warning'} (@error_types_3));
-    # Sanity check: If validation scripts returned success, there can be warnings but no errors.
-    # From now on, we will look at the list of errors but not at the success flag.
-    if($folder_success && scalar(@error_testids) > 0)
-    {
-        push(@error_types, 'LX INTERNAL VALIDATION-SUCCESS-BUT-STILL-ERRORS');
-        push(@error_testids, 'VALIDATION-SUCCESS-BUT-STILL-ERRORS');
-    }
+    my @error_testids = map {$_->[2]} (grep {$_->[0] ne 'TOTAL' && $_->[1] ne 'Warning'} (@{$error_types_4}));
+    my @warning_testids = map {$_->[2]} (grep {$_->[0] ne 'TOTAL' && $_->[1] eq 'Warning'} (@{$error_types_4}));
     $treebank_message .= get_legacy_status($folder, $empty, \@error_testids, \@warning_testids, $treebank_history, $dispensations);
     # Add the list of errors and warnings to the message.
-    if(scalar(@error_types) > 0)
+    # The first two elements in @error_types_4 are always total number of errors and warnings.
+    if(scalar(@{$error_types_4}) > 2)
     {
-        my $total = 0;
-        foreach my $error_type (@error_types)
-        {
-            $total += $error_stats->{$error_type};
-        }
-        # Error types include level, class, and test id, e.g., "L3 Syntax leaf-mark-case".
-        $treebank_message .= ' ('.join('; ', ("TOTAL $total", map {"$_ $error_stats->{$_}"} (@error_types))).')';
+        $treebank_message .= ' ('.join('; ', map {join(' ', @{$_})} (@{$error_types_4})).')';
     }
     # List dispensations that are no longer needed (this can follow any state, VALID or ERROR).
     my @unused = get_unused_exceptions($folder, \@error_testids, $dispensations);
@@ -472,6 +514,7 @@ sub get_json_log
     # their counts. In the future we will want to save individual data instead
     # of the serialized string.
     my $treebank_message = shift;
+    my $error_types_4 = shift;
     my @cijsons;
     foreach my $repo ($folder, 'docs', 'docs-automation', 'tools')
     {
@@ -483,8 +526,15 @@ sub get_json_log
         $cijson .= '}';
         push(@cijsons, $cijson);
     }
+    my @ewjsons;
+    foreach my $item (@{$error_types_4})
+    {
+        my $ewjson = '['.join(', ', map {'"'.escape_json_string($_).'"'} (@{$item})).']';
+        push(@ewjsons, $ewjson);
+    }
     my $json = '{"treebank": "'.escape_json_string($treebank).'", "message": "'.escape_json_string($treebank_message).'", ';
-    $json .= '"version": {'.join(', ', @cijsons).'}';
+    $json .= '"version": {'.join(', ', @cijsons).'}, ';
+    $json .= '"errors": ['.join(', ', @ewjsons).']';
     $json .= '}';
     return $json;
 }
