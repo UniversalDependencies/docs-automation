@@ -217,6 +217,8 @@ sub summarize_error_types
 
 #------------------------------------------------------------------------------
 # Generates a treebank status message based on the validation result.
+# If there are errors, prints to STDERR their forgivable vs. unforgivable
+# status.
 #------------------------------------------------------------------------------
 sub get_treebank_message
 {
@@ -228,7 +230,10 @@ sub get_treebank_message
     my $treebank_message = "$folder: ";
     my @error_testids = map {$_->[2]} (grep {$_->[0] ne 'TOTAL' && $_->[1] ne 'Warning'} (@{$error_types_4}));
     my @warning_testids = map {$_->[2]} (grep {$_->[0] ne 'TOTAL' && $_->[1] eq 'Warning'} (@{$error_types_4}));
-    $treebank_message .= get_legacy_status($folder, $empty, \@error_testids, \@warning_testids, $treebank_history, $dispensations);
+    my $n_error_types = scalar(@error_testids);
+    my $n_warning_types = scalar(@warning_testids);
+    my ($unforgivable, $date_oldest_dispensation) = apply_dispensations($folder, \@error_testids, $dispensations);
+    $treebank_message .= get_legacy_status($folder, $empty, $n_error_types, $n_warning_types, $treebank_history, $dispensations, $unforgivable, $date_oldest_dispensation);
     # Add the list of errors and warnings to the message.
     # The first two elements in @error_types_4 are always total number of errors and warnings.
     if(scalar(@{$error_types_4}) > 2)
@@ -247,6 +252,50 @@ sub get_treebank_message
 
 
 #------------------------------------------------------------------------------
+# Compares the list of error types with the list of dispensations for the given
+# treebank. Prints to STDERR classification of each error as either forgivable
+# or unforgivable. Returns the list of unforgivable error types together with
+# the date of the oldest dispensation used (so that the caller can verify that
+# it has not expired).
+#------------------------------------------------------------------------------
+sub apply_dispensations
+{
+    my $folder = shift;
+    my $error_types = shift; # array ref
+    my $dispensations = shift; # hash ref
+    my @unforgivable = ();
+    my $date_oldest_dispensation;
+    foreach my $error_type (@{$error_types})
+    {
+        if(exists($dispensations->{$error_type}))
+        {
+            # Some treebanks have dispensations for this error type. Is our treebank among them?
+            if(grep {$_ eq $folder} (@{$dispensations->{$error_type}{treebanks}}))
+            {
+                if(!defined($date_oldest_dispensation) || $dispensations->{$error_type}{date} lt $date_oldest_dispensation)
+                {
+                    $date_oldest_dispensation = $dispensations->{$error_type}{date};
+                }
+                print STDERR ("Forgivable exception '$error_type'\n");
+            }
+            else
+            {
+                push(@unforgivable, $error_type);
+                print STDERR ("Unforgivable error '$error_type'\n");
+            }
+        }
+        else
+        {
+            push(@unforgivable, $error_type);
+            print STDERR ("Unforgivable error '$error_type'\n");
+        }
+    }
+    return (\@unforgivable, $date_oldest_dispensation);
+}
+
+
+
+#------------------------------------------------------------------------------
 # If a treebank has been valid and part of a previous release, it can be
 # granted the "legacy" status. If a new test is introduced and the treebank
 # does not pass it, it can still be part of future releases. However, once
@@ -257,12 +306,12 @@ sub get_legacy_status
 {
     my $folder = shift;
     my $empty = shift;
-    my $error_types = shift; # array ref
-    my $warning_types = shift; # array ref
+    my $n_error_types = shift;
+    my $n_warning_types = shift;
     my $treebank_history = shift; # hash ref
     my $dispensations = shift; # hash ref
-    my @error_types = @{$error_types};
-    my @warning_types = @{$warning_types};
+    my $unforgivable = shift; # array ref
+    my $date_oldest_dispensation = shift;
     # If this treebank has not yet been released, it is SAPLING. It can be EMPTY, ERROR, or VALID. If VALID, it will be released next time.
     # If this treebank has been released, i.e., it was VALID at some point in time w.r.t. the then used version of the validator:
     # Specifically, if the treebank was included in the most recent release:
@@ -291,11 +340,11 @@ sub get_legacy_status
         $current = 1 if($last_release_number eq $treebank_history->{relnums}[-1]);
     }
     my $novelty = $current ? 'CURRENT' : defined($last_release_number) ? 'RETIRED' : 'SAPLING';
-    my $validity = $empty ? 'EMPTY' : scalar(@error_types) == 0 ? 'VALID' : 'ERROR';
+    my $validity = $empty ? 'EMPTY' : $n_error_types == 0 ? 'VALID' : 'ERROR';
     # The various shades of (in)acceptability are interesting only for current treebanks with errors,
     # for valid treebanks with warnings, or current treebanks that suddenly became empty again.
     my $acceptability;
-    if($validity eq 'VALID' && scalar(@warning_types) > 0)
+    if($validity eq 'VALID' && $n_warning_types > 0)
     {
         $acceptability = 'WARNING';
     }
@@ -303,35 +352,9 @@ sub get_legacy_status
     {
         $acceptability = "BACKUP $last_release_number";
     }
-    elsif($current && scalar(@error_types) > 0)
+    elsif($current && $n_error_types > 0)
     {
-        my @unforgivable = ();
-        my $date_oldest_dispensation;
-        foreach my $error_type (@error_types)
-        {
-            if(exists($dispensations->{$error_type}))
-            {
-                # Some treebanks have dispensations for this error type. Is our treebank among them?
-                if(grep {$_ eq $folder} (@{$dispensations->{$error_type}{treebanks}}))
-                {
-                    if(!defined($date_oldest_dispensation) || $dispensations->{$error_type}{date} lt $date_oldest_dispensation)
-                    {
-                        $date_oldest_dispensation = $dispensations->{$error_type}{date};
-                    }
-                    print STDERR ("Forgivable exception '$error_type'\n");
-                }
-                else
-                {
-                    push(@unforgivable, $error_type);
-                    print STDERR ("Unforgivable error '$error_type'\n");
-                }
-            }
-            else
-            {
-                push(@unforgivable, $error_type);
-                print STDERR ("Unforgivable error '$error_type'\n");
-            }
-        }
+        my @unforgivable = @{$unforgivable};
         # If there are expired dispensations, no backup is possible and unforgivable errors do not matter.
         if(defined($date_oldest_dispensation))
         {
