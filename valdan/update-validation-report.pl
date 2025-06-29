@@ -104,7 +104,15 @@ if(!$folder_empty)
 # Convert the hash of error types to the list of quadruples [$level, $class, $testid, $count].
 # The first two elements are always totals of errors and warnings, respectively.
 my @error_types_4 = summarize_error_types(\%error_stats);
-my $treebank_message = get_treebank_message($folder, $folder_empty, \@error_types_4, $treebank_history, $dispensations);
+my @error_testids = map {$_->[2]} (grep {$_->[0] ne 'TOTAL' && $_->[1] ne 'Warning'} (@error_types_4));
+my @warning_testids = map {$_->[2]} (grep {$_->[0] ne 'TOTAL' && $_->[1] eq 'Warning'} (@{$error_types_4}));
+my $n_error_types = scalar(@error_testids);
+my $n_warning_types = scalar(@warning_testids);
+# If there are errors, the following function will print to STDERR their forgivable / unforgivable status.
+my ($unforgivable, $date_oldest_dispensation) = apply_dispensations($folder, \@error_testids, $dispensations);
+my $legacy_status = get_legacy_status($folder, $folder_empty, $n_error_types, $n_warning_types, $treebank_history, $unforgivable, $date_oldest_dispensation);
+my @unused = get_unused_exceptions($folder, \@error_testids, $dispensations);
+my $treebank_message = get_treebank_message($folder, $legacy_status, \@error_types_4, \@unused);
 print STDERR ("$treebank_message\n");
 # Log all validation runs with git repository versions in a form in which we can later search them.
 my $json = get_json_log($folder, $treebank_message, \@error_types_4);
@@ -217,23 +225,14 @@ sub summarize_error_types
 
 #------------------------------------------------------------------------------
 # Generates a treebank status message based on the validation result.
-# If there are errors, prints to STDERR their forgivable vs. unforgivable
-# status.
 #------------------------------------------------------------------------------
 sub get_treebank_message
 {
     my $folder = shift;
-    my $empty = shift;
+    my $legacy_status = shift;
     my $error_types_4 = shift;
-    my $treebank_history = shift;
-    my $dispensations = shift;
-    my $treebank_message = "$folder: ";
-    my @error_testids = map {$_->[2]} (grep {$_->[0] ne 'TOTAL' && $_->[1] ne 'Warning'} (@{$error_types_4}));
-    my @warning_testids = map {$_->[2]} (grep {$_->[0] ne 'TOTAL' && $_->[1] eq 'Warning'} (@{$error_types_4}));
-    my $n_error_types = scalar(@error_testids);
-    my $n_warning_types = scalar(@warning_testids);
-    my ($unforgivable, $date_oldest_dispensation) = apply_dispensations($folder, \@error_testids, $dispensations);
-    $treebank_message .= get_legacy_status($folder, $empty, $n_error_types, $n_warning_types, $treebank_history, $dispensations, $unforgivable, $date_oldest_dispensation);
+    my $unused = shift; # array ref
+    my $treebank_message = "$folder: $legacy_status";
     # Add the list of errors and warnings to the message.
     # The first two elements in @error_types_4 are always total number of errors and warnings.
     if(scalar(@{$error_types_4}) > 2)
@@ -241,10 +240,9 @@ sub get_treebank_message
         $treebank_message .= ' ('.join('; ', map {join(' ', @{$_})} (@{$error_types_4})).')';
     }
     # List dispensations that are no longer needed (this can follow any state, VALID or ERROR).
-    my @unused = get_unused_exceptions($folder, \@error_testids, $dispensations);
-    if(scalar(@unused) > 0)
+    if(scalar(@{$unused}) > 0)
     {
-        $treebank_message .= ' UNEXCEPT '.join(' ', @unused);
+        $treebank_message .= ' UNEXCEPT '.join(' ', @{$unused});
     }
     return $treebank_message;
 }
@@ -257,6 +255,8 @@ sub get_treebank_message
 # or unforgivable. Returns the list of unforgivable error types together with
 # the date of the oldest dispensation used (so that the caller can verify that
 # it has not expired).
+# If there are errors, prints to STDERR their forgivable vs. unforgivable
+# status.
 #------------------------------------------------------------------------------
 sub apply_dispensations
 {
@@ -309,7 +309,6 @@ sub get_legacy_status
     my $n_error_types = shift;
     my $n_warning_types = shift;
     my $treebank_history = shift; # hash ref
-    my $dispensations = shift; # hash ref
     my $unforgivable = shift; # array ref
     my $date_oldest_dispensation = shift;
     # If this treebank has not yet been released, it is SAPLING. It can be EMPTY, ERROR, or VALID. If VALID, it will be released next time.
