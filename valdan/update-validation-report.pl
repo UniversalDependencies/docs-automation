@@ -115,7 +115,7 @@ my @unused = get_unused_exceptions($folder, \@error_testids, $dispensations);
 my $treebank_message = get_treebank_message($folder, $legacy_status, \@error_types_4, \@unused);
 print STDERR ("$treebank_message\n");
 # Log all validation runs with git repository versions in a form in which we can later search them.
-my $json = get_json_log($folder, $legacy_status, \@error_types_4); ###!!! should we also save the list of @unused?
+my $json = get_json_log($folder, $legacy_status, \@error_types_4, \@unused);
 open(JSON, ">>validation-runs.json") or die("Cannot append to 'validation-runs.json': $!");
 print JSON ("$json\n");
 close(JSON);
@@ -219,32 +219,6 @@ sub summarize_error_types
     unshift(@error_types_4, ['TOTAL', 'WARNING', '', $n_warnings]);
     unshift(@error_types_4, ['TOTAL', 'ERROR',   '', $n_errors]);
     return @error_types_4;
-}
-
-
-
-#------------------------------------------------------------------------------
-# Generates a treebank status message based on the validation result.
-#------------------------------------------------------------------------------
-sub get_treebank_message
-{
-    my $folder = shift;
-    my $legacy_status = shift;
-    my $error_types_4 = shift;
-    my $unused = shift; # array ref
-    my $treebank_message = "$folder: $legacy_status";
-    # Add the list of errors and warnings to the message.
-    # The first two elements in @error_types_4 are always total number of errors and warnings.
-    if(scalar(@{$error_types_4}) > 2)
-    {
-        $treebank_message .= ' ('.join('; ', map {join(' ', @{$_})} (@{$error_types_4})).')';
-    }
-    # List dispensations that are no longer needed (this can follow any state, VALID or ERROR).
-    if(scalar(@{$unused}) > 0)
-    {
-        $treebank_message .= ' UNEXCEPT '.join(' ', @{$unused});
-    }
-    return $treebank_message;
 }
 
 
@@ -445,6 +419,32 @@ sub get_unused_exceptions
 
 
 #------------------------------------------------------------------------------
+# Generates a treebank status message based on the validation result.
+#------------------------------------------------------------------------------
+sub get_treebank_message
+{
+    my $folder = shift;
+    my $legacy_status = shift;
+    my $error_types_4 = shift;
+    my $unused = shift; # array ref
+    my $treebank_message = "$folder: $legacy_status";
+    # Add the list of errors and warnings to the message.
+    # The first two elements in @error_types_4 are always total number of errors and warnings.
+    if(scalar(@{$error_types_4}) > 2)
+    {
+        $treebank_message .= ' ('.join('; ', map {join(' ', @{$_})} (@{$error_types_4})).')';
+    }
+    # List dispensations that are no longer needed (this can follow any state, VALID or ERROR).
+    if(scalar(@{$unused}) > 0)
+    {
+        $treebank_message .= ' UNEXCEPT '.join(' ', @{$unused});
+    }
+    return $treebank_message;
+}
+
+
+
+#------------------------------------------------------------------------------
 # Sort release numbers.
 #------------------------------------------------------------------------------
 sub sort_release_numbers
@@ -537,6 +537,7 @@ sub get_json_log
     # of the serialized string.
     my $treebank_message = shift;
     my $error_types_4 = shift;
+    my $unused_dispensations = shift;
     my @cijsons;
     foreach my $repo ($folder, 'docs', 'docs-automation', 'tools')
     {
@@ -557,6 +558,11 @@ sub get_json_log
     my $json = '{"treebank": "'.escape_json_string($treebank).'", "message": "'.escape_json_string($treebank_message).'", ';
     $json .= '"version": {'.join(', ', @cijsons).'}, ';
     $json .= '"errors": ['.join(', ', @ewjsons).']';
+    if(scalar(@{$unused_dispensations}) > 0)
+    {
+        $json .= ', ';
+        $json .= '"unexcept": ['.join(', ', map {'"'.escape_json_string($_).'"'} (@{$unused_dispensations})).']';
+    }
     $json .= '}';
     return $json;
 }
