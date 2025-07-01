@@ -13,7 +13,7 @@ use open ':utf8';
 binmode(STDIN, ':utf8');
 binmode(STDOUT, ':utf8');
 binmode(STDERR, ':utf8');
-use JSON::Parse 'json_file_to_perl';
+use JSON::Parse ('parse_json', 'json_file_to_perl');
 use Time::HiRes qw(gettimeofday tv_interval);
 # We need to tell Perl where to find our udlib module.
 BEGIN
@@ -115,6 +115,7 @@ my @unused = get_unused_exceptions($folder, \@error_testids, $dispensations);
 my $treebank_message = get_treebank_message($folder, $legacy_status, \@error_types_4, \@unused);
 print STDERR ("$treebank_message\n");
 # Log all validation runs with git repository versions in a form in which we can later search them.
+my $jsonlog = read_json_log('validation-runs.json');
 my $json = get_json_log($folder, $legacy_status, \@error_types_4, \@unused);
 open(JSON, ">>validation-runs.json") or die("Cannot append to 'validation-runs.json': $!");
 print JSON ("$json\n");
@@ -520,6 +521,25 @@ sub get_commit_info
         'timestamp' => $timestamp
     );
     return \%record;
+}
+
+
+
+#------------------------------------------------------------------------------
+# Reads JSON-lines log of previous validation runs. Returns it as an array ref.
+#------------------------------------------------------------------------------
+sub read_json_log
+{
+    my $filename = shift;
+    my @jsonlines;
+    open(JSON, $filename) or die("Cannot read '$filename': $!");
+    while(<JSON>)
+    {
+        s/\r?\n$//;
+        push(@jsonlines, parse_json($_);
+    }
+    close(JSON);
+    return \@jsonlines;
 }
 
 
