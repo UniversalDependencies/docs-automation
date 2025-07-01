@@ -60,7 +60,7 @@ foreach my $item (@q)
 {
     if($item->[2])
     {
-        print STDERR ("%s is being processed by pid %d since %d seconds ago.\n", $item->[0], $item->[3], $timestamp-$item->[2]);
+        printf STDERR ("%s is being processed by pid %d since %d seconds ago.\n", $item->[0], $item->[3], $timestamp-$item->[2]);
         $n_processed++;
         ###!!! Risk: The other process may have crashed. We should verify that
         ###!!! it is still running. And maybe also that the processing of the
