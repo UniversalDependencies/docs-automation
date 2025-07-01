@@ -536,7 +536,7 @@ sub read_json_log
     while(<JSON>)
     {
         s/\r?\n$//;
-        push(@jsonlines, parse_json($_);
+        push(@jsonlines, parse_json($_));
     }
     close(JSON);
     return \@jsonlines;
