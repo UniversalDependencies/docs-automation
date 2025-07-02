@@ -117,9 +117,7 @@ print STDERR ("$treebank_message\n");
 # Log all validation runs with git repository versions in a form in which we can later search them.
 my $jsonlog = read_json_log('validation-runs.json');
 my $json = get_json_log($folder, $legacy_status, \@error_types_4, \@unused);
-open(JSON, ">>validation-runs.json") or die("Cannot append to 'validation-runs.json': $!");
-print JSON ("$json\n");
-close(JSON);
+write_json_log('validation-runs.json', $jsonlog, $json);
 system("echo `date` $folder END >&2");
 my $elapsed = tv_interval($start_time);  # in seconds, as a float
 # Two line breaks after this last line we are sending to STDERR (to make the global log more readable).
@@ -585,6 +583,51 @@ sub get_json_log
     }
     $json .= '}';
     return $json;
+}
+
+
+
+#------------------------------------------------------------------------------
+# Write JSON-lines log of previous validation runs plus this one.
+#------------------------------------------------------------------------------
+sub write_json_log
+{
+    my $filename = shift;
+    my $previous_jsonlog = shift; # array ref
+    my $current_jsonlog = shift; # string
+    open(JSON, ">$filename") or die("Cannot write '$filename': $!");
+    foreach my $run (@{$previous_jsonlog})
+    {
+        my @cijsons;
+        foreach my $repo ($folder, 'docs', 'docs-automation', 'tools')
+        {
+            my $cijson = '"'.escape_json_string($repo).'": {';
+            $cijson .= '"commit": "'.escape_json_string($run->{version}{$repo}{commit}).'", ';
+            $cijson .= '"author": "'.escape_json_string($run->{version}{$repo}{author}).'", ';
+            $cijson .= '"timestamp": "'.escape_json_string($run->{version}{$repo}{timestamp}).'"';
+            $cijson .= '}';
+            push(@cijsons, $cijson);
+        }
+        my @ewjsons;
+        foreach my $item (@{$run->{errors}})
+        {
+            my $ewjson = '['.join(', ', map {'"'.escape_json_string($_).'"'} (@{$item})).']';
+            push(@ewjsons, $ewjson);
+        }
+        my $json = '{"treebank": "'.escape_json_string($run->{treebank}).'", ';
+        $json .= '"message": "'.escape_json_string($run->{message}).'", ';
+        $json .= '"version": {'.join(', ', @cijsons).'}, ';
+        $json .= '"errors": ['.join(', ', @ewjsons).']';
+        if(exists($run->{unexcept}) && scalar(@{$run->{unexcept}}) > 0)
+        {
+            $json .= ', ';
+            $json .= '"unexcept": ['.join(', ', map {'"'.escape_json_string($_).'"'} (@{$run->{unexcept}})).']';
+        }
+        $json .= '}';
+        print JSON ("$json\n");
+    }
+    print JSON ("$current_jsonlog\n");
+    close(JSON);
 }
 
 
