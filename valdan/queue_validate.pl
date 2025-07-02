@@ -19,8 +19,8 @@ sub usage
 
 # Add my treebanks to the queue.
 my @q = read_queue();
-printf STDERR ("There were %d items in the queue.\n", scalar(@q));
-printf STDERR ("I have %d items to add if they are not already there.\n", scalar(@ARGV));
+my $nq_before = scalar(@q);
+my $n_to_add = scalar(@ARGV);
 my %qmap;
 foreach my $item (@q)
 {
@@ -52,7 +52,8 @@ foreach my $treebank (@ARGV)
         }
     }
 }
-printf STDERR ("There are %d items after considering the new ones.\n", scalar(@q));
+my $nq_after = scalar(@q);
+printf STDERR ("Queue size before = %d, considering adding %d, queue size after = %d.\n", $nq_before, $n_to_add, $nq_after);
 write_queue(@q);
 # Now check whether one or more items in the queue are already being processed.
 my $n_processed = 0;
