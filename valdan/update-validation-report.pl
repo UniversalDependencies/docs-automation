@@ -599,7 +599,7 @@ sub write_json_log
     foreach my $run (@{$previous_jsonlog})
     {
         my @cijsons;
-        foreach my $repo ($folder, 'docs', 'docs-automation', 'tools')
+        foreach my $repo ($run->{treebank}, 'docs', 'docs-automation', 'tools')
         {
             my $cijson = '"'.escape_json_string($repo).'": {';
             $cijson .= '"commit": "'.escape_json_string($run->{version}{$repo}{commit}).'", ';
