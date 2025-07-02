@@ -38,6 +38,45 @@ versioned.
 
 
 
+# Hard Links vs. Symlinks vs. Copies
+
+If it is not possible to configure Apache to follow symlinks in the cgi-bin
+folder, we may use hard links between scripts in the main folder and their
+versioned copies in docs-automation/valdan.
+
+Note that git pull in docs-automation will break the hard links because git
+first removes (i.e., unlinks) the old file and then creates a new file, instead
+of simply writing in the old file. We can run the script lnquest.sh after git
+pull and it will recreate the hard links.
+
+The hard links will obviously be broken also if the whole validation
+application is copied to a new server. The script lnquest.sh can be used to
+restore them but it has to be edited first, as there are hard-coded paths in
+it.
+
+Note: In the current installation on quest, we have hard links for the two
+scripts that are accessed directly through the web server: githook.pl and
+validation-report.pl. The other scripts that are called from githook.pl or
+manually in the terminal (such as update-validation-report.pl) are symlinked
+but the symlinks do not work for the directly accessed scripts ('403
+Forbidden'). On the other hand, there are other scripts in docs-automation/
+valrules. Here the whole folder is symlinked as langspec from the main folder.
+The scripts inside are accessed directly through the web server and it works.
+The probable explanation is that the options currently set for the cgi-bin
+folder (in /etc/apache2/conf-enabled/serve-cgi-bin.conf) contain
++SymLinksIfOwnerMatch. This is difficult to achieve for individual scripts.
+The first clone of the docs-automation repository as well as the symlinks are
+created by user zeman, but when new version arrives from GitHub, the new file
+is created by user www-data. On the other hand, symlinking a subfolder is safer
+because the subfolder is not recreated when files are updated inside it.
+Alternatively, we could replace the option with +FollowSymLinks and it should
+work regardless of who is the owner of the files. The server has to be
+restarted when its configuration has changed.
+
+  sudo systemctl restart apache2
+
+
+
 # Access Permissions
 
 User www-data must have write access to all treebank folders, to
@@ -115,25 +154,6 @@ the updated data and process them, and Apache will not send the
 output of the githook script (i.e., our response to GitHub) before
 we are done. GitHub may thus think that we are not responding
 despite everything being OK at our end.
-
-
-
-# Hard Links
-
-If it is not possible to configure Apache to follow symlinks in the
-cgi-bin folder, we may use hard links between scripts in the main
-folder and their versioned copies in docs-automation/valdan.
-
-Note that git pull in docs-automation will break the hard links
-because git first removes (i.e., unlinks) the old file and then
-creates a new file, instead of simply writing in the old file. We
-can run the script lnquest.sh after git pull and it will recreate
-the hard links.
-
-The hard links will obviously be broken also if the whole
-validation application is copied to a new server. The script
-lnquest.sh can be used to restore them but it has to be edited
-first, as there are hard-coded paths in it.
 
 
 
