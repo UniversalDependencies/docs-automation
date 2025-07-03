@@ -71,7 +71,7 @@ foreach my $item (@q)
 }
 if($n_processed)
 {
-    print STDERR ("Leaving the queue for the other workers to finish, terminating.\n");
+    print STDERR ("Leaving the queue for the other workers to finish, terminating.\n\n");
     exit(0);
 }
 # If nobody is currently processing the queue, we have to do it.
