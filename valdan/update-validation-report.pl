@@ -607,8 +607,8 @@ sub write_json_log
             push(@ewjsons, $ewjson);
         }
         my $json = '{"treebank": "'.escape_json_string($run->{treebank}).'", ';
-        $json .= '"message": "'.escape_json_string($run->{message}).'", ';
         $json .= '"timestamp": "'.escape_json_string($run->{timestamp}).'", ';
+        $json .= '"message": "'.escape_json_string($run->{message}).'", ';
         $json .= '"errors": ['.join(', ', @ewjsons).'], ';
         $json .= '"version": {'.join(', ', @cijsons).'}';
         if(exists($run->{unexcept}) && scalar(@{$run->{unexcept}}) > 0)
