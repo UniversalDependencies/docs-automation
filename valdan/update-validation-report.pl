@@ -116,8 +116,9 @@ my $treebank_message = get_treebank_message($folder, $legacy_status, \@error_typ
 print STDERR ("$treebank_message\n");
 # Log all validation runs with git repository versions in a form in which we can later search them.
 my $jsonlog = read_json_log('validation-runs.json');
-my $json = get_json_log($folder, $legacy_status, \@error_types_4, \@unused);
-write_json_log('validation-runs.json', $jsonlog, $json);
+my $current_run = get_json_log($folder, $legacy_status, \@error_types_4, \@unused);
+push(@{$jsonlog}, $current_run);
+write_json_log('validation-runs.json', $jsonlog);
 system("echo `date` $folder END >&2");
 my $elapsed = tv_interval($start_time);  # in seconds, as a float
 # Two line breaks after this last line we are sending to STDERR (to make the global log more readable).
@@ -516,10 +517,46 @@ sub get_commit_info
     }
     my %record =
     (
-        'id' => $commit_id,
+        'commit' => $commit_id,
         'author' => $author,
         'timestamp' => $timestamp
     );
+    return \%record;
+}
+
+
+
+#------------------------------------------------------------------------------
+# Collects data about the current validation run in the form in which we will
+# want to save it in JSON with previous validation runs.
+#------------------------------------------------------------------------------
+sub get_json_log
+{
+    my $treebank = shift; # the name of the treebank folder
+    # Legacy status is a string of keywords CURRENT VALID / ERROR etc.
+    my $legacy_status = shift;
+    my $error_types_4 = shift;
+    my $unused_dispensations = shift;
+    my @cis;
+    foreach my $repo ($folder, 'docs', 'docs-automation', 'tools')
+    {
+        my $ci = get_commit_info($repo);
+        push(@cis, $ci);
+    }
+    my @lt = localtime(time);
+    my $lt = sprintf("%04d-%02d-%02d %02d:%02d:%02d", $lt[5]+1900, $lt[4]+1, $lt[3], $lt[2], $lt[1], $lt[0]);
+    my %record =
+    (
+        'treebank'  => $treebank,
+        'message'   => $legacy_status,
+        'timestamp' => $lt,
+        'errors'    => $error_types_4,
+        'version'   => \@cis
+    );
+    if(scalar(@{$unused_dispensations}) > 0)
+    {
+        $record{unexcept} = $unused_dispensations;
+    }
     return \%record;
 }
 
@@ -545,63 +582,14 @@ sub read_json_log
 
 
 #------------------------------------------------------------------------------
-# Creates a one-line JSON representation of the validation run, including the
-# versions of the relevant git repositories.
-#------------------------------------------------------------------------------
-sub get_json_log
-{
-    my $treebank = shift; # the name of the treebank folder
-    # Treebank message is a long string that starts with the keywords CURRENT
-    # VALID / ERROR etc. and continues with the list of errors, warnings and
-    # their counts. In the future we will want to save individual data instead
-    # of the serialized string.
-    my $treebank_message = shift;
-    my $error_types_4 = shift;
-    my $unused_dispensations = shift;
-    my @cijsons;
-    foreach my $repo ($folder, 'docs', 'docs-automation', 'tools')
-    {
-        my $ci = get_commit_info($repo);
-        my $cijson = '"'.escape_json_string($repo).'": {';
-        $cijson .= '"commit": "'.escape_json_string($ci->{id}).'", ';
-        $cijson .= '"author": "'.escape_json_string($ci->{author}).'", ';
-        $cijson .= '"timestamp": "'.escape_json_string($ci->{timestamp}).'"';
-        $cijson .= '}';
-        push(@cijsons, $cijson);
-    }
-    my @ewjsons;
-    foreach my $item (@{$error_types_4})
-    {
-        my $ewjson = '['.join(', ', map {'"'.escape_json_string($_).'"'} (@{$item})).']';
-        push(@ewjsons, $ewjson);
-    }
-    my $json = '{"treebank": "'.escape_json_string($treebank).'", "message": "'.escape_json_string($treebank_message).'", ';
-    my @lt = localtime(time);
-    my $lt = sprintf("%04d-%02d-%02d %02d:%02d:%02d", $lt[5]+1900, $lt[4]+1, $lt[3], $lt[2], $lt[1], $lt[0]);
-    $json .= '"timestamp": "'.escape_json_string($lt).'", ';
-    $json .= '"errors": ['.join(', ', @ewjsons).'], ';
-    $json .= '"version": {'.join(', ', @cijsons).'}';
-    if(scalar(@{$unused_dispensations}) > 0)
-    {
-        $json .= ', ';
-        $json .= '"unexcept": ['.join(', ', map {'"'.escape_json_string($_).'"'} (@{$unused_dispensations})).']';
-    }
-    $json .= '}';
-    return $json;
-}
-
-
-
-#------------------------------------------------------------------------------
 # Write JSON-lines log of previous validation runs plus this one.
 #------------------------------------------------------------------------------
 sub write_json_log
 {
     my $filename = shift;
-    my $previous_jsonlog = shift; # array ref
-    my $current_jsonlog = shift; # string
+    my $jsonlog = shift; # array ref
     open(JSON, ">$filename") or die("Cannot write '$filename': $!");
-    foreach my $run (@{$previous_jsonlog})
+    foreach my $run (@{$jsonlog})
     {
         my @cijsons;
         foreach my $repo ($run->{treebank}, 'docs', 'docs-automation', 'tools')
@@ -632,7 +620,6 @@ sub write_json_log
         $json .= '}';
         print JSON ("$json\n");
     }
-    print JSON ("$current_jsonlog\n");
     close(JSON);
 }
 
