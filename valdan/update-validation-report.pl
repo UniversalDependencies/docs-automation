@@ -537,11 +537,10 @@ sub get_json_log
     my $legacy_status = shift;
     my $error_types_4 = shift;
     my $unused_dispensations = shift;
-    my @cis;
+    my %cis;
     foreach my $repo ($folder, 'docs', 'docs-automation', 'tools')
     {
-        my $ci = get_commit_info($repo);
-        push(@cis, $ci);
+        $cis{$repo} = get_commit_info($repo);
     }
     my @lt = localtime(time);
     my $lt = sprintf("%04d-%02d-%02d %02d:%02d:%02d", $lt[5]+1900, $lt[4]+1, $lt[3], $lt[2], $lt[1], $lt[0]);
@@ -551,7 +550,7 @@ sub get_json_log
         'message'   => $legacy_status,
         'timestamp' => $lt,
         'errors'    => $error_types_4,
-        'version'   => \@cis
+        'version'   => \%cis
     );
     if(scalar(@{$unused_dispensations}) > 0)
     {
