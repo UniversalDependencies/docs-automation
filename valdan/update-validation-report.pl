@@ -487,7 +487,9 @@ sub get_commit_info
     my $commit_id;
     my $author;
     my $timestamp;
-    my $command = "cd $folder ; (git log --date=iso | head -3 2>&1)";
+    # Ask for the commit time to be converted to the local timezone so that we
+    # can compare the timestamps easily.
+    my $command = "cd $folder ; (git log --date=iso-local | head -3 2>&1)";
     open(GIT, "$command|") or die("Cannot pipe from '$command': $!");
     while(<GIT>)
     {
@@ -574,8 +576,11 @@ sub get_json_log
         push(@ewjsons, $ewjson);
     }
     my $json = '{"treebank": "'.escape_json_string($treebank).'", "message": "'.escape_json_string($treebank_message).'", ';
-    $json .= '"version": {'.join(', ', @cijsons).'}, ';
-    $json .= '"errors": ['.join(', ', @ewjsons).']';
+    my @lt = localtime(time);
+    my $lt = sprintf("%04d-%02d-%02d %02d:%02d:%02d", $lt[5]+1900, $lt[4]+1, $lt[3], $lt[2], $lt[1], $lt[0]);
+    $json .= '"timestamp": "'.escape_json_string($lt).'", ';
+    $json .= '"errors": ['.join(', ', @ewjsons).'], ';
+    $json .= '"version": {'.join(', ', @cijsons).'}';
     if(scalar(@{$unused_dispensations}) > 0)
     {
         $json .= ', ';
@@ -616,8 +621,9 @@ sub write_json_log
         }
         my $json = '{"treebank": "'.escape_json_string($run->{treebank}).'", ';
         $json .= '"message": "'.escape_json_string($run->{message}).'", ';
-        $json .= '"version": {'.join(', ', @cijsons).'}, ';
-        $json .= '"errors": ['.join(', ', @ewjsons).']';
+        $json .= '"timestamp": "'.escape_json_string($run->{timestamp}).'", ';
+        $json .= '"errors": ['.join(', ', @ewjsons).'], ';
+        $json .= '"version": {'.join(', ', @cijsons).'}';
         if(exists($run->{unexcept}) && scalar(@{$run->{unexcept}}) > 0)
         {
             $json .= ', ';
