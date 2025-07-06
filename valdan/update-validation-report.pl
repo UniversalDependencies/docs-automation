@@ -105,7 +105,7 @@ if(!$folder_empty)
 # The first two elements are always totals of errors and warnings, respectively.
 my @error_types_4 = summarize_error_types(\%error_stats);
 my @error_testids = map {$_->[2]} (grep {$_->[0] ne 'TOTAL' && $_->[1] ne 'Warning'} (@error_types_4));
-my @warning_testids = map {$_->[2]} (grep {$_->[0] ne 'TOTAL' && $_->[1] eq 'Warning'} (@{$error_types_4}));
+my @warning_testids = map {$_->[2]} (grep {$_->[0] ne 'TOTAL' && $_->[1] eq 'Warning'} (@error_types_4));
 my $n_error_types = scalar(@error_testids);
 my $n_warning_types = scalar(@warning_testids);
 # If there are errors, the following function will print to STDERR their forgivable / unforgivable status.
@@ -432,7 +432,7 @@ sub get_treebank_message
     # The first two elements in @error_types_4 are always total number of errors and warnings.
     if(scalar(@{$error_types_4}) > 2)
     {
-        $treebank_message .= ' ('.join('; ', map {join(' ', @{$_})} (@{$error_types_4})).')';
+        $treebank_message .= ' ('.join('; ', map {my $x = join(' ', @{$_}); $x =~ s/\s\s+/ /g; $x} (@{$error_types_4})).')';
     }
     # List dispensations that are no longer needed (this can follow any state, VALID or ERROR).
     if(scalar(@{$unused}) > 0)
