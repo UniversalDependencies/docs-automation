@@ -267,6 +267,12 @@ Coptic:
   iso3: cop
   family: Afro-Asiatic
   genus: Egyptian
+Corsican:
+  flag: FR-COR
+  lcode: co
+  iso3: cos
+  family: IE
+  genus: Romance
 Croatian:
   flag: HR
   lcode: hr
