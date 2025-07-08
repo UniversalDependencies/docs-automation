@@ -524,7 +524,7 @@ sub summarize_guidelines
     here at least for one universal part-of-speech tag. All features and values must
     be documented. If you need a language-specific feature (or value) that is not yet
     available here, write its language-specific documentation page (see
-    <a href="https://universaldependencies.org/contributing_language_specific.html#language-specific-features">here</a>
+    <a href="https://universaldependencies.org/contributing/language_specific.html#language-specific-features">here</a>
     for instructions). Once the feature is documented, it will appear below
     <b>but it will not be permitted automatically!</b> You have to click on
     the feature name and check the permitted UPOS-value combinations in the

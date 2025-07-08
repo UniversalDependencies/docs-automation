@@ -450,7 +450,7 @@ sub summarize_guidelines
   <p>A dependency relation subtype will be permitted in the language only if it is registered
     here. All relations must be documented. If you need a language-specific relation subtype
     that is not yet available here, write its language-specific documentation page (see
-    <a href="https://universaldependencies.org/contributing_language_specific.html#language-specific-subtypes-of-dependency-relations">here</a>
+    <a href="https://universaldependencies.org/contributing/language_specific.html#language-specific-subtypes-of-dependency-relations">here</a>
     for instructions).</p>
 EOF
     ;
