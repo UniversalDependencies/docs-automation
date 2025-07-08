@@ -435,14 +435,14 @@ EOF
 
 
 #------------------------------------------------------------------------------
-# Prints auxiliaries of all languages, this and related languages first.
+# Prints expressions of all languages, this and related languages first.
 #------------------------------------------------------------------------------
 sub print_all_expressions
 {
     my $data = shift;
     my $languages = shift; # ref to hash read from YAML, indexed by names
     # Print the data on the web page.
-    print("  <h2>Known auxiliaries for this and other languages</h2>\n");
+    print("  <h2>Known regular expressions for this and other languages</h2>\n");
     my @lcodes = langgraph::sort_lcodes_by_relatedness($languages, $config{lcode});
     print("  <table>\n");
     print("    <tr><th colspan=2>Language</th><th>Total</th></tr>\n");
