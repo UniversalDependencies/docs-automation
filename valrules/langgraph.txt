@@ -189,7 +189,8 @@ kmr--100--hy
 kmr--100--hit
 kmr----ckb
 ckb----sdh
-sdh--10--kfm
+sdh--2--glk
+glk--10--kfm
 kfm----soj
 kfm----nyq
 nyq----soj

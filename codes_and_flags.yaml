@@ -407,6 +407,12 @@ Gheg:
   iso3: aln
   family: IE
   genus: Albanian
+Gilaki:
+  flag: IR
+  lcode: glk
+  iso3: glk
+  family: IE
+  genus: Iranian
 Gothic:
   flag: BYZ
   lcode: got
