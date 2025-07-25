@@ -1477,3 +1477,9 @@ Zaar:
   iso3: say
   family: Afro-Asiatic
   genus: West Chadic
+Zazaki:
+  flag: TR
+  lcode: zza
+  iso3: zza
+  family: IE
+  genus: Iranian
