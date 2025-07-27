@@ -225,6 +225,12 @@ Cebuano:
   iso3: ceb
   family: Austronesian
   genus: Central Philippine
+Central Kurdish:
+  flag: IQ-KRD
+  lcode: ckb
+  iso3: ckb
+  family: IE
+  genus: Iranian
 Central Romani:
   flag: ROMANI
   lcode: rmc
@@ -1190,12 +1196,6 @@ Somali:
   iso3: som
   family: Afro-Asiatic
   genus: Cushitic
-Sorani:
-  flag: IQ-KRD
-  lcode: ckb
-  iso3: ckb
-  family: IE
-  genus: Iranian
 Southern Kurdish:
   flag: IQ-KRD
   lcode: sdh
