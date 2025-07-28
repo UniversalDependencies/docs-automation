@@ -761,7 +761,7 @@ sub read_documented_deprels_json
 # deprels declared to be used in a given language. Both hashes have a similar
 # structure: $hash->{$lcode}{$deprel}{...}. The first hash should reflect the
 # current state of the docs repository. Information on documentation of
-# features will be taken from the first hash and copied to the second hash
+# deprels will be taken from the first hash and copied to the second hash
 # (where it will replace any such information that may be there from the past).
 # The remaining values in the second hash will be adjusted accordingly. For
 # example, a deprel that was previously permitted may now be disallowed if it
@@ -780,6 +780,7 @@ sub merge_documented_and_declared_deprels
     # Copy documented features to declared.
     foreach my $lcode (keys(%{$documented}))
     {
+        my $n_declared = scalar(keys(%{$declared->{$lcode}}));
         foreach my $d (keys(%{$documented->{$lcode}}))
         {
             # If the deprel has not been previously used in the language, just add it.
@@ -788,10 +789,12 @@ sub merge_documented_and_declared_deprels
                 $declared->{$lcode}{$d} = $documented->{$lcode}{$d};
                 my $decd = $declared->{$lcode}{$d};
                 $decd->{errors} = [] if(!defined($decd->{errors}));
-                # A new universal deprel is automatically permitted (provided it is well documented, i.e., permitted by documentation).
-                # A new language-specific relation subtype is automatically permitted if it is documented locally for this language.
-                # A new global language-specific relation subtype is not permitted until it is turned on for the language in the web interface.
-                $decd->{permitted} = $decd->{permitted} && ($decd->{type} eq 'universal' || $decd->{doc} eq 'local');
+                # A new deprel is not permitted until it is turned on for the language in the web interface.
+                # Even for universal features, we should not automatically permit them, because then people
+                # could not turn them off. After turning off a universal relation, it will be deleted from
+                # the language-specific part of the JSON. Only if this is a new language, we will automatically
+                # turn on all universal deprels so that the user does not have to permit them one-by-one.
+                $decd->{permitted} = $n_declared == 0 && $decd->{type} eq 'universal';
             }
             # If the deprel has been previously used in the language, check its status.
             else
