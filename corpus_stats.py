@@ -1,3 +1,6 @@
+#! /usr/bin/env python3
+# Original code (2017) by Filip Ginter.
+# Later modifications by Dan Zeman.
 import six
 assert six.PY3, "Run me with Python3"
 
@@ -8,6 +11,7 @@ import json
 import os
 import yaml
 from yaml.loader import SafeLoader
+import logging
 
 
 
@@ -20,12 +24,12 @@ def trees(inp):
 
     Yields the input a tree at a time.
     """
-    comments=[] #List of comment lines to go with the current tree
-    lines=[] #List of token/word lines of the current tree
+    comments=[] # List of comment lines to go with the current tree
+    lines=[] # List of token/word lines of the current tree
     for line_counter, line in enumerate(inp):
         line=line.rstrip()
-        if not line: #empty line
-            if lines: #Sentence done, yield. Skip otherwise.
+        if not line: # empty line
+            if lines: # Sentence done, yield. Skip otherwise.
                 yield comments, lines
                 comments=[]
                 lines=[]
@@ -35,8 +39,8 @@ def trees(inp):
             cols=line.split("\t")
             assert len(cols)==CONLLU_COLCOUNT
             lines.append(cols)
-    else: #end of file
-        if comments or lines: #Looks like a forgotten empty line at the end of the file, well, okay...
+    else: # end of file
+        if comments or lines: # Looks like a forgotten empty line at the end of the file, well, okay...
             yield comments, lines
 
 
@@ -92,7 +96,7 @@ class RelNum(object):
                 return 0
 
 
-### Mostly stolen from conllu-stats.py
+
 class TreebankInfo:
 
     """
@@ -100,33 +104,40 @@ class TreebankInfo:
     """
 
     def __init__(self):
-        self.token_count=0
-        self.word_count=0
         self.tree_count=0
+        self.token_count=0 # surface tokens (some may cover multiple words)
+        self.word_count=0 # morphosyntactic words, i.e., non-empty nodes
+        self.node_count=0 # all nodes including empty nodes in enhanced graphs
         self.words_with_lemma_count=0
         self.words_with_deps_count=0
         self.words_not_underscore=0
-        self.f_val_counter={} #key:f=val  value: count
-        self.deprel_counter={} #key:deprel value: count
-        self.readme_data_raw={} #raw key-value pairs from readme
+        self.f_val_counter={} # key:f=val  value: count
+        self.deprel_counter={} # key:deprel value: count
+        self.readme_data_raw={} # raw key-value pairs from readme
         self.language_name=None
         self.language_name_short=None
-        self.treebank_code=None #xxx
-        self.treebank_lcode_code=None #cs_xxx
-        self.language_code=None #cs
+        self.treebank_code=None # xxx
+        self.treebank_lcode_code=None # cs_xxx
+        self.language_code=None # cs
         self.first_release=None
         self.score=0 # <0;1> # read eval.log from master branch
         self.stars=0 # 0 | 0.5 | ... | 4.5 | 5
 
 
     def count_cols(self,cols):
-        if cols[ID].isdigit() or "." in cols[ID]: #word or empty word
+        if '.' in cols[ID]: # empty node
+            self.node_count+=1
+        elif cols[ID].isdigit(): # non-empty morphosyntactic word
+            self.node_count+=1
             self.word_count+=1
-            self.token_count+=1 #every word is also a one-word token
-        else: #token
-            b,e=cols[ID].split("-")
+            self.token_count+=1 # normal word is also a one-word token, multiword tokens will be compensated below
+        else: # multiword token
+            b,e=cols[ID].split('-')
             b,e=int(b),int(e)
-            self.token_count-=e-b #every word is counted as a token, so subtract all but one to offset for that
+            self.token_count-=e-b # every word is counted as a token, so subtract all but one to offset for that
+        ###!!! Below we count "words_with_lemma" and similar, but they are not
+        ###!!! words in the sense of the word_count above. They can be multiword
+        ###!!! tokens or empty nodes.
         if cols[FORM]!="_":
             self.words_not_underscore+=1
         if cols[LEMMA]!="_" or (cols[LEMMA]=="_" and cols[FORM]=="_"):

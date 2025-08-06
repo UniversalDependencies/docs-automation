@@ -1,3 +1,6 @@
+#! /usr/bin/env python3
+# Original code (2017) by Filip Ginter.
+# Later modifications by Dan Zeman.
 import six
 assert six.PY3, "Run me with Python3"
 import jinja2
