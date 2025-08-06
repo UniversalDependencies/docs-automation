@@ -3,7 +3,7 @@
     <span class="flagspan"><img class="flag" src="flags/svg/{{flag}}.svg" /></span>
     <span class="doublewidespan">{{language_name_short}}</span>
     <span class="widespan"><span class="hint--top hint--info" data-hint="{{treebanks|length}} treebank{% if treebanks|length > 1 %}s{% endif %}">{{treebanks|length}}</span></span>
-    <span class="widespan"><span class="hint--top hint--info" data-hint="{{counts.token|tsepk}} tokens {{counts.word|tsepk}} words {{counts.tree|tsepk}} sentences">{{counts.word|tsepk(use_k=true)}}</span></span>
+    <span class="widespan"><span class="hint--top hint--info" data-hint="{{counts.token|tsepk}} tokens {{counts.word|tsepk}} words {{counts.node|tsepk}} nodes {{counts.tree|tsepk}} sentences">{{counts.word|tsepk(use_k=true)}}</span></span>
     <!-- English has so many genres that they no longer fit in doublewidespan. -->
     <span class="triplewidespan">{{genres|genre_filter|safe}}</span>
     <span class="triplewidespan">{{(language_family,language_genus)|family_filter|safe}}</span>
@@ -20,7 +20,7 @@
       <div class="ui-accordion-header ui-helper-reset ui-state-default ui-corner-all" role="tab" aria-expanded="false" aria-selected="false" tabindex="-1"> <!-- start of {{language_name}} / {{tbank.treebank_code|default("Original",true)}} entry -->
 	    <span class="flagspan"></span>
 	    <span class="doublewidespan">{{tbank.treebank_code|default("Original",true)}}</span>
-	    <span class="widespan"><span class="hint--top hint--info" data-hint="{{tbank.counts.token|tsepk}} tokens {{tbank.counts.word|tsepk}} words {{tbank.counts.tree|tsepk}} sentences">{{tbank.counts.word|tsepk(use_k=true)}}</span></span>
+	    <span class="widespan"><span class="hint--top hint--info" data-hint="{{tbank.counts.token|tsepk}} tokens {{tbank.counts.word|tsepk}} words {{tbank.counts.node|tsepk}} nodes {{tbank.counts.tree|tsepk}} sentences">{{tbank.counts.word|tsepk(use_k=true)}}</span></span>
 	    <span class="widespan">{{tbank.counts|tag_filter|safe}}</span>
 	    <!-- <span class="widespan">{{tbank.meta|annotation_filter|safe}}</span> -->
 	    <span class="doublewidespan">{{tbank.meta.genre|genre_filter|safe}}</span>
