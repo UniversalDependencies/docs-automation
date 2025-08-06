@@ -281,7 +281,17 @@ class TreebankInfo:
 
     def as_json(self, args=None):
         final = {}
-        final['counts'] = {"token":self.token_count, "word":self.word_count, "tree":self.tree_count, "word_w_lemma":self.words_with_lemma_count, "word_w_deps":self.words_with_deps_count, "fvals": self.f_val_counter, "deprels": self.deprel_counter, "word_not_underscore":self.words_not_underscore}
+        final['counts'] = {
+            "tree":self.tree_count,
+            "token":self.token_count,
+            "word":self.word_count,
+            "node":self.node_count,
+            "word_w_lemma":self.words_with_lemma_count,
+            "word_w_deps":self.words_with_deps_count,
+            "fvals": self.f_val_counter,
+            "deprels": self.deprel_counter,
+            "word_not_underscore":self.words_not_underscore
+        }
         final['language_name'] = self.language_name
         final['language_name_short'] = self.language_name_short
         final['treebank_code'] = self.treebank_code
