@@ -33,6 +33,7 @@
 "2.12": [["UD_Old_French-SRCMF", "UD_Old_French-PROFITEROLE"]],
 "2.13": [["UD_Old_Turkish-Tonqq", "UD_Old_Turkish-Clausal"]],
 "2.14": [["UD_Beja-NSC", "UD_Beja-Autogramm"]],
-"2.15": [["UD_Swiss_German-UZH", "UD_Alemannic-UZH"], ["UD_Czech-PDT", "UD_Czech-PDTC"]]
+"2.15": [["UD_Swiss_German-UZH", "UD_Alemannic-UZH"], ["UD_Czech-PDT", "UD_Czech-PDTC"]],
+"2.16": [["UD_Kurmanji-MG", "UD_Northern_Kurdish-Kurmanji"]]
 }
 }
