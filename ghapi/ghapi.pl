@@ -257,8 +257,10 @@ sub copy_file
     my $outpath = shift;
     confess("Unknown input file") if(!defined($inpath));
     confess("Unknown output file") if(!defined($outpath));
-    open(IN, '<', $inpath) or confess("Cannot read '$inpath': $!");
-    # Open the file for writing with :raw layer to disable line-ending translation (LF should not be translated to CRLF on Windows).
+    # Open the file for writing with :raw layer to disable line-ending translation
+    # (LF should not be translated to CRLF on Windows). Consequently, open the
+    # input file with :raw as well to prevent "wide character in print" complaints.
+    open(IN, '<:raw', $inpath) or confess("Cannot read '$inpath': $!");
     open(OUT, '>:raw', $outpath) or confess("Cannot write '$outpath': $!");
     while(<IN>)
     {
