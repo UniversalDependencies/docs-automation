@@ -326,6 +326,12 @@ Egyptian:
   iso3: egy
   family: Afro-Asiatic
   genus: Egyptian
+Enawene Nawe:
+  flag: BR
+  lcode: unk
+  iso3: unk
+  family: Arawakan
+  genus: Central Arawakan
 English:
   flag: GB
   lcode: en

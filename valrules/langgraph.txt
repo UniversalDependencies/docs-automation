@@ -371,6 +371,8 @@ pay--100--bzd
 bzd--100--sab
 sab--100--arh
 jaa----pad
+Purus----Central Arawakan
+apu--100--unk
 Maweti-Guarani--10--Munduruku
 Ramarama----Munduruku
 Tupari----Ramarama
