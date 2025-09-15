@@ -996,6 +996,12 @@ Old Japanese:
   lcode: ojp
   iso3: ojp
   family: Japanese
+Old Occitan:
+  flag: FR-OCC
+  lcode: pro
+  iso3: pro
+  family: IE
+  genus: Romance
 Old Saxon:
   flag: DE-HRR
   lcode: osx
