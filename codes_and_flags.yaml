@@ -243,6 +243,12 @@ Chinese:
   iso3: cmn
   family: Sino-Tibetan
   genus: Chinese
+Chintang:
+  flag: NP
+  lcode: ctn
+  iso3: ctn
+  family: Sino-Tibetan
+  genus: Himalayish
 Chukchi:
   flag: RU-CHU
   lcode: ckt

@@ -334,13 +334,15 @@ otk----sah
 ug--1000--sjo
 sah--1000--ckt
 Chinese--10--Bodic
-Bodic--2--Kuki-Chin
+Bodic----Himalayish
+Himalayish--2--Kuki-Chin
 Kuki-Chin----Tangkhul-Maring
 zh--2--wuu
 wuu--2--yue
 yue----lzh
 yue--100--prx
-prx--100--lus
+prx--50--ctn
+ctn--100--lus
 lus--50--nmf
 Northern Luzon----Central Philippine
 Central Philippine--10--Malayo-Sumbawan
