@@ -152,6 +152,7 @@ fr--4--lij
 lij--4--it
 it----co
 it----nap
+nap----scn
 it--2--ro
 it--50--la
 la----xum

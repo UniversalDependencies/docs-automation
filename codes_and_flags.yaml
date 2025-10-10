@@ -1172,6 +1172,12 @@ Shipibo Konibo:
   iso3: shp
   family: Pano-Tacanan
   genus: Panoan
+Sicilian:
+  flag: IT-SIC
+  lcode: scn
+  iso3: scn
+  family: IE
+  genus: Romance
 Sindhi:
   flag: PK
   lcode: sd
