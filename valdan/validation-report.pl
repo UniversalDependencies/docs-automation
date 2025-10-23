@@ -73,6 +73,8 @@ my ($sec, $min, $hour, $mday, $mon, $year, $wday, $yday) = gmtime(time());
 my $today = sprintf("%04d-%02d-%02d", $year+1900, $mon+1, $mday);
 print("<h1>Universal Dependencies Validation Report ($timer)</h1>\n");
 print(get_explanation());
+# Read the current queue of treebanks to be validated, if any.
+my @q = read_queue();
 #print("<p>Hover the mouse pointer over a treebank name to see validation summary. Click on the “report” link to see the full output of the validation software.</p>\n");
 print("<p>Click on the “report” link to see the full output of the validation software.</p>\n");
 print("<hr />\n");
@@ -205,6 +207,8 @@ while(<REPORT>)
     if(m/^(UD_.+?):/)
     {
         my $folder = $1;
+        # Is the folder currently scheduled for re-validation?
+        my $queued = scalar(grep {$_ eq $folder} (@q)) ? '(queued) ' : '';
         $languages{$language}++;
         my $html;
         if(-e "log/$folder.log")
@@ -223,7 +227,7 @@ while(<REPORT>)
             ###!!! 2020-11-29: DZ: Turning off the field tips. They are too long now that most treebanks are red. And sometimes it is not possible to click on the "report" link because of mad field tips jumping around.
             if(0)
             {
-                $html .= "<span class='field-tip' style='color:$color;font-weight:bold'>$_<span class='tip-content'><pre>";
+                $html .= "$queued<span class='field-tip' style='color:$color;font-weight:bold'>$_<span class='tip-content'><pre>";
                 my $log = `cat log/$folder.log`;
                 # Only show the beginning of the log here.
                 my @lines = split(/\n/, $log);
@@ -240,12 +244,12 @@ while(<REPORT>)
             }
             else # no field tips
             {
-                $html .= "<span style='color:$color;font-weight:bold'>$_</span>$errorlist$reportlink$unexcept<br />\n";
+                $html .= "$queued<span style='color:$color;font-weight:bold'>$_</span>$errorlist$reportlink$unexcept<br />\n";
             }
         }
         else
         {
-            $html .= "<span style='color:$color;font-weight:bold'>$_</span>$unexcept<br />\n";
+            $html .= "$queued<span style='color:$color;font-weight:bold'>$_</span>$unexcept<br />\n";
         }
         print($html);
     }
@@ -467,4 +471,27 @@ sub zneskodnit_html
     $text =~ s/</&lt;/sg;
     $text =~ s/>/&gt;/sg;
     return $text;
+}
+
+
+
+#------------------------------------------------------------------------------
+# Reads the current queue, if any.
+#------------------------------------------------------------------------------
+sub read_queue
+{
+    my $queue_file = './queue.txt';
+    my @queue = ();
+    open(QUEUE, $queue_file) or return;
+    while(<QUEUE>)
+    {
+        s/\r?\n$//;
+        # The queue contains one line per UD treebank, the line has TAB-separated fields.
+        # The first field is the name of the treebank. It starts with 'UD'.
+        next unless(m/^UD_/);
+        my @f = split(/\t/, $_);
+        push(@queue, \@f);
+    }
+    close(QUEUE);
+    return @queue;
 }
