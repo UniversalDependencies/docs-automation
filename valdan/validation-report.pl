@@ -208,7 +208,7 @@ while(<REPORT>)
     {
         my $folder = $1;
         # Is the folder currently scheduled for re-validation?
-        my $queued = scalar(grep {m/^$folder\s/} (@q)) ? '(queued) ' : '';
+        my $queued = scalar(grep {$_->[0] eq $folder} (@q)) ? "<span style='color:black;background:red;font-weight:bold'>(queued)</span> " : '';
         $languages{$language}++;
         my $html;
         if(-e "log/$folder.log")
