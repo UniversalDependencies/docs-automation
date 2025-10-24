@@ -76,6 +76,7 @@ my @functions =
     ['Periphrastic tense: past', 'Tense=Past'],
     ['Periphrastic tense: present', 'Tense=Pres'],
     ['Periphrastic tense: future', 'Tense=Fut'],
+    ['Periphrastic voice: reciprocal', 'Voice=Rcp'],
     ['Periphrastic voice: passive', 'Voice=Pass'],
     ['Periphrastic voice: causative', 'Voice=Cau'],
     ['Periphrastic mood: conditional', 'Mood=Cnd'],
