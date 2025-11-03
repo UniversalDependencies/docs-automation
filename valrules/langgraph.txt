@@ -205,6 +205,7 @@ ps--100--ur
 ps--90--trw
 bal--100--ur
 bal--100--sd
+bal--1000--brh
 ur----hi
 ur--2--trw
 ur--2--sd
@@ -238,6 +239,7 @@ hi--10--mr
 mr--10--si
 mr--1000--te
 si--1000--ta
+brh--10--te
 te----kn
 te--1000--qte
 kn--2--ml

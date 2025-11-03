@@ -178,6 +178,11 @@ Bororo:
   lcode: bor
   iso3: bor
   family: Bororoan
+Brahui:
+  flag: PK
+  lcode: brh
+  iso3: brh
+  family: Dravidian
 Breton:
   flag: FR-BRE
   lcode: br
