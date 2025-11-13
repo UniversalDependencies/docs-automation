@@ -67,7 +67,7 @@ EOF
 }
 
 vypsat_html_zacatek();
-my $timer = get_timer('November 1, 2025 23:59:59');
+my $timer = get_timer('May 1, 2026 23:59:59');
 # We also need the time (UTC) when the page is generated to identify treebanks that have been neglected for too long.
 my ($sec, $min, $hour, $mday, $mon, $year, $wday, $yday) = gmtime(time());
 my $today = sprintf("%04d-%02d-%02d", $year+1900, $mon+1, $mday);
