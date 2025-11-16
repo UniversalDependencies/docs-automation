@@ -35,6 +35,7 @@
 "2.13": [["UD_Old_Turkish-Tonqq", "UD_Old_Turkish-Clausal"]],
 "2.14": [["UD_Beja-NSC", "UD_Beja-Autogramm"]],
 "2.15": [["UD_Swiss_German-UZH", "UD_Alemannic-UZH"], ["UD_Czech-PDT", "UD_Czech-PDTC"]],
-"2.16": [["UD_Kurmanji-MG", "UD_Northern_Kurdish-Kurmanji"], ["UD_Occitan-CorAG", "UD_Old_Occitan-CorAG"]]
+"2.16": [["UD_Kurmanji-MG", "UD_Northern_Kurdish-Kurmanji"], ["UD_Occitan-CorAG", "UD_Old_Occitan-CorAG"]],
+"2.17": [["UD_Western_Sierra_Puebla_Nahuatl-ITML", "UD_Western_Sierra_Puebla_Nahuatl-MesoTree"]]
 }
 }
