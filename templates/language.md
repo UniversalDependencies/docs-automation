@@ -12,35 +12,35 @@
   <div class="ui-accordion-content ui-helper-reset ui-widget-content ui-corner-bottom" style="" role="tabpanel"> <!-- start of {{language_name}} accordion body -->
   <!--initial style="height:558.8px; display: none" would make the page a bit better before setup is done but the height of the subaccordions would not be measured correctly-->
 
-  <!-- empty space so tooltip fits -->
-  <h3>{{language_name}} treebanks</h3>
+    <!-- empty space so tooltip fits -->
+    <h3>{{language_name}} treebanks</h3>
 
     <div class="jquery-ui-subaccordion-closed ui-accordion ui-widget ui-helper-reset ui-accordion-icons" role="tablist"> <!-- start of {{language_name}} treebank list -->
       {% for tbank in treebanks %}
       <div class="ui-accordion-header ui-helper-reset ui-state-default ui-corner-all" role="tab" aria-expanded="false" aria-selected="false" tabindex="-1"> <!-- start of {{language_name}} / {{tbank.treebank_code|default("Original",true)}} entry -->
-	    <span class="flagspan"></span>
-	    <span class="doublewidespan">{{tbank.treebank_code|default("Original",true)}}</span>
-	    <span class="widespan"><span class="hint--top hint--info" data-hint="{{tbank.counts.token|tsepk}} tokens {{tbank.counts.word|tsepk}} words {{tbank.counts.node|tsepk}} nodes {{tbank.counts.tree|tsepk}} sentences">{{tbank.counts.word|tsepk(use_k=true)}}</span></span>
-	    <span class="widespan">{{tbank.counts|tag_filter|safe}}</span>
-	    <!-- <span class="widespan">{{tbank.meta|annotation_filter|safe}}</span> -->
-	    <span class="doublewidespan">{{tbank.meta.genre|genre_filter|safe}}</span>
-	    <span class="widespan">{{tbank.meta.license|license_filter|safe}}</span>
-	    <span class="widespan">{{(tbank.score,tbank.stars)|stars_filter|safe}}</span>
-	  </div>
-	  <div class="ui-accordion-content ui-helper-reset ui-widget-content ui-corner-bottom" role="tabpanel" style="height: 149.8px;">
+        <span class="flagspan"></span>
+        <span class="doublewidespan">{{tbank.treebank_code|default("Original",true)}}</span>
+        <span class="widespan"><span class="hint--top hint--info" data-hint="{{tbank.counts.token|tsepk}} tokens {{tbank.counts.word|tsepk}} words {{tbank.counts.node|tsepk}} nodes {{tbank.counts.tree|tsepk}} sentences">{{tbank.counts.word|tsepk(use_k=true)}}</span></span>
+        <span class="widespan">{{tbank.counts|tag_filter|safe}}</span>
+        <!-- <span class="widespan">{{tbank.meta|annotation_filter|safe}}</span> -->
+        <span class="doublewidespan">{{tbank.meta.genre|genre_filter|safe}}</span>
+        <span class="widespan">{{tbank.meta.license|license_filter|safe}}</span>
+        <span class="widespan">{{(tbank.score,tbank.stars)|stars_filter|safe}}</span>
+      </div>
+      <div class="ui-accordion-content ui-helper-reset ui-widget-content ui-corner-bottom" role="tabpanel" style="height: 149.8px;">
 
-	    {{tbank.meta.summary|default("Please add a summary section to the treebank readme file",true)}}
+        {{tbank.meta.summary|default("Please add a summary section to the treebank readme file",true)}}
 
-	    <ul>
-	      <li>Contributors: {{tbank.meta.contributors|contributor_filter}} </li>
-          <li>Repository <a href="https://github.com/UniversalDependencies/{{tbank.repo_name}}/tree/master">master</a> <a href="https://github.com/UniversalDependencies/{{tbank.repo_name}}/tree/dev">dev</a></li>
-          <li><a href="https://github.com/UniversalDependencies/{{tbank.repo_name}}/blob/{{tbank.repo_branch}}/{{tbank.readme_file}}">README</a></li>
-	      <li><a href="treebanks/{{tbank.treebank_lcode_code}}/index.html">Treebank hub page</a></li>
-	      <li><a href="#download">Download</a></li>
-	    </ul>
+        <ul>
+          <li>Contributors: {{tbank.meta.contributors|contributor_filter}} </li>
+             <li>Repository <a href="https://github.com/UniversalDependencies/{{tbank.repo_name}}/tree/master">master</a> <a href="https://github.com/UniversalDependencies/{{tbank.repo_name}}/tree/dev">dev</a></li>
+             <li><a href="https://github.com/UniversalDependencies/{{tbank.repo_name}}/blob/{{tbank.repo_branch}}/{{tbank.readme_file}}">README</a></li>
+          <li><a href="treebanks/{{tbank.treebank_lcode_code}}/index.html">Treebank hub page</a></li>
+          <li><a href="#download">Download</a></li>
+        </ul>
 
-	    <p>&nbsp;</p>
-	  </div> <!-- end of {{language_name}} / {{tbank.treebank_code|default("Original",true)}} entry -->
+        <p>&nbsp;</p>
+      </div> <!-- end of {{language_name}} / {{tbank.treebank_code|default("Original",true)}} entry -->
       {% endfor %}
     </div> <!-- end of {{language_name}} treebank list -->
 

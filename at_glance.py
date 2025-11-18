@@ -22,7 +22,9 @@ def sum_dicts(dicts):
     return res
 
 def thousand_sep_filter(val,use_k=False):
-    """Used from the template to produce thousand-separated numbers, optionally with "K" for thousands"""
+    """
+    Used from the template to produce thousand-separated numbers, optionally with "K" for thousands.
+    """
     if not use_k:
         return "{:,}".format(val)
     else:
@@ -34,26 +36,34 @@ def thousand_sep_filter(val,use_k=False):
             return "{:,}K".format(val//1000)
 
 def tag_filter(counts):
-    """Used from the template to produce the L-F-D tags"""
+    """
+    Used from the template to produce the L-F-D tags.
+    """
     result=""
     empty_span='<span class="tagspan"></span>'
-    tag_span='<span class="tagspan"><span class="hint--top hint--info" data-hint="%s"><img class="propertylogo" src="logos/%s.svg" /></span></span>'
+    #tag_span='<span class="tagspan"><span class="hint--top hint--info" data-hint="%s"><img class="propertylogo" src="logos/%s.svg" /></span></span>'
+    tag_span='<span class="tagspan"><span class="hint--top hint--info" data-hint="%s">%s</span></span>'
     if counts["word"] and counts["word_w_lemma"]/counts["word"]>0.1:
-        result+=tag_span%("Lemmas","L")
+        #result+=tag_span%("Lemmas","L")
+        result+=tag_span%("Lemmas","Ⓛ")
     else:
         result+=empty_span
     if len(counts["fvals"])>5:
-        result+=tag_span%("Features","F")
+        #result+=tag_span%("Features","F")
+        result+=tag_span%("Features","Ⓕ")
     else:
         result+=empty_span
     if counts["word"] and counts["word_w_deps"]>10:
-        result+=tag_span%("Secondary dependencies","D")
+        #result+=tag_span%("Enhanced dependencies","D")
+        result+=tag_span%("Enhanced dependencies","Ⓓ")
     else:
         result+=empty_span
     return result
 
 def annotation_filter(metadata):
-    """Used from the template to produce the conversion logo"""
+    """
+    Used from the template to produce the conversion logo.
+    """
     source=metadata["source"]["all"]
     if source=="automatic":
         return '<span class="hint--top hint--info" data-hint="Automatic conversion"><i class="fa fa-cogs"></i></span>'
