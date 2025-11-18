@@ -135,9 +135,9 @@ class TreebankInfo:
             b,e=cols[ID].split('-')
             b,e=int(b),int(e)
             self.token_count-=e-b # every word is counted as a token, so subtract all but one to offset for that
-        ###!!! Below we count "words_with_lemma" and similar, but they are not
-        ###!!! words in the sense of the word_count above. They can be multiword
-        ###!!! tokens or empty nodes.
+        # Below we count "words_with_lemma" and similar, but they are not
+        # words in the sense of the word_count above. They can be multiword
+        # tokens or empty nodes.
         if cols[FORM]!="_":
             self.words_not_underscore+=1
         if cols[LEMMA]!="_" or (cols[LEMMA]=="_" and cols[FORM]=="_"):
@@ -205,11 +205,11 @@ class TreebankInfo:
 
 
     def read_readme(self, f_name):
-        metadata_keys=["Documentation status", "Data source", "Data available since", "License", "Genre", "Contributors", "Contact", "Lemmas", "UPOS", "XPOS", "Features", "Relations", "Contributing"]
+        metadata_keys=["Data available since", "License", "Includes text", "Parallel", "Genre", "Lemmas", "UPOS", "XPOS", "Features", "Relations", "Contributors", "Contributing", "Contact"]
         metadata_re=re.compile(r"^(%s)\s*:\s*(.*)$"%("|".join(metadata_keys)),re.I)
-
         in_summary=False
         summary=[]
+        # metadata_dict gets remembered in self.readme_data_raw
         metadata_dict=self.readme_data_raw
         with open(f_name) as f:
             for line in f:
@@ -226,10 +226,7 @@ class TreebankInfo:
                     continue
                 if in_summary:
                     summary.append(line)
-
-        #metadata_dict gets remembered in self.readme_data_raw
-
-        meta={"license":("unknown","unknown"), "avail":"unknown", "genre":[], "contributors":[], "contact":[], "summary":("\n".join(summary)).strip()} #Processed meta
+        meta={"license":("unknown","unknown"), "avail":"unknown", "genre":[], "contributors":[], "contact":[], "summary":("\n".join(summary)).strip()} # Processed meta
         #license
         if "license" in metadata_dict:
             lic=metadata_dict["license"]
@@ -254,15 +251,15 @@ class TreebankInfo:
         for c in metadata_dict.get("contact","").replace(","," ").replace(";"," ").split():
             if c.strip() and c.strip!="email@domain.com":
                 meta["contact"].append(c)
-
         meta["source"]={}
-        meta["source"]["all"]=metadata_dict.get("data source","unknown")
-        meta["source"]["lemmas"]=metadata_dict.get("Lemmas","unknown")
-        meta["source"]["upos"]=metadata_dict.get("UPOS","unknown")
-        meta["source"]["xpos"]=metadata_dict.get("XPOS","unknown")
-        meta["source"]["features"]=metadata_dict.get("Features","unknown")
-        meta["source"]["relations"]=metadata_dict.get("Relations","unknown")
-        meta["where_contribute"]=metadata_dict.get("Contributing","unknown")
+        meta["source"]["text"]=metadata_dict.get("includes text","yes")
+        meta["source"]["lemmas"]=metadata_dict.get("lemmas","unknown")
+        meta["source"]["upos"]=metadata_dict.get("upos","unknown")
+        meta["source"]["xpos"]=metadata_dict.get("xpos","unknown")
+        meta["source"]["features"]=metadata_dict.get("features","unknown")
+        meta["source"]["relations"]=metadata_dict.get("relations","unknown")
+        meta["parallel"]=metadata_dict.get("parallel","no")
+        meta["where_contribute"]=metadata_dict.get("contributing","unknown")
         self.meta=meta
 
 
