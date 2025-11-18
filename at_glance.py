@@ -60,20 +60,6 @@ def tag_filter(counts):
         result+=empty_span
     return result
 
-def annotation_filter(metadata):
-    """
-    Used from the template to produce the conversion logo.
-    """
-    source=metadata["source"]["all"]
-    if source=="automatic":
-        return '<span class="hint--top hint--info" data-hint="Automatic conversion"><i class="fa fa-cogs"></i></span>'
-    elif source=="semi-automatic":
-        return '<span class="hint--top hint--info" data-hint="Automatic conversion with manual corrections"><i class="fa fa-cogs"></i><i class="fa fa-check"></i></span>'
-    elif source=="manual":
-        return '<span class="hint--top hint--info" data-hint="Full manual check of the data"><i class="fa fa-user"></i></span>'
-    else:
-        return '<span class="hint--top hint--info" data-hint="Unknown">?</span>'
-
 def genre_filter(genres, genre_symbols={}):
     """
     Used from the template to produce the genre symbols.
