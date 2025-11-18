@@ -24,7 +24,7 @@
         <span class="flagspan"></span>
         <span class="doublewidespan">{{tbank.treebank_code|default("Original",true)}}</span>
         <span class="widespan"><span class="hint--top hint--info" data-hint="{{tbank.counts.token|tsepk}} tokens {{tbank.counts.word|tsepk}} words {{tbank.counts.node|tsepk}} nodes {{tbank.counts.tree|tsepk}} sentences">{{tbank.counts.word|tsepk(use_k=true)}}</span></span>
-        <span class="widespan">{{tbank.counts|tag_filter|safe}}</span>
+        <span class="widespan">{{(tbank.counts,tbank.meta)|tag_filter|safe}}</span>
         <span class="doublewidespan">{{tbank.meta.genre|genre_filter|safe}}</span>
         <span class="widespan">{{tbank.meta.license|license_filter|safe}}</span>
         <span class="widespan">{{(tbank.score,tbank.stars)|stars_filter|safe}}</span>
