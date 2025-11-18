@@ -66,6 +66,15 @@ def tag_filter(countsmeta):
         result += empty_span
     return result
 
+def parallel_filter(parallel):
+    """
+    Used from the template to produce parallel treebank info.
+    """
+    if parallel == 'no':
+        return '<span class="tagspan"></span>'
+    else:
+        return f'<span class="tagspan"><span class="hint--top hint--info" data-hint="Parallel data: {parallel}">Ⓟ</span></span>'
+
 def genre_filter(genres, genre_symbols={}):
     """
     Used from the template to produce the genre symbols.
@@ -176,6 +185,7 @@ if __name__=="__main__":
     t_env = jinja2.Environment(loader=jinja2.PackageLoader('at_glance', 'templates'), autoescape=True)
     t_env.filters['tsepk'] = thousand_sep_filter
     t_env.filters['tag_filter'] = tag_filter
+    t_env.filters['parallel_filter'] = parallel_filter
     t_env.filters['genre_filter'] = functools.partial(genre_filter,genre_symbols=genre_symbols)
     t_env.filters['family_filter'] = family_filter
     t_env.filters['license_filter'] = license_filter
