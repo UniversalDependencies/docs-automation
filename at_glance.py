@@ -170,7 +170,6 @@ if __name__=="__main__":
     t_env = jinja2.Environment(loader=jinja2.PackageLoader('at_glance', 'templates'), autoescape=True)
     t_env.filters['tsepk'] = thousand_sep_filter
     t_env.filters['tag_filter'] = tag_filter
-    t_env.filters['annotation_filter'] = annotation_filter
     t_env.filters['genre_filter'] = functools.partial(genre_filter,genre_symbols=genre_symbols)
     t_env.filters['family_filter'] = family_filter
     t_env.filters['license_filter'] = license_filter
