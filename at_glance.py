@@ -37,7 +37,7 @@ def thousand_sep_filter(val,use_k=False):
 
 def tag_filter(counts):
     """
-    Used from the template to produce the L-F-D tags.
+    Used from the template to produce the L-F-E tags.
     """
     result=""
     empty_span='<span class="tagspan"></span>'
@@ -55,7 +55,7 @@ def tag_filter(counts):
         result+=empty_span
     if counts["word"] and counts["word_w_deps"]>10:
         #result+=tag_span%("Enhanced dependencies","D")
-        result+=tag_span%("Enhanced dependencies","Ⓓ")
+        result+=tag_span%("Enhanced dependencies","Ⓔ")
     else:
         result+=empty_span
     return result
