@@ -35,29 +35,35 @@ def thousand_sep_filter(val,use_k=False):
         else:
             return "{:,}K".format(val//1000)
 
-def tag_filter(counts):
+def tag_filter(countsmeta):
     """
     Used from the template to produce the L-F-E tags.
     """
+    counts=countsmeta[0]
+    meta=countsmeta[1]
     result=""
     empty_span='<span class="tagspan"></span>'
     #tag_span='<span class="tagspan"><span class="hint--top hint--info" data-hint="%s"><img class="propertylogo" src="logos/%s.svg" /></span></span>'
     tag_span='<span class="tagspan"><span class="hint--top hint--info" data-hint="%s">%s</span></span>'
+    if meta["source"]["text"] == "no":
+        result += tag_span % ("Underlying text not included", "✘")
+    else:
+        result += empty_span
     if counts["word"] and counts["word_w_lemma"]/counts["word"]>0.1:
-        #result+=tag_span%("Lemmas","L")
-        result+=tag_span%("Lemmas","Ⓛ")
+        #result += tag_span % ("Lemmas", "L")
+        result += tag_span % ("Lemmas", "Ⓛ")
     else:
-        result+=empty_span
+        result += empty_span
     if len(counts["fvals"])>5:
-        #result+=tag_span%("Features","F")
-        result+=tag_span%("Features","Ⓕ")
+        #result += tag_span % ("Features", "F")
+        result += tag_span % ("Features", "Ⓕ")
     else:
-        result+=empty_span
+        result += empty_span
     if counts["word"] and counts["word_w_deps"]>10:
-        #result+=tag_span%("Enhanced dependencies","D")
-        result+=tag_span%("Enhanced dependencies","Ⓔ")
+        #result += tag_span % ("Enhanced dependencies", "D")
+        result += tag_span % ("Enhanced dependencies", "Ⓔ")
     else:
-        result+=empty_span
+        result += empty_span
     return result
 
 def genre_filter(genres, genre_symbols={}):

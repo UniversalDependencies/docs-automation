@@ -9,15 +9,18 @@
     <span class="triplewidespan">{{(language_family,language_genus)|family_filter|safe}}</span>
   </div> <!-- end of {{language_name}} accordion row -->
 
-  <div class="ui-accordion-content ui-helper-reset ui-widget-content ui-corner-bottom" style="" role="tabpanel"> <!-- start of {{language_name}} accordion body -->
+  <!-- start of {{language_name}} accordion body -->
+  <div class="ui-accordion-content ui-helper-reset ui-widget-content ui-corner-bottom" style="" role="tabpanel">
   <!--initial style="height:558.8px; display: none" would make the page a bit better before setup is done but the height of the subaccordions would not be measured correctly-->
 
     <!-- empty space so tooltip fits -->
     <h3>{{language_name}} treebanks</h3>
 
-    <div class="jquery-ui-subaccordion-closed ui-accordion ui-widget ui-helper-reset ui-accordion-icons" role="tablist"> <!-- start of {{language_name}} treebank list -->
+    <!-- start of {{language_name}} treebank list -->
+    <div class="jquery-ui-subaccordion-closed ui-accordion ui-widget ui-helper-reset ui-accordion-icons" role="tablist">
       {% for tbank in treebanks %}
-      <div class="ui-accordion-header ui-helper-reset ui-state-default ui-corner-all" role="tab" aria-expanded="false" aria-selected="false" tabindex="-1"> <!-- start of {{language_name}} / {{tbank.treebank_code|default("Original",true)}} entry -->
+      <!-- start of {{language_name}} / {{tbank.treebank_code|default("Original",true)}} entry -->
+      <div class="ui-accordion-header ui-helper-reset ui-state-default ui-corner-all" role="tab" aria-expanded="false" aria-selected="false" tabindex="-1">
         <span class="flagspan"></span>
         <span class="doublewidespan">{{tbank.treebank_code|default("Original",true)}}</span>
         <span class="widespan"><span class="hint--top hint--info" data-hint="{{tbank.counts.token|tsepk}} tokens {{tbank.counts.word|tsepk}} words {{tbank.counts.node|tsepk}} nodes {{tbank.counts.tree|tsepk}} sentences">{{tbank.counts.word|tsepk(use_k=true)}}</span></span>
@@ -39,7 +42,8 @@
         </ul>
 
         <p>&nbsp;</p>
-      </div> <!-- end of {{language_name}} / {{tbank.treebank_code|default("Original",true)}} entry -->
+      </div>
+      <!-- end of {{language_name}} / {{tbank.treebank_code|default("Original",true)}} entry -->
       {% endfor %}
     </div> <!-- end of {{language_name}} treebank list -->
 
@@ -52,7 +56,8 @@
     {% if language_hub %}
     See the <a href="{{language_code}}/index.html">language documentation page</a>.
     {% else %}
-    The language hub documentation has not yet been created or ported from the UDv1 documentation.
+    The language hub documentation has not yet been created.
     {% endif %}
 
-  </div> <!-- end of {{language_name}} accordion body -->
+  </div>
+  <!-- end of {{language_name}} accordion body -->
