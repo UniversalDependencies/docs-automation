@@ -118,7 +118,7 @@ def stars_filter(scorestars):
     """
     score=scorestars[0]
     stars=scorestars[1]
-    return '<span class="hint--top hint--info" data-hint="%f"><img src="/img/stars%02d.png" style="max-height:1em; vertical-align:middle" /></span>'%(score,stars*10)
+    return '<span class="hint--top hint--info" data-hint="Size/quality/diversity score=%f"><img src="/img/stars%02d.png" style="max-height:1em; vertical-align:middle" /></span>'%(score,stars*10)
 
 
 
