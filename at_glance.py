@@ -51,12 +51,12 @@ def tag_filter(countsmeta):
         result += empty_span
     if counts["word"] and counts["word_w_lemma"]/counts["word"]>0.1:
         #result += tag_span % ("Lemmas", "L")
-        result += tag_span % ("Lemmas", "Ⓛ")
+        result += tag_span % (f"Lemmas: {meta['source']['lemmas']}", "Ⓛ")
     else:
         result += empty_span
     if len(counts["fvals"])>5:
         #result += tag_span % ("Features", "F")
-        result += tag_span % ("Features", "Ⓕ")
+        result += tag_span % (f"Features: {meta['source']['features']}", "Ⓕ")
     else:
         result += empty_span
     if counts["word"] and counts["word_w_deps"]>10:
