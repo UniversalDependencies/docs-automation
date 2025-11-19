@@ -54,7 +54,11 @@ def tag_filter(countsmeta):
         result += tag_span % (f"Lemmas: {meta['source']['lemmas']}", "Ⓛ")
     else:
         result += empty_span
-    if len(counts["fvals"])>5:
+    # counts['fvals'] includes values of UPOS, which we do not want to consider here.
+    # Also ignore other features that are not morphological and may be used in treebanks
+    # that otherwise have no morphology.
+    fvals = [fv for fv in counts['fvals'] if not re.match(r'(UPOS|ExtPos|Foreign|Typo)=', fv)]
+    if len(fvals)>5:
         #result += tag_span % ("Features", "F")
         result += tag_span % (f"Features: {meta['source']['features']}", "Ⓕ")
     else:
