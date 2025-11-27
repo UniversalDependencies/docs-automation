@@ -108,18 +108,13 @@ if(defined($result))
         {
             foreach my $file (@{$commit->{added}}, @{$commit->{modified}})
             {
-                if($file =~ m/^(validate.py|check_files.pl|udlib.pm)$/)
+                if($file =~ m-^(validate\.py|validator/src/validator/.*\.py|check_files\.pl|udlib\.pm)$-)
                 {
                     $revalidate_all = 1;
                 }
                 elsif($file eq 'evaluate_treebank.pl')
                 {
                     $reevaluate_all = 1;
-                }
-                elsif($file =~ m-^data/(e?deprel|feat_val|tokens_w_space)\.(.+)$-)
-                {
-                    my $ltcode = $2;
-                    $changed{$ltcode}++;
                 }
                 elsif($file =~ m/^data\/(data|feats|deprels|edeprels|tospace)\.json$/ && $commit->{message} =~ m/Updated data specific for ([a-z]{2,3})\./)
                 {
