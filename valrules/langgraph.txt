@@ -193,11 +193,13 @@ zza----kmr
 kmr----ckb
 ckb----sdh
 sdh--2--glk
+sdh--10--lrc
 glk--10--kfm
 kfm----soj
 kfm----nyq
 nyq----soj
 kfm--10--fa
+lrc--10--fa
 fa--10--bal
 fa--10--ps
 ps--2--bal

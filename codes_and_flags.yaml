@@ -943,6 +943,12 @@ North Sami:
   iso3: sme
   family: Uralic
   genus: Sami
+Northern Luri:
+  flag: IR
+  lcode: lrc
+  iso3: lrc
+  family: IE
+  genus: Iranian
 Northwest Gbaya:
   flag: CF
   lcode: gya
