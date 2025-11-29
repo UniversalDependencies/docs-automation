@@ -668,12 +668,6 @@ Koromfe:
   iso3: kfz
   family: Niger-Congo
   genus: Northern-Central Gur
-Northern Kurdish:
-  flag: IQ-KRD
-  lcode: kmr
-  iso3: kmr
-  family: IE
-  genus: Iranian
 Kyrgyz:
   flag: KG
   lcode: ky
@@ -943,6 +937,12 @@ North Sami:
   iso3: sme
   family: Uralic
   genus: Sami
+Northern Kurdish:
+  flag: IQ-KRD
+  lcode: kmr
+  iso3: kmr
+  family: IE
+  genus: Iranian
 Northern Luri:
   flag: IR
   lcode: lrc
