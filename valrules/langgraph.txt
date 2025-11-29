@@ -353,6 +353,7 @@ Northern Luzon----Central Philippine
 Central Philippine--10--Malayo-Sumbawan
 Malayo-Sumbawan----Javanese
 Malayo-Sumbawan--10--Central Malayo-Polynesian
+Malayo-Sumbawan--10--Barito
 zh--1000--ifb
 vi--1000--ifb
 ifb--100--tl
@@ -363,6 +364,7 @@ ceb----bgs
 bgs--100--id
 id----jv
 id--100--tdt
+id--100--mg
 ckt--1000--ess
 ess--1000--gwi
 Yuman----Seri

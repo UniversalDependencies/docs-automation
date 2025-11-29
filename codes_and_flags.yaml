@@ -773,6 +773,12 @@ Makurap:
   iso3: mpu
   family: Tupian
   genus: Tupari
+Malagasy:
+  flag: MG
+  lcode: mg
+  iso3: mlg
+  family: Austronesian
+  genus: Barito
 Malayalam:
   flag: IN
   lcode: ml
