@@ -104,8 +104,8 @@ if(!$folder_empty)
 # Convert the hash of error types to the list of quadruples [$level, $class, $testid, $count].
 # The first two elements are always totals of errors and warnings, respectively.
 my @error_types_4 = summarize_error_types(\%error_stats);
-my @error_testids = map {$_->[2]} (grep {$_->[0] ne 'TOTAL' && $_->[1] ne 'Warning'} (@error_types_4));
-my @warning_testids = map {$_->[2]} (grep {$_->[0] ne 'TOTAL' && $_->[1] eq 'Warning'} (@error_types_4));
+my @error_testids = map {$_->[2]} (grep {$_->[0] ne 'TOTAL' && $_->[1] ne 'WARNING'} (@error_types_4));
+my @warning_testids = map {$_->[2]} (grep {$_->[0] ne 'TOTAL' && $_->[1] eq 'WARNING'} (@error_types_4));
 my $n_error_types = scalar(@error_testids);
 my $n_warning_types = scalar(@warning_testids);
 # If there are errors, the following function will print to STDERR their forgivable / unforgivable status.
@@ -181,7 +181,7 @@ sub compare_folder_success_with_error_stats
     my $folder_success = shift;
     my $error_stats = shift;
     my @error_types = sort(keys(%{$error_stats}));
-    my $n_errors = scalar(grep {$_->[1] ne 'Warning'} (map {my @f = split(/\s+/, $_); \@f} (@error_types)));
+    my $n_errors = scalar(grep {$_->[1] ne 'WARNING'} (map {my @f = split(/\s+/, $_); \@f} (@error_types)));
     if($folder_success && $n_errors > 0)
     {
         $error_stats->{'LX INTERNAL VALIDATION-SUCCESS-BUT-NONZERO-ERRORS'}++;
@@ -207,7 +207,7 @@ sub summarize_error_types
     my $n_warnings = 0;
     foreach my $item (@error_types_4)
     {
-        if($item->[1] eq 'Warning')
+        if($item->[1] eq 'WARNING')
         {
             $n_warnings += $item->[3];
         }
