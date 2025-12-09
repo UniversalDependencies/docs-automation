@@ -108,7 +108,7 @@ if(defined($result))
         {
             foreach my $file (@{$commit->{added}}, @{$commit->{modified}})
             {
-                if($file =~ m-^(validate\.py|validator/src/validator/.*\.py|check_files\.pl|udlib\.pm)$-)
+                if($file =~ m-^(validate\.py|udtools/src/udtools/.*\.py|check_files\.pl|udlib\.pm)$-)
                 {
                     $revalidate_all = 1;
                 }
