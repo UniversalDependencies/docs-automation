@@ -200,6 +200,7 @@ kfm----nyq
 nyq----soj
 kfm--10--fa
 lrc--10--fa
+fa----pal
 fa--10--bal
 fa--10--ps
 ps--2--bal

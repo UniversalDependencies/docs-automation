@@ -849,6 +849,12 @@ Middle Irish:
   iso3: mga
   family: IE
   genus: Celtic
+Middle Persian:
+  flag: IR-KAVIANI
+  lcode: pal
+  iso3: pal
+  family: IE
+  genus: Iranian
 Mizo:
   flag: IN
   lcode: lus
