@@ -1165,6 +1165,12 @@ Sanskrit:
   iso3: san
   family: IE
   genus: Indic
+Sardinian:
+  flag: IT-SRD
+  lcode: sc
+  iso3: srd
+  family: IE
+  genus: Romance
 Scottish Gaelic:
   flag: GB-SCT
   lcode: gd

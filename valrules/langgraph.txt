@@ -150,8 +150,10 @@ fr--3--rm
 rm--10--it
 fr--4--lij
 lij--4--it
-it----co
-it----nap
+it--2--co
+it--2--sc
+sc----co
+it--2--nap
 nap----scn
 it--2--ro
 it--50--la
