@@ -327,7 +327,9 @@ Northeastern----Northwestern
 Northwestern----Southwestern
 tr----ota
 tr--2--az
-tr--100--kk
+az--2--tk
+tk--100--kk
+tk--100--uz
 tr--1000--lzz
 tr--1000--qtd
 tr--1000--qti

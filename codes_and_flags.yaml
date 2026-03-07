@@ -1396,6 +1396,12 @@ Turkish German:
   lcode: qtd
   iso3: qtd
   family: Code switching
+Turkmen:
+  flag: TM
+  lcode: tk
+  iso3: tuk
+  family: Turkic
+  genus: Southwestern
 Tuwari:
   flag: PG
   lcode: tww
