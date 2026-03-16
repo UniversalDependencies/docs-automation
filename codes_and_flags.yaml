@@ -1159,6 +1159,12 @@ Russian:
   iso3: rus
   family: IE
   genus: Slavic
+Ruuli:
+  flag: UG
+  lcode: ruc
+  iso3: ruc
+  family: Niger-Congo
+  genus: Bantoid
 Sanskrit:
   flag: IN
   lcode: sa

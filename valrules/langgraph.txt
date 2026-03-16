@@ -312,6 +312,7 @@ Northern-Central Gur----Defoid
 Defoid----Bantoid
 bav--10--cgg
 bav--10--nyn
+cgg--2--ruc
 cgg----nyn
 nyn--2--sw
 sw--2--ndg
