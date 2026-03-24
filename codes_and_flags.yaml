@@ -229,7 +229,7 @@ Cebuano:
   lcode: ceb
   iso3: ceb
   family: Austronesian
-  genus: Central Philippine
+  genus: Greater Central Philippine
 Central Kurdish:
   flag: IQ-KRD
   lcode: ckb
@@ -436,6 +436,12 @@ Gilaki:
   iso3: glk
   family: IE
   genus: Iranian
+Gorontalo:
+  flag: ID
+  lcode: gor
+  iso3: gor
+  family: Austronesian
+  genus: Greater Central Philippine
 Gothic:
   flag: BYZ
   lcode: got
@@ -500,7 +506,7 @@ Hiligaynon:
   lcode: hil
   iso3: hil
   family: Austronesian
-  genus: Central Philippine
+  genus: Greater Central Philippine
 Hindi:
   flag: IN
   lcode: hi
@@ -1310,13 +1316,13 @@ Tagabawa:
   lcode: bgs
   iso3: bgs
   family: Austronesian
-  genus: Central Philippine
+  genus: Greater Central Philippine
 Tagalog:
   flag: PH
   lcode: tl
   iso3: tgl
   family: Austronesian
-  genus: Central Philippine
+  genus: Greater Central Philippine
 Tamil:
   flag: IN
   lcode: ta
