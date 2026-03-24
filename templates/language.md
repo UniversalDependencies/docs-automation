@@ -1,5 +1,7 @@
   <!-- Except for class="jquery-ui-subaccordion-closed", all attributes of the accordion-related div elements can be generated during initialization of the page. However, the initialization takes up to 10 seconds and we want something reasonably nice to be visible as soon as possible. -->
-  <div class="ui-accordion-header ui-helper-reset ui-state-default ui-corner-all" role="tab" aria-expanded="false" aria-selected="false" tabindex="-1"> <!-- start of {{language_name}} accordion row -->
+
+  <!-- start of {{language_name}} accordion row -->
+  <div class="ui-accordion-header ui-helper-reset ui-state-default ui-corner-all" role="tab" aria-expanded="false" aria-selected="false" tabindex="-1">
     <span class="flagspan"><img class="flag" src="flags/svg/{{flag}}.svg" /></span>
     <span class="doublewidespan">{{language_name_short}}</span>
     <span class="widespan"><span class="hint--top hint--info" data-hint="{{treebanks|length}} treebank{% if treebanks|length > 1 %}s{% endif %}">{{treebanks|length}}</span></span>
@@ -7,7 +9,8 @@
     <!-- English has so many genres that they no longer fit in doublewidespan. -->
     <span class="triplewidespan">{{genres|genre_filter|safe}}</span>
     <span class="triplewidespan">{{(language_family,language_genus)|family_filter|safe}}</span>
-  </div> <!-- end of {{language_name}} accordion row -->
+  </div>
+  <!-- end of {{language_name}} accordion row -->
 
   <!-- start of {{language_name}} accordion body -->
   <div class="ui-accordion-content ui-helper-reset ui-widget-content ui-corner-bottom" style="" role="tabpanel">
@@ -62,3 +65,4 @@
 
   </div>
   <!-- end of {{language_name}} accordion body -->
+
