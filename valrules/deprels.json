@@ -9864,7 +9864,7 @@
 "flat:num": {"type": "local", "doc": "local", "permitted": 1, "errors": [], "lastchanged": "2026-03-31-11-00-49", "lastchanger": "kiratul"},
 "goeswith": {"type": "universal", "doc": "global", "permitted": 1, "errors": []},
 "iobj": {"type": "universal", "doc": "global", "permitted": 1, "errors": []},
-"iobj:appl": {"type": "local", "doc": "local", "permitted": 0, "errors": []},
+"iobj:appl": {"type": "local", "doc": "local", "permitted": 1, "errors": [], "lastchanged": "2026-03-31-11-00-54", "lastchanger": "kiratul"},
 "list": {"type": "universal", "doc": "global", "permitted": 1, "errors": []},
 "mark": {"type": "universal", "doc": "global", "permitted": 1, "errors": []},
 "nmod": {"type": "universal", "doc": "global", "permitted": 1, "errors": []},
