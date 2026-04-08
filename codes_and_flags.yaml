@@ -384,6 +384,11 @@ French:
   iso3: fra
   family: IE
   genus: Romance
+French Sign Language:
+  flag: FR
+  lcode: fsl
+  iso3: fsl
+  family: Sign Language
 Frisian:
   flag: NL-FR
   lcode: fy
