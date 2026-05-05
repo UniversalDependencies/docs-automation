@@ -234,6 +234,8 @@ xnr----mjl
 xnr----ne
 mjl----ne
 bho----mag
+bho----pi
+mag----pi
 bho--2--bn
 mag--2--bn
 bho--2--or
