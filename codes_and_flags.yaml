@@ -1065,6 +1065,12 @@ Palenquero:
   lcode: pln
   iso3: pln
   family: Creole
+Pali:
+  flag: IN
+  lcode: pi
+  iso3: pli
+  family: IE
+  genus: Indic
 Papiamento:
   flag: AW
   lcode: pap
