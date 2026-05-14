@@ -173,6 +173,11 @@ Bokota:
   iso3: sab
   family: Chibchan
   genus: Guaymiic
+Bonan:
+  flag: CN
+  lcode: peh
+  iso3: peh
+  family: Mongolic
 Bororo:
   flag: BR
   lcode: bor
@@ -325,6 +330,16 @@ Dargwa:
   iso3: dar
   family: Nakh-Daghestanian
   genus: Lak-Dargwa
+Daur:
+  flag: CN
+  lcode: dta
+  iso3: dta
+  family: Mongolic
+Dongxiang:
+  flag: CN
+  lcode: sce
+  iso3: sce
+  family: Mongolic
 Dutch:
   flag: NL
   lcode: nl
@@ -599,6 +614,11 @@ Kadiweu:
   iso3: kbc
   family: Guaicuruan
   genus: Kadiweu
+Kalmyk:
+  flag: RU-KL
+  lcode: xal
+  iso3: xal
+  family: Mongolic
 Kangri:
   flag: IN
   lcode: xnr
@@ -1391,6 +1411,11 @@ Tswana:
   iso3: tsn
   family: Niger-Congo
   genus: Bantoid
+Tu:
+  flag: CN
+  lcode: mjg
+  iso3: mjg
+  family: Mongolic
 Tunisian Arabic:
   flag: TN
   lcode: aeb

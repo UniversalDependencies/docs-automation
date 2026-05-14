@@ -346,6 +346,13 @@ ug--100--otk
 otk----sah
 ug--1000--sjo
 sah--1000--ckt
+mn----bxr
+mn--2--xal
+bxr--10--dta
+mn--10--mjg
+mjg--2--sce
+mjg--2--peh
+peh----sce
 Chinese--10--Bodic
 Bodic----Himalayish
 Himalayish--2--Kuki-Chin
