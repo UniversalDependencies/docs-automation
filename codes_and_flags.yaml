@@ -1107,6 +1107,11 @@ Paumari:
   lcode: pad
   iso3: pad
   family: Arawan
+Peripheral Mongolian:
+  flag: CN
+  lcode: mvf
+  iso3: mvf
+  family: Mongolic
 Persian:
   flag: IR
   lcode: fa
