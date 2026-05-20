@@ -381,6 +381,16 @@ Estonian:
   iso3: est
   family: Uralic
   genus: Finnic
+Even:
+  flag: RU-MAG
+  lcode: eve
+  iso3: eve
+  family: Tungusic
+Evenki:
+  flag: RU-EVENK
+  lcode: evn
+  iso3: evn
+  family: Tungusic
 Faroese:
   flag: FO
   lcode: fo
@@ -821,6 +831,11 @@ Maltese:
   iso3: mlt
   family: Afro-Asiatic
   genus: Semitic
+Manchu:
+  flag: CN-QING
+  lcode: mnc
+  iso3: mnc
+  family: Tungusic
 Mandyali:
   flag: IN
   lcode: mjl
@@ -932,6 +947,11 @@ Naija:
   lcode: pcm
   iso3: pcm
   family: Creole
+Nanai:
+  flag: RU-KHA
+  lcode: gld
+  iso3: gld
+  family: Tungusic
 Nayini:
   flag: IR
   lcode: nyq
@@ -950,6 +970,11 @@ Neapolitan:
   iso3: nap
   family: IE
   genus: Romance
+Negidal:
+  flag: RU-KHA
+  lcode: neg
+  iso3: neg
+  family: Tungusic
 Nenets:
   flag: RU-NEN
   lcode: yrk
@@ -1074,6 +1099,11 @@ Old Turkish:
   iso3: otk
   family: Turkic
   genus: Northeastern
+Oroch:
+  flag: RU-KHA
+  lcode: oac
+  iso3: oac
+  family: Tungusic
 Ottoman Turkish:
   flag: TR
   lcode: ota
@@ -1460,12 +1490,22 @@ Tuwari:
   lcode: tww
   iso3: tww
   family: Sepik
+Udihe:
+  flag: RU-KHA
+  lcode: ude
+  iso3: ude
+  family: Tungusic
 Ukrainian:
   flag: UA
   lcode: uk
   iso3: ukr
   family: IE
   genus: Slavic
+Ulch:
+  flag: RU-KHA
+  lcode: ulc
+  iso3: ulc
+  family: Tungusic
 Umbrian:
   flag: IT-UMB
   lcode: xum
