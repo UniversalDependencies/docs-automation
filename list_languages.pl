@@ -53,6 +53,7 @@ foreach my $t (@{$current_release->{treebanks}})
         push(@{$current_treebanks{$language}}, $treebank);
     }
 }
+my $nl = scalar(@languages);
 my $table;
 $table .= "<table id=\"langTable\">\n";
 $table .= "  <tr>\n";
@@ -65,7 +66,7 @@ $table .= "    <th>Documentation</th>\n";
 $table .= "    <th>Treebanks in UD&nbsp;$current_relnumber</th>\n";
 $table .= "  </tr>\n";
 $table .= "  <tr>\n";
-$table .= "    <th style=\"background-color: white\"></th>\n";
+$table .= "    <th style=\"background-color: white\">$nl</th>\n";
 $table .= "    <th><input size=\"1\" type=\"text\" id=\"fLanguage\" onkeyup=\"filterTable()\" title=\"Type in language name\"></th>\n";
 $table .= "    <th><input size=\"1\" type=\"text\" id=\"fCode\" onkeyup=\"filterTable()\" title=\"Type in language code\"></th>\n";
 $table .= "    <th><input size=\"1\" type=\"text\" id=\"fFamily\" onkeyup=\"filterTable()\" title=\"Type in family\"></th>\n";
@@ -183,7 +184,7 @@ function sortTable(n) {
 }
 
 function filterTable() {
-  var fl, fc, ff, fg, ft, table, tr;
+  var fl, fc, ff, fg, ft, table, tr, n, th;
   fl = document.getElementById("fLanguage").value.toUpperCase();
   fc = document.getElementById("fCode").value.toUpperCase();
   ff = document.getElementById("fFamily").value.toUpperCase();
@@ -191,12 +192,18 @@ function filterTable() {
   ft = document.getElementById("fTreebanks").value.toUpperCase();
   table = document.getElementById("langTable");
   tr = table.getElementsByTagName("tr");
-  for (i = 0; i < tr.length; i++) {
+  n = 0;
+  for (i = 2; i < tr.length; i++) {
     if (matchRow(tr[i], fl, fc, ff, fg, ft)) {
       tr[i].style.display = "";
+      n++;
     } else {
       tr[i].style.display = "none";
     }
+  }
+  th = tr[1].getElementsByTagName("th")[0];
+  if (th) {
+    th.innerText = n;
   }
 }
 
