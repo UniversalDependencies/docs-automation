@@ -9,19 +9,26 @@ binmode(STDIN, ':utf8');
 binmode(STDOUT, ':utf8');
 binmode(STDERR, ':utf8');
 use YAML qw(LoadFile);
+use JSON::Parse 'json_file_to_perl';
 use Getopt::Long;
 
 my $langyaml = 'codes_and_flags.yaml'; # provide path on command line if not in current folder
+my $reljson = './valdan/releases.json';
 my $docspath = '../docs';
 GetOptions
 (
     'codes=s'    => \$langyaml,
-    'docs-dir=s' => \$docspath
+    'docs-dir=s' => \$docspath,
+    'releases=s' => \$reljson   # path to the JSON describing releases, e.g., docs-automation/valdan/releases.json
 );
 
 if(! -f $langyaml)
 {
     die("Cannot find file '$langyaml'");
+}
+if(! -f $reljson)
+{
+    die("Cannot find file '$reljson'");
 }
 if(! -d $docspath)
 {
@@ -29,6 +36,23 @@ if(! -d $docspath)
 }
 my $languages = LoadFile($langyaml);
 my @languages = sort(keys(%{$languages}));
+# Read the lists of treebanks in individual UD releases.
+my $releases = json_file_to_perl($reljson)->{releases};
+# It is easier to sort by date (which is in the YYYY-MM-DD format) than by release number.
+my @relnumbers = sort {$releases->{$a}{date} cmp $releases->{$b}{date}} (keys(%{$releases}));
+my $current_relnumber = $relnumbers[-1];
+my $current_release = $releases->{$current_relnumber};
+my %current_treebanks;
+foreach my $t (@{$current_release->{treebanks}})
+{
+    if($t =~ m/^UD_([A-Za-z_]+)-([A-Za-z]+)$/)
+    {
+        my $language = $1;
+        my $treebank = $2;
+        $language =~ s/_/ /g;
+        push(@{$current_treebanks{$language}}, $treebank);
+    }
+}
 my $table;
 $table .= "<table id=\"langTable\">\n";
 $table .= "  <tr>\n";
@@ -38,6 +62,7 @@ $table .= "    <th onclick=\"sortTable(2)\">ISO Code</th>\n";
 $table .= "    <th onclick=\"sortTable(3)\">Family</th>\n";
 $table .= "    <th onclick=\"sortTable(4)\">Genus</th>\n";
 $table .= "    <th>Documentation</th>\n";
+$table .= "    <th>Treebanks in UD&nbsp;$current_relnumber</th>\n";
 $table .= "  </tr>\n";
 $table .= "  <tr>\n";
 $table .= "    <th style=\"background-color: white\"></th>\n";
@@ -46,6 +71,7 @@ $table .= "    <th><input size=\"1\" type=\"text\" id=\"fCode\" onkeyup=\"filter
 $table .= "    <th><input size=\"1\" type=\"text\" id=\"fFamily\" onkeyup=\"filterTable()\" title=\"Type in family\"></th>\n";
 $table .= "    <th><input size=\"1\" type=\"text\" id=\"fGenus\" onkeyup=\"filterTable()\" title=\"Type in genus\"></th>\n";
 $table .= "    <th></th>\n";
+$table .= "    <th><input size=\"1\" type=\"text\" id=\"fTreebanks\" onkeyup=\"filterTable()\" title=\"Type in treebank acronym\"></th>\n";
 $table .= "  </tr>\n";
 foreach my $lname (@languages)
 {
@@ -60,6 +86,15 @@ foreach my $lname (@languages)
     {
         $langdoclink = "<a href=\"/$languages->{$lname}{lcode}/index.html\">doc</a>";
     }
+    # Does the language have treebanks in the current UD release?
+    # https://universaldependencies.org/treebanks/uk_parlamint/index.html
+    # https://universaldependencies.org/treebanks/uk-comparison.html
+    my $tbkprefix = "/treebanks/$languages->{$lname}{lcode}_";
+    my $treebanks = join(', ', map {my $lc = lc($_); "<a href=\"$tbkprefix$lc\">$_</a>"} (sort(@{$current_treebanks{$lname}})));
+    if(scalar(@{$current_treebanks{$lname}}) > 1)
+    {
+        $langdoclink .= ", <a href=\"/treebanks/$languages->{$lname}{lcode}-comparison.html\">cmpstats</a>";
+    }
     $table .= "  <tr>";
     $table .= "<td style=\"background-color: white\"><img class=\"flag\" src=\"/flags/png/$languages->{$lname}{flag}.png\"></td>";
     $table .= "<td>$lname</td>";
@@ -67,6 +102,7 @@ foreach my $lname (@languages)
     $table .= "<td>$family</td>";
     $table .= "<td>$genus</td>";
     $table .= "<td>$langdoclink</td>";
+    $table .= "<td>$treebanks</td>";
     $table .= "</tr>\n";
 }
 $table .= "</table>\n";
@@ -147,15 +183,16 @@ function sortTable(n) {
 }
 
 function filterTable() {
-  var fl, fc, ff, fg, table, tr;
+  var fl, fc, ff, fg, ft, table, tr;
   fl = document.getElementById("fLanguage").value.toUpperCase();
   fc = document.getElementById("fCode").value.toUpperCase();
   ff = document.getElementById("fFamily").value.toUpperCase();
   fg = document.getElementById("fGenus").value.toUpperCase();
+  ft = document.getElementById("fTreebanks").value.toUpperCase();
   table = document.getElementById("langTable");
   tr = table.getElementsByTagName("tr");
   for (i = 0; i < tr.length; i++) {
-    if (matchRow(tr[i], fl, fc, ff, fg)) {
+    if (matchRow(tr[i], fl, fc, ff, fg, ft)) {
       tr[i].style.display = "";
     } else {
       tr[i].style.display = "none";
@@ -163,35 +200,42 @@ function filterTable() {
   }
 }
 
-function matchRow(tr, fl, fc, ff, fg) {
+function matchRow(tr, fl, fc, ff, fg, ft) {
   var match, td, txtValue;
   match = true;
   if (fl) {
-    td = tr.getElementsByTagName("td")[0];
+    td = tr.getElementsByTagName("td")[1];
     if (td) {
       txtValue = td.textContent || td.innerText;
       match = match && txtValue.toUpperCase().indexOf(fl) > -1;
     }
   }
   if (fc) {
-    td = tr.getElementsByTagName("td")[1];
+    td = tr.getElementsByTagName("td")[2];
     if (td) {
       txtValue = td.textContent || td.innerText;
       match = match && txtValue.toUpperCase().indexOf(fc) > -1;
     }
   }
   if (ff) {
-    td = tr.getElementsByTagName("td")[2];
+    td = tr.getElementsByTagName("td")[3];
     if (td) {
       txtValue = td.textContent || td.innerText;
       match = match && txtValue.toUpperCase().indexOf(ff) > -1;
     }
   }
   if (fg) {
-    td = tr.getElementsByTagName("td")[3];
+    td = tr.getElementsByTagName("td")[4];
     if (td) {
       txtValue = td.textContent || td.innerText;
       match = match && txtValue.toUpperCase().indexOf(fg) > -1;
+    }
+  }
+  if (ft) {
+    td = tr.getElementsByTagName("td")[6];
+    if (td) {
+      txtValue = td.textContent || td.innerText;
+      match = match && txtValue.toUpperCase().indexOf(ft) > -1;
     }
   }
   return match;
