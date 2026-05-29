@@ -32,24 +32,41 @@ my @languages = sort(keys(%{$languages}));
 my $table;
 $table .= "<table id=\"langTable\">\n";
 $table .= "  <tr>\n";
+$table .= "    <th></th>\n";
 $table .= "    <th onclick=\"sortTable(0)\">Language</th>\n";
 $table .= "    <th onclick=\"sortTable(1)\">ISO Code</th>\n";
 $table .= "    <th onclick=\"sortTable(2)\">Family</th>\n";
 $table .= "    <th onclick=\"sortTable(3)\">Genus</th>\n";
+$table .= "    <th>Documentation</th>\n";
 $table .= "  </tr>\n";
 $table .= "  <tr>\n";
+$table .= "    <th></th>\n";
 $table .= "    <th><input size=\"1\" type=\"text\" id=\"fLanguage\" onkeyup=\"filterTable()\" title=\"Type in language name\"></th>\n";
 $table .= "    <th><input size=\"1\" type=\"text\" id=\"fCode\" onkeyup=\"filterTable()\" title=\"Type in language code\"></th>\n";
 $table .= "    <th><input size=\"1\" type=\"text\" id=\"fFamily\" onkeyup=\"filterTable()\" title=\"Type in family\"></th>\n";
 $table .= "    <th><input size=\"1\" type=\"text\" id=\"fGenus\" onkeyup=\"filterTable()\" title=\"Type in genus\"></th>\n";
+$table .= "    <th></th>\n";
 $table .= "  </tr>\n";
 foreach my $lname (@languages)
 {
+    my $family = $languages->{$lname}{family};
+    $family = 'Indo-European' if($family eq 'IE');
+    my $genus = $languages->{$lname}{genus};
+    $genus = $family if($genus eq '');
+    # Does the language have documentation in UD?
+    my $langdocfile = "$docspath/_$languages->{$lname}{lcode}/index.md";
+    my $langdoclink = '';
+    if(-f $langdocfile)
+    {
+        $langdoclink = "<a href=\"/$languages->{$lname}{lcode}/index.html\">doc</a>";
+    }
     $table .= "  <tr>";
+    $table .= "<td><img class=\"flag\" src=\"/flags/png/$languages->{$lname}{flag}.png\"></td>";
     $table .= "<td>$lname</td>";
     $table .= "<td><tt>$languages->{$lname}{lcode}</tt></td>";
-    $table .= "<td>$languages->{$lname}{family}</td>";
-    $table .= "<td>$languages->{$lname}{genus}</td>";
+    $table .= "<td>$family</td>";
+    $table .= "<td>$genus</td>";
+    $table .= "<td>$langdoclink</td>";
     $table .= "</tr>\n";
 }
 $table .= "</table>\n";
@@ -61,7 +78,7 @@ print <<EOF
 
 <style>
 input {
-  width: 100%;
+  width: 95%;
 }
 th {
   cursor: pointer;
