@@ -30,7 +30,7 @@ if(! -d $docspath)
 my $languages = LoadFile($langyaml);
 my @languages = sort(keys(%{$languages}));
 my $table;
-$table .= "<table>\n";
+$table .= "<table id=\"langTable\">\n";
 $table .= "  <tr>";
 $table .= "<th onclick=\"sortTable(0)\">Language</th>";
 $table .= "<th onclick=\"sortTable(1)\">ISO Code</th>";
@@ -61,7 +61,7 @@ $table
 <script>
 function sortTable(n) {
   var table, rows, switching, i, x, y, shouldSwitch, dir, switchcount = 0;
-  table = document.getElementById("myTable2");
+  table = document.getElementById("langTable");
   switching = true;
   // Set the sorting direction to ascending:
   dir = "asc";
