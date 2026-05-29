@@ -32,10 +32,10 @@ my @languages = sort(keys(%{$languages}));
 my $table;
 $table .= "<table>\n";
 $table .= "  <tr>";
-$table .= "<th onclick="sortTable(0)">Language</th>";
-$table .= "<th onclick="sortTable(1)">ISO Code</th>";
-$table .= "<th onclick="sortTable(2)">Family</th>";
-$table .= "<th onclick="sortTable(3)">Genus</th>";
+$table .= "<th onclick=\"sortTable(0)\">Language</th>";
+$table .= "<th onclick=\"sortTable(1)\">ISO Code</th>";
+$table .= "<th onclick=\"sortTable(2)\">Family</th>";
+$table .= "<th onclick=\"sortTable(3)\">Genus</th>";
 $table .= "</tr>\n";
 my $irow = 0;
 foreach my $lname (@languages)
