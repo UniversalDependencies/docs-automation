@@ -3,1635 +3,1918 @@ Abaza:
   lcode: abq
   iso3: abq
   family: Northwest Caucasian
+  scripts: [Cyrl]
 Abkhaz:
   flag: GE-AB
   lcode: ab
   iso3: abk
   family: Northwest Caucasian
+  scripts: [Cyrl]
 Afrikaans:
   flag: ZA
   lcode: af
   iso3: afr
   family: IE
   genus: Germanic
+  scripts: [Latn]
 Akkadian:
   flag: IQ
   lcode: akk
   iso3: akk
   family: Afro-Asiatic
   genus: Semitic
+  scripts: [Latn]
 Akuntsu:
   flag: BR
   lcode: aqz
   iso3: aqz
   family: Tupian
   genus: Tupari
+  scripts: [Latn]
 Albanian:
   flag: AL
   lcode: sq
   iso3: sqi
   family: IE
   genus: Albanian
+  scripts: [Latn]
 Alemannic:
   flag: CH
   lcode: gsw
   iso3: gsw
   family: IE
   genus: Germanic
+  scripts: [Latn]
 Amharic:
   flag: ET
   lcode: am
   iso3: amh
   family: Afro-Asiatic
   genus: Semitic
+  scripts: [Ethi]
 Ancient Greek:
   flag: GR
   lcode: grc
   iso3: grc
   family: IE
   genus: Greek
+  scripts: [Grek]
 Ancient Hebrew:
   flag: IL
   lcode: hbo
   iso3: hbo
   family: Afro-Asiatic
   genus: Semitic
+  scripts: [Hebr]
 Apalai:
   flag: BR
   lcode: apy
   iso3: apy
   family: Cariban
+  scripts: [Latn]
 Apurina:
   flag: BR
   lcode: apu
   iso3: apu
   family: Arawakan
   genus: Purus
+  scripts: [Latn]
 Arabic:
   flag: SA-AL
   lcode: ar
   iso3: ara
   family: Afro-Asiatic
   genus: Semitic
+  scripts: [Arab]
 Archaic Irish:
   flag: IE-FOUR
   lcode: pgl
   iso3: pgl
   family: IE
   genus: Celtic
+  scripts: [Latn]
 Armenian:
   flag: AM
   lcode: hy
   iso3: hye
   family: IE
   genus: Armenian
+  scripts: [Armn]
 Assamese:
   flag: IN
   lcode: as
   iso3: asm
   family: IE
   genus: Indic
+  scripts: [Beng]
 Assyrian:
   flag: IQ-AII
   lcode: aii
   iso3: aii
   family: Afro-Asiatic
   genus: Semitic
+  scripts: [Syrc]
 Azerbaijani:
   flag: AZ
   lcode: az
   iso3: aze
   family: Turkic
   genus: Southwestern
+  scripts: [Latn]
 Babungo:
   flag: CM
   lcode: bav
   iso3: bav
   family: Niger-Congo
   genus: Bantoid
+  scripts: [Latn]
 Balatipone:
   flag: BR
   lcode: umo
   iso3: umo
   family: Bororoan
+  scripts: [Latn]
 Balochi:
   flag: PK
   lcode: bal
   iso3: bal
   family: IE
   genus: Iranian
+  scripts: [Arab]
 Bambara:
   flag: ML
   lcode: bm
   iso3: bam
   family: Mande
   genus: Western Mande
+  scripts: [Latn]
 Basque:
   flag: ES-PV
   lcode: eu
   iso3: eus
   family: Basque
+  scripts: [Latn]
 Batad Ifugao:
   flag: PH
   lcode: ifb
   iso3: ifb
   family: Austronesian
   genus: Northern Luzon
+  scripts: [Latn]
 Bavarian:
   flag: DE-BY
   lcode: bar
   iso3: bar
   family: IE
   genus: Germanic
+  scripts: [Latn]
 Beja:
   flag: SD
   lcode: bej
   iso3: bej
   family: Afro-Asiatic
   genus: Cushitic
+  scripts: [Latn]
 Belarusian:
   flag: BY
   lcode: be
   iso3: bel
   family: IE
   genus: Slavic
+  scripts: [Cyrl]
 Bengali:
   flag: BD
   lcode: bn
   iso3: ben
   family: IE
   genus: Indic
+  scripts: [Beng]
 Bhojpuri:
   flag: IN
   lcode: bho
   iso3: bho
   family: IE
   genus: Indic
+  scripts: [Deva]
 Bokota:
   flag: PA
   lcode: sab
   iso3: sab
   family: Chibchan
   genus: Guaymiic
+  scripts: [Latn]
 Bonan:
   flag: CN
   lcode: peh
   iso3: peh
   family: Mongolic
+  scripts: [Mong]
 Bororo:
   flag: BR
   lcode: bor
   iso3: bor
   family: Bororoan
+  scripts: [Latn]
 Brahui:
   flag: PK
   lcode: brh
   iso3: brh
   family: Dravidian
+  scripts: [Arab]
 Breton:
   flag: FR-BRE
   lcode: br
   iso3: bre
   family: IE
   genus: Celtic
+  scripts: [Latn]
 Bribri:
   flag: CR
   lcode: bzd
   iso3: bzd
   family: Chibchan
   genus: Western Isthmic Chibchan
+  scripts: [Latn]
 Bulgarian:
   flag: BG
   lcode: bg
   iso3: bul
   family: IE
   genus: Slavic
+  scripts: [Cyrl]
 Buryat:
   flag: RU-BU
   lcode: bxr
   iso3: bxr
   family: Mongolic
+  scripts: [Cyrl]
 Cantonese:
   flag: HK
   lcode: yue
   iso3: yue
   family: Sino-Tibetan
   genus: Chinese
+  scripts: [Hani]
 Cappadocian:
   flag: GR-ORTHODOX
   lcode: cpg
   iso3: cpg
   family: IE
   genus: Greek
+  scripts: [Latn]
 Catalan:
   flag: ES-CT
   lcode: ca
   iso3: cat
   family: IE
   genus: Romance
+  scripts: [Latn]
 Cebuano:
   flag: PH
   lcode: ceb
   iso3: ceb
   family: Austronesian
   genus: Greater Central Philippine
+  scripts: [Latn]
 Central Kurdish:
   flag: IQ-KRD
   lcode: ckb
   iso3: ckb
   family: IE
   genus: Iranian
+  scripts: [Arab]
 Central Romani:
   flag: ROMANI
   lcode: rmc
   iso3: rmc
   family: IE
   genus: Indic
+  scripts: [Latn]
 Chinese:
   flag: CN
   lcode: zh
   iso3: cmn
   family: Sino-Tibetan
   genus: Chinese
+  scripts: [Hani]
 Chintang:
   flag: NP
   lcode: ctn
   iso3: ctn
   family: Sino-Tibetan
   genus: Himalayish
+  scripts: [Latn]
 Chukchi:
   flag: RU-CHU
   lcode: ckt
   iso3: ckt
   family: Chukotko-Kamchatkan
   genus: Northern Chukotko-Kamchatkan
+  scripts: [Cyrl]
 Classical Armenian:
   flag: AM-ARSACID
   lcode: xcl
   iso3: xcl
   family: IE
   genus: Armenian
+  scripts: [Armn]
 Classical Chinese:
   flag: CN-QING
   lcode: lzh
   iso3: lzh
   family: Sino-Tibetan
   genus: Chinese
+  scripts: [Hani]
 Classical Nahuatl:
   flag: MX-NEWSPAIN
   lcode: nci
   iso3: nci
   family: Uto-Aztecan
   genus: Aztecan
+  scripts: [Latn]
 Coptic:
   flag: COP
   lcode: cop
   iso3: cop
   family: Afro-Asiatic
   genus: Egyptian
+  scripts: [Copt]
 Corsican:
   flag: FR-COR
   lcode: co
   iso3: cos
   family: IE
   genus: Romance
+  scripts: [Latn]
 Croatian:
   flag: HR
   lcode: hr
   iso3: hrv
   family: IE
   genus: Slavic
+  scripts: [Latn]
 Cuicatec:
   flag: MX
   lcode: cux
   iso3: cux
   family: Oto-Manguean
   genus: Cuicatec
+  scripts: [Latn]
 Cusco Quechua:
   flag: PE
   lcode: quz
   iso3: quz
   family: Quechuan
+  scripts: [Latn]
 Czech:
   flag: CZ
   lcode: cs
   iso3: ces
   family: IE
   genus: Slavic
+  scripts: [Latn]
 Danish:
   flag: DK
   lcode: da
   iso3: dan
   family: IE
   genus: Germanic
+  scripts: [Latn]
 Dargwa:
   flag: RU-DA
   lcode: dar
   iso3: dar
   family: Nakh-Daghestanian
   genus: Lak-Dargwa
+  scripts: [Cyrl]
 Daur:
   flag: CN
   lcode: dta
   iso3: dta
   family: Mongolic
+  scripts: [Mong]
 Dongxiang:
   flag: CN
   lcode: sce
   iso3: sce
   family: Mongolic
+  scripts: [Mong]
 Dutch:
   flag: NL
   lcode: nl
   iso3: nld
   family: IE
   genus: Germanic
+  scripts: [Latn]
 Egyptian:
   flag: EG
   lcode: egy
   iso3: egy
   family: Afro-Asiatic
   genus: Egyptian
+  scripts: [Latn]
 Enawene Nawe:
   flag: BR
   lcode: unk
   iso3: unk
   family: Arawakan
   genus: Central Arawakan
+  scripts: [Latn]
 English:
   flag: GB
   lcode: en
   iso3: eng
   family: IE
   genus: Germanic
+  scripts: [Latn]
 Erzya:
   flag: RU-ERZYA
   lcode: myv
   iso3: myv
   family: Uralic
   genus: Mordvin
+  scripts: [Cyrl]
 Esperanto:
   flag: ESPERANTO
   lcode: eo
   iso3: epo
   family: Constructed
+  scripts: [Latn]
 Estonian:
   flag: EE
   lcode: et
   iso3: est
   family: Uralic
   genus: Finnic
+  scripts: [Latn]
 Even:
   flag: RU-MAG
   lcode: eve
   iso3: eve
   family: Tungusic
+  scripts: [Cyrl]
 Evenki:
   flag: RU-EVENK
   lcode: evn
   iso3: evn
   family: Tungusic
+  scripts: [Cyrl]
 Faroese:
   flag: FO
   lcode: fo
   iso3: fao
   family: IE
   genus: Germanic
+  scripts: [Latn]
 Finnish:
   flag: FI
   lcode: fi
   iso3: fin
   family: Uralic
   genus: Finnic
+  scripts: [Latn]
 French:
   flag: FR
   lcode: fr
   iso3: fra
   family: IE
   genus: Romance
+  scripts: [Latn]
 French Sign Language:
   flag: FR
   lcode: fsl
   iso3: fsl
   family: Sign Language
+  scripts: [Latn]
 Frisian:
   flag: NL-FR
   lcode: fy
   iso3: fry
   family: IE
   genus: Germanic
+  scripts: [Latn]
 Frisian Dutch:
   flag: NL-FR
   lcode: qfn
   iso3: qfn
   family: Code switching
+  scripts: [Latn]
 Ga:
   flag: NG
   lcode: gqa
   iso3: gqa
   family: Afro-Asiatic
   genus: Biu-Mandara
+  scripts: [Latn]
 Galician:
   flag: ES-GA
   lcode: gl
   iso3: glg
   family: IE
   genus: Romance
+  scripts: [Latn]
 Gedeo:
   flag: ET
   lcode: drs
   iso3: drs
   family: Afro-Asiatic
   genus: Cushitic
+  scripts: [Ethi]
 Georgian:
   flag: GE
   lcode: ka
   iso3: kat
   family: Kartvelian
+  scripts: [Geor]
 German:
   flag: DE
   lcode: de
   iso3: deu
   family: IE
   genus: Germanic
+  scripts: [Latn]
 Gheg:
   flag: AL
   lcode: aln
   iso3: aln
   family: IE
   genus: Albanian
+  scripts: [Latn]
 Gilaki:
   flag: IR
   lcode: glk
   iso3: glk
   family: IE
   genus: Iranian
+  scripts: [Arab]
 Gorontalo:
   flag: ID
   lcode: gor
   iso3: gor
   family: Austronesian
   genus: Greater Central Philippine
+  scripts: [Latn]
 Gothic:
   flag: BYZ
   lcode: got
   iso3: got
   family: IE
   genus: Germanic
+  scripts: [Latn]
 Greek:
   flag: GR
   lcode: el
   iso3: ell
   family: IE
   genus: Greek
+  scripts: [Grek]
 Guajajara:
   flag: BR
   lcode: gub
   iso3: gub
   family: Tupian
   genus: Maweti-Guarani
+  scripts: [Latn]
 Guarani:
   flag: PY
   lcode: gn
   iso3: gug
   family: Tupian
   genus: Maweti-Guarani
+  scripts: [Latn]
 Gujarati:
   flag: IN
   lcode: gu
   iso3: guj
   family: IE
   genus: Indic
+  scripts: [Gujr]
 Gwichin:
   flag: US-AK
   lcode: gwi
   iso3: gwi
   family: Na-Dene
   genus: Athapaskan
+  scripts: [Latn]
 Haitian Creole:
   flag: HT
   lcode: ht
   iso3: hat
   family: Creole
+  scripts: [Latn]
 Hausa:
   flag: NG
   lcode: ha
   iso3: hau
   family: Afro-Asiatic
   genus: West Chadic
+  scripts: [Latn]
 Hebrew:
   flag: IL
   lcode: he
   iso3: heb
   family: Afro-Asiatic
   genus: Semitic
+  scripts: [Hebr]
 Highland Puebla Nahuatl:
   flag: MX
   lcode: azz
   iso3: azz
   family: Uto-Aztecan
   genus: Aztecan
+  scripts: [Latn]
 Hiligaynon:
   flag: PH
   lcode: hil
   iso3: hil
   family: Austronesian
   genus: Greater Central Philippine
+  scripts: [Latn]
 Hindi:
   flag: IN
   lcode: hi
   iso3: hin
   family: IE
   genus: Indic
+  scripts: [Deva]
 Hindi English:
   flag: IN
   lcode: qhe
   iso3: qhe
   family: Code switching
+  scripts: [Latn]
 Hittite:
   flag: TR
   lcode: hit
   iso3: hit
   family: IE
   genus: Anatolian
+  scripts: [Latn]
 Huave:
   flag: MX
   lcode: huv
   iso3: huv
   family: Huavean
+  scripts: [Latn]
 Hungarian:
   flag: HU
   lcode: hu
   iso3: hun
   family: Uralic
   genus: Ugric
+  scripts: [Latn]
 Icelandic:
   flag: IS
   lcode: is
   iso3: isl
   family: IE
   genus: Germanic
+  scripts: [Latn]
 Ika:
   flag: CO
   lcode: arh
   iso3: arh
   family: Chibchan
   genus: Arhuacic
+  scripts: [Latn]
 Indonesian:
   flag: ID
   lcode: id
   iso3: ind
   family: Austronesian
   genus: Malayo-Sumbawan
+  scripts: [Latn]
 Irish:
   flag: IE
   lcode: ga
   iso3: gle
   family: IE
   genus: Celtic
+  scripts: [Latn]
 Italian:
   flag: IT
   lcode: it
   iso3: ita
   family: IE
   genus: Romance
+  scripts: [Latn]
 Japanese:
   flag: JP
   lcode: ja
   iso3: jpn
   family: Japanese
+  scripts: [Jpan]
 Javanese:
   flag: ID
   lcode: jv
   iso3: jav
   family: Austronesian
   genus: Javanese
+  scripts: [Latn]
 Kaapor:
   flag: BR
   lcode: urb
   iso3: urb
   family: Tupian
   genus: Maweti-Guarani
+  scripts: [Latn]
 Kabyle:
   flag: DZ
   lcode: kab
   iso3: kab
   family: Afro-Asiatic
   genus: Berber
+  scripts: [Latn]
 Kadiweu:
   flag: BR
   lcode: kbc
   iso3: kbc
   family: Guaicuruan
   genus: Kadiweu
+  scripts: [Latn]
 Kalmyk:
   flag: RU-KL
   lcode: xal
   iso3: xal
   family: Mongolic
+  scripts: [Cyrl]
 Kangri:
   flag: IN
   lcode: xnr
   iso3: xnr
   family: IE
   genus: Indic
+  scripts: [Deva]
 Kannada:
   flag: IN
   lcode: kn
   iso3: kan
   family: Dravidian
+  scripts: [Knda]
 Karelian:
   flag: RU-KR
   lcode: krl
   iso3: krl
   family: Uralic
   genus: Finnic
+  scripts: [Latn]
 Karo:
   flag: BR
   lcode: arr
   iso3: arr
   family: Tupian
   genus: Ramarama
+  scripts: [Latn]
 Kazakh:
   flag: KZ
   lcode: kk
   iso3: kaz
   family: Turkic
   genus: Northwestern
+  scripts: [Cyrl]
 Khoekhoe:
   flag: NA
   lcode: naq
   iso3: naq
   family: Khoe-Kwadi
+  scripts: [Latn]
 Khunsari:
   flag: IR
   lcode: kfm
   iso3: kfm
   family: IE
   genus: Iranian
+  scripts: [Arab]
 Kiche:
   flag: GT-QC
   lcode: quc
   iso3: quc
   family: Mayan
+  scripts: [Latn]
 Kiga:
   flag: UG
   lcode: cgg
   iso3: cgg
   family: Niger-Congo
   genus: Bantoid
+  scripts: [Latn]
 Komi:
   flag: RU-KO
   lcode: kv
   iso3: kom
   family: Uralic
   genus: Permic
+  scripts: [Perm]
 Komi Permyak:
   flag: RU-PER-KPO
   lcode: koi
   iso3: koi
   family: Uralic
   genus: Permic
+  scripts: [Cyrl]
 Komi Zyrian:
   flag: RU-KO
   lcode: kpv
   iso3: kpv
   family: Uralic
   genus: Permic
+  scripts: [Cyrl]
 Korean:
   flag: KR
   lcode: ko
   iso3: kor
   family: Korean
+  scripts: [Hang]
 Koromfe:
   flag: BF
   lcode: kfz
   iso3: kfz
   family: Niger-Congo
   genus: Northern-Central Gur
+  scripts: [Latn]
 Kyrgyz:
   flag: KG
   lcode: ky
   iso3: kir
   family: Turkic
   genus: Northwestern
+  scripts: [Cyrl]
 Ladino:
   flag: IL
   lcode: lad
   iso3: lad
   family: IE
   genus: Romance
+  scripts: [Hebr]
 Lango:
   flag: UG
   lcode: laj
   iso3: laj
   family: Eastern Sudanic
   genus: Nilotic
+  scripts: [Latn]
 Latgalian:
   flag: LV-LTG
   lcode: ltg
   iso3: ltg
   family: IE
   genus: Baltic
+  scripts: [Latn]
 Latin:
   flag: VA
   lcode: la
   iso3: lat
   family: IE
   genus: Italic
+  scripts: [Latn]
 Latvian:
   flag: LV
   lcode: lv
   iso3: lav
   family: IE
   genus: Baltic
+  scripts: [Latn]
 Laz:
   flag: TR
   lcode: lzz
   iso3: lzz
   family: Kartvelian
+  scripts: [Latn]
 Lezgian:
   flag: RU-DA
   lcode: lez
   iso3: lez
   family: Nakh-Daghestanian
   genus: Lezgic
+  scripts: [Cyrl]
 Ligurian:
   flag: IT-LIG
   lcode: lij
   iso3: lij
   family: IE
   genus: Romance
+  scripts: [Latn]
 Lithuanian:
   flag: LT
   lcode: lt
   iso3: lit
   family: IE
   genus: Baltic
+  scripts: [Latn]
 Livvi:
   flag: RU-KR
   lcode: olo
   iso3: olo
   family: Uralic
   genus: Finnic
+  scripts: [Latn]
 Low Saxon:
   flag: DE-HANNOVER
   lcode: nds
   iso3: nds
   family: IE
   genus: Germanic
+  scripts: [Latn]
 Luxembourgish:
   flag: LU
   lcode: lb
   iso3: ltz
   family: IE
   genus: Germanic
+  scripts: [Latn]
 Macedonian:
   flag: MK
   lcode: mk
   iso3: mkd
   family: IE
   genus: Slavic
+  scripts: [Cyrl]
 Madi:
   flag: BR
   lcode: jaa
   iso3: jaa
   family: Arawan
+  scripts: [Latn]
 Magahi:
   flag: IN
   lcode: mag
   iso3: mag
   family: IE
   genus: Indic
+  scripts: [Deva]
 Maghrebi Arabic French:
   flag: DZ
   lcode: qaf
   iso3: qaf
   family: Code switching
+  scripts: [Latn]
 Makurap:
   flag: BR
   lcode: mpu
   iso3: mpu
   family: Tupian
   genus: Tupari
+  scripts: [Latn]
 Malagasy:
   flag: MG
   lcode: mg
   iso3: mlg
   family: Austronesian
   genus: Barito
+  scripts: [Latn]
 Malayalam:
   flag: IN
   lcode: ml
   iso3: mal
   family: Dravidian
+  scripts: [Mlym]
 Maltese:
   flag: MT
   lcode: mt
   iso3: mlt
   family: Afro-Asiatic
   genus: Semitic
+  scripts: [Latn]
 Manchu:
   flag: CN-QING
   lcode: mnc
   iso3: mnc
   family: Tungusic
+  scripts: [Mong]
 Mandyali:
   flag: IN
   lcode: mjl
   iso3: mjl
   family: IE
   genus: Indic
+  scripts: [Deva]
 Mansi:
   flag: RU-KHM
   lcode: mns
   iso3: mns
   family: Uralic
   genus: Ugric
+  scripts: [Cyrl]
 Manx:
   flag: IM
   lcode: gv
   iso3: glv
   family: IE
   genus: Celtic
+  scripts: [Latn]
 Marathi:
   flag: IN
   lcode: mr
   iso3: mar
   family: IE
   genus: Indic
+  scripts: [Deva]
 Mauka:
   flag: CI
   lcode: mxx
   iso3: mxx
   family: Mande
   genus: Western Mande
+  scripts: [Latn]
 Mbya Guarani:
   flag: PY
   lcode: gun
   iso3: gun
   family: Tupian
   genus: Maweti-Guarani
+  scripts: [Latn]
 Megrelian:
   flag: GE
   lcode: xmf
   iso3: xmf
   family: Kartvelian
+  scripts: [Geor]
 Middle Armenian:
   flag: AM-RUBENID
   lcode: axm
   iso3: axm
   family: IE
   genus: Armenian
+  scripts: [Armn]
 Middle French:
   flag: FR-ROYAL
   lcode: frm
   iso3: frm
   family: IE
   genus: Romance
+  scripts: [Latn]
 Middle Irish:
   flag: IE-FOUR
   lcode: mga
   iso3: mga
   family: IE
   genus: Celtic
+  scripts: [Latn]
 Middle Persian:
   flag: IR-KAVIANI
   lcode: pal
   iso3: pal
   family: IE
   genus: Iranian
+  scripts: [Arab]
 Mizo:
   flag: IN
   lcode: lus
   iso3: lus
   family: Sino-Tibetan
   genus: Kuki-Chin
+  scripts: [Latn]
 Mojave:
   flag: US-AZ
   lcode: mov
   iso3: mov
   family: Hokan
   genus: Yuman
+  scripts: [Latn]
 Moksha:
   flag: RU-MOKSHA
   lcode: mdf
   iso3: mdf
   family: Uralic
   genus: Mordvin
+  scripts: [Cyrl]
 Mongolian:
   flag: MN
   lcode: mn
   iso3: mon
   family: Mongolic
+  scripts: [Cyrl]
 Munduruku:
   flag: BR
   lcode: myu
   iso3: myu
   family: Tupian
   genus: Munduruku
+  scripts: [Latn]
 Muruwari:
   flag: AU-ABORIGINAL
   lcode: zmu
   iso3: zmu
   family: Pama-Nyungan
   genus: Southeastern Pama-Nyungan
+  scripts: [Latn]
 Naga:
   flag: IN
   lcode: nmf
   iso3: nmf
   family: Sino-Tibetan
   genus: Tangkhul-Maring
+  scripts: [Latn]
 Naija:
   flag: NG
   lcode: pcm
   iso3: pcm
   family: Creole
+  scripts: [Latn]
 Nanai:
   flag: RU-KHA
   lcode: gld
   iso3: gld
   family: Tungusic
+  scripts: [Cyrl]
 Nayini:
   flag: IR
   lcode: nyq
   iso3: nyq
   family: IE
   genus: Iranian
+  scripts: [Arab]
 Ndengeleko:
   flag: TZ
   lcode: ndg
   iso3: ndg
   family: Niger-Congo
   genus: Bantoid
+  scripts: [Latn]
 Neapolitan:
   flag: IT-CAM
   lcode: nap
   iso3: nap
   family: IE
   genus: Romance
+  scripts: [Latn]
 Negidal:
   flag: RU-KHA
   lcode: neg
   iso3: neg
   family: Tungusic
+  scripts: [Cyrl]
 Nenets:
   flag: RU-NEN
   lcode: yrk
   iso3: yrk
   family: Uralic
   genus: Samoyedic
+  scripts: [Cyrl]
 Nepali:
   flag: NP
   lcode: ne
   iso3: nep
   family: IE
   genus: Indic
+  scripts: [Deva]
 Nheengatu:
   flag: BR
   lcode: yrl
   iso3: yrl
   family: Tupian
   genus: Maweti-Guarani
+  scripts: [Latn]
 Nkore:
   flag: UG
   lcode: nyn
   iso3: nyn
   family: Niger-Congo
   genus: Bantoid
+  scripts: [Latn]
 North Sami:
   flag: SAMI
   lcode: sme
   iso3: sme
   family: Uralic
   genus: Sami
+  scripts: [Latn]
 Northern Kurdish:
   flag: IQ-KRD
   lcode: kmr
   iso3: kmr
   family: IE
   genus: Iranian
+  scripts: [Latn]
 Northern Luri:
   flag: IR
   lcode: lrc
   iso3: lrc
   family: IE
   genus: Iranian
+  scripts: [Arab]
 Northwest Gbaya:
   flag: CF
   lcode: gya
   iso3: gya
   family: Niger-Congo
   genus: Gbaya-Manza-Ngbaka
+  scripts: [Latn]
 Norwegian:
   flag: 'NO'
   lcode: 'no'
   iso3: nor
   family: IE
   genus: Germanic
+  scripts: [Latn]
 Occitan:
   flag: FR-OCC
   lcode: oc
   iso3: oci
   family: IE
   genus: Romance
+  scripts: [Latn]
 Odia:
   flag: IN
   lcode: or
   iso3: ori
   family: IE
   genus: Indic
+  scripts: [Orya]
 Old Church Slavonic:
   flag: MORAVA
   lcode: cu
   iso3: chu
   family: IE
   genus: Slavic
+  scripts: [Cyrl]
 Old East Slavic:
   flag: RU-IVAN
   lcode: orv
   iso3: orv
   family: IE
   genus: Slavic
+  scripts: [Cyrl]
 Old English:
   flag: GB-ENG
   lcode: ang
   iso3: ang
   family: IE
   genus: Germanic
+  scripts: [Latn]
 Old French:
   flag: FR-ROYAL
   lcode: fro
   iso3: fro
   family: IE
   genus: Romance
+  scripts: [Latn]
 Old Georgian:
   flag: GE
   lcode: oge
   iso3: oge
   family: Kartvelian
+  scripts: [Geor]
 Old Irish:
   flag: IE-FOUR
   lcode: sga
   iso3: sga
   family: IE
   genus: Celtic
+  scripts: [Latn]
 Old Japanese:
   flag: JP
   lcode: ojp
   iso3: ojp
   family: Japanese
+  scripts: [Jpan]
 Old Occitan:
   flag: FR-OCC
   lcode: pro
   iso3: pro
   family: IE
   genus: Romance
+  scripts: [Latn]
 Old Saxon:
   flag: DE-HRR
   lcode: osx
   iso3: osx
   family: IE
   genus: Germanic
+  scripts: [Latn]
 Old Turkish:
   flag: TURKIC
   lcode: otk
   iso3: otk
   family: Turkic
   genus: Northeastern
+  scripts: [Orkh]
 Oroch:
   flag: RU-KHA
   lcode: oac
   iso3: oac
   family: Tungusic
+  scripts: [Cyrl]
 Ottoman Turkish:
   flag: TR
   lcode: ota
   iso3: ota
   family: Turkic
   genus: Southwestern
+  scripts: [Latn]
 Palenquero:
   flag: CO
   lcode: pln
   iso3: pln
   family: Creole
+  scripts: [Latn]
 Pali:
   flag: IN
   lcode: pi
   iso3: pli
   family: IE
   genus: Indic
+  scripts: [Deva]
 Papiamento:
   flag: AW
   lcode: pap
   iso3: pap
   family: Creole
+  scripts: [Latn]
 Pashto:
   flag: AF
   lcode: ps
   iso3: pst
   family: IE
   genus: Iranian
+  scripts: [Arab]
 Paumari:
   flag: BR
   lcode: pad
   iso3: pad
   family: Arawan
+  scripts: [Latn]
 Peripheral Mongolian:
   flag: CN
   lcode: mvf
   iso3: mvf
   family: Mongolic
+  scripts: [Mong]
 Persian:
   flag: IR
   lcode: fa
   iso3: fas
   family: IE
   genus: Iranian
+  scripts: [Arab]
 Pesh:
   flag: HN
   lcode: pay
   iso3: pay
   family: Chibchan
   genus: Pesh
+  scripts: [Latn]
 Phrygian:
   flag: TR
   lcode: xpg
   iso3: xpg
   family: IE
   genus: Greek
+  scripts: [Grek]
 Pnar:
   flag: IN
   lcode: pbv
   iso3: pbv
   family: Austro-Asiatic
   genus: Khasian
+  scripts: [Latn]
 Polish:
   flag: PL
   lcode: pl
   iso3: pol
   family: IE
   genus: Slavic
+  scripts: [Latn]
 Pomak:
   flag: TAMRASH
   lcode: qpm
   iso3: qpm
   family: IE
   genus: Slavic
+  scripts: [Latn]
 Pontic:
   flag: TR-PONTOS
   lcode: pnt
   iso3: pnt
   family: IE
   genus: Greek
+  scripts: [Grek]
 Portuguese:
   flag: PT
   lcode: pt
   iso3: por
   family: IE
   genus: Romance
+  scripts: [Latn]
 Prakrit:
   flag: IN
   lcode: pra
   iso3: pka
   family: IE
   genus: Indic
+  scripts: [Deva]
 Punjabi:
   flag: IN
   lcode: pa
   iso3: pan
   family: IE
   genus: Indic
+  scripts: [Guru]
 Puno Quechua:
   flag: PE
   lcode: qxp
   iso3: qxp
   family: Quechuan
+  scripts: [Latn]
 Purki:
   flag: IN
   lcode: prx
   iso3: prx
   family: Sino-Tibetan
   genus: Bodic
+  scripts: [Latn]
 Romanian:
   flag: RO
   lcode: ro
   iso3: ron
   family: IE
   genus: Romance
+  scripts: [Latn]
 Romansh:
   flag: CH
   lcode: rm
   iso3: roh
   family: IE
   genus: Romance
+  scripts: [Latn]
 Russian:
   flag: RU
   lcode: ru
   iso3: rus
   family: IE
   genus: Slavic
+  scripts: [Cyrl]
 Ruuli:
   flag: UG
   lcode: ruc
   iso3: ruc
   family: Niger-Congo
   genus: Bantoid
+  scripts: [Latn]
 Sanskrit:
   flag: IN
   lcode: sa
   iso3: san
   family: IE
   genus: Indic
+  scripts: [Deva, Latn]
 Sardinian:
   flag: IT-SRD
   lcode: sc
   iso3: srd
   family: IE
   genus: Romance
+  scripts: [Latn]
 Scottish Gaelic:
   flag: GB-SCT
   lcode: gd
   iso3: gla
   family: IE
   genus: Celtic
+  scripts: [Latn]
 Serbian:
   flag: RS
   lcode: sr
   iso3: srp
   family: IE
   genus: Slavic
+  scripts: [Latn]
 Seri:
   flag: MX
   lcode: sei
   iso3: sei
   family: Hokan
   genus: Seri
+  scripts: [Latn]
 Shanghainese:
   flag: CN
   lcode: wuu
   iso3: wuu
   family: Sino-Tibetan
   genus: Chinese
+  scripts: [Hani]
 Shipibo Konibo:
   flag: PE
   lcode: shp
   iso3: shp
   family: Pano-Tacanan
   genus: Panoan
+  scripts: [Latn]
 Sicilian:
   flag: IT-SIC
   lcode: scn
   iso3: scn
   family: IE
   genus: Romance
+  scripts: [Latn]
 Sindhi:
   flag: PK
   lcode: sd
   iso3: snd
   family: IE
   genus: Indic
+  scripts: [Arab]
 Sinhala:
   flag: LK
   lcode: si
   iso3: sin
   family: IE
   genus: Indic
+  scripts: [Sinh]
 Skolt Sami:
   flag: SAMI
   lcode: sms
   iso3: sms
   family: Uralic
   genus: Sami
+  scripts: [Latn]
 Slovak:
   flag: SK
   lcode: sk
   iso3: slk
   family: IE
   genus: Slavic
+  scripts: [Latn]
 Slovenian:
   flag: SI
   lcode: sl
   iso3: slv
   family: IE
   genus: Slavic
+  scripts: [Latn]
 Soi:
   flag: IR
   lcode: soj
   iso3: soj
   family: IE
   genus: Iranian
+  scripts: [Arab]
 Somali:
   flag: SO
   lcode: so
   iso3: som
   family: Afro-Asiatic
   genus: Cushitic
+  scripts: [Latn]
 Southern Kurdish:
   flag: IQ-KRD
   lcode: sdh
   iso3: sdh
   family: IE
   genus: Iranian
+  scripts: [Arab]
 South Levantine Arabic:
   flag: JO
   lcode: ajp
   iso3: ajp
   family: Afro-Asiatic
   genus: Semitic
+  scripts: [Arab]
 Spanish:
   flag: ES
   lcode: es
   iso3: spa
   family: IE
   genus: Romance
+  scripts: [Latn]
 Spanish English:
   flag: ES
   lcode: qee
   iso3: qee
   family: Code switching
+  scripts: [Latn]
 Spanish Sign Language:
   flag: ES
   lcode: ssp
   iso3: ssp
   family: Sign Language
+  scripts: [Latn]
 Sumerian:
   flag: IQ
   lcode: sux
   iso3: sux
   family: Sumerian
+  scripts: [Latn]
 Swahili:
   flag: TZ
   lcode: sw
   iso3: swa
   family: Niger-Congo
   genus: Bantoid
+  scripts: [Latn]
 Swedish:
   flag: SE
   lcode: sv
   iso3: swe
   family: IE
   genus: Germanic
+  scripts: [Latn]
 Swedish Sign Language:
   flag: SE
   lcode: swl
   iso3: swl
   family: Sign Language
+  scripts: [Latn]
 Tagabawa:
   flag: PH
   lcode: bgs
   iso3: bgs
   family: Austronesian
   genus: Greater Central Philippine
+  scripts: [Latn]
 Tagalog:
   flag: PH
   lcode: tl
   iso3: tgl
   family: Austronesian
   genus: Greater Central Philippine
+  scripts: [Latn]
 Tamil:
   flag: IN
   lcode: ta
   iso3: tam
   family: Dravidian
+  scripts: [Taml]
 Tatar:
   flag: RU-TA
   lcode: tt
   iso3: tat
   family: Turkic
   genus: Northwestern
+  scripts: [Cyrl]
 Teko:
   flag: FR
   lcode: eme
   iso3: eme
   family: Tupian
   genus: Maweti-Guarani
+  scripts: [Latn]
 Telugu:
   flag: IN
   lcode: te
   iso3: tel
   family: Dravidian
+  scripts: [Telu]
 Telugu English:
   flag: IN
   lcode: qte
   iso3: qte
   family: Code switching
+  scripts: [Latn]
 Tetun:
   flag: TL
   lcode: tdt
   iso3: tdt
   family: Austronesian
   genus: Central Malayo-Polynesian
+  scripts: [Latn]
 Thai:
   flag: TH
   lcode: th
   iso3: tha
   family: Tai-Kadai
   genus: Kam-Tai
+  scripts: [Thai]
 Tigrinya:
   flag: ER
   lcode: ti
   iso3: tir
   family: Afro-Asiatic
   genus: Semitic
+  scripts: [Ethi]
 Torwali:
   flag: PK
   lcode: trw
   iso3: trw
   family: IE
   genus: Indic
+  scripts: [Arab]
 Tswana:
   flag: BW
   lcode: tn
   iso3: tsn
   family: Niger-Congo
   genus: Bantoid
+  scripts: [Latn]
 Tu:
   flag: CN
   lcode: mjg
   iso3: mjg
   family: Mongolic
+  scripts: [Mong]
 Tunisian Arabic:
   flag: TN
   lcode: aeb
   iso3: aeb
   family: Afro-Asiatic
   genus: Semitic
+  scripts: [Arab]
 Tupinamba:
   flag: BR
   lcode: tpn
   iso3: tpn
   family: Tupian
   genus: Maweti-Guarani
+  scripts: [Latn]
 Turkish:
   flag: TR
   lcode: tr
   iso3: tur
   family: Turkic
   genus: Southwestern
+  scripts: [Latn]
 Turkish English:
   flag: TR
   lcode: qti
   iso3: qti
   family: Code switching
+  scripts: [Latn]
 Turkish German:
   flag: TR
   lcode: qtd
   iso3: qtd
   family: Code switching
+  scripts: [Latn]
 Turkmen:
   flag: TM
   lcode: tk
   iso3: tuk
   family: Turkic
   genus: Southwestern
+  scripts: [Latn]
 Tuwari:
   flag: PG
   lcode: tww
   iso3: tww
   family: Sepik
+  scripts: [Latn]
 Udihe:
   flag: RU-KHA
   lcode: ude
   iso3: ude
   family: Tungusic
+  scripts: [Cyrl]
 Ukrainian:
   flag: UA
   lcode: uk
   iso3: ukr
   family: IE
   genus: Slavic
+  scripts: [Cyrl]
 Ulch:
   flag: RU-KHA
   lcode: ulc
   iso3: ulc
   family: Tungusic
+  scripts: [Cyrl]
 Umbrian:
   flag: IT-UMB
   lcode: xum
   iso3: xum
   family: IE
   genus: Italic
+  scripts: [Latn]
 Upper Sorbian:
   flag: HSB
   lcode: hsb
   iso3: hsb
   family: IE
   genus: Slavic
+  scripts: [Latn]
 Urdu:
   flag: PK
   lcode: ur
   iso3: urd
   family: IE
   genus: Indic
+  scripts: [Arab]
 Uspanteko:
   flag: GT-QC
   lcode: usp
   iso3: usp
   family: Mayan
+  scripts: [Latn]
 Uyghur:
   flag: CN
   lcode: ug
   iso3: uig
   family: Turkic
   genus: Southeastern
+  scripts: [Arab]
 Uzbek:
   flag: UZ
   lcode: uz
   iso3: uzb
   family: Turkic
   genus: Southeastern
+  scripts: [Latn]
 Veps:
   flag: RU-VEPS
   lcode: vep
   iso3: vep
   family: Uralic
   genus: Finnic
+  scripts: [Latn]
 Vietnamese:
   flag: VN
   lcode: vi
   iso3: vie
   family: Austro-Asiatic
   genus: Viet-Muong
+  scripts: [Latn]
 Warlpiri:
   flag: AU-ABORIGINAL
   lcode: wbp
   iso3: wbp
   family: Pama-Nyungan
   genus: Western Pama-Nyungan
+  scripts: [Latn]
 Welsh:
   flag: GB-WLS
   lcode: cy
   iso3: cym
   family: IE
   genus: Celtic
+  scripts: [Latn]
 Western Armenian:
   flag: AM
   lcode: hyw
   iso3: hyw
   family: IE
   genus: Armenian
+  scripts: [Armn]
 Western Sierra Puebla Nahuatl:
   flag: MX
   lcode: nhi
   iso3: nhi
   family: Uto-Aztecan
   genus: Aztecan
+  scripts: [Latn]
 Wolof:
   flag: SN
   lcode: wo
   iso3: wol
   family: Niger-Congo
   genus: Northern Atlantic
+  scripts: [Latn]
 Xavante:
   flag: BR
   lcode: xav
   iso3: xav
   family: Macro-Je
   genus: Je Central
+  scripts: [Latn]
 Xibe:
   flag: CN
   lcode: sjo
   iso3: sjo
   family: Tungusic
+  scripts: [Mong]
 Yakut:
   flag: RU-SA
   lcode: sah
   iso3: sah
   family: Turkic
   genus: Northeastern
+  scripts: [Cyrl]
 Yiddish:
   flag: YIDDISH
   lcode: yi
   iso3: yid
   family: IE
   genus: Germanic
+  scripts: [Hebr]
 Yoruba:
   flag: NG
   lcode: yo
   iso3: yor
   family: Niger-Congo
   genus: Defoid
+  scripts: [Latn]
 Yukulta:
   flag: AU-ABORIGINAL
   lcode: gcd
   iso3: gcd
   family: Tangkic
+  scripts: [Latn]
 Yupik:
   flag: US-AK
   lcode: ess
   iso3: ess
   family: Eskimo-Aleut
   genus: Eskimo
+  scripts: [Latn]
 Zaar:
   flag: NG
   lcode: say
   iso3: say
   family: Afro-Asiatic
   genus: West Chadic
+  scripts: [Latn]
 Zazaki:
   flag: IQ-KRD
   lcode: zza
   iso3: zza
   family: IE
   genus: Iranian
+  scripts: [Latn]
