@@ -33,16 +33,10 @@ my $table;
 $table .= "<table id=\"langTable\">\n";
 $table .= "  <tr>";
 $table .= "<th onclick=\"sortTable(0)\">Language<br/><input type=\"text\" id=\"fLanguage\" onkeyup=\"filterTable()\" title=\"Type in language name\"></th>";
-$table .= "<th onclick=\"sortTable(1)\">ISO Code</th>";
-$table .= "<th onclick=\"sortTable(2)\">Family</th>";
-$table .= "<th onclick=\"sortTable(3)\">Genus</th>";
+$table .= "<th onclick=\"sortTable(1)\">ISO Code<br/><input type=\"text\" id=\"fCode\" onkeyup=\"filterTable()\" title=\"Type in language code\"></th>";
+$table .= "<th onclick=\"sortTable(2)\">Family<br/><input type=\"text\" id=\"fFamily\" onkeyup=\"filterTable()\" title=\"Type in family\"></th>";
+$table .= "<th onclick=\"sortTable(3)\">Genus<br/><input type=\"text\" id=\"fGenus\" onkeyup=\"filterTable()\" title=\"Type in genus\"></th>";
 $table .= "</tr>\n";
-#$table .= "  <tr>\n";
-#$table .= "    <td><input type=\"text\" id=\"fLanguage\" onkeyup=\"filterTable()\" title=\"Type in language name\"></td>\n";
-#$table .= "    <td><input type=\"text\" id=\"fCode\" onkeyup=\"filterTable()\" title=\"Type in language code\"></td>\n";
-#$table .= "    <td><input type=\"text\" id=\"fFamily\" onkeyup=\"filterTable()\" title=\"Type in family\"></td>\n";
-#$table .= "    <td><input type=\"text\" id=\"fGenus\" onkeyup=\"filterTable()\" title=\"Type in genus\"></td>\n";
-#$table .= "  </tr>\n";
 foreach my $lname (@languages)
 {
     $table .= "  <tr>";
@@ -127,28 +121,54 @@ function sortTable(n) {
 }
 
 function filterTable() {
-  var input, filter, table, tr, td, i, txtValue;
-  inputLanguage = document.getElementById("fLanguage");
-  inputCode = document.getElementById("fCode");
-  inputFamily = document.getElementById("fFamily");
-  inputGenus = document.getElementById("fGenus");
-  filter = inputLanguage.value.toUpperCase();
+  var filterLanguage, filterCode, filterFamily, filterGenus, table, tr;
+  filterLanguage = document.getElementById("fLanguage").value.toUpperCase();
+  filterCode = document.getElementById("fCode").value.toUpperCase();
+  filterFamily = document.getElementById("fFamily").value.toUpperCase();
+  filterGenus = document.getElementById("fGenus").value.toUpperCase();
   table = document.getElementById("langTable");
   tr = table.getElementsByTagName("tr");
   for (i = 0; i < tr.length; i++) {
-    tdLanguage = tr[i].getElementsByTagName("td")[0];
-    tdCode = tr[i].getElementsByTagName("td")[1];
-    tdFamily = tr[i].getElementsByTagName("td")[2];
-    tdGenus = tr[i].getElementsByTagName("td")[3];
-    if (tdLanguage) {
-      txtValue = tdLanguage.textContent || tdLanguage.innerText;
-      if (txtValue.toUpperCase().indexOf(filter) > -1) {
-        tr[i].style.display = "";
-      } else {
-        tr[i].style.display = "none";
-      }
+    if (matchRow(tr[i], filterLanguage, filterCode, filterFamily, filterGenus)) {
+      tr[i].style.display = "";
+    } else {
+      tr[i].style.display = "none";
     }
   }
+}
+
+function matchRow(tr, fl, fc, ff, fg) {
+  var match, td, txtValue;
+  match = True;
+  if (fl) {
+    td = tr.getElementsByTagName("td")[0];
+    if (td) {
+      txtValue = tdLanguage.textContent || tdLanguage.innerText;
+      match = match && txtValue.toUpperCase().indexOf(fl);
+    }
+  }
+  if (fc) {
+    td = tr.getElementsByTagName("td")[1];
+    if (td) {
+      txtValue = tdLanguage.textContent || tdLanguage.innerText;
+      match = match && txtValue.toUpperCase().indexOf(fc);
+    }
+  }
+  if (ff) {
+    td = tr.getElementsByTagName("td")[2];
+    if (td) {
+      txtValue = tdLanguage.textContent || tdLanguage.innerText;
+      match = match && txtValue.toUpperCase().indexOf(ff);
+    }
+  }
+  if (fg) {
+    td = tr.getElementsByTagName("td")[3];
+    if (td) {
+      txtValue = tdLanguage.textContent || tdLanguage.innerText;
+      match = match && txtValue.toUpperCase().indexOf(fg);
+    }
+  }
+  return match;
 }
 </script>
 EOF
