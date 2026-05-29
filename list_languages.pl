@@ -82,7 +82,7 @@ foreach my $lname (@languages)
     $family = 'Indo-European' if($family eq 'IE');
     my $genus = $languages->{$lname}{genus};
     $genus = $family if($genus eq '');
-    my $script = join(', ', @{$languages->{$lname}{script}});
+    my $script = join(', ', @{$languages->{$lname}{scripts}});
     # Does the language have documentation in UD?
     my $langdocfile = "$docspath/_$languages->{$lname}{lcode}/index.md";
     my $langdoclink = '';
