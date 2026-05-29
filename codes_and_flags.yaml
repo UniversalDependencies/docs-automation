@@ -1409,7 +1409,7 @@ Punjabi:
   iso3: pan
   family: IE
   genus: Indic
-  scripts: [Guru]
+  scripts: [Guru, Arab]
 Puno Quechua:
   flag: PE
   lcode: qxp

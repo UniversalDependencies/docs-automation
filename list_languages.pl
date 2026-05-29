@@ -105,7 +105,7 @@ foreach my $lname (@languages)
     $table .= "<td><tt>$languages->{$lname}{lcode}</tt></td>";
     $table .= "<td>$family</td>";
     $table .= "<td>$genus</td>";
-    $table .= "<td>$script</td>";
+    $table .= "<td><tt>$script</tt></td>";
     $table .= "<td>$langdoclink</td>";
     $table .= "<td>$treebanks</td>";
     $table .= "</tr>\n";
