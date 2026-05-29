@@ -62,6 +62,7 @@ $table .= "    <th onclick=\"sortTable(1)\">Language</th>\n";
 $table .= "    <th onclick=\"sortTable(2)\">ISO Code</th>\n";
 $table .= "    <th onclick=\"sortTable(3)\">Family</th>\n";
 $table .= "    <th onclick=\"sortTable(4)\">Genus</th>\n";
+$table .= "    <th onclick=\"sortTable(5)\">Script</th>\n";
 $table .= "    <th>Documentation</th>\n";
 $table .= "    <th>Treebanks in UD&nbsp;$current_relnumber</th>\n";
 $table .= "  </tr>\n";
@@ -71,6 +72,7 @@ $table .= "    <th><input size=\"1\" type=\"text\" id=\"fLanguage\" onkeyup=\"fi
 $table .= "    <th><input size=\"1\" type=\"text\" id=\"fCode\" onkeyup=\"filterTable()\" title=\"Type in language code\"></th>\n";
 $table .= "    <th><input size=\"1\" type=\"text\" id=\"fFamily\" onkeyup=\"filterTable()\" title=\"Type in family\"></th>\n";
 $table .= "    <th><input size=\"1\" type=\"text\" id=\"fGenus\" onkeyup=\"filterTable()\" title=\"Type in genus\"></th>\n";
+$table .= "    <th><input size=\"1\" type=\"text\" id=\"fScript\" onkeyup=\"filterTable()\" title=\"Type in script\"></th>\n";
 $table .= "    <th></th>\n";
 $table .= "    <th><input size=\"1\" type=\"text\" id=\"fTreebanks\" onkeyup=\"filterTable()\" title=\"Type in treebank acronym\"></th>\n";
 $table .= "  </tr>\n";
@@ -80,6 +82,7 @@ foreach my $lname (@languages)
     $family = 'Indo-European' if($family eq 'IE');
     my $genus = $languages->{$lname}{genus};
     $genus = $family if($genus eq '');
+    my $script = join(', ', @{$languages->{$lname}{script}});
     # Does the language have documentation in UD?
     my $langdocfile = "$docspath/_$languages->{$lname}{lcode}/index.md";
     my $langdoclink = '';
@@ -102,6 +105,7 @@ foreach my $lname (@languages)
     $table .= "<td><tt>$languages->{$lname}{lcode}</tt></td>";
     $table .= "<td>$family</td>";
     $table .= "<td>$genus</td>";
+    $table .= "<td>$script</td>";
     $table .= "<td>$langdoclink</td>";
     $table .= "<td>$treebanks</td>";
     $table .= "</tr>\n";
@@ -187,18 +191,19 @@ function sortTable(n) {
 }
 
 function filterTable() {
-  var fl, fc, ff, fg, ft, table, tr, n, th, visibleIndex;
+  var fl, fc, ff, fg, fs, ft, table, tr, n, th, visibleIndex;
   fl = document.getElementById("fLanguage").value.toUpperCase();
   fc = document.getElementById("fCode").value.toUpperCase();
   ff = document.getElementById("fFamily").value.toUpperCase();
   fg = document.getElementById("fGenus").value.toUpperCase();
+  fs = document.getElementById("fScript").value.toUpperCase();
   ft = document.getElementById("fTreebanks").value.toUpperCase();
   table = document.getElementById("langTable");
   tr = table.getElementsByTagName("tr");
   n = 0;
   visibleIndex = 0;
   for (i = 2; i < tr.length; i++) {
-    if (matchRow(tr[i], fl, fc, ff, fg, ft)) {
+    if (matchRow(tr[i], fl, fc, ff, fg, fs, ft)) {
       tr[i].style.display = "";
       n++;
       if (visibleIndex % 2 === 1) { // 1-based "even" row logic
@@ -217,7 +222,7 @@ function filterTable() {
   }
 }
 
-function matchRow(tr, fl, fc, ff, fg, ft) {
+function matchRow(tr, fl, fc, ff, fg, fs, ft) {
   var match, td, txtValue;
   match = true;
   if (fl) {
@@ -248,8 +253,15 @@ function matchRow(tr, fl, fc, ff, fg, ft) {
       match = match && txtValue.toUpperCase().indexOf(fg) > -1;
     }
   }
+  if (fs) {
+    td = tr.getElementsByTagName("td")[5];
+    if (td) {
+      txtValue = td.textContent || td.innerText;
+      match = match && txtValue.toUpperCase().indexOf(fs) > -1;
+    }
+  }
   if (ft) {
-    td = tr.getElementsByTagName("td")[6];
+    td = tr.getElementsByTagName("td")[7];
     if (td) {
       txtValue = td.textContent || td.innerText;
       match = match && txtValue.toUpperCase().indexOf(ft) > -1;
