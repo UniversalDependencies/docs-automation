@@ -38,7 +38,7 @@ $table .= "<th onclick=\"sortTable(2)\">Family</th>";
 $table .= "<th onclick=\"sortTable(3)\">Genus</th>";
 $table .= "</tr>\n";
 $table .= "  <tr>\n";
-$table .= "    <td><input type=\"text\" id=\"fLanguage\" onkeyup="filterTable()" title=\"Type in language name\"></td>\n";
+$table .= "    <td><input type=\"text\" id=\"fLanguage\" onkeyup=\"filterTable()\" title=\"Type in language name\"></td>\n";
 $table .= "    <td></td>\n";
 $table .= "    <td></td>\n";
 $table .= "    <td></td>\n";
