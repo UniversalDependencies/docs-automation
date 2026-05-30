@@ -220,7 +220,7 @@ Brahui:
   lcode: brh
   iso3: brh
   family: Dravidian
-  scripts: [Arab]
+  scripts: [Arab, Latn]
 Breton:
   flag: FR-BRE
   lcode: br
@@ -261,7 +261,7 @@ Cappadocian:
   iso3: cpg
   family: IE
   genus: Greek
-  scripts: [Latn]
+  scripts: [Grek, Latn]
 Catalan:
   flag: ES-CT
   lcode: ca
@@ -282,7 +282,7 @@ Central Kurdish:
   iso3: ckb
   family: IE
   genus: Iranian
-  scripts: [Arab]
+  scripts: [Arab, Latn]
 Central Romani:
   flag: ROMANI
   lcode: rmc
@@ -1429,7 +1429,7 @@ Romanian:
   iso3: ron
   family: IE
   genus: Romance
-  scripts: [Latn]
+  scripts: [Latn, Cyrl]
 Romansh:
   flag: CH
   lcode: rm
@@ -1562,7 +1562,7 @@ Southern Kurdish:
   iso3: sdh
   family: IE
   genus: Iranian
-  scripts: [Arab]
+  scripts: [Arab, Latn]
 South Levantine Arabic:
   flag: JO
   lcode: ajp
