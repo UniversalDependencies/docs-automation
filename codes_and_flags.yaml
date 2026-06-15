@@ -832,6 +832,13 @@ Koromfe:
   family: Niger-Congo
   genus: Northern-Central Gur
   scripts: [Latn]
+Kullvi:
+  flag: IN
+  lcode: kfx
+  iso3: kfx
+  family: IE
+  genus: Indic
+  scripts: [Deva]
 Kyrgyz:
   flag: KG
   lcode: ky

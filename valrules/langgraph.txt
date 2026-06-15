@@ -222,6 +222,7 @@ hi--2--pa
 hi--2--pra
 hi--2--xnr
 hi--2--mjl
+hi--2--kfx
 hi--2--bho
 hi--2--mag
 hi--1000--qhe
@@ -231,8 +232,8 @@ rmc--100--sk
 rmc--1000--hu
 pra----sa
 xnr----mjl
-xnr----ne
-mjl----ne
+mjl----kfx
+kfx--2--ne
 bho----mag
 bho----pi
 mag----pi
