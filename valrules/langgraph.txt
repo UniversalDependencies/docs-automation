@@ -226,11 +226,14 @@ hi--2--kfx
 hi--2--bho
 hi--2--mag
 hi--1000--qhe
+trw----ks
+pa--2--ks
 pa--2--xnr
 pa--20--rmc
 rmc--100--sk
 rmc--1000--hu
 pra----sa
+xnr--2--ks
 xnr----mjl
 mjl----kfx
 kfx--2--ne

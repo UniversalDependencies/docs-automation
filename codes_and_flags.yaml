@@ -765,6 +765,13 @@ Karo:
   family: Tupian
   genus: Ramarama
   scripts: [Latn]
+Kashmiri:
+  flag: IN
+  lcode: ks
+  iso3: kas
+  family: IE
+  genus: Indic
+  scripts: [Arab]
 Kazakh:
   flag: KZ
   lcode: kk
