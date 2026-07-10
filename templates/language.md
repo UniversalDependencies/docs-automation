@@ -1,7 +1,7 @@
   <!-- start of {{language_name}} accordion row -->
-  <details class="ud-accordion" name="ud-language">
-    <summary id="language-{{language_code}}">
-      <span class="flagspan"><img class="flag" src="flags/svg/{{flag}}.svg" loading="lazy" decoding="async" /></span>
+  <details class="ud-accordion" name="ud-language-{{subset}}">
+    <summary id="language-{% if subset != 'current' %}{{subset}}-{% endif %}{{language_code}}">
+      <span class="flagspan"><img class="flag" src="flags/svg/{{flag}}.svg" alt="" loading="lazy" decoding="async" /></span>
       <span class="doublewidespan">{{language_name_short}}</span>
       <span class="widespan"><span class="hint--top hint--info" data-hint="{{treebanks|length}} treebank{% if treebanks|length > 1 %}s{% endif %}">{{treebanks|length}}</span></span>
       <span class="widespan"><span class="hint--top hint--info" data-hint="{{counts.token|tsepk}} tokens {{counts.word|tsepk}} words {{counts.node|tsepk}} nodes {{counts.tree|tsepk}} sentences">{{counts.word|tsepk(use_k=true)}}</span></span>
@@ -15,7 +15,7 @@
 
     <!-- start of {{language_name}} treebank list -->
     {% for tbank in treebanks %}
-    <details class="ud-accordion ud-subaccordion" name="ud-treebank-{{language_code}}">
+    <details class="ud-accordion ud-subaccordion" name="ud-treebank-{{subset}}-{{language_code}}">
       <summary>
         <span class="flagspan"></span>
         <span class="doublewidespan">{{tbank.treebank_code|default("Original",true)}}</span>
