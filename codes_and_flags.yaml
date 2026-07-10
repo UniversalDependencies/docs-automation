@@ -290,6 +290,13 @@ Central Romani:
   family: IE
   genus: Indic
   scripts: [Latn]
+Chechen:
+  flag: RU-CE
+  lcode: ce
+  iso3: che
+  family: Nakh-Daghestanian
+  genus: Nakh
+  scripts: [Cyrl]
 Chinese:
   flag: CN
   lcode: zh

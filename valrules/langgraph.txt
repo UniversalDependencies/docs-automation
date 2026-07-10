@@ -10,6 +10,7 @@ Kartvelian--100--Basque
 Kartvelian----Northwest Caucasian
 Kartvelian----Nakh-Daghestanian
 Kartvelian--100--Turkic
+Northwest Caucasian----Nakh-Daghestanian
 Turkic----Uralic
 Dravidian----Uralic
 Dravidian----Turkic
@@ -328,6 +329,8 @@ ab--1000--ka
 ka----lzz
 ka----oge
 ka--2--xmf
+Nakh----Lak-Dargwa
+Lak-Dargwa----Lezgic
 Southwestern----Southeastern
 Southeastern----Northeastern
 Northeastern----Northwestern
