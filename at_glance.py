@@ -238,6 +238,7 @@ if __name__=="__main__":
         if 'genus' in codes_flags[lang] and family_genera[codes_flags[lang]['family']] > 1:
             language_genus = codes_flags[lang]['genus']
         r = lang_template.render(
+            subset=args.subset if args.subset else 'current',
             flag=codes_flags[lang]['flag'],
             language_name=lang,
             language_name_short=language_name_short,
