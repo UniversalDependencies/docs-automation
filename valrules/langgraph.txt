@@ -370,13 +370,16 @@ oac----ude
 ulc--100--neg
 neg----evn
 evn----eve
+Chinese--Na-Qiangic
 Chinese--10--Bodic
+Na-Qiangic--10--Bodic
 Bodic----Himalayish
 Himalayish--2--Kuki-Chin
 Kuki-Chin----Tangkhul-Maring
 zh--2--wuu
 wuu--2--yue
 yue----lzh
+zh--100--txg
 yue--100--prx
 prx--50--ctn
 ctn--100--lus

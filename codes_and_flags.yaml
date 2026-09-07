@@ -1656,6 +1656,13 @@ Tamil:
   iso3: tam
   family: Dravidian
   scripts: [Taml]
+Tangut:
+  flag: CN-QING
+  lcode: txg
+  iso3: txg
+  family: Sino-Tibetan
+  genus: Na-Qiangic
+  scripts: [Tang]
 Tatar:
   flag: RU-TA
   lcode: tt
