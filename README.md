@@ -16,7 +16,7 @@ If it complains about the missing 'yaml' module, install it using:
     pip3 install --user pyyaml
     pip3 install --user jinja2
 
-and then you can 
+and then you can:
 
     repo_dir="/some/path/UD_Finnish-TDT"
     OUTDIR="_corpus_metadata"
