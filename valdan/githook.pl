@@ -15,12 +15,14 @@ use dzsys;
 
 
 
-# When Github sends the POST request, it probably does not want to see any
+# When GitHub sends the POST request, it probably does not want to see any
 # response page. Perhaps it just wants to receive a success response code.
 # But the only way I currently know is to generate a regular form response page.
+# (And in fact, the response I generate here can be viewed in the list of
+# webhook deliveries in GitHub organization settings.)
 vypsat_html_zacatek();
-print("Received.\n"); # This is part of the response sent back to Github.
-# Save the data from Github to our log.
+print("Request received.\n"); # This is part of the response sent back to Github.
+# Save the data from GitHub to our log.
 open(LOG, ">>log/log.txt");
 print LOG ("\n\n\n-------------------------------------------------------------------------------\n");
 print LOG (`date`, "\n");
@@ -37,6 +39,11 @@ while(<>)
 {
     $json .= $_;
     print LOG;
+}
+# If the payload from STDIN is empty, complain to GitHub.
+if($json =~ m/^\s*$/s)
+{
+    print("But the payload is empty.\n");
 }
 my $result;
 eval { ($result, $json) = jsonparse($json); };
