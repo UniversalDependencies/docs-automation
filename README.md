@@ -8,7 +8,9 @@ The scripts below assume you have all UD treebank repositories cloned. You can d
 
 # Treebank and language metadata and stats
 
-The various components of the automation, especially the main language table, need metadata and stats gathered from the treebank data and the machine-readable section of the language readme. This is saved as a json file, one file per treebank, and is re-run every time anything changes in the corresponding treebank repository. All auto-generation scripts source from this json.
+The various components of the automation, especially the main language table,
+need metadata and stats gathered from the treebank data and the machine-readable
+section of the treebank readme. This is saved as a json file, one file per treebank, and is re-run every time anything changes in the corresponding treebank repository. All auto-generation scripts source from this json.
 
 To run the following code, you need Python3 with the 'yaml' module installed.
 If it complains about the missing 'yaml' module, install it using:
