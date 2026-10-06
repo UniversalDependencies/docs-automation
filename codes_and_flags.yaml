@@ -1330,12 +1330,12 @@ Palenquero:
   family: Creole
   scripts: [Latn]
 Pali:
-  flag: IN
+  flag: BUDDHISM
   lcode: pi
   iso3: pli
   family: IE
   genus: Indic
-  scripts: [Deva]
+  scripts: [Latn]
 Papiamento:
   flag: AW
   lcode: pap
