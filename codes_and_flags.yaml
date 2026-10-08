@@ -1472,6 +1472,13 @@ Ruuli:
   family: Niger-Congo
   genus: Bantoid
   scripts: [Latn]
+Samba Leko:
+  flag: NG
+  lcode: ndi
+  iso3: ndi
+  family: Niger-Congo
+  genus: Samba-Duru
+  scripts: [Latn]
 Sanskrit:
   flag: IN
   lcode: sa

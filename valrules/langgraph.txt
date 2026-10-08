@@ -314,7 +314,8 @@ kab--50--ha
 bej----drs
 ha----say
 Northern Atlantic----Northern-Central Gur
-Northern-Central Gur----Gbaya-Manza-Ngbaka
+Northern-Central Gur----Samba-Duru
+Samba-Duru----Gbaya-Manza-Ngbaka
 Northern-Central Gur----Defoid
 Defoid----Bantoid
 bav--10--cgg
