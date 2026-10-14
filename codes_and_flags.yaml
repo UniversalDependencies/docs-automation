@@ -1030,6 +1030,13 @@ Marathi:
   family: IE
   genus: Indic
   scripts: [Deva]
+Matigsalug:
+  flag: PH
+  lcode: mbt
+  iso3: mbt
+  family: Austronesian
+  genus: Greater Central Philippine
+  scripts: [Latn]
 Mauka:
   flag: CI
   lcode: mxx
