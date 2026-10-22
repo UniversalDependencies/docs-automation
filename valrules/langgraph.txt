@@ -192,7 +192,9 @@ hy--2--axm
 axm----xcl
 zza--100--hy
 zza--100--hit
-zza----kmr
+zza----hac
+zza--2--kmr
+hac--2--ckb
 kmr----ckb
 ckb----sdh
 sdh--2--glk

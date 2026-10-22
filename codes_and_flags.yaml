@@ -554,6 +554,13 @@ Gilaki:
   family: IE
   genus: Iranian
   scripts: [Arab]
+Gorani:
+  flag: IQ-KRD
+  lcode: hac
+  iso3: hac
+  family: IE
+  genus: Iranian
+  scripts: [Arab]
 Gorontalo:
   flag: ID
   lcode: gor
