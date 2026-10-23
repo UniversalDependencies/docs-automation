@@ -114,6 +114,13 @@ Assyrian:
   family: Afro-Asiatic
   genus: Semitic
   scripts: [Syrc]
+Avestan:
+  flag: IR-KAVIANI
+  lcode: ae
+  iso3: ave
+  family: IE
+  genus: Iranian
+  scripts: [Avst]
 Azerbaijani:
   flag: AZ
   lcode: az
