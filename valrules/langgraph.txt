@@ -59,6 +59,9 @@ Tupian--10--Pano-Tacanan
 Tupian--2--Guaicuruan
 Tupian--2--Macro-Je
 Macro-Je----Bororoan
+
+# Indo-European languages
+
 Celtic--2--Germanic
 Celtic--2--Romance
 Germanic--2--Romance
@@ -254,12 +257,18 @@ hi--10--mr
 mr--10--si
 mr--1000--te
 si--1000--ta
+
+# Dravidian languages
+
 brh--10--te
 te----kn
 te--1000--qte
 kn--2--ml
 kn--2--ta
 ml----ta
+
+# Uralic languages
+
 Sami----Finnic
 Finnic--2--Mordvin
 Finnic--2--Permic
@@ -286,6 +295,9 @@ kv--200--mns
 myv----mdf
 mns--10--hu
 mns--1000--ru
+
+# Afro-Asiatic languages
+
 Semitic----Cushitic
 Semitic----Egyptian
 Egyptian----Berber
@@ -316,18 +328,35 @@ cop--50--bej
 kab--50--ha
 bej----drs
 ha----say
+
+# Niger-Congo languages
+
 Northern Atlantic----Northern-Central Gur
 Northern-Central Gur----Samba-Duru
 Samba-Duru----Gbaya-Manza-Ngbaka
 Northern-Central Gur----Defoid
 Defoid----Bantoid
+# Bantu languages
+# Babungo/bav is Southern Bantoid / Grassfields (not Narrow Bantu); it is in Cameroon
 bav--10--cgg
 bav--10--nyn
+# East / Northeast Savanna / Great Lakes
+# Kiga/cgg (JE14) is in Uganda close to Rwanda
+# Nkore/nyn (JE13) is in Uganda close to Rwanda
+# Ruuli/ruc (JE103) is in central Uganda
 cgg--2--ruc
 cgg----nyn
-nyn--2--sw
-sw--2--ndg
-sw--2--tn
+nyn--4--sw
+# Swahili (G40) is East / Northeast Savanna / Northeast Coastal
+# Ndengereko (P11) is East / Rufiji-Ruvuma
+# Kunda (N42) is East / Tumbuka-Sena-Nyanja; Zimbabwe/Zambia/Mozambique
+# Tswana (S31) is East / Southern; it is in Botswana
+sw--4--ndg
+ndg--4--kdn
+kdn--4--tn
+
+# Caucasus
+
 abq----ab
 ab--1000--ka
 ka----lzz
@@ -335,6 +364,9 @@ ka----oge
 ka--2--xmf
 Nakh----Lak-Dargwa
 Lak-Dargwa----Lezgic
+
+# Turkic languages
+
 Southwestern----Southeastern
 Southeastern----Northeastern
 Northeastern----Northwestern
@@ -358,6 +390,9 @@ otk----sah
 ug--1000--sjo
 sah--1000--ckt
 sah--900--evn
+
+# Mongolic and Tungusic languages
+
 mn----bxr
 mn--2--xal
 mn--2--mvf
@@ -374,6 +409,9 @@ oac----ude
 ulc--100--neg
 neg----evn
 evn----eve
+
+# Sino-Tibetan languages
+
 Chinese--Na-Qiangic
 Chinese--10--Bodic
 Na-Qiangic--10--Bodic
@@ -388,6 +426,9 @@ yue--100--prx
 prx--50--ctn
 ctn--100--lus
 lus--50--nmf
+
+# Austronesian languages
+
 Northern Luzon----Greater Central Philippine
 Greater Central Philippine--10--Malayo-Sumbawan
 Malayo-Sumbawan----Javanese
@@ -407,6 +448,9 @@ gor--100--id
 id----jv
 id--100--tdt
 id--100--mg
+
+# Chukotka and the Americas
+
 ckt--1000--ess
 ess--1000--gwi
 Yuman----Seri
@@ -416,6 +460,9 @@ nhi--2--nci
 azz--2--nci
 nci--100--quc
 quc----usp
+
+# Chibchan languages
+
 Pesh----Western Isthmic Chibchan
 Western Isthmic Chibchan----Guaymiic
 Guaymiic----Arhuacic
@@ -425,6 +472,9 @@ sab--100--arh
 jaa----pad
 Purus----Central Arawakan
 apu--100--unk
+
+# Tupian languages
+
 Maweti-Guarani--10--Munduruku
 Ramarama----Munduruku
 Tupari----Ramarama
@@ -447,6 +497,9 @@ quz----qxp
 pap--2--pln
 pap--8--ht
 ht--10--pcm
+
+# Code-switching
+
 qhe----qte
 qhe--2--qti
 qti--2--qee
@@ -456,5 +509,8 @@ qee--10--qfn
 qee--10--qtd
 qaf--5--qtd
 qfn--10--qtd
+
+# Sign languages
+
 swl----fsl
 fsl----ssp

@@ -183,7 +183,13 @@ sub read_language_graph
     while(<GRAPH>)
     {
         chomp;
-        if(m/^(.+)----(.+)$/)
+        # A line starting with # is a comment. Ignore it.
+        # Also ignore empty lines.
+        if(m/^\#/ || m/^\s*$/)
+        {
+            next;
+        }
+        elsif(m/^(.+)----(.+)$/)
         {
             my $n1 = $1;
             my $n2 = $2;

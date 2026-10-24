@@ -867,6 +867,13 @@ Kullvi:
   family: IE
   genus: Indic
   scripts: [Deva]
+Kunda:
+  flag: ZW
+  lcode: kdn
+  iso3: kdn
+  family: Niger-Congo
+  genus: Bantoid
+  scripts: [Latn]
 Kyrgyz:
   flag: KG
   lcode: ky
