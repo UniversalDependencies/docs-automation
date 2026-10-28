@@ -304,6 +304,13 @@ Chechen:
   family: Nakh-Daghestanian
   genus: Nakh
   scripts: [Cyrl]
+Chikunda:
+  flag: ZW
+  lcode: kdn
+  iso3: kdn
+  family: Niger-Congo
+  genus: Bantoid
+  scripts: [Latn]
 Chinese:
   flag: CN
   lcode: zh
@@ -867,13 +874,6 @@ Kullvi:
   family: IE
   genus: Indic
   scripts: [Deva]
-Kunda:
-  flag: ZW
-  lcode: kdn
-  iso3: kdn
-  family: Niger-Congo
-  genus: Bantoid
-  scripts: [Latn]
 Kyrgyz:
   flag: KG
   lcode: ky
