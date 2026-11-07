@@ -1,5 +1,3 @@
-  <!-- Except for class="jquery-ui-subaccordion-closed", all attributes of the accordion-related div elements can be generated during initialization of the page. However, the initialization takes up to 10 seconds and we want something reasonably nice to be visible as soon as possible. -->
-
   <!-- start of {{language_name}} accordion row -->
   <div class="ui-accordion-header ui-helper-reset ui-state-default ui-corner-all" role="tab" aria-expanded="false" aria-selected="false" tabindex="-1">
     <span class="flagspan"><img class="flag" src="flags/svg/{{flag}}.svg" /></span>
@@ -39,15 +37,16 @@
 
         <ul>
           <li>Contributors: {{tbank.meta.contributors|contributor_filter}} </li>
-             <li>Repository <a href="https://github.com/UniversalDependencies/{{tbank.repo_name}}/tree/master">master</a> <a href="https://github.com/UniversalDependencies/{{tbank.repo_name}}/tree/dev">dev</a></li>
-             <li><a href="https://github.com/UniversalDependencies/{{tbank.repo_name}}/blob/{{tbank.repo_branch}}/{{tbank.readme_file}}">README</a></li>
+          <li>Repository <a href="https://github.com/UniversalDependencies/{{tbank.repo_name}}/tree/master">master</a> <a href="https://github.com/UniversalDependencies/{{tbank.repo_name}}/tree/dev">dev</a></li>
+          <li><a href="https://github.com/UniversalDependencies/{{tbank.repo_name}}/blob/{{tbank.repo_branch}}/{{tbank.readme_file}}">README</a></li>
         </ul>
 
         <p>&nbsp;</p>
       </div>
       <!-- end of {{language_name}} / {{tbank.treebank_code|default("Original",true)}} entry -->
       {% endfor %}
-    </div> <!-- end of {{language_name}} treebank list -->
+    </div>
+    <!-- end of {{language_name}} treebank list -->
 
     {% if tbank_comparison %}
     See <a href="treebanks/{{tbank_comparison}}">here</a> for comparative statistics of {{language_name}} treebanks.
