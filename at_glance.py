@@ -205,14 +205,16 @@ if __name__=="__main__":
         except:
             print("Whoa, couldn't load", f_name, file=sys.stderr)
 
-    lang_template = t_env.get_template('language.md')
     for lang, lang_tbanks in sorted(tbanks.items()):
         # Select the required subset of treebanks. If no subset is required, all treebanks will be output.
         if args.subset == 'current':
+            lang_template = t_env.get_template('language.md')
             lang_tbanks = [t for t in lang_tbanks if t['repo_name'] in last_release_treebanks]
         elif args.subset == 'sapling':
+            lang_template = t_env.get_template('language_unreleased.md')
             lang_tbanks = [t for t in lang_tbanks if not t['first_release'] and not t['repo_name'] in last_release_treebanks]
         elif args.subset == 'retired':
+            lang_template = t_env.get_template('language_unreleased.md')
             lang_tbanks = [t for t in lang_tbanks if t['first_release'] and not t['repo_name'] in last_release_treebanks]
         if len(lang_tbanks)==0:
             continue
