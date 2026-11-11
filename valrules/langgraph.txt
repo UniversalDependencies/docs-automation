@@ -349,7 +349,7 @@ cgg----nyn
 nyn--4--sw
 # Swahili (G40) is East / Northeast Savanna / Northeast Coastal
 # Ndengereko (P11) is East / Rufiji-Ruvuma
-# Kunda (N42) is East / Tumbuka-Sena-Nyanja; Zimbabwe/Zambia/Mozambique
+# Chikunda (N42) is East / Tumbuka-Sena-Nyanja; Zimbabwe/Zambia/Mozambique
 # Tswana (S31) is East / Southern; it is in Botswana
 sw--4--ndg
 ndg--4--kdn
