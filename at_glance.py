@@ -216,6 +216,8 @@ if __name__=="__main__":
         elif args.subset == 'retired':
             lang_template = t_env.get_template('language_unreleased.md')
             lang_tbanks = [t for t in lang_tbanks if t['first_release'] and not t['repo_name'] in last_release_treebanks]
+        else:
+            lang_template = t_env.get_template('language.md')
         if len(lang_tbanks)==0:
             continue
         sum_counts = sum_dicts(list(t['counts'] for t in lang_tbanks))
@@ -240,6 +242,7 @@ if __name__=="__main__":
         if 'genus' in codes_flags[lang] and family_genera[codes_flags[lang]['family']] > 1:
             language_genus = codes_flags[lang]['genus']
         r = lang_template.render(
+            subset=args.subset if args.subset else 'current',
             flag=codes_flags[lang]['flag'],
             language_name=lang,
             language_name_short=language_name_short,

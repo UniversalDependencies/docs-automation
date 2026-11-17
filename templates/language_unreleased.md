@@ -1,27 +1,22 @@
   <!-- start of {{language_name}} accordion row -->
-  <div class="ui-accordion-header ui-helper-reset ui-state-default ui-corner-all" role="tab" aria-expanded="false" aria-selected="false" tabindex="-1">
-    <span class="flagspan"><img class="flag" src="flags/svg/{{flag}}.svg" /></span>
-    <span class="doublewidespan">{{language_name_short}}</span>
-    <span class="widespan"><span class="hint--top hint--info" data-hint="{{treebanks|length}} treebank{% if treebanks|length > 1 %}s{% endif %}">{{treebanks|length}}</span></span>
-    <span class="widespan"><span class="hint--top hint--info" data-hint="{{counts.token|tsepk}} tokens {{counts.word|tsepk}} words {{counts.node|tsepk}} nodes {{counts.tree|tsepk}} sentences">{{counts.word|tsepk(use_k=true)}}</span></span>
-    <!-- English has so many genres that they no longer fit in doublewidespan. -->
-    <span class="triplewidespan">{{genres|genre_filter|safe}}</span>
-    <span class="triplewidespan">{{(language_family,language_genus)|family_filter|safe}}</span>
-  </div>
-  <!-- end of {{language_name}} accordion row -->
+  <details class="ud-accordion" name="ud-language-{{subset}}">
+    <summary id="language-{% if subset != 'current' %}{{subset}}-{% endif %}{{language_code}}">
+      <span class="flagspan"><img class="flag" src="flags/svg/{{flag}}.svg" alt="" loading="lazy" decoding="async" /></span>
+      <span class="doublewidespan">{{language_name_short}}</span>
+      <span class="widespan"><span class="hint--top hint--info" data-hint="{{treebanks|length}} treebank{% if treebanks|length > 1 %}s{% endif %}">{{treebanks|length}}</span></span>
+      <span class="widespan"><span class="hint--top hint--info" data-hint="{{counts.token|tsepk}} tokens {{counts.word|tsepk}} words {{counts.node|tsepk}} nodes {{counts.tree|tsepk}} sentences">{{counts.word|tsepk(use_k=true)}}</span></span>
+      <!-- English has so many genres that they no longer fit in doublewidespan. -->
+      <span class="triplewidespan">{{genres|genre_filter|safe}}</span>
+      <span class="triplewidespan">{{(language_family,language_genus)|family_filter|safe}}</span>
+    </summary>
+    <div class="ud-accordion-body">
 
-  <!-- start of {{language_name}} accordion body -->
-  <div class="ui-accordion-content ui-helper-reset ui-widget-content ui-corner-bottom" style="" role="tabpanel">
-  <!--initial style="height:558.8px; display: none" would make the page a bit better before setup is done but the height of the subaccordions would not be measured correctly-->
-
-    <!-- empty space so tooltip fits -->
     <h3>{{language_name}} treebanks</h3>
 
     <!-- start of {{language_name}} treebank list -->
-    <div class="jquery-ui-subaccordion-closed ui-accordion ui-widget ui-helper-reset ui-accordion-icons" role="tablist">
-      {% for tbank in treebanks %}
-      <!-- start of {{language_name}} / {{tbank.treebank_code|default("Original",true)}} entry -->
-      <div class="ui-accordion-header ui-helper-reset ui-state-default ui-corner-all" role="tab" aria-expanded="false" aria-selected="false" tabindex="-1">
+    {% for tbank in treebanks %}
+    <details class="ud-accordion ud-subaccordion" name="ud-treebank-{{subset}}-{{language_code}}">
+      <summary>
         <span class="flagspan"></span>
         <span class="doublewidespan">{{tbank.treebank_code|default("Original",true)}}</span>
         <span class="widespan"><span class="hint--top hint--info" data-hint="{{tbank.counts.token|tsepk}} tokens {{tbank.counts.word|tsepk}} words {{tbank.counts.node|tsepk}} nodes {{tbank.counts.tree|tsepk}} sentences">{{tbank.counts.word|tsepk(use_k=true)}}</span></span>
@@ -30,8 +25,8 @@
         <span class="doublewidespan">{{tbank.meta.genre|genre_filter|safe}}</span>
         <span class="widespan">{{tbank.meta.license|license_filter|safe}}</span>
         <span class="widespan">{{(tbank.score,tbank.stars)|stars_filter|safe}}</span>
-      </div>
-      <div class="ui-accordion-content ui-helper-reset ui-widget-content ui-corner-bottom" role="tabpanel" style="height: 149.8px;">
+      </summary>
+      <div class="ud-accordion-body">
 
         {{tbank.meta.summary|default("Please add a summary section to the treebank readme file",true)}}
 
@@ -41,11 +36,9 @@
           <li><a href="https://github.com/UniversalDependencies/{{tbank.repo_name}}/blob/{{tbank.repo_branch}}/{{tbank.readme_file}}">README</a></li>
         </ul>
 
-        <p>&nbsp;</p>
       </div>
-      <!-- end of {{language_name}} / {{tbank.treebank_code|default("Original",true)}} entry -->
-      {% endfor %}
-    </div>
+    </details>
+    {% endfor %}
     <!-- end of {{language_name}} treebank list -->
 
     {% if tbank_comparison %}
@@ -60,6 +53,7 @@
     The language hub documentation has not yet been created.
     {% endif %}
 
-  </div>
-  <!-- end of {{language_name}} accordion body -->
+    </div>
+  </details>
+  <!-- end of {{language_name}} accordion row -->
 
