@@ -5737,7 +5737,7 @@
 "nsubj": {"type": "universal", "doc": "global", "permitted": 1, "errors": []},
 "nummod": {"type": "universal", "doc": "global", "permitted": 1, "errors": []},
 "obj": {"type": "universal", "doc": "global", "permitted": 1, "errors": []},
-"obj:appl": {"type": "local", "doc": "local", "permitted": 0, "errors": []},
+"obj:appl": {"type": "local", "doc": "local", "permitted": 1, "errors": [], "lastchanged": "2026-11-24-15-11-34", "lastchanger": "leoalenc"},
 "obl": {"type": "universal", "doc": "global", "permitted": 1, "errors": []},
 "orphan": {"type": "universal", "doc": "global", "permitted": 1, "errors": []},
 "parataxis": {"type": "universal", "doc": "global", "permitted": 1, "errors": []},
