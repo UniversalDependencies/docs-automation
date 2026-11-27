@@ -240,7 +240,9 @@ pa--20--rmc
 rmc--100--sk
 rmc--1000--hu
 pra----sa
-xnr--2--ks
+# Himachal Pradesh (northwest to southeast): cdh=Chambeali, xnr=Kangri, mjl=Mandyali, kfx=Kullvi
+cdh--2--ks
+cdh----xnr
 xnr----mjl
 mjl----kfx
 kfx--2--ne

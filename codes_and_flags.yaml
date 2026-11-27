@@ -297,6 +297,13 @@ Central Romani:
   family: IE
   genus: Indic
   scripts: [Latn]
+Chambeali:
+  flag: IN
+  lcode: cdh
+  iso3: cdh
+  family: IE
+  genus: Indic
+  scripts: [Deva]
 Chechen:
   flag: RU-CE
   lcode: ce
